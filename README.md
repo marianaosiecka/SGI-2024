@@ -1,10 +1,10 @@
 # SGI 2023/2024
 
-## Group T0xG0y
+## Group T05G04
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+| Mafalda Costa    | 202006417 | up202006417@up.pt  |
+| Mariana Carvalho | 202007620 | up202007620@up.pt  |
 
 ----
 
