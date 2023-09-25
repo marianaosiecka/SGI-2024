@@ -22,7 +22,7 @@ class MyContents  {
         this.boxDisplacement = new THREE.Vector3(0,2,0)
 
         // plane related attributes
-        this.diffusePlaneColor = "#00ffff"
+        this.diffusePlaneColor = "#FFF0AD"
         this.specularPlaneColor = "#777777"
         this.planeShininess = 30
         this.planeMaterial = new THREE.MeshPhongMaterial({ color: this.diffusePlaneColor, 
@@ -41,6 +41,56 @@ class MyContents  {
         this.boxMesh = new THREE.Mesh( box, boxMaterial );
         this.boxMesh.rotation.x = -Math.PI / 2;
         this.boxMesh.position.y = this.boxDisplacement.y;
+    }
+
+    buildWalls(){
+        let wall = new THREE.PlaneGeometry( 10, 5 );
+        // right
+        this.wall1Mesh = new THREE.Mesh( wall, this.planeMaterial );
+        this.wall1Mesh.position.z = -5
+        this.wall1Mesh.position.y = 2.5;
+        this.app.scene.add( this.wall1Mesh );
+        // left
+        this.wall2Mesh = new THREE.Mesh( wall, this.planeMaterial );
+        this.wall2Mesh.rotation.x = Math.PI;
+        this.wall2Mesh.position.z = 5;
+        this.wall2Mesh.position.y = 2.5;
+        this.app.scene.add( this.wall2Mesh );
+        // back
+        this.wall3Mesh = new THREE.Mesh( wall, this.planeMaterial );
+        this.wall3Mesh.rotation.y = Math.PI / 2;
+        this.wall3Mesh.position.y = 2.5;
+        this.wall3Mesh.position.x = -5;
+        this.app.scene.add( this.wall3Mesh );
+        // front
+        this.wall4Mesh = new THREE.Mesh( wall, this.planeMaterial );
+        this.wall4Mesh.rotation.y = - Math.PI / 2;
+        this.wall4Mesh.position.y = 2.5;
+        this.wall4Mesh.position.x = 5;
+        this.app.scene.add( this.wall4Mesh );
+    }
+
+    buildParalelepiped(height, width, depth, posX, posY, posZ, color) {
+        let paralelMaterial = new THREE.MeshPhongMaterial({ color: color, 
+            specular: "#000000", emissive: "#000000", shininess: 90 })
+
+        let paralel = new THREE.BoxGeometry(width, height, depth);
+        let paralelMesh = new THREE.Mesh( paralel, paralelMaterial);
+        paralelMesh.rotation.x = -Math.PI / 2;
+        paralelMesh.position.x = posX;
+        paralelMesh.position.y = posY;
+        paralelMesh.position.z = posZ;
+        this.app.scene.add(paralelMesh);
+    }
+
+    buildCylinder(radiusTop, radiusBottom, height, radialSegments, posX, posY, posZ, color){
+        const cylinder = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);         
+        const cylinderMaterial = new THREE.MeshBasicMaterial({ color: color });
+        const cylinderMesh = new THREE.Mesh(cylinder, cylinderMaterial);
+        cylinderMesh.position.x = posX;
+        cylinderMesh.position.y = posY;
+        cylinderMesh.position.z = posZ;
+        this.app.scene.add(cylinderMesh);
     }
 
     /**
@@ -71,13 +121,32 @@ class MyContents  {
 
         this.buildBox()
         
-        // Create a Plane Mesh with basic material
         
+        // Create a Plane Mesh with basic material
         let plane = new THREE.PlaneGeometry( 10, 10 );
         this.planeMesh = new THREE.Mesh( plane, this.planeMaterial );
         this.planeMesh.rotation.x = -Math.PI / 2;
         this.planeMesh.position.y = -0;
         this.app.scene.add( this.planeMesh );
+
+        this.buildWalls();
+
+        //MESA
+        //tampo da mesa
+        this.buildParalelepiped(3.5, 4.2, 0.1, 0, 1.2, 0, "#7A9E9F");
+        //perna esquerda dianteira
+        this.buildCylinder(0.2, 0.1, 1.2, 20, 1.75 ,0.6, 1.4, "#7A9E9F");
+        //perna esquerda traseira
+        this.buildCylinder(0.2, 0.1, 1.2, 20, -1.75 ,0.6, 1.4, "#7A9E9F");
+        //perna direira dianteira
+        this.buildCylinder(0.2, 0.1, 1.2, 20, 1.75 ,0.6, -1.4, "#7A9E9F");
+        //perna direita traseira 
+        this.buildCylinder(0.2, 0.1, 1.2, 20, -1.75 ,0.6, -1.4, "#7A9E9F");
+
+        //PRATO
+        this.buildCylinder(1.2, 1.2, 0.1, 20, 0, 1.28, 0, "#FE5F55");
+        
+
     }
     
     /**
