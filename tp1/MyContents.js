@@ -93,6 +93,37 @@ class MyContents  {
         this.app.scene.add(cylinderMesh);
     }
 
+    buildCone(radius, height, radialSegments, posX, posY, posZ, color){
+        const cone = new THREE.ConeGeometry(radius, height, radialSegments);         
+        const coneMaterial = new THREE.MeshBasicMaterial({ color: color });
+        const coneMesh = new THREE.Mesh(cone, coneMaterial);
+        coneMesh.position.x = posX;
+        coneMesh.position.y = posY;
+        coneMesh.position.z = posZ;
+        this.app.scene.add(coneMesh);
+    }
+
+    /*buildSphere(radius, widthSegments, heightSegments, posX, posY, posZ, color){
+        const sphere = new THREE.SphereGeometry(radius, widthSegments, heightSegments, 0, Math.PI * 2); 
+        const sphereMaterial = new THREE.MeshBasicMaterial({ color: color});
+        const sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
+        sphereMesh.position.x = posX;
+        sphereMesh.position.y = posY;
+        sphereMesh.position.z = posZ;
+        this.app.scene.add(sphereMesh);
+    }
+    */
+
+    buildHemisphere(radius, widthSegments, heightSegments, posX, posY, posZ, verticalAngle, color){
+        const hemisphere = new THREE.SphereGeometry(radius, widthSegments, heightSegments, 0, Math.PI*2, verticalAngle, Math.PI/2);   
+        const hemisphereMaterial = new THREE.MeshBasicMaterial({ color: color});
+        const hemisphereMesh = new THREE.Mesh(hemisphere, hemisphereMaterial);
+        hemisphereMesh.position.x = posX;
+        hemisphereMesh.position.y = posY;
+        hemisphereMesh.position.z = posZ;
+        this.app.scene.add(hemisphereMesh);
+    }
+
     /**
      * initializes the contents
      */
@@ -144,9 +175,46 @@ class MyContents  {
         this.buildCylinder(0.2, 0.1, 1.2, 20, -1.75 ,0.6, -1.4, "#7A9E9F");
 
         //PRATO
-        this.buildCylinder(1.2, 1.2, 0.1, 20, 0, 1.28, 0, "#FE5F55");
+        this.buildCylinder(1.2, 1.2, 0.1, 50, 0, 1.28, 0, "#d9d9cc");
         
+        //VELA
+        this.buildCylinder(0.04, 0.04, 0.2, 40, 0, 1.38, 0, "#d9883d");
+        //chama
+        this.buildCone(0.03, 0.1, 40, 0, 1.53, 0, "#ffda54");
 
+        //CADEIRAS
+        this.buildParalelepiped(0.9, 1, 0.1, -0.8, 0.7, 2, "#b51f19");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, 1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, 2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, 1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, 2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 1, 0.8, -0.8, 1.05, 2.4, "#b51f19");
+
+        this.buildParalelepiped(0.9, 1, 0.1, 0.8, 0.7, 2, "#b51f19");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, 1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, 2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, 1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, 2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 1, 0.8, 0.8, 1.05, 2.4, "#b51f19");
+
+        this.buildParalelepiped(0.9, 1, 0.1, -0.8, 0.7, -2, "#b51f19");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, -1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, -2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, -1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, -2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 1, 0.8, -0.8, 1.05, -2.4, "#b51f19");
+
+        this.buildParalelepiped(0.9, 1, 0.1, 0.8, 0.7, -2, "#b51f19");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, -1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, -2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, -1.7, "#7A9E9F");
+        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, -2.3, "#7A9E9F");
+        this.buildParalelepiped(0.1, 1, 0.8, 0.8, 1.05, -2.4, "#b51f19");
+
+        //CANDEEIRO DE TETO
+        this.buildCylinder(0.02, 0.02, 0.6, 40, 0, 4.7, 0, "#526d6e");
+        this.buildHemisphere(0.5, 30, 30, 0, 4, 0, 0, "#b51f19");
+        this.buildHemisphere(0.3, 30, 30, 0, 4.2, 0, Math.PI/2, "#f7e731");
     }
     
     /**
