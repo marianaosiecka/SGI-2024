@@ -1,5 +1,10 @@
 import * as THREE from 'three';
 import { MyAxis } from './MyAxis.js';
+import { MyTable } from './MyTable.js';
+import { MyPlate } from './MyPlate.js';
+import { MyCandle } from './MyCandle.js';
+import { MyChair } from './MyChair.js';
+import { MyLamp } from './MyLamp.js';
 
 /**
  *  This class contains the contents of out application
@@ -17,7 +22,7 @@ class MyContents  {
         // box related attributes
         this.boxMesh = null
         this.boxMeshSize = 1.0
-        this.boxEnabled = true
+        this.boxEnabled = false
         this.lastBoxEnabled = null
         this.boxDisplacement = new THREE.Vector3(0,2,0)
 
@@ -70,60 +75,6 @@ class MyContents  {
         this.app.scene.add( this.wall4Mesh );
     }
 
-    buildParalelepiped(height, width, depth, posX, posY, posZ, color) {
-        let paralelMaterial = new THREE.MeshPhongMaterial({ color: color, 
-            specular: "#000000", emissive: "#000000", shininess: 90 })
-
-        let paralel = new THREE.BoxGeometry(width, height, depth);
-        let paralelMesh = new THREE.Mesh( paralel, paralelMaterial);
-        paralelMesh.rotation.x = -Math.PI / 2;
-        paralelMesh.position.x = posX;
-        paralelMesh.position.y = posY;
-        paralelMesh.position.z = posZ;
-        this.app.scene.add(paralelMesh);
-    }
-
-    buildCylinder(radiusTop, radiusBottom, height, radialSegments, posX, posY, posZ, color){
-        const cylinder = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);         
-        const cylinderMaterial = new THREE.MeshBasicMaterial({ color: color });
-        const cylinderMesh = new THREE.Mesh(cylinder, cylinderMaterial);
-        cylinderMesh.position.x = posX;
-        cylinderMesh.position.y = posY;
-        cylinderMesh.position.z = posZ;
-        this.app.scene.add(cylinderMesh);
-    }
-
-    buildCone(radius, height, radialSegments, posX, posY, posZ, color){
-        const cone = new THREE.ConeGeometry(radius, height, radialSegments);         
-        const coneMaterial = new THREE.MeshBasicMaterial({ color: color });
-        const coneMesh = new THREE.Mesh(cone, coneMaterial);
-        coneMesh.position.x = posX;
-        coneMesh.position.y = posY;
-        coneMesh.position.z = posZ;
-        this.app.scene.add(coneMesh);
-    }
-
-    /*buildSphere(radius, widthSegments, heightSegments, posX, posY, posZ, color){
-        const sphere = new THREE.SphereGeometry(radius, widthSegments, heightSegments, 0, Math.PI * 2); 
-        const sphereMaterial = new THREE.MeshBasicMaterial({ color: color});
-        const sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
-        sphereMesh.position.x = posX;
-        sphereMesh.position.y = posY;
-        sphereMesh.position.z = posZ;
-        this.app.scene.add(sphereMesh);
-    }
-    */
-
-    buildHemisphere(radius, widthSegments, heightSegments, posX, posY, posZ, verticalAngle, color){
-        const hemisphere = new THREE.SphereGeometry(radius, widthSegments, heightSegments, 0, Math.PI*2, verticalAngle, Math.PI/2);   
-        const hemisphereMaterial = new THREE.MeshBasicMaterial({ color: color});
-        const hemisphereMesh = new THREE.Mesh(hemisphere, hemisphereMaterial);
-        hemisphereMesh.position.x = posX;
-        hemisphereMesh.position.y = posY;
-        hemisphereMesh.position.z = posZ;
-        this.app.scene.add(hemisphereMesh);
-    }
-
     /**
      * initializes the contents
      */
@@ -163,58 +114,45 @@ class MyContents  {
         this.buildWalls();
 
         //MESA
-        //tampo da mesa
-        this.buildParalelepiped(3.5, 4.2, 0.1, 0, 1.2, 0, "#7A9E9F");
-        //perna esquerda dianteira
-        this.buildCylinder(0.2, 0.1, 1.2, 20, 1.75 ,0.6, 1.4, "#7A9E9F");
-        //perna esquerda traseira
-        this.buildCylinder(0.2, 0.1, 1.2, 20, -1.75 ,0.6, 1.4, "#7A9E9F");
-        //perna direira dianteira
-        this.buildCylinder(0.2, 0.1, 1.2, 20, 1.75 ,0.6, -1.4, "#7A9E9F");
-        //perna direita traseira 
-        this.buildCylinder(0.2, 0.1, 1.2, 20, -1.75 ,0.6, -1.4, "#7A9E9F");
+        let table = new MyTable(this.app, 4.2, 3.5, 0.1, 0, 1.2, 0, -Math.PI/2, "#7A9E9F");
+        table.buildLegs(0.2, 0.1, 20);
+        this.app.scene.add(table);
 
         //PRATO
-        this.buildCylinder(1.2, 1.2, 0.1, 50, 0, 1.28, 0, "#d9d9cc");
+        let plate = new MyPlate(this.app, 1, 0.05, 50, 0, 1.38, 0, "#d9d9cc", "#c2c2b2");
+        this.app.scene.add(plate);
         
         //VELA
-        this.buildCylinder(0.04, 0.04, 0.2, 40, 0, 1.38, 0, "#d9883d");
-        //chama
-        this.buildCone(0.03, 0.1, 40, 0, 1.53, 0, "#ffda54");
+        let candle = new MyCandle(this.app, 0.04, 0.2, 40, 0, 1.5, 0, "#d9883d", "#ffda54");
+        this.app.scene.add(candle);
 
         //CADEIRAS
-        this.buildParalelepiped(0.9, 1, 0.1, -0.8, 0.7, 2, "#b51f19");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, 1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, 2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, 1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, 2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 1, 0.8, -0.8, 1.05, 2.4, "#b51f19");
+        let chair1 = new MyChair(this.app, 0.9, 1, 0.1, -0.8, 0.7, 2, -Math.PI/2,"#b51f19");
+        chair1.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
+        chair1.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        this.app.scene.add(chair1);
 
-        this.buildParalelepiped(0.9, 1, 0.1, 0.8, 0.7, 2, "#b51f19");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, 1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, 2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, 1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, 2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 1, 0.8, 0.8, 1.05, 2.4, "#b51f19");
+        let chair2 = new MyChair(this.app, 0.9, 1, 0.1, 0.8, 0.7, 2, -Math.PI/2,"#b51f19");
+        chair2.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
+        chair2.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        this.app.scene.add(chair2);
 
-        this.buildParalelepiped(0.9, 1, 0.1, -0.8, 0.7, -2, "#b51f19");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, -1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -1.1, 0.35, -2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, -1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, -0.5, 0.35, -2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 1, 0.8, -0.8, 1.05, -2.4, "#b51f19");
+        let chair3 = new MyChair(this.app, 0.9, 1, 0.1, -0.8, 0.7, -2, -Math.PI/2,"#b51f19");
+        chair3.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
+        chair3.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        chair3.flipChair();
+        this.app.scene.add(chair3);
 
-        this.buildParalelepiped(0.9, 1, 0.1, 0.8, 0.7, -2, "#b51f19");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, -1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 1.1, 0.35, -2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, -1.7, "#7A9E9F");
-        this.buildParalelepiped(0.1, 0.1, 0.7, 0.5, 0.35, -2.3, "#7A9E9F");
-        this.buildParalelepiped(0.1, 1, 0.8, 0.8, 1.05, -2.4, "#b51f19");
+        let chair4 = new MyChair(this.app, 0.9, 1, 0.1, 0.8, 0.7, -2, -Math.PI/2,"#b51f19");
+        chair4.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
+        chair4.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        chair4.flipChair();
+        this.app.scene.add(chair4);
 
         //CANDEEIRO DE TETO
-        this.buildCylinder(0.02, 0.02, 0.6, 40, 0, 4.7, 0, "#526d6e");
-        this.buildHemisphere(0.5, 30, 30, 0, 4, 0, 0, "#b51f19");
-        this.buildHemisphere(0.3, 30, 30, 0, 4.2, 0, Math.PI/2, "#f7e731");
+        let lamp = new MyLamp(this.app, 0.02, 0.5, 0.3, 0.6, 40, 0, 4.7, 0, "#526d6e", "#b51f19", "#f7e731");
+        this.app.scene.add(lamp);
+
     }
     
     /**
