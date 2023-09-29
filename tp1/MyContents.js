@@ -113,31 +113,10 @@ class MyContents  {
 
         this.buildWalls();
 
-    
-
-// relating texture and material:
-                        // two alternatives with different results
-
-
-                            // alternative 1
-
-        this.planeMaterial = new THREE.MeshPhongMaterial({color: this.diffusePlaneColor, specular: this.specularPlaneColor, emissive: "#000000", shininess: this.planeShininess, map: this.planeTexture })
-
-                            // end of alternative 1
-
-
-                            // alternative 2
-
-                // this.planeMaterial = new THREE.MeshLambertMaterial({
-
-                //        map : this.planeTexture });
-
-                            // end of alternative 2
-
-
         //MESA
-        let table = new MyTable(this.app, 4.2, 3.5, 0.1, 0, 1.2, 0, -Math.PI/2);
-        table.buildLegs(0.2, 0.1, 20);
+        let tableTexture = new THREE.TextureLoader().load('textures/wood_texture.jpg');
+        let table = new MyTable(this.app, 4.2, 3.5, 0.1, 0, 1.2, 0, -Math.PI/2, tableTexture);
+        table.buildLegs(0.2, 0.1, 20, "#7A9E9F");
         this.app.scene.add(table);
 
         //PRATO

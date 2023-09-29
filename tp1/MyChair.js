@@ -39,9 +39,9 @@ class MyChair extends THREE.Object3D  {
     }
 
     buildLegs (width, height, depth, color) {
+        this.leg = new THREE.BoxGeometry(width, height, depth);         
+        this.legMaterial = new THREE.MeshPhongMaterial({ color: color });
         for(let i=0; i<4; i++) {
-            this.leg = new THREE.BoxGeometry(width, height, depth);         
-            this.legMaterial = new THREE.MeshPhongMaterial({ color: color });
             this.legMesh = new THREE.Mesh(this.leg, this.legMaterial);
             this.legMesh.rotation.x = this.rot;
             this.legMesh.position.x = this.legPositions[i][0];
