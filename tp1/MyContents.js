@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { MyAxis } from './MyAxis.js';
 import { MyTable } from './MyTable.js';
 import { MyPlate } from './MyPlate.js';
+import { MyCake } from './MyCake.js';
 import { MyCandle } from './MyCandle.js';
 import { MyChair } from './MyChair.js';
 import { MyLamp } from './MyLamp.js';
@@ -119,11 +120,15 @@ class MyContents  {
         this.app.scene.add(table);
 
         //PRATO
-        let plate = new MyPlate(this.app, 1, 0.05, 50, 0, 1.38, 0, "#d9d9cc", "#c2c2b2");
+        let plate = new MyPlate(this.app, 0.6, 0.05, 50, 1.3, 1.38, 0, "#d9d9cc", "#c2c2b2");
         this.app.scene.add(plate);
-        
+
+        // BOLO
+        let cake = new MyCake(this.app, 0.7, 0.4, 25, 0, 1.6, 0, 1.2, 1.6, -0.3, 1, "#f73772");
+        this.app.scene.add(cake);
+
         //VELA
-        let candle = new MyCandle(this.app, 0.04, 0.2, 40, 0, 1.5, 0, "#d9883d", "#ffda54");
+        let candle = new MyCandle(this.app, 0.04, 0.2, 40, 0, 1.9, 0, "#d9883d", "#ffda54");
         this.app.scene.add(candle);
 
         //CADEIRAS
