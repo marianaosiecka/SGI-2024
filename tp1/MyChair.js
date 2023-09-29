@@ -22,8 +22,8 @@ class MyChair extends THREE.Object3D  {
 
         //tampo da mesa     
         this.seat = new THREE.BoxGeometry(width, height, depth); 
-        this.seatMaterial = new THREE.MeshPhongMaterial({ color: this.color});
-        this.seatMesh = new THREE.Mesh(this.seat, this.seatMaterial);
+        this.chairMaterial = new THREE.MeshPhongMaterial({ color: this.color});
+        this.seatMesh = new THREE.Mesh(this.seat, this.chairMaterial);
         this.seatMesh.rotation.x = rotation;
         this.seatMesh.position.x = xPos;
         this.seatMesh.position.y = yPos;
