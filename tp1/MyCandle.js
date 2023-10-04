@@ -26,6 +26,10 @@ class MyCandle extends THREE.Object3D  {
         this.flameMesh.position.y = yPos + height - 0.05;
         this.flameMesh.position.z = zPos;
         this.add(this.flameMesh);
+
+        this.candleLight = new THREE.PointLight("#fac569", 1, 5);
+        this.candleLight.position.set(xPos, yPos + height - 0.05, zPos);
+        this.add(this.candleLight);
     }
 
     changeColorWax(color) {
