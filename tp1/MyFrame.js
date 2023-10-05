@@ -6,27 +6,23 @@ class MyFrame extends THREE.Object3D  {
        constructs the object
        @param {MyApp} app The application object
     */ 
-    constructor(app, width, height, depth, x, y, z, color, picturePath) {
+    constructor(app, width, height, depth, color, picturePath) {
         super();
         this.app = app;
         this.type = 'Group';
 
         this.frame = new THREE.BoxGeometry(width, height, depth);
-        this.frameMaterial = new THREE.MeshBasicMaterial({ color: color });
+        this.frameMaterial = new THREE.MeshPhongMaterial({ color: color, specular: 0xffffff });
         this.frameMesh = new THREE.Mesh(this.frame, this.frameMaterial);
-        this.frameMesh.position.x = x;
-        this.frameMesh.position.y = y;
-        this.frameMesh.position.z = z;
 
-        this.picture = new THREE.PlaneGeometry(width-0.3, height-0.3);
+
+        this.picture = new THREE.PlaneGeometry(width-0.5, height-0.5);
         const textureLoader = new THREE.TextureLoader();
         const texture = textureLoader.load(picturePath);
-        this.pictureMaterial = new THREE.MeshBasicMaterial({ map: texture });
+        this.pictureMaterial = new THREE.MeshBasicMaterial({ map: texture, opacity: 0.8, transparent: true });
         this.pictureMesh = new THREE.Mesh(this.picture, this.pictureMaterial);
         this.pictureMesh.rotateY(Math.PI)
-        this.pictureMesh.position.x = x;
-        this.pictureMesh.position.y = y;
-        this.pictureMesh.position.z = z - depth/2 - 0.01;
+        this.pictureMesh.position.z = - depth/2 - 0.03;
 
         
         this.add(this.frameMesh);
