@@ -72,6 +72,18 @@ class MyChair extends THREE.Object3D  {
     changeColorBack(color) {
         this.backMesh.material.color = new THREE.Color(color);
     }
+
+    setPosition(x,y,z){
+        this.seatMesh.position.x = x;
+        this.seatMesh.position.y = y;
+        this.seatMesh.position.z = z;
+    }
+
+    setRotation(x, y, z){
+        this.seatMesh.rotation.x = x;
+        this.seatMesh.rotation.y = y;
+        this.seatMesh.rotation.z = z;
+    }
 }
 
 
