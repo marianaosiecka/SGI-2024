@@ -19,7 +19,7 @@ class MyFrame extends THREE.Object3D  {
         this.picture = new THREE.PlaneGeometry(width-0.5, height-0.5);
         const textureLoader = new THREE.TextureLoader();
         const texture = textureLoader.load(picturePath);
-        this.pictureMaterial = new THREE.MeshBasicMaterial({ map: texture, opacity: 0.8, transparent: true });
+        this.pictureMaterial = new THREE.MeshBasicMaterial({ map: texture, opacity: 0.8 });
         this.pictureMesh = new THREE.Mesh(this.picture, this.pictureMaterial);
         this.pictureMesh.rotateY(Math.PI)
         this.pictureMesh.position.z = - depth/2 - 0.03;

@@ -37,7 +37,6 @@ class MyContents  {
         this.specularPlaneColor = "#777777"
         this.planeShininess = 30
         this.planeMaterial1 = new THREE.MeshPhongMaterial({ color: "#c8e3f7"})
-
         this.planeMaterial2 = new THREE.MeshPhongMaterial({ color: "#FFFFFF"})
     
     }
@@ -184,7 +183,8 @@ class MyContents  {
         this.app.scene.add(plateSlice);
 
         // BOLO & FATIA
-        let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#E1A693", "#ffffff");
+        let fillingTexture = new THREE.TextureLoader().load('textures/cake_slice_texture.png');
+        let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#E1A693", "#614E3F", fillingTexture);
         cake.buildSlice(-1.3, -0.3, -2); // pos relativa ao bolo
         this.setPosition(cake, 0, 1.9, 4.5);
         this.setRotation(cake, 0, Math.PI, 0);
@@ -198,7 +198,8 @@ class MyContents  {
         
 
         // MOLDURAS
-        let frame1 = new MyFrame(this.app, 1.62, 2.3, 0.1, "#ffffff", 'pictures/paiting1.jpg');
+        //let frame1 = new MyFrame(this.app, 1.62, 2.3, 0.1, "#ffffff", 'pictures/paiting1.jpg');
+        let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.1, "#ffffff", 'pictures/paiting3.jpg')
         this.setPosition(frame1, 4, 3.5, 8)
         this.app.scene.add(frame1);
 
@@ -221,10 +222,13 @@ class MyContents  {
         lamp.position.z = 5
         this.app.scene.add(lamp);
 
-        let carpet = new MyCarpet(this.app, 7.5, 0.1, 4, "#1b4984");
+        //TAPETE
+        let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
+        let carpet = new MyCarpet(this.app, 7.5, 0.1, 4.5, "#1B4984", carpetTexture);
         this.setPosition(carpet, 0, 0.05, -5.5);
         this.app.scene.add(carpet);
 
+        //ALMOFADAS
         const angleY = Math.PI/12;
         const angleZ = Math.PI/15;
         let pillow1 = new MyPillow(this.app, 0.6, 0.3, 0.6, "#7FA34D");
@@ -236,20 +240,22 @@ class MyContents  {
         let pillow4 = new MyPillow(this.app, 0.7, 0.35, 0.7, "#7FA34D");
         this.setRotation(pillow4, 0, -angleY, angleZ);
 
+        //SOFAS
         let sofa1 = new MySofa(this.app, 1, 0.4, 0.1, "#FFEF9C");
-        this.setRotation(sofa1, 0, Math.PI/4, 0);
+        this.setRotation(sofa1, 0, -Math.PI/3, 0);
         sofa1.setPillow(pillow1, 0.6, -0.3);
         sofa1.setPillow(pillow2, 0.7, 0.3);
-        this.setPosition(sofa1, -2.5, 0, -4.5);
+        this.setPosition(sofa1, -2.5, 0, -6.2);
         this.app.scene.add(sofa1);
 
         let sofa2 = new MySofa(this.app, 1, 0.4, 0.1, "#FFEF9C");
-        this.setRotation(sofa2, 0, -Math.PI/4 - Math.PI, 0);
+        this.setRotation(sofa2, 0, Math.PI/4 + Math.PI, 0);
         sofa2.setPillow(pillow3, 0.6, -0.3);
         sofa2.setPillow(pillow4, 0.7, 0.3);
-        this.setPosition(sofa2, 2.5, 0, -4.5);
+        this.setPosition(sofa2, 2.3, 0, -6.2);
         this.app.scene.add(sofa2);
 
+        //CANDEEIRO SOFAS
         let spotLightSofas = new THREE.SpotLight( "#fcf7dc", 5, 3, 2*Math.PI/8, 0, 0.2);
         spotLightSofas.position.set( 0, 4.4, -5.5 );
         spotLightSofas.target = carpet;

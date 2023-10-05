@@ -8,7 +8,7 @@ class MyCake extends THREE.Object3D  {
        constructs the object
        @param {MyApp} app The application object
     */ 
-    constructor(app, radius, height, radialSegments, sliceAngle, colorCake, colorFilling) {
+    constructor(app, radius, height, radialSegments, sliceAngle, colorCake, colorFilling, filingTexture) {
         super();
         this.app = app;
         this.type = 'Group';
@@ -21,6 +21,8 @@ class MyCake extends THREE.Object3D  {
         this.colorFilling = colorFilling;
 
         this.cakeMaterial = new THREE.MeshPhongMaterial({ color: colorCake });
+        this.fillingMaterial = new THREE.MeshBasicMaterial({ color: colorFilling, map: filingTexture})
+        
 
         this.cake = new THREE.CylinderGeometry(radius, radius, height, radialSegments, 1, false, 0, 2*Math.PI - sliceAngle);    
         this.cakeMesh = new THREE.Mesh(this.cake, this.cakeMaterial);
@@ -34,7 +36,6 @@ class MyCake extends THREE.Object3D  {
         const height = this.height;
 
         this.filling = new THREE.PlaneGeometry(width, height);
-        this.fillingMaterial = new THREE.MeshPhongMaterial({ color: this.colorFilling})
         
         this.fillingMesh1 = new THREE.Mesh( this.filling, this.fillingMaterial );
         this.fillingMesh1.rotation.y = -Math.PI / 2;
