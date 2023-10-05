@@ -22,8 +22,8 @@ class MyChair extends THREE.Object3D  {
 
         //tampo da mesa     
         this.seat = new THREE.BoxGeometry(width, height, depth); 
-        this.seatMaterial = new THREE.MeshPhongMaterial({ color: this.color});
-        this.seatMesh = new THREE.Mesh(this.seat, this.seatMaterial);
+        this.chairMaterial = new THREE.MeshPhongMaterial({ color: this.color});
+        this.seatMesh = new THREE.Mesh(this.seat, this.chairMaterial);
         this.seatMesh.rotation.x = rotation;
         this.seatMesh.position.x = xPos;
         this.seatMesh.position.y = yPos;
@@ -39,9 +39,9 @@ class MyChair extends THREE.Object3D  {
     }
 
     buildLegs (width, height, depth, color) {
+        this.leg = new THREE.BoxGeometry(width, height, depth);         
+        this.legMaterial = new THREE.MeshPhongMaterial({ color: color });
         for(let i=0; i<4; i++) {
-            this.leg = new THREE.BoxGeometry(width, height, depth);         
-            this.legMaterial = new THREE.MeshPhongMaterial({ color: color });
             this.legMesh = new THREE.Mesh(this.leg, this.legMaterial);
             this.legMesh.rotation.x = this.rot;
             this.legMesh.position.x = this.legPositions[i][0];

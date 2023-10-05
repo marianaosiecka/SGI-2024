@@ -105,7 +105,6 @@ class MyContents  {
 
         this.buildBox()
         
-        
         // Create a Plane Mesh with basic material
         let plane = new THREE.PlaneGeometry( 10, 10 );
         this.planeMesh = new THREE.Mesh( plane, this.planeMaterial );
@@ -116,8 +115,9 @@ class MyContents  {
         this.buildWalls();
 
         //MESA
-        let table = new MyTable(this.app, 4.2, 3.5, 0.1, 0, 1.2, 0, -Math.PI/2, "#7A9E9F");
-        table.buildLegs(0.2, 0.1, 20);
+        let tableTexture = new THREE.TextureLoader().load('textures/wood_texture.jpg');
+        let table = new MyTable(this.app, 4.2, 3.5, 0.1, 0, 1.2, 0, -Math.PI/2, tableTexture);
+        table.buildLegs(0.2, 0.1, 20, "#7A9E9F");
         this.app.scene.add(table);
 
         //PRATO
@@ -168,12 +168,42 @@ class MyContents  {
         chair4.flipChair();
         this.app.scene.add(chair4);
 
+        //SPOT LIGHT
+        this.spotLight = new THREE.SpotLight( "#fcf7dc", 10, 4.5, 2*Math.PI/8, 0, 0);
+        this.spotLight.position.set( 0, 4.4, 0 );
+        this.spotLight.target = cake;
+        
         //CANDEEIRO DE TETO
-        let lamp = new MyLamp(this.app, 0.02, 0.5, 0.3, 0.6, 40, 0, 4.7, 0, "#526d6e", "#b51f19", "#f7e731");
+        let lamp = new MyLamp(this.app, 0.02, 0.5, 0.3, 0.6, 40, 0, 4.7, 0, "#526d6e", "#b51f19", "#f8edb6", this.spotLight);
         this.app.scene.add(lamp);
+
+        //const spotLightHelper = new THREE.SpotLightHelper( this.spotLight );
+        //this.app.scene.add(spotLightHelper);
 
     }
     
+    /**
+     * updates the x position of the target of the spotlight
+     * @param {THREE.Color} value 
+     */
+    updateSpotLightTargetX(value) {
+        const targetObject = new THREE.Object3D(); 
+        targetObject.position.x = value;
+        targetObject.position.y = this.spotLight.target.position.y;
+        this.app.scene.add(targetObject);
+        this.spotLight.target = targetObject;
+    }
+    /**
+     * updates the y position of the target of the spotlight
+     * @param {THREE.Color} value 
+     */
+    updateSpotLightTargetY(value) {
+        const targetObject = new THREE.Object3D(); 
+        targetObject.position.y = value;
+        targetObject.position.x = this.spotLight.target.position.x;
+        this.app.scene.add(targetObject);
+        this.spotLight.target = targetObject;
+    }
     /**
      * updates the diffuse plane color and the material
      * @param {THREE.Color} value 

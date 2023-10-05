@@ -42,7 +42,13 @@ class MyGuiInterface  {
         const data = {  
             'diffuse color': this.contents.diffusePlaneColor,
             'specular color': this.contents.specularPlaneColor,
+            'color': this.contents.spotLight.color
         };
+
+        const spotLightTargetPosition = {
+            'targetX' : this.contents.spotLight.target.position.x,
+            'targetY' : this.contents.spotLight.target.position.y
+        }
 
         // adds a folder to the gui interface for the plane
         const planeFolder = this.datgui.addFolder( 'Plane' );
@@ -57,6 +63,20 @@ class MyGuiInterface  {
         // note that we are using a property from the app 
         cameraFolder.add(this.app.activeCamera.position, 'x', 0, 10).name("x coord")
         cameraFolder.open()
+
+        // folder in the gui interface for the light
+        const spotLightFolder = this.datgui.addFolder('SpotLight')
+        spotLightFolder.addColor(data, 'color').onChange( (value) => { this.contents.spotLight.color = value } );
+        spotLightFolder.add(this.contents.spotLight, 'intensity', 0, 20).onChange( (value) => { this.contents.spotLight.intensity = value } );
+        spotLightFolder.add(this.contents.spotLight, 'distance', 0, 15).onChange( (value) => { this.contents.spotLight.distance = value } );
+        spotLightFolder.add(this.contents.spotLight, 'angle',  0, 180).onChange( (value) => { this.contents.spotLight.angle = value*(Math.PI/180) } );
+        spotLightFolder.add(this.contents.spotLight, 'penumbra', 0, 2).onChange( (value) => { this.contents.spotLight.penumbra = value } );
+        spotLightFolder.add(this.contents.spotLight, 'decay', 0, 2).onChange( (value) => { this.contents.spotLight.decay = value } );
+        spotLightFolder.add(this.contents.spotLight.position, 'x', -20, 20).onChange( (value) => { this.contents.spotLight.position.x = value } );
+        spotLightFolder.add(this.contents.spotLight.position, 'y', -20, 20).onChange( (value) => { this.contents.spotLight.position.y = value } );
+        spotLightFolder.add(spotLightTargetPosition, 'targetX', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetX(value) } );
+        spotLightFolder.add(spotLightTargetPosition, 'targetY', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetY(value) } );
+        spotLightFolder.open()
     }
 }
 
