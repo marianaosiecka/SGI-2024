@@ -9,6 +9,8 @@ import { MyLamp } from './MyLamp.js';
 import { MyCarpet } from './MyCarpet.js';
 import { MySofa } from './MySofa.js';
 import { MyPillow } from './MyPillow.js';
+import { MyCakePlate } from './MyCakePlate.js';
+import { MyFork } from './MyFork.js';
 
 /**
  *  This class contains the contents of out application
@@ -159,8 +161,8 @@ class MyContents  {
         let chair3 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
         chair3.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
         chair3.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
-        this.setRotation(chair3, 0, Math.PI, 0)
-        this.setPosition(chair3, 1.8, 0, 6.3)
+        this.setRotation(chair3, 0, Math.PI - 0.5, 0)
+        this.setPosition(chair3, 2.3, 0, 6.3)
         this.app.scene.add(chair3);
 
         let chair4 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
@@ -170,34 +172,44 @@ class MyContents  {
         this.setPosition(chair4, 1.8, 0, 4.6)
         this.app.scene.add(chair4);
 
-        // PRATO DO BOLO
 
+        // PRATO DO BOLO
+        let cakePlate = new MyCakePlate(this.app, 0.7, 0.05, 50, "#d9d9cc", "#c2c2b2")
+        this.setPosition(cakePlate, 0, 1.7, 4.5);
+        this.app.scene.add(cakePlate)
 
         // PRATO DA FATIA
-        //     constructor(app, radius, height, radialSegments, colorTop, colorBase) {
-        //let plateSlice = new MyPlate(this.app, 0.6, 0.05, 50, "#d9d9cc", "#c2c2b2");
-        // 1.38, 1.36, 1
-        //this.app.scene.add(plateSlice);
+        let plateSlice = new MyPlate(this.app, 0.52, 0.05, 50, "#d9d9cc", "#c2c2b2");
+        this.setPosition(plateSlice, 1.1, 1.38, 6.3)
+        this.app.scene.add(plateSlice);
 
-        // BOLO
-        let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#f73772", "#ffffff");
-        cake.buildSlice(0.8, -0.5, -2); // pos relativa ao bolo
-        this.setPosition(cake, 0, 2, 4.5)
+        // BOLO & FATIA
+        let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#E1A693", "#ffffff");
+        cake.buildSlice(-1.3, -0.3, -2); // pos relativa ao bolo
+        this.setPosition(cake, 0, 1.9, 4.5);
+        this.setRotation(cake, 0, Math.PI, 0);
         this.app.scene.add(cake);
+
+        // GARFO
+        let fork = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
+        this.setScale(fork, 0.2)
+        this.setPosition(fork, 0.95, 1.4, 7)
+        this.app.scene.add(fork)
         
 
         // MOLDURAS
-        /*
-        let frame1 = new MyFrame(this.app, 2.2, 1.5, 0.1, -2, 3, 4.8, "#b51f19", 'pictures/pic_mari.jpg')
+        let frame1 = new MyFrame(this.app, 1.62, 2.3, 0.1, "#ffffff", 'pictures/paiting1.jpg');
+        this.setPosition(frame1, 4, 3.5, 8)
         this.app.scene.add(frame1);
 
-        let frame2 = new MyFrame(this.app, 1.5, 2.2, 0.1, 2, 3, 4.8, "#b51f19", 'pictures/pic_mafits.jpeg')
+        let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, "#ffffff", 'pictures/paiting2.jpg');
+        this.setPosition(frame2, -4, 3.2, 8)
         this.app.scene.add(frame2)
 
         // JANELA
-        let window = new MyWindow(this.app, 3, 3, 0.2, 0, 0, 0, "#b51f19")
-        this.app.scene.add(window);
-        */
+        //let window = new MyWindow(this.app, 3, 3, 0.2, 0, 0, 0, "#b51f19")
+        //this.app.scene.add(window);
+
         //SPOT LIGHT
         this.spotLight = new THREE.SpotLight( "#fcf7dc", 5, 4, 2*Math.PI/8, 0, 0.2);
         this.spotLight.position.set( 0, 4.4, 0 );
@@ -257,6 +269,12 @@ class MyContents  {
         object.rotation.x = x;
         object.rotation.y = y;
         object.rotation.z = z;
+    }
+
+    setScale(object, s){
+        object.scale.x = s;
+        object.scale.y = s;
+        object.scale.z = s;
     }
     
     /**

@@ -20,7 +20,7 @@ class MyCake extends THREE.Object3D  {
         this.colorCake = colorCake;
         this.colorFilling = colorFilling;
 
-        this.cakeMaterial = new THREE.MeshBasicMaterial({ color: colorCake });
+        this.cakeMaterial = new THREE.MeshPhongMaterial({ color: colorCake });
 
         this.cake = new THREE.CylinderGeometry(radius, radius, height, radialSegments, 1, false, 0, 2*Math.PI - sliceAngle);    
         this.cakeMesh = new THREE.Mesh(this.cake, this.cakeMaterial);
@@ -29,22 +29,22 @@ class MyCake extends THREE.Object3D  {
         this.add(this.cakeMesh)
     }
 
-    buildFilling(angle, x = 0, y = 0, z = 0) {
+    buildFilling(angle, x = 0, y = 0, z = 0, rotX = 0, rotY = 0, rotZ = 0) {
         const width = this.radius;
         const height = this.height;
 
         this.filling = new THREE.PlaneGeometry(width, height);
-        this.fillingMaterial = new THREE.MeshBasicMaterial({ color: this.colorFilling})
+        this.fillingMaterial = new THREE.MeshPhongMaterial({ color: this.colorFilling})
         
         this.fillingMesh1 = new THREE.Mesh( this.filling, this.fillingMaterial );
-        this.fillingMesh1.rotateY(-Math.PI / 2)
+        this.fillingMesh1.rotation.y = -Math.PI / 2;
         this.fillingMesh1.position.x = x;
         this.fillingMesh1.position.y = y;
         this.fillingMesh1.position.z = z + width / 2;
         
         this.fillingMesh2 = new THREE.Mesh( this.filling, this.fillingMaterial );
         const filling2Angle = Math.PI / 2 - angle;
-        this.fillingMesh2.rotateY(filling2Angle);
+        this.fillingMesh2.rotation.y = filling2Angle;
         this.fillingMesh2.position.x = x - (width / 2) * Math.sin(angle);
         this.fillingMesh2.position.y = y;
         this.fillingMesh2.position.z = z + (width / 2) * Math.cos(angle);
@@ -57,19 +57,21 @@ class MyCake extends THREE.Object3D  {
         this.slice = new THREE.CylinderGeometry(this.radius, this.radius, this.height, this.radialSegments, 1, false, 0, this.sliceAngle)
         this.sliceMesh = new THREE.Mesh(this.slice, this.cakeMaterial);
 
-        const sliceX = 0 //this.cakeMesh.position.x + x;
-        const sliceY = -2 //this.cakeMesh.position.y + y;
-        const sliceZ = -6.3 //this.cakeMesh.position.z + z;
+        const sliceX = this.cakeMesh.position.x + x;
+        const sliceY = this.cakeMesh.position.y + y;
+        const sliceZ = this.cakeMesh.position.z + z;
 
-        this.sliceMesh.position.x = sliceX
-        this.sliceMesh.position.y = sliceY
-        this.sliceMesh.position.z = sliceZ
-        this.sliceMesh.rotation.x = this.sliceAngle
-        this.sliceMesh.rotation.y = Math.PI;
-        this.sliceMesh.rotation.z = 3*Math.PI / 2 - this.sliceAngle / 2;
+        const rotationY = -this.sliceAngle/2;
+        const rotationZ = -3*Math.PI / 2;
+
+        this.sliceMesh.position.x = sliceX;
+        this.sliceMesh.position.y = sliceY;
+        this.sliceMesh.position.z = sliceZ;
+        //this.sliceMesh.rotation.y = rotationY;
+        //this.sliceMesh.rotation.z = rotationZ;
 
 
-        //this.buildFilling(-this.sliceAngle, sliceX, sliceY, sliceZ);
+        this.buildFilling(-this.sliceAngle, sliceX, sliceY, sliceZ, 0, rotationY, rotationZ);
 
         this.add(this.sliceMesh);
     }
