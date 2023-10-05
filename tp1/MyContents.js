@@ -213,29 +213,28 @@ class MyContents  {
         this.setPosition(carpet, 0, 0.05, -5.5);
         this.app.scene.add(carpet);
 
+        const angleY = Math.PI/12;
+        const angleZ = Math.PI/15;
         let pillow1 = new MyPillow(this.app, 0.6, 0.3, 0.6, "#7FA34D");
-        this.setRotation(pillow1, 0, Math.PI/12, Math.PI/10);
+        this.setRotation(pillow1, 0, angleY, angleZ);
         let pillow2 = new MyPillow(this.app, 0.7, 0.35, 0.7, "#BB5943");
-        this.setRotation(pillow2, 0, -Math.PI/12, Math.PI/10);
-        let pillow3 = new MyPillow(this.app, 0.8, 0.4, 0.8, "#cc7722");
-        this.setRotation(pillow3, 0, 0, Math.PI/10);
-        let pillow4 = new MyPillow(this.app, 0.5, 0.25, 0.5, "#7FA34D");
-        this.setRotation(pillow4, 0, -Math.PI/12, Math.PI/10);
-        let pillow5 = new MyPillow(this.app, 0.5, 0.25, 0.5, "#7FA34D");
-        this.setRotation(pillow5, 0, Math.PI/12, Math.PI/10);
+        this.setRotation(pillow2, 0, -angleY, angleZ);
+        let pillow3 = new MyPillow(this.app, 0.6, 0.3, 0.6, "#cc7722");
+        this.setRotation(pillow3, 0, 0, angleZ);
+        let pillow4 = new MyPillow(this.app, 0.7, 0.35, 0.7, "#7FA34D");
+        this.setRotation(pillow4, 0, -angleY, angleZ);
 
-        let sofa1 = new MySofa(this.app, 1, 0.5, 0.1, "#FFEF9C");
+        let sofa1 = new MySofa(this.app, 1, 0.4, 0.1, "#FFEF9C");
         this.setRotation(sofa1, 0, Math.PI/4, 0);
         sofa1.setPillow(pillow1, 0.6, -0.3);
         sofa1.setPillow(pillow2, 0.7, 0.3);
         this.setPosition(sofa1, -2.5, 0, -4.5);
         this.app.scene.add(sofa1);
 
-        let sofa2 = new MySofa(this.app, 1, 0.5, 0.1, "#FFEF9C");
+        let sofa2 = new MySofa(this.app, 1, 0.4, 0.1, "#FFEF9C");
         this.setRotation(sofa2, 0, -Math.PI/4 - Math.PI, 0);
-        sofa2.setPillow(pillow3, 0.8, 0);
-        sofa2.setPillow(pillow4, 0.5, 0.5);
-        sofa2.setPillow(pillow5, 0.5, -0.5);
+        sofa2.setPillow(pillow3, 0.6, -0.3);
+        sofa2.setPillow(pillow4, 0.7, 0.3);
         this.setPosition(sofa2, 2.5, 0, -4.5);
         this.app.scene.add(sofa2);
 
