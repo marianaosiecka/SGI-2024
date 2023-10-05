@@ -182,7 +182,7 @@ class MyContents  {
         // BOLO
         let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#f73772", "#ffffff");
         cake.buildSlice(0.8, -0.5, -2); // pos relativa ao bolo
-        this.setPosition(cake, 0, 2, 6.3)
+        this.setPosition(cake, 0, 2, 4.5)
         this.app.scene.add(cake);
         
 
@@ -199,7 +199,7 @@ class MyContents  {
         this.app.scene.add(window);
         */
         //SPOT LIGHT
-        this.spotLight = new THREE.SpotLight( "#fcf7dc", 10, 4.5, 2*Math.PI/8, 0, 0.2);
+        this.spotLight = new THREE.SpotLight( "#fcf7dc", 5, 4, 2*Math.PI/8, 0, 0.2);
         this.spotLight.position.set( 0, 4.4, 0 );
         this.spotLight.target = cake;
         
