@@ -3,7 +3,6 @@ import { MyAxis } from './MyAxis.js';
 import { MyTable } from './MyTable.js';
 import { MyPlate } from './MyPlate.js';
 import { MyCake } from './MyCake.js';
-import { MyCandle } from './MyCandle.js';
 import { MyChair } from './MyChair.js';
 import { MyFrame } from './MyFrame.js';
 import { MyLamp } from './MyLamp.js';
@@ -29,11 +28,13 @@ class MyContents  {
         this.boxDisplacement = new THREE.Vector3(0,2,0)
 
         // plane related attributes
-        this.diffusePlaneColor = "#FFF0AD"
+        this.diffusePlaneColor = "#B8C8D4"
         this.specularPlaneColor = "#777777"
         this.planeShininess = 30
-        this.planeMaterial = new THREE.MeshPhongMaterial({ color: this.diffusePlaneColor, 
-            specular: this.diffusePlaneColor, emissive: "#000000", shininess: this.planeShininess })
+        this.planeMaterial1 = new THREE.MeshPhongMaterial({ color: "#c8e3f7"})
+
+        this.planeMaterial2 = new THREE.MeshPhongMaterial({ color: "#FFFFFF"})
+    
     }
 
     /**
@@ -51,29 +52,32 @@ class MyContents  {
     }
 
     buildWalls(){
-        let wall = new THREE.PlaneGeometry( 10, 5 );
+        let wall = new THREE.PlaneGeometry( 15, 6 );
+        let wall1 = new THREE.PlaneGeometry( 16, 6 );
+        let wallMaterial = new THREE.MeshPhongMaterial({ color: "#c8e3f7"})
+
         // right
-        this.wall1Mesh = new THREE.Mesh( wall, this.planeMaterial );
-        this.wall1Mesh.position.z = -5
-        this.wall1Mesh.position.y = 2.5;
+        this.wall1Mesh = new THREE.Mesh( wall, wallMaterial );
+        this.wall1Mesh.position.z = -8;
+        this.wall1Mesh.position.y = 3;
         this.app.scene.add( this.wall1Mesh );
         // left
-        this.wall2Mesh = new THREE.Mesh( wall, this.planeMaterial );
+        this.wall2Mesh = new THREE.Mesh( wall, wallMaterial );
         this.wall2Mesh.rotation.x = Math.PI;
-        this.wall2Mesh.position.z = 5;
-        this.wall2Mesh.position.y = 2.5;
+        this.wall2Mesh.position.z = 8;
+        this.wall2Mesh.position.y = 3;
         this.app.scene.add( this.wall2Mesh );
         // back
-        this.wall3Mesh = new THREE.Mesh( wall, this.planeMaterial );
+        this.wall3Mesh = new THREE.Mesh( wall1, wallMaterial );
         this.wall3Mesh.rotation.y = Math.PI / 2;
-        this.wall3Mesh.position.y = 2.5;
-        this.wall3Mesh.position.x = -5;
+        this.wall3Mesh.position.y = 3;
+        this.wall3Mesh.position.x = -7.5;
         this.app.scene.add( this.wall3Mesh );
         // front
-        this.wall4Mesh = new THREE.Mesh( wall, this.planeMaterial );
+        this.wall4Mesh = new THREE.Mesh( wall1, wallMaterial );
         this.wall4Mesh.rotation.y = - Math.PI / 2;
-        this.wall4Mesh.position.y = 2.5;
-        this.wall4Mesh.position.x = 5;
+        this.wall4Mesh.position.y = 3;
+        this.wall4Mesh.position.x = 7.5;
         this.app.scene.add( this.wall4Mesh );
     }
 
@@ -106,11 +110,13 @@ class MyContents  {
         this.buildBox()
         
         // Create a Plane Mesh with basic material
-        let plane = new THREE.PlaneGeometry( 10, 10 );
-        this.planeMesh = new THREE.Mesh( plane, this.planeMaterial );
-        this.planeMesh.rotation.x = -Math.PI / 2;
-        this.planeMesh.position.y = -0;
-        this.app.scene.add( this.planeMesh );
+        let floor = new THREE.PlaneGeometry( 15, 16 );
+        let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
+        let floorMaterial = new THREE.MeshPhongMaterial({color: "#FFFFFF", map:floorTexture});
+        this.floorMesh = new THREE.Mesh( floor, floorMaterial );
+        this.floorMesh.rotation.x = -Math.PI / 2;
+        this.floorMesh.position.y = -0;
+        this.app.scene.add( this.floorMesh );
 
         this.buildWalls();
 
@@ -148,33 +154,33 @@ class MyContents  {
         //CADEIRAS
         let chair1 = new MyChair(this.app, 0.9, 1, 0.1, -0.8, 0.7, 2, -Math.PI/2,"#b51f19");
         chair1.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair1.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        chair1.buildBackRest(0.9, 1, 0.1, "#b51f19");
         this.app.scene.add(chair1);
 
         let chair2 = new MyChair(this.app, 0.9, 1, 0.1, 0.8, 0.7, 2, -Math.PI/2,"#b51f19");
         chair2.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair2.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        chair2.buildBackRest(0.9, 1, 0.1, "#b51f19");
         this.app.scene.add(chair2);
 
         let chair3 = new MyChair(this.app, 0.9, 1, 0.1, -0.8, 0.7, -2, -Math.PI/2,"#b51f19");
         chair3.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair3.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        chair3.buildBackRest(0.9, 1, 0.1, "#b51f19");
         chair3.flipChair();
         this.app.scene.add(chair3);
 
         let chair4 = new MyChair(this.app, 0.9, 1, 0.1, 0.8, 0.7, -2, -Math.PI/2,"#b51f19");
         chair4.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair4.buildBackRest(0.9, 0.8, 0.1, "#b51f19");
+        chair4.buildBackRest(0.9, 1, 0.1, "#b51f19");
         chair4.flipChair();
         this.app.scene.add(chair4);
 
         //SPOT LIGHT
-        this.spotLight = new THREE.SpotLight( "#fcf7dc", 10, 4.5, 2*Math.PI/8, 0, 0);
+        this.spotLight = new THREE.SpotLight( "#fcf7dc", 10, 4.5, 2*Math.PI/8, 0, 0.2);
         this.spotLight.position.set( 0, 4.4, 0 );
         this.spotLight.target = cake;
         
         //CANDEEIRO DE TETO
-        let lamp = new MyLamp(this.app, 0.02, 0.5, 0.3, 0.6, 40, 0, 4.7, 0, "#526d6e", "#b51f19", "#f8edb6", this.spotLight);
+        let lamp = new MyLamp(this.app, 0.02, 0.6, 0.4, 1.2, 40, 0, 5.4, 0, "#7fa34d", "#f8edb6", this.spotLight);
         this.app.scene.add(lamp);
 
         //const spotLightHelper = new THREE.SpotLightHelper( this.spotLight );
