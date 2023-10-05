@@ -6,6 +6,9 @@ import { MyCake } from './MyCake.js';
 import { MyChair } from './MyChair.js';
 import { MyFrame } from './MyFrame.js';
 import { MyLamp } from './MyLamp.js';
+import { MyCarpet } from './MyCarpet.js';
+import { MySofa } from './MySofa.js';
+import { MyPillow } from './MyPillow.js';
 
 /**
  *  This class contains the contents of out application
@@ -207,8 +210,41 @@ class MyContents  {
         lamp.position.z = 5
         this.app.scene.add(lamp);
 
-        //const spotLightHelper = new THREE.SpotLightHelper( this.spotLight );
-        //this.app.scene.add(spotLightHelper);
+        let carpet = new MyCarpet(this.app, 7.5, 0.1, 4, "#1b4984");
+        this.setPosition(carpet, 0, 0.05, -5.5);
+        this.app.scene.add(carpet);
+
+        let pillow1 = new MyPillow(this.app, 0.6, 0.3, 0.6, "#7FA34D");
+        this.setRotation(pillow1, 0, Math.PI/12, Math.PI/10);
+        let pillow2 = new MyPillow(this.app, 0.7, 0.35, 0.7, "#BB5943");
+        this.setRotation(pillow2, 0, -Math.PI/12, Math.PI/10);
+        let pillow3 = new MyPillow(this.app, 0.8, 0.4, 0.8, "#cc7722");
+        this.setRotation(pillow3, 0, 0, Math.PI/10);
+        let pillow4 = new MyPillow(this.app, 0.5, 0.25, 0.5, "#7FA34D");
+        this.setRotation(pillow4, 0, -Math.PI/12, Math.PI/10);
+        let pillow5 = new MyPillow(this.app, 0.5, 0.25, 0.5, "#7FA34D");
+        this.setRotation(pillow5, 0, Math.PI/12, Math.PI/10);
+
+        let sofa1 = new MySofa(this.app, 1, 0.5, 0.1, "#FFEF9C");
+        this.setRotation(sofa1, 0, Math.PI/4, 0);
+        sofa1.setPillow(pillow1, 0.6, -0.3);
+        sofa1.setPillow(pillow2, 0.7, 0.3);
+        this.setPosition(sofa1, -2.5, 0, -4.5);
+        this.app.scene.add(sofa1);
+
+        let sofa2 = new MySofa(this.app, 1, 0.5, 0.1, "#FFEF9C");
+        this.setRotation(sofa2, 0, -Math.PI/4 - Math.PI, 0);
+        sofa2.setPillow(pillow3, 0.8, 0);
+        sofa2.setPillow(pillow4, 0.5, 0.5);
+        sofa2.setPillow(pillow5, 0.5, -0.5);
+        this.setPosition(sofa2, 2.5, 0, -4.5);
+        this.app.scene.add(sofa2);
+
+        let spotLightSofas = new THREE.SpotLight( "#fcf7dc", 5, 3, 2*Math.PI/8, 0, 0.2);
+        spotLightSofas.position.set( 0, 4.4, -5.5 );
+        spotLightSofas.target = carpet;
+        let lamp2 = new MyLamp(this.app, 0.02, 0.6, 0.4, 1.2, 40, 0, 5.4, -5.5, "#cc7722", "#f8edb6", spotLightSofas);
+        this.app.scene.add(lamp2);
 
     }
 
