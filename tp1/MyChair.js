@@ -6,35 +6,29 @@ class MyChair extends THREE.Object3D  {
        constructs the object
        @param {MyApp} app The application object
     */ 
-    constructor(app, width, height, depth, xPos, yPos, zPos, rotation, color) {
+    constructor(app, widthSeat, heightSeat, depthSeat, heightChair, color) {
         super();
         this.app = app;
         this.type = 'Group';
         
-        this.height = height;
-        this.width = width;
-        this.depth = depth;
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.zPos = zPos;
-        this.rot = rotation;
+        this.heightSeat = heightSeat;
+        this.widthSeat = widthSeat;
+        this.depthSeat = depthSeat;
+        this.heightChair = heightChair;
         this.color = color;
 
-        //tampo da mesa     
-        this.seat = new THREE.BoxGeometry(width, height, depth); 
         this.chairMaterial = new THREE.MeshPhongMaterial({ color: this.color});
+     
+        this.seat = new THREE.BoxGeometry(widthSeat, heightSeat, depthSeat); 
         this.seatMesh = new THREE.Mesh(this.seat, this.chairMaterial);
-        this.seatMesh.rotation.x = rotation;
-        this.seatMesh.position.x = xPos;
-        this.seatMesh.position.y = yPos;
-        this.seatMesh.position.z = zPos;
+        this.seatMesh.position.y = heightChair;
         this.add(this.seatMesh);
 
         this.legPositions = [
-            [this.xPos + this.width/3, this.yPos/2, this.zPos - this.width/3], 
-            [this.xPos - this.width/3, this.yPos/2, this.zPos +  this.width/3], 
-            [this.xPos + this.width/3, this.yPos/2, this.zPos +  this.width/3], 
-            [this.xPos - this.width/3, this.yPos/2, this.zPos -  this.width/3]
+            [this.depthSeat/3, this.heightChair/2, -this.widthSeat/3], 
+            [-this.depthSeat/3, this.heightChair/2, this.widthSeat/3], 
+            [this.depthSeat/3, this.heightChair/2, this.widthSeat/3], 
+            [-this.depthSeat/3, this.heightChair/2, -this.widthSeat/3]
         ]
     }
 
@@ -43,7 +37,6 @@ class MyChair extends THREE.Object3D  {
         this.legMaterial = new THREE.MeshPhongMaterial({ color: color });
         for(let i=0; i<4; i++) {
             this.legMesh = new THREE.Mesh(this.leg, this.legMaterial);
-            this.legMesh.rotation.x = this.rot;
             this.legMesh.position.x = this.legPositions[i][0];
             this.legMesh.position.y = this.legPositions[i][1];
             this.legMesh.position.z = this.legPositions[i][2];
@@ -55,9 +48,8 @@ class MyChair extends THREE.Object3D  {
         this.back = new THREE.BoxGeometry(width, height, depth); 
         this.backMaterial = new THREE.MeshPhongMaterial({ color: color});
         this.backMesh = new THREE.Mesh(this.back, this.backMaterial);
-        this.backMesh.position.x = this.xPos;
-        this.backMesh.position.y = this.yPos + height/2;
-        this.backMesh.position.z = this.zPos + this.width/2;
+        this.backMesh.position.y = this.heightChair + height/2;
+        this.backMesh.position.x = -this.widthSeat/2 + 0.05;
         this.add(this.backMesh);
     }
 
@@ -71,18 +63,6 @@ class MyChair extends THREE.Object3D  {
 
     changeColorBack(color) {
         this.backMesh.material.color = new THREE.Color(color);
-    }
-
-    setPosition(x,y,z){
-        this.seatMesh.position.x = x;
-        this.seatMesh.position.y = y;
-        this.seatMesh.position.z = z;
-    }
-
-    setRotation(x, y, z){
-        this.seatMesh.rotation.x = x;
-        this.seatMesh.rotation.y = y;
-        this.seatMesh.rotation.z = z;
     }
 }
 
