@@ -120,27 +120,68 @@ class MyContents  {
 
         this.buildWalls();
 
+
         //MESA
         let tableTexture = new THREE.TextureLoader().load('textures/wood_texture.jpg');
-        // (app, width, height, depth, xPos, yPos, zPos, rotation, topTexture)
-        let table = new MyTable(this.app, 5, 3.5, 0.1, 0, 1.2, 0, Math.PI/2, tableTexture);
-        // (radiusTop, radiusBottom, radialSegments, legColor)
+        let table = new MyTable(this.app, 3.5, 0.1, 5, 1.2, tableTexture);
         table.buildLegs(0.2, 0.1, 20, "#7A9E9F");
-        table.rotateY(Math.PI / 2);
-        table.position.z = 5.4;
+        this.setPosition(table, 0, 0, 5.4)
         this.app.scene.add(table);
+        
 
-        //PRATO
-        let plate = new MyPlate(this.app, 0.6, 0.05, 50, 1.38, 1.36, 1, "#d9d9cc", "#c2c2b2");
-        plate.position.z = 5
-        this.app.scene.add(plate);
+        //CADEIRAS
+        const colorDinnerTableChair = "#7A9E9F";
+        const widthSeatDinnerTableChair = 1;
+        const heightSeatDinnerTableChair = 0.1;
+        const depthSeatDinnerTableChair = 0.9;
+        const heightDinnerTableChair = 0.8;
+
+        const widthLegDinnerTableChair = 0.1;
+        const heightLegDinnerTableChair = 0.7;
+        const depthLegDinnerTableChair = 0.1;
+        const colorLegDinnerTableChair = "#7A9E9F";
+
+        let chair1 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        chair1.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
+        chair1.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        this.setPosition(chair1, -1.8, 0, 6.3)
+        this.app.scene.add(chair1);
+
+        let chair2 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        chair2.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
+        chair2.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        this.setPosition(chair2, -1.8, 0, 4.6)
+        this.app.scene.add(chair2);
+
+        let chair3 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        chair3.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
+        chair3.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        this.setRotation(chair3, 0, Math.PI, 0)
+        this.setPosition(chair3, 1.8, 0, 6.3)
+        this.app.scene.add(chair3);
+
+        let chair4 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        chair4.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
+        chair4.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
+        this.setRotation(chair4, 0, Math.PI, 0);
+        this.setPosition(chair4, 1.8, 0, 4.6)
+        this.app.scene.add(chair4);
+
+        // PRATO DO BOLO
+
+
+        // PRATO DA FATIA
+        //     constructor(app, radius, height, radialSegments, colorTop, colorBase) {
+        //let plateSlice = new MyPlate(this.app, 0.6, 0.05, 50, "#d9d9cc", "#c2c2b2");
+        // 1.38, 1.36, 1
+        //this.app.scene.add(plateSlice);
 
         // BOLO
-        let cake = new MyCake(this.app, 0.6, 0.4, 25, 0, 1.9, 0, 1, "#f73772");
-        cake.buildCakePlate(0.7, 0.05, 50, 0, 1.7, 0, "#d9d9cc", "#c2c2b2")
-        cake.buildCandle(0.04, 0.2, 40, "#d9883d", "#ffda54")
-        cake.position.z = 5
+        let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#f73772", "#ffffff");
+        cake.buildSlice(0.8, -0.5, -2); // pos relativa ao bolo
+        this.setPosition(cake, 0, 2, 6.3)
         this.app.scene.add(cake);
+        
 
         // MOLDURAS
         /*
@@ -153,54 +194,12 @@ class MyContents  {
         // JANELA
         let window = new MyWindow(this.app, 3, 3, 0.2, 0, 0, 0, "#b51f19")
         this.app.scene.add(window);
-
         */
-      
-
-        //CADEIRAS
-        // (app, width, height, depth, xPos, yPos, zPos, rotation, color)
-        let chair1 = new MyChair(this.app, 0.9, 1, 0.1, 0, 0, 0, -Math.PI/2,"#b51f19");
-        // (width, height, depth, color)
-        chair1.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair1.buildBackRest(0.9, 1, 0.1, "#b51f19");
-        chair1.rotateY(-Math.PI / 2);
-        chair1.position.x = -1.8
-        chair1.position.y = 0.8;
-        chair1.position.z = 6.3;
-        this.app.scene.add(chair1);
-
-        let chair2 = new MyChair(this.app, 0.9, 1, 0.1, 0, 0, 0, -Math.PI/2,"#b51f19");
-        chair2.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair2.buildBackRest(0.9, 1, 0.1, "#b51f19");
-        chair2.rotateY(-Math.PI / 2);
-        chair2.position.x = -1.8
-        chair2.position.y = 0.8;
-        chair2.position.z = 4.6;
-        this.app.scene.add(chair2);
-
-        let chair3 = new MyChair(this.app, 0.9, 1, 0.1, 0,0,0, -Math.PI/2,"#b51f19");
-        chair3.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair3.buildBackRest(0.9, 1, 0.1, "#b51f19");
-        chair3.rotateY(Math.PI / 2);
-        chair3.position.x = 1.8;
-        chair3.position.y = 0.8;
-        chair3.position.z = 6.3;
-        this.app.scene.add(chair1);
-        this.app.scene.add(chair3);
-
-        let chair4 = new MyChair(this.app, 0.9, 1, 0.1, 0,0,0, -Math.PI/2,"#b51f19");
-        chair4.buildLegs(0.1, 0.1, 0.7, "#7A9E9F");
-        chair4.buildBackRest(0.9, 1, 0.1, "#b51f19");
-        chair4.rotateY(Math.PI / 2);
-        chair4.position.x = 1.8;
-        chair4.position.y = 0.8;
-        chair4.position.z = 4.6;
-        this.app.scene.add(chair4);
-
         //SPOT LIGHT
         this.spotLight = new THREE.SpotLight( "#fcf7dc", 10, 4.5, 2*Math.PI/8, 0, 0.2);
         this.spotLight.position.set( 0, 4.4, 0 );
         this.spotLight.target = cake;
+        
         
         //CANDEEIRO DE TETO
         let lamp = new MyLamp(this.app, 0.02, 0.6, 0.4, 1.2, 40, 0, 5.4, 0, "#7fa34d", "#f8edb6", this.spotLight);
