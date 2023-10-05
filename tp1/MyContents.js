@@ -5,6 +5,7 @@ import { MyPlate } from './MyPlate.js';
 import { MyCake } from './MyCake.js';
 import { MyCandle } from './MyCandle.js';
 import { MyChair } from './MyChair.js';
+import { MyFrame } from './MyFrame.js';
 import { MyLamp } from './MyLamp.js';
 
 /**
@@ -120,16 +121,29 @@ class MyContents  {
         this.app.scene.add(table);
 
         //PRATO
-        let plate = new MyPlate(this.app, 0.6, 0.05, 50, 1.3, 1.38, 0, "#d9d9cc", "#c2c2b2");
+        let plate = new MyPlate(this.app, 0.6, 0.05, 50, 1.38, 1.36, 1, "#d9d9cc", "#c2c2b2");
         this.app.scene.add(plate);
 
         // BOLO
-        let cake = new MyCake(this.app, 0.7, 0.4, 25, 0, 1.6, 0, 1.2, 1.6, -0.3, 1, "#f73772");
+        let cake = new MyCake(this.app, 0.6, 0.4, 25, 0, 1.9, 0, 1, "#f73772");
+        cake.buildCakePlate(0.7, 0.05, 50, 0, 1.7, 0, "#d9d9cc", "#c2c2b2")
+        cake.buildCandle(0.04, 0.2, 40, "#d9883d", "#ffda54")
         this.app.scene.add(cake);
 
-        //VELA
-        let candle = new MyCandle(this.app, 0.04, 0.2, 40, 0, 1.9, 0, "#d9883d", "#ffda54");
-        this.app.scene.add(candle);
+        // MOLDURAS
+        /*
+        let frame1 = new MyFrame(this.app, 2.2, 1.5, 0.1, -2, 3, 4.8, "#b51f19", 'pictures/pic_mari.jpg')
+        this.app.scene.add(frame1);
+
+        let frame2 = new MyFrame(this.app, 1.5, 2.2, 0.1, 2, 3, 4.8, "#b51f19", 'pictures/pic_mafits.jpeg')
+        this.app.scene.add(frame2)
+
+        // JANELA
+        let window = new MyWindow(this.app, 3, 3, 0.2, 0, 0, 0, "#b51f19")
+        this.app.scene.add(window);
+
+        */
+      
 
         //CADEIRAS
         let chair1 = new MyChair(this.app, 0.9, 1, 0.1, -0.8, 0.7, 2, -Math.PI/2,"#b51f19");
