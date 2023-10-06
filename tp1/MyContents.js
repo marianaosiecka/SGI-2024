@@ -11,6 +11,7 @@ import { MySofa } from './MySofa.js';
 import { MyPillow } from './MyPillow.js';
 import { MyCakePlate } from './MyCakePlate.js';
 import { MyFork } from './MyFork.js';
+import { MyWindow } from './MyWindow.js';
 
 /**
  *  This class contains the contents of out application
@@ -193,7 +194,7 @@ class MyContents  {
         // GARFO
         let fork = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
         this.setScale(fork, 0.2)
-        this.setPosition(fork, 0.95, 1.4, 7)
+        this.setPosition(fork, 0.95, 1.27, 7)
         this.app.scene.add(fork)
         
 
@@ -208,8 +209,11 @@ class MyContents  {
         this.app.scene.add(frame2)
 
         // JANELA
-        //let window = new MyWindow(this.app, 3, 3, 0.2, 0, 0, 0, "#b51f19")
-        //this.app.scene.add(window);
+        let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
+        let window = new MyWindow(this.app, 3, 4, 0.3, "#ffffff", windowTexture)
+        //this.setRotation(window, 0, Math.PI/2, 0,);
+        //this.setPosition(window, -7.4, 3.5, 0)
+        this.app.scene.add(window);
 
         //SPOT LIGHT
         this.spotLight = new THREE.SpotLight( "#fcf7dc", 5, 4, 2*Math.PI/8, 0, 0.2);
