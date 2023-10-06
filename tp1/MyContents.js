@@ -11,6 +11,7 @@ import { MySofa } from './MySofa.js';
 import { MyPillow } from './MyPillow.js';
 import { MyCakePlate } from './MyCakePlate.js';
 import { MyFork } from './MyFork.js';
+import { MyCandle } from './MyCandle.js';
 
 /**
  *  This class contains the contents of out application
@@ -190,6 +191,11 @@ class MyContents  {
         this.setRotation(cake, 0, Math.PI, 0);
         this.app.scene.add(cake);
 
+        // VELA
+        let candle = new MyCandle(this.app, 0.02, 0.15, 40, "#d9883d", "#ffda54");
+        this.setPosition(candle, cake.position.x, cake.position.y + 0.275, cake.position.z);
+        this.app.scene.add(candle);
+        
         // GARFO
         let fork = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
         this.setScale(fork, 0.2)
@@ -215,7 +221,6 @@ class MyContents  {
         this.spotLight = new THREE.SpotLight( "#fcf7dc", 5, 4, 2*Math.PI/8, 0, 0.2);
         this.spotLight.position.set( 0, 4.4, 0 );
         this.spotLight.target = cake;
-        
         
         //CANDEEIRO DE TETO
         let lamp = new MyLamp(this.app, 0.02, 0.6, 0.4, 1.2, 40, 0, 5.4, 0, "#7fa34d", "#f8edb6", this.spotLight);
@@ -256,11 +261,14 @@ class MyContents  {
         this.app.scene.add(sofa2);
 
         //CANDEEIRO SOFAS
-        let spotLightSofas = new THREE.SpotLight( "#fcf7dc", 5, 3, 2*Math.PI/8, 0, 0.2);
-        spotLightSofas.position.set( 0, 4.4, -5.5 );
+        let spotLightSofas = new THREE.SpotLight( "#fcf7dc", 8, 4, 2*Math.PI/8, 0, 0.2);
+        spotLightSofas.position.set( 0, 4.4, -4.8 );
         spotLightSofas.target = carpet;
-        let lamp2 = new MyLamp(this.app, 0.02, 0.6, 0.4, 1.2, 40, 0, 5.4, -5.5, "#cc7722", "#f8edb6", spotLightSofas);
+        let lamp2 = new MyLamp(this.app, 0.02, 0.6, 0.4, 1.2, 40, 0, 5.4, -4.8, "#cc7722", "#f8edb6", spotLightSofas);
         this.app.scene.add(lamp2);
+
+        //CANDEEIRO CHÃO
+        
 
     }
 
