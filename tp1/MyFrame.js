@@ -12,7 +12,7 @@ class MyFrame extends THREE.Object3D  {
         this.type = 'Group';
 
         this.frame = new THREE.BoxGeometry(width, height, depth);
-        this.frameMaterial = new THREE.MeshPhongMaterial({ color: color, specular: 0xffffff });
+        this.frameMaterial = new THREE.MeshPhongMaterial({ color: color });
         this.frameMesh = new THREE.Mesh(this.frame, this.frameMaterial);
 
 

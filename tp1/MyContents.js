@@ -16,7 +16,7 @@ import { MyFloorLamp } from './MyFloorLamp.js';
 import { MyCoffeeTable } from './MyCoffeeTable.js';
 import { MyWallLamp } from './MyWallLamp.js';
 import { MyCeilingLamp } from './MyCeilingLamp.js';
-
+import { MyWindow } from './MyWindow.js';
 
 /**
  *  This class contains the contents of out application
@@ -81,6 +81,11 @@ class MyContents  {
         let wall1 = new THREE.PlaneGeometry( 16, 6 );
         let wallMaterial = new THREE.MeshPhongMaterial({ color: this.bege})
 
+        this.windowHeight = 3;
+        this.windowWidth = 2.2;
+        this.windowY = 3.5;
+        this.windowZ = 0;
+
         // right
         this.wall1Mesh = new THREE.Mesh( wall, wallMaterial );
         this.wall1Mesh.position.z = -this.wallZPos;
@@ -92,12 +97,54 @@ class MyContents  {
         this.wall2Mesh.position.z = this.wallZPos;
         this.wall2Mesh.position.y = 3;
         this.app.scene.add( this.wall2Mesh );
+
         // back
+        /*
         this.wall3Mesh = new THREE.Mesh( wall1, wallMaterial );
         this.wall3Mesh.rotation.y = Math.PI / 2;
         this.wall3Mesh.position.y = 3;
         this.wall3Mesh.position.x = -this.wallXPos;
         this.app.scene.add( this.wall3Mesh );
+        */
+
+        const windowWallRightWidth = - (-8 - (this.windowZ - (this.windowWidth / 2)))
+        this.windowWallRight = new THREE.PlaneGeometry(windowWallRightWidth, 6);
+        this.windowWallRightMesh = new THREE.Mesh(this.windowWallRight, wallMaterial)
+        this.windowWallRightMesh.rotation.y = Math.PI / 2;
+        this.windowWallRightMesh.position.y = 3;
+        this.windowWallRightMesh.position.x = -7.5;
+        this.windowWallRightMesh.position.z = ( (-8) + (this.windowZ - (this.windowWidth / 2))) / 2;
+
+        this.windowWallLeft = new THREE.PlaneGeometry(16 - windowWallRightWidth - this.windowWidth, 6);
+        this.windowWallLeftMesh = new THREE.Mesh(this.windowWallLeft, wallMaterial)
+        this.windowWallLeftMesh.rotation.y = Math.PI / 2;
+        this.windowWallLeftMesh.position.y = 3;
+        this.windowWallLeftMesh.position.x = -7.5;
+        this.windowWallLeftMesh.position.z = (8 + (this.windowZ + (this.windowWidth / 2))) / 2
+
+        const windowWallTopHeight = 6 - (this.windowY + this.windowHeight/2)
+        this.windowWallTop = new THREE.PlaneGeometry(this.windowWidth, windowWallTopHeight);
+        this.windowWallTopMesh = new THREE.Mesh(this.windowWallTop, wallMaterial)
+        this.windowWallTopMesh.rotation.y = Math.PI / 2;;
+        this.windowWallTopMesh.position.x = -7.5;
+        this.windowWallTopMesh.position.z = this.windowZ;
+        this.windowWallTopMesh.position.y = (6 + (this.windowY + (this.windowHeight / 2))) / 2
+
+        this.windowWallDown = new THREE.PlaneGeometry(this.windowWidth, 6 - windowWallTopHeight - this.windowHeight);
+        this.windowWallDownMesh = new THREE.Mesh(this.windowWallDown, wallMaterial)
+        this.windowWallDownMesh.rotation.y = Math.PI / 2;;
+        this.windowWallDownMesh.position.x = -7.5;
+        this.windowWallDownMesh.position.z = this.windowZ;
+        this.windowWallDownMesh.position.y = (this.windowY - this.windowHeight/2) / 2;
+
+        this.app.scene.add( this.windowWallRightMesh );
+        this.app.scene.add( this.windowWallLeftMesh );
+        this.app.scene.add( this.windowWallTopMesh );
+        this.app.scene.add(this.windowWallDownMesh)
+
+
+
+
         // front
         this.wall4Mesh = new THREE.Mesh( wall1, wallMaterial );
         this.wall4Mesh.rotation.y = - Math.PI / 2;
@@ -240,7 +287,7 @@ class MyContents  {
         // GARFO
         let fork = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
         this.setScale(fork, 0.2)
-        this.setPosition(fork, 0.95, 1.4, 7)
+        this.setPosition(fork, 0.95, 1.27, 7)
         this.app.scene.add(fork)
         
 
@@ -254,8 +301,12 @@ class MyContents  {
         this.app.scene.add(frame2)
 
         // JANELA
-        //let window = new MyWindow(this.app, 3, 3, 0.2, 0, 0, 0, "#b51f19")
-        //this.app.scene.add(window);
+        let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
+        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, "#ffffff", windowTexture)
+        window.bottomDownPart();
+        this.setRotation(window, 0, Math.PI/2, 0,);
+        this.setPosition(window, -7.4, this.windowY, this.windowZ)
+        this.app.scene.add(window);
 
         //SPOT LIGHT
         this.spotLight = new THREE.SpotLight(this.lightColor, 8, 10, Math.PI/4, 1, 0.2);
