@@ -17,7 +17,7 @@ class MyChair extends THREE.Object3D  {
         this.heightChair = heightChair;
         this.color = color;
 
-        this.chairMaterial = new THREE.MeshPhongMaterial({ color: this.color});
+        this.chairMaterial = new THREE.MeshPhongMaterial({ color: this.color, specular:this.color, shininess:5});
      
         this.seat = new THREE.BoxGeometry(widthSeat, heightSeat, depthSeat); 
         this.seatMesh = new THREE.Mesh(this.seat, this.chairMaterial);
@@ -34,7 +34,7 @@ class MyChair extends THREE.Object3D  {
 
     buildLegs (width, height, depth, color) {
         this.leg = new THREE.BoxGeometry(width, height, depth);         
-        this.legMaterial = new THREE.MeshPhongMaterial({ color: color });
+        this.legMaterial = new THREE.MeshPhongMaterial({ color: color , specular:color, shininess:3});
         for(let i=0; i<4; i++) {
             this.legMesh = new THREE.Mesh(this.leg, this.legMaterial);
             this.legMesh.position.x = this.legPositions[i][0];
@@ -46,9 +46,9 @@ class MyChair extends THREE.Object3D  {
 
     buildBackRest (width, height, depth, color) {
         this.back = new THREE.BoxGeometry(width, height, depth); 
-        this.backMaterial = new THREE.MeshPhongMaterial({ color: color});
+        this.backMaterial = new THREE.MeshPhongMaterial({ color: color , specular:color, shininess:3});
         this.backMesh = new THREE.Mesh(this.back, this.backMaterial);
-        this.backMesh.position.y = this.heightChair + height/2;
+        this.backMesh.position.y = this.heightChair + height/2 + this.heightSeat/2;
         this.backMesh.position.x = -this.widthSeat/2 + 0.05;
         this.add(this.backMesh);
     }

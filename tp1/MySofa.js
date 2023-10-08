@@ -17,7 +17,7 @@ class MySofa extends THREE.Object3D  {
         //floorHeight é a altura do tapete
         this.floorHeight = floorHeight;
         
-        this.sofaMaterial = new THREE.MeshPhongMaterial({ color: color , specular:"#FFFFFF", shininess:1});
+        this.sofaMaterial = new THREE.MeshPhongMaterial({ color: color , specular:"#777777", shininess:2});
         
         this.upperBack = new THREE.CylinderGeometry(radius, radius, height, 50, 50, false, 0, Math.PI);         
         this.upperBackMesh = new THREE.Mesh(this.upperBack, this.sofaMaterial);

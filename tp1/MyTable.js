@@ -42,7 +42,7 @@ class MyTable extends THREE.Object3D  {
     
     buildLegs (radiusTop, radiusBottom, radialSegments, legColor) {
         this.leg = new THREE.CylinderGeometry(radiusTop, radiusBottom, this.heightTable, radialSegments);         
-        this.legMaterial = new THREE.MeshPhongMaterial({ color: legColor, specular:"#7777777", shininess:10});
+        this.legMaterial = new THREE.MeshPhongMaterial({ color: legColor, specular:"#777777", shininess:10});
         for(let i=0; i<4; i++) {
             this.legMesh = new THREE.Mesh(this.leg, this.legMaterial);
             this.legMesh.position.x = this.legPositions[i][0];
