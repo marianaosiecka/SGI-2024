@@ -348,7 +348,7 @@ class MyContents  {
         this.app.scene.add(sofa2);
 
         //CANDEEIRO SOFAS
-        let spotLightSofas = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/4, 1, 0.2);
+        let spotLightSofas = new THREE.SpotLight(this.lightColor, 10, 5, Math.PI/4, 1, 0.2);
         spotLightSofas.target = carpet;
 
         let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
@@ -377,6 +377,7 @@ class MyContents  {
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
         this.setRotation(coffeeTable, 0, Math.PI/2, 0);
         this.setPosition(coffeeTable, 0, 0.05, -4.2);
+        coffeeTable.buildBooks(["#FF6B6B", "#FFD700", "#FF8C00", "#3399FF", "#66CCCC", "#FFA500"]);
         this.app.scene.add(coffeeTable);
 
         // GIRA DISCOS 
