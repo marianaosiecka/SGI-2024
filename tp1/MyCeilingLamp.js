@@ -6,7 +6,7 @@ class MyCeilingLamp extends THREE.Object3D  {
        constructs the object
        @param {MyApp} app The application object
     */ 
-    constructor(app, width, height, depth, color, lightColor) {
+    constructor(app, width, height, depth, color, lightColor, highlight, light) {
         super();
         this.app = app;
         this.type = 'Group';
@@ -42,11 +42,16 @@ class MyCeilingLamp extends THREE.Object3D  {
         this.topMesh.position.y = height/2 + this.bottomHeight/2;
         this.add(this.topMesh);
 
-        this.light = new THREE.BoxGeometry(this.bottomWidth-this.bottomWidth*0.2, height-height*0.5, depth-depth*0.2);
+        this.light = new THREE.BoxGeometry(this.sideWidth/2, height, depth-depth*0.2);
         this.lightMaterial = new THREE.MeshPhongMaterial({color: lightColor, specular:"#FFFFFF", shininess:5});
         this.lightMesh = new THREE.Mesh(this.light, this.lightMaterial);
-        this.lightMesh.position.y = height/2 + this.bottomHeight/2;
+        this.lightMesh.position.x = -width - this.sideWidth/4;
         this.add(this.lightMesh);
+
+        highlight.target = this.lightMesh;
+        this.add(highlight)
+        
+        this.add(light);
     }
 }
 

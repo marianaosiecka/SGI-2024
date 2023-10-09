@@ -99,14 +99,6 @@ class MyContents  {
         this.app.scene.add( this.wall2Mesh );
 
         // back
-        /*
-        this.wall3Mesh = new THREE.Mesh( wall1, wallMaterial );
-        this.wall3Mesh.rotation.y = Math.PI / 2;
-        this.wall3Mesh.position.y = 3;
-        this.wall3Mesh.position.x = -this.wallXPos;
-        this.app.scene.add( this.wall3Mesh );
-        */
-
         const windowWallRightWidth = - (-8 - (this.windowZ - (this.windowWidth / 2)))
         this.windowWallRight = new THREE.PlaneGeometry(windowWallRightWidth, 6);
         this.windowWallRightMesh = new THREE.Mesh(this.windowWallRight, wallMaterial)
@@ -125,14 +117,14 @@ class MyContents  {
         const windowWallTopHeight = 6 - (this.windowY + this.windowHeight/2)
         this.windowWallTop = new THREE.PlaneGeometry(this.windowWidth, windowWallTopHeight);
         this.windowWallTopMesh = new THREE.Mesh(this.windowWallTop, wallMaterial)
-        this.windowWallTopMesh.rotation.y = Math.PI / 2;;
+        this.windowWallTopMesh.rotation.y = Math.PI / 2;
         this.windowWallTopMesh.position.x = -7.5;
         this.windowWallTopMesh.position.z = this.windowZ;
         this.windowWallTopMesh.position.y = (6 + (this.windowY + (this.windowHeight / 2))) / 2
 
         this.windowWallDown = new THREE.PlaneGeometry(this.windowWidth, 6 - windowWallTopHeight - this.windowHeight);
         this.windowWallDownMesh = new THREE.Mesh(this.windowWallDown, wallMaterial)
-        this.windowWallDownMesh.rotation.y = Math.PI / 2;;
+        this.windowWallDownMesh.rotation.y = Math.PI / 2;
         this.windowWallDownMesh.position.x = -7.5;
         this.windowWallDownMesh.position.z = this.windowZ;
         this.windowWallDownMesh.position.y = (this.windowY - this.windowHeight/2) / 2;
@@ -140,7 +132,7 @@ class MyContents  {
         this.app.scene.add( this.windowWallRightMesh );
         this.app.scene.add( this.windowWallLeftMesh );
         this.app.scene.add( this.windowWallTopMesh );
-        this.app.scene.add(this.windowWallDownMesh)
+        this.app.scene.add( this.windowWallDownMesh );
 
 
 
@@ -437,40 +429,65 @@ class MyContents  {
         this.lightHelp4 = new THREE.SpotLightHelper(lightWallLampBRight)
 
         //LUZES DE TETO
-        let ceilinglamp1 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor);
-        //this.setRotation(ceilinglamp1, 0, 0, Math.PI/2);
-        ceilinglamp1.scale.x = 0.4;
-        this.setPosition(ceilinglamp1, 0, this.wallHeight - 0.04, 0);
-        //this.app.scene.add(ceilinglamp1);
+        const ceilingLightX = 5;
+        const ceilingLightY = this.wallHeight - 0.04;
+        const ceilingLightZ = 4;
 
+        //highlight é o que faz parecer que a luz está ligada (aponta para o candeeiro em si)
+        let ceilingHighlight1 = new THREE.SpotLight( this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
+        //ceiling light é a luz que sai do candeeiro
         let ceilingLight1 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
-        this.setPosition(ceilingLight1, -5, this.wallHeight - 0.04, 4);
-        ceilingLight1.target = this.createHelperObject(-5, 0, 4);
-        this.app.scene.add(ceilingLight1);
+        ceilingLight1.target = this.createHelperObject(-ceilingLightX, 0, ceilingLightZ);
+        //criação do próprio candeeiro
+        let ceilinglamp1 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight1, ceilingLight1);
+        this.setRotation(ceilinglamp1, 0, 0, Math.PI/2);
+        this.setRotation(ceilingHighlight1, 0, 0, Math.PI/2);
+        this.setPosition(ceilingHighlight1, -this.wallHeight+2, 0, 0);
+        this.setPosition(ceilinglamp1, -ceilingLightX, ceilingLightY, ceilingLightZ);
+        ceilinglamp1.scale.x = 0.4;
+        this.app.scene.add(ceilinglamp1);
 
-        let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/5, 1, 0.8);
-        this.setPosition(ceilingLight2, 5, this.wallHeight - 0.04, 4);
-        ceilingLight2.target = this.createHelperObject(5, 0, 4);
-        this.app.scene.add(ceilingLight2);
+        let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
+        let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
+        ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
+         let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight2, ceilingLight2);
+        this.setRotation(ceilinglamp2, 0, 0, Math.PI/2);
+        this.setRotation(ceilingHighlight2, 0, 0, Math.PI/2);
+        this.setPosition(ceilingHighlight2, -this.wallHeight+2, 0, 0);
+        this.setPosition(ceilinglamp2, ceilingLightX, ceilingLightY, ceilingLightZ);
+        ceilinglamp2.scale.x = 0.4;
+        this.app.scene.add(ceilinglamp2);
 
-        let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/5, 1, 0.8);
-        this.setPosition(ceilingLight3, -5, this.wallHeight - 0.04, -4);
-        ceilingLight3.target = this.createHelperObject(-5, 0, -4);
-        this.app.scene.add(ceilingLight3);
+        let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
+        let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
+        ceilingLight3.target = this.createHelperObject(-ceilingLightX, 0, -ceilingLightZ);
+         let ceilinglamp3 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight3, ceilingLight3);
+        this.setRotation(ceilinglamp3, 0, 0, Math.PI/2);
+        this.setRotation(ceilingHighlight3, 0, 0, Math.PI/2);
+        this.setPosition(ceilingHighlight3, -this.wallHeight+2, 0, 0);
+        this.setPosition(ceilinglamp3, -ceilingLightX, ceilingLightY, -ceilingLightZ);
+        ceilinglamp3.scale.x = 0.4;
+        this.app.scene.add(ceilinglamp3);
 
-        let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/5, 1, 0.8);
-        this.setPosition(ceilingLight4, 5, this.wallHeight - 0.04, -4);
-        ceilingLight4.target = this.createHelperObject(5, 0, -4);
-        this.app.scene.add(ceilingLight4);
+        let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
+        let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
+        ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
+         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight4, ceilingLight4);
+        this.setRotation(ceilinglamp4, 0, 0, Math.PI/2);
+        this.setRotation(ceilingHighlight4, 0, 0, Math.PI/2);
+        this.setPosition(ceilingHighlight4, -this.wallHeight+2, 0, 0);
+        this.setPosition(ceilinglamp4, ceilingLightX, ceilingLightY, -ceilingLightZ);
+        ceilinglamp4.scale.x = 0.4;
+        this.app.scene.add(ceilinglamp4);
 
         let h = new THREE.SpotLightHelper(ceilingLight1);
-        this.app.scene.add(h);
+        //this.app.scene.add(h);
         let h1 = new THREE.SpotLightHelper(ceilingLight2);
-        this.app.scene.add(h1);
+        //this.app.scene.add(h1);
         let h2 = new THREE.SpotLightHelper(ceilingLight3);
-        this.app.scene.add(h2);
+        //this.app.scene.add(h2);
         let h3 = new THREE.SpotLightHelper(ceilingLight4);
-        this.app.scene.add(h3);
+        //this.app.scene.add(h3);
 
     }
 
