@@ -390,6 +390,7 @@ class MyContents  {
         // GIRA DISCOS 
         let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.5, 1.5, 1, this.orange);
         vinylPlayerHolder.buildPlayer(this.green, this.blue);
+        /*
         let cover1 = new THREE.TextureLoader().load('textures/cover1.jpg');
         let cover2 = new THREE.TextureLoader().load('textures/cover2.jpg');
         let cover3 = new THREE.TextureLoader().load('textures/cover3.jpg');
@@ -397,8 +398,12 @@ class MyContents  {
         let cover5 = new THREE.TextureLoader().load('textures/cover5.jpg');
         let cover6 = new THREE.TextureLoader().load('textures/cover6.jpg');
         let coverTextures = [cover1, cover2, cover3, cover4, cover5, cover6]
-        vinylPlayerHolder.buildCovers(coverTextures)
-        this.setPosition(vinylPlayerHolder, -6.5, 0, -5)
+        */
+        let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35",  "#A41A1A", "#FFD700"]
+        vinylPlayerHolder.buildCovers(coverColors)
+        const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
+        vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
+        this.setPosition(vinylPlayerHolder, -7, 0, -5)
         this.app.scene.add(vinylPlayerHolder);
 
 
