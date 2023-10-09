@@ -57,6 +57,7 @@ class MyContents  {
         this.offWhite = "#d9d9cc";
         this.white = "#FFFFFF";
         this.bege = "#fffaed";
+        this.grey = "#B0B0B0";
 
         this.wallXPos = 7.5;
         this.wallZPos = 8;
@@ -377,7 +378,7 @@ class MyContents  {
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
         this.setRotation(coffeeTable, 0, Math.PI/2, 0);
         this.setPosition(coffeeTable, 0, 0.05, -4.2);
-        coffeeTable.buildBooks(["#FF6B6B", "#FFD700", "#FF8C00", "#3399FF", "#66CCCC", "#FFA500"]);
+        coffeeTable.buildBooks(["#E57373", "#FFD700", "#FFA07A", "#85A1CC", "#AED9E0", "#FFB74D"]);
         this.app.scene.add(coffeeTable);
 
         // GIRA DISCOS 
@@ -456,7 +457,7 @@ class MyContents  {
         let ceilingLight1 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
         ceilingLight1.target = this.createHelperObject(-ceilingLightX, 0, ceilingLightZ);
         //criação do próprio candeeiro
-        let ceilinglamp1 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight1, ceilingLight1);
+        let ceilinglamp1 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight1, ceilingLight1);
         this.setRotation(ceilinglamp1, 0, 0, Math.PI/2);
         this.setRotation(ceilingHighlight1, 0, 0, Math.PI/2);
         this.setPosition(ceilingHighlight1, -this.wallHeight+2, 0, 0);
@@ -467,7 +468,7 @@ class MyContents  {
         let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
         let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
         ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
-         let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight2, ceilingLight2);
+         let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight2, ceilingLight2);
         this.setRotation(ceilinglamp2, 0, 0, Math.PI/2);
         this.setRotation(ceilingHighlight2, 0, 0, Math.PI/2);
         this.setPosition(ceilingHighlight2, -this.wallHeight+2, 0, 0);
@@ -478,7 +479,7 @@ class MyContents  {
         let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
         let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
         ceilingLight3.target = this.createHelperObject(-ceilingLightX, 0, -ceilingLightZ);
-         let ceilinglamp3 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight3, ceilingLight3);
+         let ceilinglamp3 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight3, ceilingLight3);
         this.setRotation(ceilinglamp3, 0, 0, Math.PI/2);
         this.setRotation(ceilingHighlight3, 0, 0, Math.PI/2);
         this.setPosition(ceilingHighlight3, -this.wallHeight+2, 0, 0);
@@ -489,7 +490,7 @@ class MyContents  {
         let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
         ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
-         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.6, 0.8, this.darkBlue, this.lightColor, ceilingHighlight4, ceilingLight4);
+         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight4, ceilingLight4);
         this.setRotation(ceilinglamp4, 0, 0, Math.PI/2);
         this.setRotation(ceilingHighlight4, 0, 0, Math.PI/2);
         this.setPosition(ceilingHighlight4, -this.wallHeight+2, 0, 0);
