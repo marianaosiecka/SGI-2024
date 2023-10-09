@@ -69,6 +69,11 @@ class MyWindow extends THREE.Object3D  {
         this.upGlassMesh.position.z = -depth/3
         this.upGlassMesh.position.y = height/4
 
+        this.view = new THREE.PlaneGeometry(width+1, height+1)
+        this.viewMaterial = new THREE.MeshBasicMaterial({ map: texture })
+        this.viewMesh = new THREE.Mesh(this.view, this.viewMaterial);
+        this.viewMesh.position.z = -1
+
         this.add(this.frameTopMesh);
         this.add(this.frameDownMesh);
         this.add(this.frameLeftMesh);
@@ -82,8 +87,8 @@ class MyWindow extends THREE.Object3D  {
         this.add(this.verticalLineMesh1)
         this.add(this.verticalLineMesh2)
         this.add(this.upGlassMesh)
-       
-       
+
+        this.add(this.viewMesh)
     }
 
     bottomDownPart(y = 0){
