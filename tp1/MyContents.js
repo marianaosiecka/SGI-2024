@@ -17,6 +17,7 @@ import { MyCoffeeTable } from './MyCoffeeTable.js';
 import { MyWallLamp } from './MyWallLamp.js';
 import { MyCeilingLamp } from './MyCeilingLamp.js';
 import { MyWindow } from './MyWindow.js';
+import { MyVinylPlayerHolder } from './MyVinylPlayerHolder.js';
 
 /**
  *  This class contains the contents of out application
@@ -386,6 +387,21 @@ class MyContents  {
         this.setPosition(coffeeTable, 0, 0.05, -4.2);
         this.app.scene.add(coffeeTable);
 
+        // GIRA DISCOS 
+        let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.5, 1.5, 1, this.orange);
+        vinylPlayerHolder.buildPlayer(this.green, this.blue);
+        let cover1 = new THREE.TextureLoader().load('textures/cover1.jpg');
+        let cover2 = new THREE.TextureLoader().load('textures/cover2.jpg');
+        let cover3 = new THREE.TextureLoader().load('textures/cover3.jpg');
+        let cover4 = new THREE.TextureLoader().load('textures/cover4.jpg');
+        let cover5 = new THREE.TextureLoader().load('textures/cover5.jpg');
+        let cover6 = new THREE.TextureLoader().load('textures/cover6.jpg');
+        let coverTextures = [cover1, cover2, cover3, cover4, cover5, cover6]
+        vinylPlayerHolder.buildCovers(coverTextures)
+        this.setPosition(vinylPlayerHolder, -6.5, 0, -5)
+        this.app.scene.add(vinylPlayerHolder);
+
+
         //LUZES DE PAREDE
         const wallLampX = 0.15 - this.wallXPos;
         const wallLampY = this.wallHeight - this.wallHeight/2.5;
@@ -462,7 +478,7 @@ class MyContents  {
         this.setPosition(ceilingLight4, 5, this.wallHeight - 0.04, -4);
         ceilingLight4.target = this.createHelperObject(5, 0, -4);
         this.app.scene.add(ceilingLight4);
-
+/*
         let h = new THREE.SpotLightHelper(ceilingLight1);
         this.app.scene.add(h);
         let h1 = new THREE.SpotLightHelper(ceilingLight2);
@@ -471,6 +487,7 @@ class MyContents  {
         this.app.scene.add(h2);
         let h3 = new THREE.SpotLightHelper(ceilingLight4);
         this.app.scene.add(h3);
+        */
 
     }
 
