@@ -176,57 +176,45 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
 
     }
 
-    buildCovers(coversTextures){
+    buildCovers(coverColors){
+        this.coverHeight = this.squareHeight - this.border/2
         this.cover = new THREE.BoxGeometry(0.05, this.squareHeight - this.border/2, this.squareHeight - this.border/2);
-        this.cover1Material = new THREE.MeshBasicMaterial({ map: coversTextures[0] });
-        this.cover1Mesh = new THREE.Mesh(this.cover, this.cover1Material);
-        this.cover1Mesh.rotation.y = Math.PI/2;
-        this.cover1Mesh.position.y = this.squareY;
-        this.cover1Mesh.position.z = this.width/2 - this.border/2 - 0.04
+        const coverSpacing = 0.06;
+        for(let i = 0; i < coverColors.length-1; i++){
+            this.coverMaterial = new THREE.MeshBasicMaterial({ color: coverColors[i] })
+            this.coverMesh = new THREE.Mesh(this.cover, this.coverMaterial);
+            this.coverMesh.rotation.y = Math.PI / 2;
+            this.coverMesh.position.y = this.squareY;
+            this.coverMesh.position.z = this.width/2 - this.border/2 - 0.04 - (i*coverSpacing);
+            this.add(this.coverMesh)
+        }
 
-        this.cover2Material = new THREE.MeshBasicMaterial({ map: coversTextures[1] });
-        this.cover2Mesh = new THREE.Mesh(this.cover, this.cover2Material);
-        this.cover2Mesh.rotation.y = Math.PI/2;
-        this.cover2Mesh.position.y = this.squareY;
-        this.cover2Mesh.position.z = this.width/2 - this.border/2 - 0.1
+        this.lastCoverMaterial = new THREE.MeshBasicMaterial({ color: coverColors[coverColors.length-1] });
+        this.lastCoverMesh = new THREE.Mesh(this.cover, this.lastCoverMaterial);
+        this.lastCoverMesh.rotation.y = Math.PI/2;
+        this.lastCoverMesh.rotation.x = Math.PI/8
+        this.lastCoverMesh.position.y = this.squareY;
+        this.lastCoverMesh.position.z = this.width/2 - this.border/2 - 0.08 - (coverColors.length)*coverSpacing
 
-        this.cover3Material = new THREE.MeshBasicMaterial({ map: coversTextures[2] });
-        this.cover3Mesh = new THREE.Mesh(this.cover, this.cover3Material);
-        this.cover3Mesh.rotation.y = Math.PI/2;
-        this.cover3Mesh.position.y = this.squareY;
-        this.cover3Mesh.position.z = this.width/2 - this.border/2 - 0.16
+        this.add(this.lastCoverMesh)
+    }
 
-        this.cover4Material = new THREE.MeshBasicMaterial({ map: coversTextures[3] });
-        this.cover4Mesh = new THREE.Mesh(this.cover, this.cover4Material);
-        this.cover4Mesh.rotation.y = Math.PI/2;
-        this.cover4Mesh.position.y = this.squareY;
-        this.cover4Mesh.position.z = this.width/2 - this.border/2 - 0.22
+    buildNowPlayingShelf(color, coverTexture){
+        this.shelf1 = new THREE.BoxGeometry(0.3, 0.03, 0.9);
+        this.shelfMaterial = new THREE.MeshPhongMaterial({ color: color })
+        this.shelf1Mesh = new THREE.Mesh(this.shelf1, this.shelfMaterial);
+        this.shelfY = this.squareY + this.squareHeight + 0.5;
+        this.shelf1Mesh.position.y = this.shelfY
+        this.shelf1Mesh.position.x = -0.3
 
-        this.cover5Material = new THREE.MeshBasicMaterial({ map: coversTextures[4] });
-        this.cover5Mesh = new THREE.Mesh(this.cover, this.cover5Material);
-        this.cover5Mesh.rotation.y = Math.PI/2;
-        this.cover5Mesh.position.y = this.squareY;
-        this.cover5Mesh.position.z = this.width/2 - this.border/2 - 0.28
+        this.coverMaterial = new THREE.MeshBasicMaterial({ map: coverTexture });
+        this.coverMesh = new THREE.Mesh(this.cover, this.coverMaterial);
+        this.coverMesh.position.y = this.shelfY + 0.015 + this.coverHeight/2
+        this.coverMesh.position.x = -0.3
+        this.coverMesh.rotation.z = Math.PI / 14
 
-        this.cover6Material = new THREE.MeshBasicMaterial({ map: coversTextures[5] });
-        this.cover6Mesh = new THREE.Mesh(this.cover, this.cover6Material);
-        this.cover6Mesh.rotation.y = Math.PI/2;
-        this.cover6Mesh.position.y = this.squareY;
-        this.cover6Mesh.position.z = this.width/2 - this.border/2 - 0.34
-
-        this.cover7Mesh = new THREE.Mesh(this.cover, this.cover1Material);
-        this.cover7Mesh.rotation.y = Math.PI/2;
-        this.cover7Mesh.rotation.x = Math.PI/8
-        this.cover7Mesh.position.y = this.squareY;
-        this.cover7Mesh.position.z = this.width/2 - this.border/2 - 0.48
-
-        this.add(this.cover1Mesh)
-        this.add(this.cover2Mesh)
-        this.add(this.cover3Mesh)
-        this.add(this.cover4Mesh)
-        this.add(this.cover5Mesh)
-        this.add(this.cover6Mesh)
-        this.add(this.cover7Mesh)
+        this.add(this.coverMesh)
+        this.add(this.shelf1Mesh)
     }
 
     changeColor(color) {

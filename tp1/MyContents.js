@@ -286,17 +286,27 @@ class MyContents  {
         
 
         // MOLDURAS
-        let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.1, this.white, 'pictures/painting2.jpg')
-        this.setPosition(frame1, 4, 3.5, 8)
+        let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
+        let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, this.bege, this.white, frame1Texture)
+        this.setPosition(frame1, 4, 3.5, 7.8)
+        this.setRotation(frame1, 0, Math.PI/2, 0)
         this.app.scene.add(frame1);
 
-        let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, this.white, 'pictures/painting1.jpg');
-        this.setPosition(frame2, -4, 3.2, 8)
+        let frame2Texture = new THREE.TextureLoader().load('pictures/painting1.jpg');
+        let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, this.bege, this.white, frame2Texture);
+        this.setPosition(frame2, -4, 3.2, 7.8)
+        this.setRotation(frame2, 0, Math.PI/2, 0)
         this.app.scene.add(frame2)
+        
+        let frame3Texture = new THREE.TextureLoader().load('pictures/photography1.jpg');
+        let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, this.bege, this.white, frame3Texture)
+        this.setPosition(frame3, 0, 3, -7.8);
+        this.setRotation(frame3, 0, -Math.PI/2, 0);
+        this.app.scene.add(frame3)
 
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
-        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, "#ffffff", windowTexture)
+        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, this.bege, windowTexture)
         window.bottomDownPart();
         this.setRotation(window, 0, Math.PI/2, 0,);
         this.setPosition(window, -7.4, this.windowY, this.windowZ)
@@ -384,6 +394,7 @@ class MyContents  {
         // GIRA DISCOS 
         let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.5, 1.5, 1, this.orange);
         vinylPlayerHolder.buildPlayer(this.green, this.blue);
+        /*
         let cover1 = new THREE.TextureLoader().load('textures/cover1.jpg');
         let cover2 = new THREE.TextureLoader().load('textures/cover2.jpg');
         let cover3 = new THREE.TextureLoader().load('textures/cover3.jpg');
@@ -391,8 +402,12 @@ class MyContents  {
         let cover5 = new THREE.TextureLoader().load('textures/cover5.jpg');
         let cover6 = new THREE.TextureLoader().load('textures/cover6.jpg');
         let coverTextures = [cover1, cover2, cover3, cover4, cover5, cover6]
-        vinylPlayerHolder.buildCovers(coverTextures)
-        this.setPosition(vinylPlayerHolder, -6.5, 0, -5)
+        */
+        let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35",  "#A41A1A", "#FFD700"]
+        vinylPlayerHolder.buildCovers(coverColors)
+        const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
+        vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
+        this.setPosition(vinylPlayerHolder, -7, 0, -5)
         this.app.scene.add(vinylPlayerHolder);
 
 
