@@ -357,22 +357,22 @@ class MyContents  {
         this.app.scene.add(lampSofas);
 
         //CANDEEIRO CHÃO
-        const floorLampX = -4.7;
+        const floorLampX = 4.7;
         const floorLampY = 0;
         const floorLampZ = -6;
         const floorLampHeight = 2.8;
         
+        //luz que ilumina a lâmpada
         let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 14, Math.PI/40, 2, 0.2);
         this.setPosition(lampHighlight, 0, 0, 5);
-        let floorLamp = new MyFloorLamp(this.app, 0.4, 0.3, 0.2, 0.2, floorLampHeight, 40, this.darkBlue, this.darkBlue, this.lightColor, lampHighlight);
-        this.setRotation(floorLamp, 0, Math.PI/4, 0);
-        this.setPosition(floorLamp, floorLampX, floorLampY, floorLampZ);
-        this.app.scene.add(floorLamp);
-        this.app.scene.add(lampHighlight);
-
+        //luz que sai do candeeiro
         let lightFloorLamp = new THREE.SpotLight(this.lightColor, 20, 10, Math.PI/6, 1, 0.8);
-        this.setPosition(lightFloorLamp, floorLampX - Math.cos(floorLampHeight) + 0.2, floorLamp.getLightYPos(), floorLampZ - Math.cos(floorLampHeight) + 0.2);
-        this.app.scene.add(lightFloorLamp);
+        
+        let floorLamp = new MyFloorLamp(this.app, 0.4, 0.3, 0.2, 0.2, floorLampHeight, 40, this.darkBlue, this.darkBlue, this.lightColor, lampHighlight, lightFloorLamp);
+        this.setRotation(floorLamp, 0, -Math.PI/4, 0);
+        this.setPosition(floorLamp, floorLampX, floorLampY, floorLampZ);
+        this.setPosition(lightFloorLamp, 0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
+        this.app.scene.add(floorLamp);
 
         //MESA DOS SOFÁS
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
@@ -400,46 +400,43 @@ class MyContents  {
         const wallLampX = 0.15 - this.wallXPos;
         const wallLampY = this.wallHeight - this.wallHeight/2.5;
         const wallLampZ = this.wallZPos/2;
-        const wallLightY = wallLampY - 0.15;
-
-        let wallLampFLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green);
-        this.setPosition(wallLampFLeft, wallLampX, wallLampY, wallLampZ);
-        this.app.scene.add(wallLampFLeft);
-
-        let wallLampFRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, this.lightColor);
-        this.setPosition(wallLampFRight, wallLampX, wallLampY, -wallLampZ);
-        this.app.scene.add(wallLampFRight);
-
-        let wallLampBLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green);
-        this.setRotation(wallLampBLeft, 0, Math.PI, 0);
-        this.setPosition(wallLampBLeft, -wallLampX, wallLampY, -wallLampZ);
-        this.app.scene.add(wallLampBLeft);
-
-        let wallLampBRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, this.lightColor);
-        this.setRotation(wallLampBRight, 0, Math.PI, 0);
-        this.setPosition(wallLampBRight, -wallLampX, wallLampY, wallLampZ);
-        this.app.scene.add(wallLampBRight);
+        const wallLightY = - 0.15;
 
         //luzes das luzes de parede
         let lightWallLampFLeft = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampFLeft, wallLampX, wallLightY, wallLampZ);
+        lightWallLampFLeft.position.y = wallLightY;
         lightWallLampFLeft.target = this.createHelperObject(wallLampX, this.wallHeight, wallLampZ);
-        this.app.scene.add(lightWallLampFLeft);
         
         let lightWallLampFRight = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampFRight, wallLampX, wallLightY, -wallLampZ);
+        lightWallLampFRight.position.y = wallLightY;
         lightWallLampFRight.target = this.createHelperObject(wallLampX, this.wallHeight, -wallLampZ);
-        this.app.scene.add(lightWallLampFRight);
-        
+
         let lightWallLampBLeft = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampBLeft, -wallLampX, wallLightY, -wallLampZ);
+        lightWallLampBLeft.position.y = wallLightY;
         lightWallLampBLeft.target = this.createHelperObject(-wallLampX, this.wallHeight, -wallLampZ);
-        this.app.scene.add(lightWallLampBLeft);
         
         let lightWallLampBRight = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampBRight, -wallLampX, wallLightY, wallLampZ);
+        lightWallLampBRight.position.y = wallLightY;
         lightWallLampBRight.target = this.createHelperObject(-wallLampX, this.wallHeight, wallLampZ);
-        this.app.scene.add(lightWallLampBRight);
+
+        let wallLampFLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampFLeft);
+        this.setPosition(wallLampFLeft, wallLampX, wallLampY, wallLampZ);
+
+        let wallLampFRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampFRight);
+        this.setPosition(wallLampFRight, wallLampX, wallLampY, -wallLampZ);
+
+        let wallLampBLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampBLeft);
+        this.setRotation(wallLampBLeft, 0, Math.PI, 0);
+        this.setPosition(wallLampBLeft, -wallLampX, wallLampY, -wallLampZ);
+
+        let wallLampBRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampBRight);
+        this.setRotation(wallLampBRight, 0, Math.PI, 0);
+        this.setPosition(wallLampBRight, -wallLampX, wallLampY, wallLampZ);
+        
+        this.app.scene.add(wallLampFLeft);
+        this.app.scene.add(wallLampFRight);
+        this.app.scene.add(wallLampBLeft);
+        this.app.scene.add(wallLampBRight);
 
         this.lightHelp1 = new THREE.SpotLightHelper(lightWallLampFLeft)
         this.lightHelp2 = new THREE.SpotLightHelper(lightWallLampFRight)
