@@ -18,6 +18,7 @@ import { MyWallLamp } from './MyWallLamp.js';
 import { MyCeilingLamp } from './MyCeilingLamp.js';
 import { MyWindow } from './MyWindow.js';
 import { MyVinylPlayerHolder } from './MyVinylPlayerHolder.js';
+import { MyCar } from './MyCar.js';
 
 /**
  *  This class contains the contents of out application
@@ -302,7 +303,13 @@ class MyContents  {
         let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, this.bege, this.white, frame3Texture)
         this.setPosition(frame3, 0, 3, -7.8);
         this.setRotation(frame3, 0, -Math.PI/2, 0);
-        this.app.scene.add(frame3)
+        this.app.scene.add(frame3);
+
+        let carFrameTexture = new THREE.TextureLoader().load('textures/white_texture.png');
+        let carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, this.bege, this.white, carFrameTexture);
+        this.setPosition(carFrame, -3.5, 4, -7.8)
+        this.setRotation(carFrame, 0, -Math.PI/2, 0)
+        this.app.scene.add(carFrame);
 
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
@@ -371,22 +378,22 @@ class MyContents  {
         this.app.scene.add(lampSofas);
 
         //CANDEEIRO CHÃO
-        const floorLampX = -4.7;
+        const floorLampX = 4.7;
         const floorLampY = 0;
         const floorLampZ = -6;
         const floorLampHeight = 2.8;
         
+        //luz que ilumina a lâmpada
         let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 14, Math.PI/40, 2, 0.2);
         this.setPosition(lampHighlight, 0, 0, 5);
-        let floorLamp = new MyFloorLamp(this.app, 0.4, 0.3, 0.2, 0.2, floorLampHeight, 40, this.darkBlue, this.darkBlue, this.lightColor, lampHighlight);
-        this.setRotation(floorLamp, 0, Math.PI/4, 0);
-        this.setPosition(floorLamp, floorLampX, floorLampY, floorLampZ);
-        this.app.scene.add(floorLamp);
-        this.app.scene.add(lampHighlight);
-
+        //luz que sai do candeeiro
         let lightFloorLamp = new THREE.SpotLight(this.lightColor, 20, 10, Math.PI/6, 1, 0.8);
-        this.setPosition(lightFloorLamp, floorLampX - Math.cos(floorLampHeight) + 0.2, floorLamp.getLightYPos(), floorLampZ - Math.cos(floorLampHeight) + 0.2);
-        this.app.scene.add(lightFloorLamp);
+        
+        let floorLamp = new MyFloorLamp(this.app, 0.4, 0.3, 0.2, 0.2, floorLampHeight, 40, this.darkBlue, this.darkBlue, this.lightColor, lampHighlight, lightFloorLamp);
+        this.setRotation(floorLamp, 0, -Math.PI/4, 0);
+        this.setPosition(floorLamp, floorLampX, floorLampY, floorLampZ);
+        this.setPosition(lightFloorLamp, 0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
+        this.app.scene.add(floorLamp);
 
         //MESA DOS SOFÁS
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
@@ -398,7 +405,7 @@ class MyContents  {
         // GIRA DISCOS 
         let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.5, 1.5, 1, this.orange);
         vinylPlayerHolder.buildPlayer(this.green, this.blue);
-        /*
+
         let cover1 = new THREE.TextureLoader().load('textures/cover1.jpg');
         let cover2 = new THREE.TextureLoader().load('textures/cover2.jpg');
         let cover3 = new THREE.TextureLoader().load('textures/cover3.jpg');
@@ -406,7 +413,7 @@ class MyContents  {
         let cover5 = new THREE.TextureLoader().load('textures/cover5.jpg');
         let cover6 = new THREE.TextureLoader().load('textures/cover6.jpg');
         let coverTextures = [cover1, cover2, cover3, cover4, cover5, cover6]
-        */
+        
         let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35",  "#A41A1A", "#FFD700"]
         vinylPlayerHolder.buildCovers(coverColors)
         const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
@@ -414,51 +421,47 @@ class MyContents  {
         this.setPosition(vinylPlayerHolder, -7, 0, -5)
         this.app.scene.add(vinylPlayerHolder);
 
-
         //LUZES DE PAREDE
         const wallLampX = 0.15 - this.wallXPos;
         const wallLampY = this.wallHeight - this.wallHeight/2.5;
         const wallLampZ = this.wallZPos/2;
-        const wallLightY = wallLampY - 0.15;
-
-        let wallLampFLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green);
-        this.setPosition(wallLampFLeft, wallLampX, wallLampY, wallLampZ);
-        this.app.scene.add(wallLampFLeft);
-
-        let wallLampFRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, this.lightColor);
-        this.setPosition(wallLampFRight, wallLampX, wallLampY, -wallLampZ);
-        this.app.scene.add(wallLampFRight);
-
-        let wallLampBLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green);
-        this.setRotation(wallLampBLeft, 0, Math.PI, 0);
-        this.setPosition(wallLampBLeft, -wallLampX, wallLampY, -wallLampZ);
-        this.app.scene.add(wallLampBLeft);
-
-        let wallLampBRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, this.lightColor);
-        this.setRotation(wallLampBRight, 0, Math.PI, 0);
-        this.setPosition(wallLampBRight, -wallLampX, wallLampY, wallLampZ);
-        this.app.scene.add(wallLampBRight);
+        const wallLightY = - 0.15;
 
         //luzes das luzes de parede
         let lightWallLampFLeft = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampFLeft, wallLampX, wallLightY, wallLampZ);
+        lightWallLampFLeft.position.y = wallLightY;
         lightWallLampFLeft.target = this.createHelperObject(wallLampX, this.wallHeight, wallLampZ);
-        this.app.scene.add(lightWallLampFLeft);
         
         let lightWallLampFRight = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampFRight, wallLampX, wallLightY, -wallLampZ);
+        lightWallLampFRight.position.y = wallLightY;
         lightWallLampFRight.target = this.createHelperObject(wallLampX, this.wallHeight, -wallLampZ);
-        this.app.scene.add(lightWallLampFRight);
-        
+
         let lightWallLampBLeft = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampBLeft, -wallLampX, wallLightY, -wallLampZ);
+        lightWallLampBLeft.position.y = wallLightY;
         lightWallLampBLeft.target = this.createHelperObject(-wallLampX, this.wallHeight, -wallLampZ);
-        this.app.scene.add(lightWallLampBLeft);
         
         let lightWallLampBRight = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI/4, 1, 0.8);
-        this.setPosition(lightWallLampBRight, -wallLampX, wallLightY, wallLampZ);
+        lightWallLampBRight.position.y = wallLightY;
         lightWallLampBRight.target = this.createHelperObject(-wallLampX, this.wallHeight, wallLampZ);
-        this.app.scene.add(lightWallLampBRight);
+
+        let wallLampFLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampFLeft);
+        this.setPosition(wallLampFLeft, wallLampX, wallLampY, wallLampZ);
+
+        let wallLampFRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampFRight);
+        this.setPosition(wallLampFRight, wallLampX, wallLampY, -wallLampZ);
+
+        let wallLampBLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampBLeft);
+        this.setRotation(wallLampBLeft, 0, Math.PI, 0);
+        this.setPosition(wallLampBLeft, -wallLampX, wallLampY, -wallLampZ);
+
+        let wallLampBRight = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampBRight);
+        this.setRotation(wallLampBRight, 0, Math.PI, 0);
+        this.setPosition(wallLampBRight, -wallLampX, wallLampY, wallLampZ);
+        
+        this.app.scene.add(wallLampFLeft);
+        this.app.scene.add(wallLampFRight);
+        this.app.scene.add(wallLampBLeft);
+        this.app.scene.add(wallLampBRight);
 
         this.lightHelp1 = new THREE.SpotLightHelper(lightWallLampFLeft)
         this.lightHelp2 = new THREE.SpotLightHelper(lightWallLampFRight)
@@ -498,7 +501,7 @@ class MyContents  {
         let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI/10, 1, 0.8);
         let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI/3, 1, 0.8);
         ceilingLight3.target = this.createHelperObject(-ceilingLightX, 0, -ceilingLightZ);
-         let ceilinglamp3 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight3, ceilingLight3);
+        let ceilinglamp3 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight3, ceilingLight3);
         this.setRotation(ceilinglamp3, 0, 0, Math.PI/2);
         this.setRotation(ceilingHighlight3, 0, 0, Math.PI/2);
         this.setPosition(ceilingHighlight3, -this.wallHeight+2, 0, 0);
@@ -526,6 +529,20 @@ class MyContents  {
         let h3 = new THREE.SpotLightHelper(ceilingLight4);
         //this.app.scene.add(h3);
 
+        let car = new MyCar(this.app);
+        const carGeometry = new THREE.BufferGeometry().setFromPoints([
+            ...car.backRoofCurve.getPoints(50),
+            ...car.frontRoofCurve.getPoints(50),
+            ...car.hoodCurve.getPoints(50),
+            ...car.backWheelCurve.getPoints(50),
+            ...car.frontWheelCurve.getPoints(50)
+        ]);  
+        const carMaterial = new THREE.LineBasicMaterial({ color: "#000000" });
+        const carMesh = new THREE.Line(carGeometry, carMaterial);
+        carMesh.rotation.y = Math.PI/2;
+        this.setPosition(carMesh, 0.02, -0.53, 0.75)
+        carFrame.addObject(carMesh);
+        this.setScale(carFrame, 0.8, 0.8, 0.8);
     }
 
     createHelperObject(x, y, z) {

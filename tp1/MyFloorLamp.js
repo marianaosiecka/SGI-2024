@@ -6,7 +6,7 @@ class MyFloorLamp extends THREE.Object3D  {
        constructs the object
        @param {MyApp} app The application object
     */ 
-    constructor(app, radius, topRadius, lightRadius, footHeight, armHeight, radialSegments, colorFoot, colorLamp, colorLight, lampHighlight) {
+    constructor(app, radius, topRadius, lightRadius, footHeight, armHeight, radialSegments, colorFoot, colorLamp, colorLight, lampHighlight, lightFloorLamp) {
         super();
         this.app = app;
         this.type = 'Group';
@@ -56,6 +56,8 @@ class MyFloorLamp extends THREE.Object3D  {
         this.add(this.lampLightMesh);
         
         lampHighlight.target = this.lampLightMesh;
+        this.add(lampHighlight);
+        this.add(lightFloorLamp);
     }
 
     getLightXPos() {

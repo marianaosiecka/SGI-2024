@@ -6,7 +6,7 @@ class MyWallLamp extends THREE.Object3D  {
        constructs the object
        @param {MyApp} app The application object
     */ 
-    constructor(app, width, height, depth, color) {
+    constructor(app, width, height, depth, color, light) {
         super();
         this.app = app;
         this.type = 'Group';
@@ -37,6 +37,7 @@ class MyWallLamp extends THREE.Object3D  {
         this.bottomMesh.position.y = -height/2 - this.bottomHeight/2;
         this.add(this.bottomMesh);
         
+        this.add(light);
     }
 }
 

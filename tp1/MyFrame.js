@@ -86,6 +86,10 @@ class MyFrame extends THREE.Object3D  {
         this.add(this.glassMesh)
     }
 
+    addObject(object){
+        this.add(object);
+    }
+    
     changeColor(color) {
         this.frame.material.color = new THREE.Color(color);
     }
