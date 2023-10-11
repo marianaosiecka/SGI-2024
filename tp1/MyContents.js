@@ -312,6 +312,10 @@ class MyContents  {
         this.setPosition(window, -7.4, this.windowY, this.windowZ)
         this.app.scene.add(window);
 
+        let windowLight = new THREE.RectAreaLight(0xffffff, 100, this.windowWidth, this.windowHeight);
+        this.setPosition(windowLight, -8.3, this.windowY, this.windowZ)
+        this.app.scene.add(windowLight)
+
         //SPOT LIGHT
         this.spotLight = new THREE.SpotLight(this.lightColor, 8, 10, Math.PI/4, 1, 0.2);
         this.spotLight.target = cake;

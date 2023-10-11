@@ -64,7 +64,7 @@ class MyWindow extends THREE.Object3D  {
         this.verticalLineMesh2.position.z = -depth/3;
 
         this.glass = new THREE.PlaneGeometry(width, height/2);
-        this.glassMaterial = new THREE.MeshPhongMaterial({ transparent: true, opacity: 0.2, color: 0xffffff, specular: 0xffffff, shininess:40 });
+        this.glassMaterial = new THREE.MeshPhongMaterial({ transparent: true, opacity: 0.2, color: 0xffffff, specular: 0xffffff, shininess:100 });
         this.upGlassMesh = new THREE.Mesh(this.glass, this.glassMaterial);
         this.upGlassMesh.position.z = -depth/3
         this.upGlassMesh.position.y = height/4

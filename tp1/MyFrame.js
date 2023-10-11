@@ -29,19 +29,44 @@ class MyFrame extends THREE.Object3D  {
         this.rightMesh.position.z = -width/2 + borderFrame/2;
 
         // INSIDE BORDER
+        /*
         const borderInside = height > width ? width/9 : height/9;
         this.insideBorderMaterial = new THREE.MeshBasicMaterial({ color: colorBorder })
         this.insideBorder = new THREE.PlaneGeometry(width - borderFrame*2, height - borderFrame*2);
         this.insideBorderMesh = new THREE.Mesh(this.insideBorder, this.insideBorderMaterial);
         this.insideBorderMesh.rotation.y = Math.PI / 2;
         this.insideBorderMesh.position.x = -depth/2;
+        */
+
+        const borderInside = height > width ? width/9 : height/9;
+        this.insideBorderMaterial = new THREE.MeshBasicMaterial({ color: colorBorder });
+        const widthInsideBorder = width - borderFrame*2;
+        const heightInsideBorder = height - borderFrame*2;
+        const depthInsideBorder = depth/2;
+
+        this.upDownInside = new THREE.BoxGeometry(depthInsideBorder, borderInside, widthInsideBorder);
+        this.upInsideMesh = new THREE.Mesh(this.upDownInside, this.insideBorderMaterial);
+        this.upInsideMesh.position.x = -depthInsideBorder;
+        this.upInsideMesh.position.y = heightInsideBorder/2 - borderInside/2;
+        this.downInsideMesh = new THREE.Mesh(this.upDownInside, this.insideBorderMaterial);
+        this.downInsideMesh.position.y = -heightInsideBorder/2 + borderInside/2;
+        this.downInsideMesh.position.x = -depthInsideBorder;
+
+        this.sidesInside = new THREE.BoxGeometry(depthInsideBorder, heightInsideBorder, borderInside);
+        this.leftInsideMesh = new THREE.Mesh(this.sidesInside, this.insideBorderMaterial);
+        this.leftInsideMesh.position.x = -depthInsideBorder;
+        this.leftInsideMesh.position.z = widthInsideBorder/2 - borderInside/2;
+        this.rightInsideMesh = new THREE.Mesh(this.sidesInside, this.insideBorderMaterial);
+        this.rightInsideMesh.position.x = -depthInsideBorder;
+        this.rightInsideMesh.position.z = -widthInsideBorder/2 + borderInside/2;
+
 
         // PICTURE
         this.picture = new THREE.PlaneGeometry(width - borderFrame*2 - borderInside*2, height- borderFrame*2 - borderInside*2);
         this.pictureMaterial = new THREE.MeshBasicMaterial({ map: texture });
         this.pictureMesh = new THREE.Mesh(this.picture, this.pictureMaterial);
         this.pictureMesh.rotation.y = Math.PI / 2;
-        this.pictureMesh.position.x = - depth/2 + 0.02;
+        this.pictureMesh.position.x = - depthInsideBorder - depthInsideBorder/2;
 
         // GLASS
         this.glassMaterial = new THREE.MeshPhongMaterial({ transparent: true, opacity: 0.2, color: 0xffffff, specular: 0xffffff, shininess:40 });
@@ -53,7 +78,10 @@ class MyFrame extends THREE.Object3D  {
         this.add(this.downMesh)
         this.add(this.leftMesh)
         this.add(this.rightMesh)
-        this.add(this.insideBorderMesh)
+        this.add(this.upInsideMesh)
+        this.add(this.downInsideMesh)
+        this.add(this.leftInsideMesh)
+        this.add(this.rightInsideMesh)
         this.add(this.pictureMesh);
         this.add(this.glassMesh)
     }
