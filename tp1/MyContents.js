@@ -19,6 +19,9 @@ import { MyCeilingLamp } from './MyCeilingLamp.js';
 import { MyWindow } from './MyWindow.js';
 import { MyVinylPlayerHolder } from './MyVinylPlayerHolder.js';
 import { MyCar } from './MyCar.js';
+import { MyNurbsBuilder } from './MyNurbsBuilder.js';
+import { MySpiralSpring } from './MySpiralSpring.js';
+
 
 /**
  *  This class contains the contents of out application
@@ -529,9 +532,12 @@ class MyContents  {
         const carGeometry = new THREE.BufferGeometry().setFromPoints([
             ...car.backRoofCurve.getPoints(50),
             ...car.frontRoofCurve.getPoints(50),
+            //...car.windowCurve.getPoints(50),
             ...car.hoodCurve.getPoints(50),
             ...car.backWheelCurve.getPoints(50),
-            ...car.frontWheelCurve.getPoints(50)
+            ...car.smallBackWheelCurve.getPoints(50),
+            ...car.frontWheelCurve.getPoints(50),
+            ...car.smallFrontWheelCurve.getPoints(50),
         ]);  
         const carMaterial = new THREE.LineBasicMaterial({ color: "#000000" });
         const carMesh = new THREE.Line(carGeometry, carMaterial);
@@ -539,6 +545,92 @@ class MyContents  {
         this.setPosition(carMesh, 0.02, -0.53, 0.75)
         carFrame.addObject(carMesh);
         this.setScale(carFrame, 0.8, 0.8, 0.8);
+
+        /*
+        const map = new THREE.TextureLoader().load( 'textures/newspaper_texture.jpg' );
+        map.wrapS = map.wrapT = THREE.RepeatWrapping;
+        map.anisotropy = 16;
+        map.colorSpace = THREE.SRGBColorSpace;
+        this.material = new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide, transparent: true, opacity: 0.90 } );
+
+        this.builder = new MyNurbsBuilder(this.app);
+        this.meshes = [];
+
+        this.samplesU = 8;     
+        this.samplesV = 8;
+
+        let controlPoints;
+        let surfaceData;
+        let mesh;
+        let orderU = 1
+        let orderV = 1
+
+        // build nurb #1
+        controlPoints = [    
+            // U = 0
+            [
+                [-2.0, -2.0, 0.0, 1],
+                [-2.0, 2.0, 0.0, 1]
+            ],
+            // U = 1
+            [
+                [-1.5, -2.0, 0.0, 1],
+                [-1.5, 2.0, 0.0, 1]
+            ],
+            // U = 2
+            [
+                [-1.0, -2.0, 0.0, 1],
+                [-1.0, 2.0, 0.0, 1]
+            ],
+            // U = 3
+            [
+                [-0.5, -2.0, 0.0, 1],
+                [-0.5, 2.0, 0.0, 1]
+            ],
+            // U = 4
+            [
+                [0.0, -2.0, 0.0, 1],
+                [0.0, 2.0, 0.0, 1]
+            ],
+            // U = 5
+            [
+                [0.5, -2.0, 0.0, 1],
+                [0.5, 2.0, 0.0, 1]
+            ],
+            // U = 6
+            [
+                [1.0, -2.0, 0.0, 1],
+                [1.0, 2.0, 0.0, 1]
+            ],
+            // U = 7
+            [
+                [1.5, -2.0, 0.0, 1],
+                [1.5, 2.0, 0.0, 1]
+            ],
+            // U = 8
+            [
+                [2.0, -2.0, 0.0, 1],
+                [2.0, 2.0, 0.0, 1]
+            ]];
+
+
+        surfaceData = this.builder.build(controlPoints, orderU, orderV, this.samplesU, this.samplesV, this.material)  
+
+        mesh = new THREE.Mesh( surfaceData, this.material );
+        this.setRotation(mesh, 0, 0, 0);
+        this.setScale( mesh, 1,1,1 );
+        this.setPosition(mesh, 0, 0, 0);
+
+        this.app.scene.add( mesh );
+        this.meshes.push (mesh);
+        */
+        
+        let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
+        this.setRotation(spiralSpring, 0, Math.PI/8, 0);
+        this.setScale(spiralSpring, 0.5, 0.5, 0.5);
+        this.setPosition(spiralSpring, -0.8, 1.38, 5.7);
+        this.app.scene.add(spiralSpring);
+
     }
 
     createHelperObject(x, y, z) {
