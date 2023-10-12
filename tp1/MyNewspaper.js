@@ -14,7 +14,6 @@ class MyNewspaper extends THREE.Object3D  {
 
         this.material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
         this.builder = new MyNurbsBuilder(this.app);
-        this.meshes = [];
 
         this.samplesU = 12;     
         this.samplesV = 12;
@@ -40,7 +39,7 @@ class MyNewspaper extends THREE.Object3D  {
                 ]
             ];
 
-            let surfaceData = this.builder.build(controlPoints, this.orderU, this.orderV, this.samplesU, this.samplesV, this.material)  
+            let surfaceData = this.builder.build(controlPoints, this.orderU, this.orderV, this.samplesU, this.samplesV)  
             let page = new THREE.Mesh(surfaceData, this.material);
             this.add(page);
         }
