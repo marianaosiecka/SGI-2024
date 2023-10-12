@@ -14,7 +14,7 @@ class MyNurbsBuilder  {
     }
 
 
-    build(controlPoints, degree1, degree2, samples1, samples2, material) {
+    build(controlPoints, degree1, degree2, samples1, samples2) {
         const knots1 = [];
         const knots2 = [];
 
