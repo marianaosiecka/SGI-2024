@@ -106,6 +106,13 @@ class MyApp  {
         orthoTop.lookAt( new THREE.Vector3(0,0,0) );
         this.cameras['Top'] = orthoTop
 
+        // newspaper camera
+        const newspaper = new THREE.OrthographicCamera( left, right, top, bottom, near, far);
+        newspaper.up = new THREE.Vector3(0,1,0);
+        newspaper.position.set(4,1.5,-4)
+        newspaper.lookAt( new THREE.Vector3(0, 0.9, -4.9))
+        this.cameras['Newspaper'] = newspaper
+
         // create a front view orthographic camera
         const orthoFront = new THREE.OrthographicCamera( left, right, top, bottom, near, far);
         orthoFront.up = new THREE.Vector3(0,1,0);
