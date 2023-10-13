@@ -291,32 +291,32 @@ class MyContents  {
 
         // MOLDURAS
         let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
-        let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, this.bege, this.white, frame1Texture)
+        let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, "#e8d9b3", this.white, frame1Texture)
         this.setPosition(frame1, 4, 3.5, 7.8)
         this.setRotation(frame1, 0, Math.PI/2, 0)
         this.app.scene.add(frame1);
 
         let frame2Texture = new THREE.TextureLoader().load('pictures/painting1.jpg');
-        let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, this.bege, this.white, frame2Texture);
+        let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, "#e8d9b3", this.white, frame2Texture);
         this.setPosition(frame2, -4, 3.2, 7.8)
         this.setRotation(frame2, 0, Math.PI/2, 0)
         this.app.scene.add(frame2)
         
         let frame3Texture = new THREE.TextureLoader().load('pictures/photography1.jpg');
-        let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, this.bege, this.white, frame3Texture)
+        let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, "#e8d9b3", this.white, frame3Texture)
         this.setPosition(frame3, 0, 3, -7.8);
         this.setRotation(frame3, 0, -Math.PI/2, 0);
         this.app.scene.add(frame3);
 
         let carFrameTexture = new THREE.TextureLoader().load('textures/white_texture.png');
-        let carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, this.bege, this.white, carFrameTexture);
+        let carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, "#e8d9b3", this.white, carFrameTexture);
         this.setPosition(carFrame, -3.5, 4, -7.8)
         this.setRotation(carFrame, 0, -Math.PI/2, 0)
         this.app.scene.add(carFrame);
 
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
-        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, this.bege, windowTexture)
+        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, "#f7ecd0", windowTexture)
         window.bottomDownPart();
         this.setRotation(window, 0, Math.PI/2, 0,);
         this.setPosition(window, -7.4, this.windowY, this.windowZ)
