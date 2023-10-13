@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { MyNurbsBuilder } from './MyNurbsBuilder.js';
+import { MyNurbsBuilder } from '../MyNurbsBuilder.js';
 
 class MyNewspaper extends THREE.Object3D  {
 
