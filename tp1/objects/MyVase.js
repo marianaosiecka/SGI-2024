@@ -33,10 +33,10 @@ class MyVase extends THREE.Object3D {
             // U = 1
             [
                 [1.5*upRadius, height, 0, 1],
-                [1.5*(1 / 2 * upRadius), 3 / 4 * height, 0, 1],
-                [1.5*(1 / 3 * upRadius), 1 / 2 * height, 0, 1],
-                [1.5*(1 / 2 * upRadius), 1 / 4 * height, 0, 1],
-                [1.5*(3 / 2 * upRadius), 0, 0, 1]
+                [1.8*(1 / 2 * upRadius), 3 / 4 * height, 0, 1],
+                [1.8*(1 / 3 * upRadius), 1 / 2 * height, 0, 1],
+                [1.8*(1 / 2 * upRadius), 1 / 4 * height, 0, 1],
+                [1.8*(3 / 2 * upRadius), 0, 0, 1]
             ],
             // U = 2
             [

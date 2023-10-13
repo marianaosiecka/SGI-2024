@@ -461,11 +461,6 @@ class MyContents {
         this.app.scene.add(wallLampBLeft);
         this.app.scene.add(wallLampBRight);
 
-        this.lightHelp1 = new THREE.SpotLightHelper(lightWallLampFLeft)
-        this.lightHelp2 = new THREE.SpotLightHelper(lightWallLampFRight)
-        this.lightHelp3 = new THREE.SpotLightHelper(lightWallLampBLeft)
-        this.lightHelp4 = new THREE.SpotLightHelper(lightWallLampBRight)
-
         //LUZES DE TETO
         const ceilingLightX = 5;
         const ceilingLightY = this.wallHeight - 0.04;
@@ -518,14 +513,6 @@ class MyContents {
         ceilinglamp4.scale.x = 0.4;
         this.app.scene.add(ceilinglamp4);
 
-        let h = new THREE.SpotLightHelper(ceilingLight1);
-        //this.app.scene.add(h);
-        let h1 = new THREE.SpotLightHelper(ceilingLight2);
-        //this.app.scene.add(h1);
-        let h2 = new THREE.SpotLightHelper(ceilingLight3);
-        //this.app.scene.add(h2);
-        let h3 = new THREE.SpotLightHelper(ceilingLight4);
-        //this.app.scene.add(h3);
 
         let car = new MyCar(this.app);
         const carGeometry = new THREE.BufferGeometry().setFromPoints([
@@ -552,16 +539,16 @@ class MyContents {
         this.app.scene.add(newspaper);
 
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
-        spiralSpring.rotation.set(0, Math.PI / 8, 0);
-        this.setScale(spiralSpring, 0.5, 0.5, 0.5);
-        spiralSpring.position.set(-0.8, 1.38, 5.7);
+        this.setRotation(spiralSpring, 0, -Math.PI/6, 0);
+        this.setScale(spiralSpring, 0.4, 0.4, 0.4);
+        this.setPosition(spiralSpring, -0.4, 0.94, -4.4);
         this.app.scene.add(spiralSpring);
 
         let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");
        // vase.createFlowers(4, [2.5, 3.2], [0.05, 0.3], ["#51385C"], "#F3ED52", "#40874B")
         this.app.scene.add(vase);
 
-        let flower = new MyFlower(this.app, 2.8, 0.3, "#51385C", "#F3ED52", "#40874B");
+        let flower = new MyFlower(this.app, 2.8, 0.3, "#51385C", "#F3ED52", "#40874B", "w");
         this.app.scene.add(flower)
 
     }
@@ -569,6 +556,7 @@ class MyContents {
     createHelperObject(x, y, z) {
         let obj = new THREE.Object3D();
         obj.position.set(x, y, z);
+        this.app.scene.add(obj);
         return obj;
     }
 
