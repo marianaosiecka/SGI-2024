@@ -370,7 +370,7 @@ class MyContents  {
         this.app.scene.add(sofa2);
 
         //CANDEEIRO SOFAS
-        let spotLightSofas = new THREE.SpotLight(this.lightColor, 10, 5, Math.PI/4, 1, 0.2);
+        let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5, Math.PI/4, 1, 0.2);
         spotLightSofas.target = carpet;
 
         let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
@@ -405,14 +405,6 @@ class MyContents  {
         // GIRA DISCOS 
         let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.5, 1.5, 1, this.orange);
         vinylPlayerHolder.buildPlayer(this.green, this.blue);
-
-        let cover1 = new THREE.TextureLoader().load('textures/cover1.jpg');
-        let cover2 = new THREE.TextureLoader().load('textures/cover2.jpg');
-        let cover3 = new THREE.TextureLoader().load('textures/cover3.jpg');
-        let cover4 = new THREE.TextureLoader().load('textures/cover4.jpg');
-        let cover5 = new THREE.TextureLoader().load('textures/cover5.jpg');
-        let cover6 = new THREE.TextureLoader().load('textures/cover6.jpg');
-        let coverTextures = [cover1, cover2, cover3, cover4, cover5, cover6]
         
         let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35",  "#A41A1A", "#FFD700"]
         vinylPlayerHolder.buildCovers(coverColors)
@@ -533,9 +525,12 @@ class MyContents  {
         const carGeometry = new THREE.BufferGeometry().setFromPoints([
             ...car.backRoofCurve.getPoints(50),
             ...car.frontRoofCurve.getPoints(50),
+            //...car.windowCurve.getPoints(50),
             ...car.hoodCurve.getPoints(50),
             ...car.backWheelCurve.getPoints(50),
-            ...car.frontWheelCurve.getPoints(50)
+            ...car.smallBackWheelCurve.getPoints(50),
+            ...car.frontWheelCurve.getPoints(50),
+            ...car.smallFrontWheelCurve.getPoints(50),
         ]);  
 
         const carMaterial = new THREE.LineBasicMaterial({ color: "#000000" });
@@ -544,6 +539,18 @@ class MyContents  {
         this.setPosition(carMesh, 0.02, -0.53, 0.75)
         carFrame.addObject(carMesh);
         this.setScale(carFrame, 0.8, 0.8, 0.8);
+
+        let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.jpg'))
+        this.setPosition(newspaper, 0, 0.9, -4.9);
+        this.setRotation(newspaper, 0, Math.PI/10, 0);
+        this.app.scene.add(newspaper);
+        
+        let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
+        this.setRotation(spiralSpring, 0, Math.PI/8, 0);
+        this.setScale(spiralSpring, 0.5, 0.5, 0.5);
+        this.setPosition(spiralSpring, -0.8, 1.38, 5.7);
+        this.app.scene.add(spiralSpring);
+
     }
 
     createHelperObject(x, y, z) {
