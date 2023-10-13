@@ -1,24 +1,24 @@
 import * as THREE from 'three';
 import { MyAxis } from './MyAxis.js';
-import { MyTable } from './MyTable.js';
-import { MyPlate } from './MyPlate.js';
-import { MyCake } from './MyCake.js';
-import { MyChair } from './MyChair.js';
-import { MyFrame } from './MyFrame.js';
-import { MyLamp } from './MyLamp.js';
-import { MyCarpet } from './MyCarpet.js';
-import { MySofa } from './MySofa.js';
-import { MyPillow } from './MyPillow.js';
-import { MyCakePlate } from './MyCakePlate.js';
-import { MyFork } from './MyFork.js';
-import { MyCandle } from './MyCandle.js';
-import { MyFloorLamp } from './MyFloorLamp.js';
-import { MyCoffeeTable } from './MyCoffeeTable.js';
-import { MyWallLamp } from './MyWallLamp.js';
-import { MyCeilingLamp } from './MyCeilingLamp.js';
-import { MyWindow } from './MyWindow.js';
-import { MyVinylPlayerHolder } from './MyVinylPlayerHolder.js';
-import { MyCar } from './MyCar.js';
+import { MyTable } from './objects/MyTable.js';
+import { MyPlate } from './objects/MyPlate.js';
+import { MyCake } from './objects/MyCake.js';
+import { MyChair } from './objects/MyChair.js';
+import { MyFrame } from './objects/MyFrame.js';
+import { MyLamp } from './objects/MyLamp.js';
+import { MyCarpet } from './objects/MyCarpet.js';
+import { MySofa } from './objects/MySofa.js';
+import { MyPillow } from './objects/MyPillow.js';
+import { MyCakePlate } from './objects/MyCakePlate.js';
+import { MyFork } from './objects/MyFork.js';
+import { MyCandle } from './objects/MyCandle.js';
+import { MyFloorLamp } from './objects/MyFloorLamp.js';
+import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
+import { MyWallLamp } from './objects/MyWallLamp.js';
+import { MyCeilingLamp } from './objects/MyCeilingLamp.js';
+import { MyWindow } from './objects/MyWindow.js';
+import { MyVinylPlayerHolder } from './objects/MyVinylPlayerHolder.js';
+import { MyCar } from './objects/MyCar.js';
 
 /**
  *  This class contains the contents of out application
@@ -313,7 +313,7 @@ class MyContents  {
 
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
-        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, this.bege, windowTexture)
+        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, this.white, windowTexture)
         window.bottomDownPart();
         this.setRotation(window, 0, Math.PI/2, 0,);
         this.setPosition(window, -7.4, this.windowY, this.windowZ)
@@ -537,6 +537,7 @@ class MyContents  {
             ...car.backWheelCurve.getPoints(50),
             ...car.frontWheelCurve.getPoints(50)
         ]);  
+
         const carMaterial = new THREE.LineBasicMaterial({ color: "#000000" });
         const carMesh = new THREE.Line(carGeometry, carMaterial);
         carMesh.rotation.y = Math.PI/2;

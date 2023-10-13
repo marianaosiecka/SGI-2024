@@ -13,6 +13,7 @@ class MyFork extends THREE.Object3D  {
 
         this.forkMaterial = new THREE.MeshPhongMaterial({ color : color, shininess: 50, specular: 0xffffff})
         
+        // TINES
         this.tine = new THREE.ConeGeometry(width/10, height/5, 10);
 
         this.tineMesh1 = new THREE.Mesh(this.tine, this.forkMaterial);
@@ -39,12 +40,16 @@ class MyFork extends THREE.Object3D  {
         this.tineMesh4.position.x = - height/7 - height/10;
         this.tineMesh4.position.z = -width/2 + 5*width/14;
 
+        
+        // NECK 
         this.neck = new THREE.SphereGeometry(width/2, 10, 10, Math.PI/2, Math.PI);
         this.neckMesh = new THREE.Mesh(this.neck, this.forkMaterial)
         this.neckMesh.scale.y = 0.18
         this.neckMesh.scale.x = 2.3
         this.neckMesh.position.x = -height/7
 
+
+        // HANDLE
         this.handle = new THREE.BoxGeometry(3*height/4, depth, 2*width/3-0.2)
         this.handleMesh = new THREE.Mesh(this.handle, this.forkMaterial)
         this.handleMesh.position.x = height/3-0.3
