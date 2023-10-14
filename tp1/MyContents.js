@@ -539,9 +539,9 @@ class MyContents {
         this.app.scene.add(newspaper);
 
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
-        this.setRotation(spiralSpring, 0, -Math.PI/6, 0);
-        this.setScale(spiralSpring, 0.4, 0.4, 0.4);
-        this.setPosition(spiralSpring, -0.4, 0.94, -4.4);
+        spiralSpring.rotation.set(0, -Math.PI/6, 0);
+        spiralSpring.scale.set(0.4, 0.4, 0.4);
+        spiralSpring.position.set(-0.4, 0.94, -4.4);
         this.app.scene.add(spiralSpring);
 
         let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");

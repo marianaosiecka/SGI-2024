@@ -31,12 +31,6 @@ class MyFlowerHead extends THREE.Object3D {
             petalMesh.position.z = centerRadius * Math.cos(angle);
             petalMesh.position.y = centerRadius;
 
-            /*const angle = (i * Math.PI * 2) / 5;            
-            petalMesh.position.x = 0.2 * Math.cos(angle);
-            petalMesh.position.y = 2/3 * height;
-            petalMesh.position.z = 0.2 * Math.sin(angle);
-            petalMesh.rotation.y = angle;
-            */
             this.add(petalMesh);
         }
 
