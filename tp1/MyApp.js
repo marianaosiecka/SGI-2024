@@ -139,12 +139,12 @@ class MyApp  {
 
         // vinyl camera
         let vinylCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
-        vinylCamera.position.set(-2.7, 2.4, -4.8);
+        vinylCamera.position.set(-2, 2.4, -4.8);
         this.cameras['Vinyl'] = vinylCamera;
 
         // flowers camera
         let flowersCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
-        flowersCamera.position.set(-3.6, 2.9, -1.8);   
+        flowersCamera.position.set(-3, 4.7, -2.7);   
         this.cameras['Flowers'] = flowersCamera;
 
         // paintings camera

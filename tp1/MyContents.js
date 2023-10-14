@@ -566,6 +566,7 @@ class MyContents {
         vase.rotation.set(0, -Math.PI / 2, 0);
         this.app.scene.add(vase);
 
+        /*
         const colorCenter = "#F3ED52"
         const colorStem = "#40874B"
         let flower1 = new MyFlower(this.app, 3, 0.6, "#51385C", colorCenter, colorStem, "w");
@@ -578,7 +579,7 @@ class MyContents {
         let flower4 = new MyFlower(this.app, 2.2, 0.5, "#51385C", colorCenter, colorStem);
         flower4.rotation.y = Math.PI
         this.app.scene.add(flower4)
-
+        */
 
     }
 
