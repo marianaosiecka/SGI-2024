@@ -19,8 +19,8 @@ class MyCar extends THREE.Object3D  {
 
     this.backRoofCurve = new THREE.CubicBezierCurve3(
         this.startPoint1,
-        new THREE.Vector3(this.startPoint1.x, this.startPoint1.y + this.radius * (4/3) * Math.tan(angle / 4), 0),
-        new THREE.Vector3(this.endPoint1.x - this.radius * (4/3) * Math.tan(angle / 4), this.endPoint1.y, 0),
+        new THREE.Vector3(this.startPoint1.x, this.startPoint1.y + this.radius * (4/3) * (Math.sqrt(2)-1), 0),
+        new THREE.Vector3(this.endPoint1.x - this.radius * (4/3) * (Math.sqrt(2)-1), this.endPoint1.y, 0),
         this.endPoint1
     );
 
@@ -28,8 +28,8 @@ class MyCar extends THREE.Object3D  {
 
     this.frontRoofCurve = new THREE.CubicBezierCurve3(
         this.endPoint1,
-        new THREE.Vector3(this.endPoint1.x + this.radius/2 * (4/3) * Math.tan(angle / 4), this.endPoint1.y, 0),
-        new THREE.Vector3(this.endPoint2.x, this.endPoint2.y + this.radius/2 * (4/3) * Math.tan(angle / 4), 0),
+        new THREE.Vector3(this.endPoint1.x + this.radius/2 * (4/3) * (Math.sqrt(2)-1), this.endPoint1.y, 0),
+        new THREE.Vector3(this.endPoint2.x, this.endPoint2.y + this.radius/2 * (4/3) * (Math.sqrt(2)-1), 0),
         this.endPoint2
     );
 
@@ -37,8 +37,8 @@ class MyCar extends THREE.Object3D  {
 
     this.hoodCurve = new THREE.CubicBezierCurve3(
       this.endPoint2,
-      new THREE.Vector3(this.endPoint2.x + this.radius/2 * (4/3) * Math.tan(angle / 4), this.endPoint2.y, 0),
-      new THREE.Vector3(this.endPoint3.x, this.endPoint3.y + this.radius/2 * (4/3) * Math.tan(angle / 4), 0),
+      new THREE.Vector3(this.endPoint2.x + this.radius/2 * (4/3) * (Math.sqrt(2)-1), this.endPoint2.y, 0),
+      new THREE.Vector3(this.endPoint3.x, this.endPoint3.y + this.radius/2 * (4/3) * (Math.sqrt(2)-1), 0),
       this.endPoint3
     );
 
@@ -48,30 +48,31 @@ class MyCar extends THREE.Object3D  {
 
     this.backWheelCurve = new THREE.CubicBezierCurve3(
       this.startPoint1,
-      new THREE.Vector3(this.startPoint1.x, this.startPoint1.y + 0.3 * (4/3) * Math.tan(angle / 2), 0),
-      new THREE.Vector3(this.frontWheelEndPoint.x, this.frontWheelEndPoint.y + 0.3 * (4/3) * Math.tan(angle / 2), 0),
+      new THREE.Vector3(this.startPoint1.x, this.startPoint1.y + this.wheelRadius * (4/3) * Math.tan(angle / 2), 0),
+      new THREE.Vector3(this.frontWheelEndPoint.x, this.frontWheelEndPoint.y + this.wheelRadius * (4/3) * Math.tan(angle / 2), 0),
       this.frontWheelEndPoint
     );
 
+    this.smallWhellRadius = this.wheelRadius/2;
     this.smallBackWheelCurve = new THREE.CubicBezierCurve3(
-      new THREE.Vector3(this.startPoint1.x + 0.125, this.startPoint1.y, 0),
-      new THREE.Vector3(this.startPoint1.x + 0.125, this.startPoint1.y + 0.15 * (4/3) * Math.tan(angle / 2), 0),
-      new THREE.Vector3(this.frontWheelEndPoint.x - 0.125, this.frontWheelEndPoint.y + 0.15 * (4/3) * Math.tan(angle / 2), 0),
-      new THREE.Vector3(this.frontWheelEndPoint.x - 0.125, this.frontWheelEndPoint.y, 0)
+      new THREE.Vector3(this.startPoint1.x + this.smallWhellRadius, this.startPoint1.y, 0),
+      new THREE.Vector3(this.startPoint1.x + this.smallWhellRadius, this.startPoint1.y + this.smallWhellRadius * (4/3), 0),
+      new THREE.Vector3(this.frontWheelEndPoint.x - this.smallWhellRadius, this.frontWheelEndPoint.y + this.smallWhellRadius * (4/3), 0),
+      new THREE.Vector3(this.frontWheelEndPoint.x - this.smallWhellRadius, this.frontWheelEndPoint.y, 0)
     );
 
     this.frontWheelCurve = new THREE.CubicBezierCurve3(
       this.backWheelStartPoint,
-      new THREE.Vector3(this.backWheelStartPoint.x, this.backWheelStartPoint.y + 0.3 * (4/3) * Math.tan(angle / 2), 0),
-      new THREE.Vector3(this.endPoint3.x, this.endPoint3.y + 0.3 * (4/3) * Math.tan(angle / 2), 0),
+      new THREE.Vector3(this.backWheelStartPoint.x, this.backWheelStartPoint.y + this.wheelRadius * (4/3), 0),
+      new THREE.Vector3(this.endPoint3.x, this.endPoint3.y + this.wheelRadius * (4/3), 0),
       this.endPoint3
     );
 
     this.smallFrontWheelCurve = new THREE.CubicBezierCurve3(
-      new THREE.Vector3(this.backWheelStartPoint.x + 0.125, this.backWheelStartPoint.y, 0),
-      new THREE.Vector3(this.backWheelStartPoint.x + 0.125, this.backWheelStartPoint.y + 0.15 * (4/3) * Math.tan(angle / 2), 0),
-      new THREE.Vector3(this.endPoint3.x - 0.125, this.endPoint3.y + 0.15 * (4/3) * Math.tan(angle / 2), 0),
-      new THREE.Vector3(this.endPoint3.x - 0.125, this.endPoint3.y, 0)
+      new THREE.Vector3(this.backWheelStartPoint.x + this.smallWhellRadius, this.backWheelStartPoint.y, 0),
+      new THREE.Vector3(this.backWheelStartPoint.x + this.smallWhellRadius, this.backWheelStartPoint.y + this.smallWhellRadius * (4/3), 0),
+      new THREE.Vector3(this.endPoint3.x - this.smallWhellRadius, this.endPoint3.y + this.smallWhellRadius * (4/3), 0),
+      new THREE.Vector3(this.endPoint3.x - this.smallWhellRadius, this.endPoint3.y, 0)
     );
     
   }

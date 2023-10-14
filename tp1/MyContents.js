@@ -281,7 +281,8 @@ class MyContents {
         this.app.scene.add(candle3);
 
         let candle4 = new MyCandle(this.app, 0.03, 0.18, 40, this.orange, this.yellow);
-        candle4.position.set(plateSlice.position.x, cake.position.y - 0.3 + 0.275, plateSlice.position.z);
+        candle4.rotation.set(0, -Math.PI/2.8, Math.PI/2)
+        candle4.position.set(cake.position.x + 0.2, 1.76, cake.position.z - 0.3);
         this.app.scene.add(candle4);
 
 
@@ -319,22 +320,24 @@ class MyContents {
 
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
-        let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, "#f7ecd0", windowTexture)
+        let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#f7ecd0", windowTexture)
         window.bottomDownPart();
         window.rotation.set(0, Math.PI / 2, 0,);
         window.position.set(-7.4, this.windowY, this.windowZ)
         this.app.scene.add(window);
 
         let windowLight = new THREE.RectAreaLight(0xffffff, 100, this.windowWidth, this.windowHeight);
+        this.setScale(windowLight, 2)
         windowLight.position.set(-8.3, this.windowY, this.windowZ)
+        windowLight.rotation.set(0, -Math.PI / 2, 0)
         this.app.scene.add(windowLight)
 
-        //SPOT LIGHT
-        this.spotLight = new THREE.SpotLight(this.lightColor, 8, 10, Math.PI / 4, 1, 0.2);
-        this.spotLight.target = cake;
+        //LUZ DA MESA (BOLO SPOT LIGHT)
+        this.tableLight = new THREE.SpotLight(this.lightColor, 4, 10, Math.PI / 3, 1, 0.2);
+        this.tableLight.target = cake;
 
         //CANDEEIRO DE TETO
-        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.spotLight);
+        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
         lampTable.position.set(0, 5.5, 5);
         this.app.scene.add(lampTable);
 
@@ -506,7 +509,7 @@ class MyContents {
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight4, ceilingLight4);
-        ceilinglamp4.rotation.set( 0, 0, Math.PI / 2);
+        ceilinglamp4.rotation.set(0, 0, Math.PI / 2);
         ceilingHighlight4.rotation.set(0, 0, Math.PI / 2);
         ceilingHighlight4.position.set(-this.wallHeight + 2, 0, 0);
         ceilinglamp4.position.set(ceilingLightX, ceilingLightY, -ceilingLightZ);
@@ -538,7 +541,7 @@ class MyContents {
         this.app.scene.add(newspaper);
 
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
-        spiralSpring.rotation.set(0, -Math.PI/6, 0);
+        spiralSpring.rotation.set(0, -Math.PI / 6, 0);
         this.setScale(spiralSpring, 0.3, 0.3, 0.3);
         spiralSpring.position.set(-0.4, 0.94, -4.4);
         this.app.scene.add(spiralSpring);
@@ -554,7 +557,7 @@ class MyContents {
         let flower2 = new MyFlower(this.app, 3.3, 0.3, "#DA4B0E", colorCenter, colorStem, "u");
         this.app.scene.add(flower2)
         let flower3 = new MyFlower(this.app, 2, 0.5, "#83BACC", colorCenter, colorStem);
-        flower3.rotation.y = Math.PI/2
+        flower3.rotation.y = Math.PI / 2
         this.app.scene.add(flower3)
         let flower4 = new MyFlower(this.app, 2.2, 0.5, "#51385C", colorCenter, colorStem);
         flower4.rotation.y = Math.PI
@@ -580,23 +583,23 @@ class MyContents {
      * updates the x position of the target of the spotlight
      * @param {THREE.Color} value 
      */
-    updateSpotLightTargetX(value) {
+    updateSpotLightTargetX(light, value) {
         const targetObject = new THREE.Object3D();
         targetObject.position.x = value;
-        targetObject.position.y = this.spotLight.target.position.y;
+        targetObject.position.y = light.target.position.y;
         this.app.scene.add(targetObject);
-        this.spotLight.target = targetObject;
+        light.target = targetObject;
     }
     /**
      * updates the y position of the target of the spotlight
      * @param {THREE.Color} value 
      */
-    updateSpotLightTargetY(value) {
+    updateSpotLightTargetY(light, value) {
         const targetObject = new THREE.Object3D();
         targetObject.position.y = value;
-        targetObject.position.x = this.spotLight.target.position.x;
+        targetObject.position.x = light.target.position.x;
         this.app.scene.add(targetObject);
-        this.spotLight.target = targetObject;
+        light.target = targetObject;
     }
     /**
      * updates the diffuse plane color and the material

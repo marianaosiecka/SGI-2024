@@ -29,6 +29,12 @@ class MyApp  {
         this.gui = null
         this.axis = null
         this.contents == null
+
+        this.coffeeTablePosition = new THREE.Vector3(0, 0.9, -4.9);
+        this.cakePosition = new THREE.Vector3(0, 1.9, 4.5);
+        this.vinylPosition = new THREE.Vector3(-7, 2, -5);
+        this.flowersPosition = new THREE.Vector3(-5, 2, -7);
+        this.paintingsPosition = new THREE.Vector3(0, 2, -8);
     }
     /**
      * initializes the application
@@ -71,18 +77,12 @@ class MyApp  {
         const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         perspective1.position.set(10,10,3)
         this.cameras['Perspective'] = perspective1
+        console.log(perspective1.position)
 
         // new camera from tp
         const perspective2 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         perspective2.position.set(0,8,3)
         this.cameras['Perspective2'] = perspective2
-
-        // newspaper camera
-        const newspaper = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
-        newspaper.position.set(1.65, 3, -3.6);
-        let targetPosition = new THREE.Vector3(0, 0.9, -4.9);
-        newspaper.lookAt(targetPosition);        
-        this.cameras['Newspaper'] = newspaper;
 
         // defines the frustum size for the orthographic cameras
         const left = -this.frustumSize / 2 * aspect
@@ -122,10 +122,58 @@ class MyApp  {
         
         // create a back view orthographic camera
         const orthoBack = new THREE.OrthographicCamera( left, right, top, bottom, near, far);
-        orthoBack.up = new THREE.Vector3(0,-1,0);
+        orthoBack.up = new THREE.Vector3(0,1,0);
         orthoBack.position.set(0,0,-this.frustumSize /4) 
         orthoBack.lookAt( new THREE.Vector3(0,0,0) );
         this.cameras['Back'] = orthoBack
+
+        // coffeeTable camera
+        let coffeeTableCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        coffeeTableCamera.position.set(-0.77, 1.94, -2.17)   
+        this.cameras['CoffeeTable'] = coffeeTableCamera;
+
+        // cake/table camera
+        let cakeCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        cakeCamera.position.set(4.29, 4.25, 2.46);  
+        this.cameras['Cake'] = cakeCamera;
+
+        // vinyl camera
+        let vinylCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        vinylCamera.position.set(-2.7, 2.4, -4.8);
+        this.cameras['Vinyl'] = vinylCamera;
+
+        // flowers camera
+        let flowersCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        flowersCamera.position.set(-3.6, 2.9, -1.8);   
+        this.cameras['Flowers'] = flowersCamera;
+
+        // paintings camera
+        let paintingsCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        paintingsCamera.position.set(0, 2.5, -1);   
+        this.cameras['Paintings'] = paintingsCamera;
+    }
+
+    /**
+     * sets the controls' target
+     */
+    setControlsTarget() {   
+        switch(this.activeCameraName){
+            case 'CoffeeTable':
+                this.controls.target = this.coffeeTablePosition;
+                break;
+            case 'Cake':
+                this.controls.target = this.cakePosition;
+                break;
+            case 'Vinyl':
+                this.controls.target = this.vinylPosition;
+                break;
+            case 'Flowers':
+                this.controls.target = this.flowersPosition;
+                break;
+            case 'Paintings':
+                this.controls.target = this.paintingsPosition;
+                break;
+        }
     }
 
     /**
@@ -161,9 +209,11 @@ class MyApp  {
                 this.controls = new OrbitControls( this.activeCamera, this.renderer.domElement );
                 this.controls.enableZoom = true;
                 this.controls.update();
+                this.setControlsTarget();
             }
             else {
                 this.controls.object = this.activeCamera
+                this.setControlsTarget();
             }
         }
     }
