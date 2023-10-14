@@ -56,16 +56,20 @@ class MyVase extends THREE.Object3D {
         this.add(vaseMesh2)
     }
 
-    createFlowers(numFlowers, heightRange, distanceRange, petalColors, colorCenter, colorStem) {
+    createFlowers(numFlowers, heightRange, distanceRange, petalColors, states, colorCenter, colorStem) {
         const flowers = []
         for (let i = 0; i < numFlowers; i++) {
             const randomHeight = Math.random() * (heightRange[1] - heightRange[0]) + heightRange[0];
             const randomDistance = Math.random() * (distanceRange[1] - distanceRange[0]) + distanceRange[0];
             const randomColorIndex = Math.floor(Math.random() * petalColors.length);
+            const randomStateIndex = Math.floor(Math.random() * states.length);
 
             const colorPetals = petalColors[randomColorIndex];
+            const state = petalColors[randomStateIndex];
 
-            const flower = new MyFlower(this.app, randomHeight, randomDistance, colorPetals, colorCenter, colorStem);
+            const flower = new MyFlower(this.app, randomHeight, randomDistance, colorPetals, colorCenter, colorStem, state);
+            flower.rotation.y = Math.random() * 2 * Math.PI
+            this.app.scene.add(flower)
             flowers.push(flower);
         }
         return flowers;

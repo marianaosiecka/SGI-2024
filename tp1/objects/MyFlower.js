@@ -24,7 +24,7 @@ class MyFlower extends THREE.Object3D {
                 new THREE.Vector3(0, 0, 0),
                 new THREE.Vector3(0, height / 2, 0),
                 new THREE.Vector3(0, height, distance / 2),
-                new THREE.Vector3(0, 2 * height / 3, distance)
+                new THREE.Vector3(0,  0.6* height, distance)
             );
 
         } 
@@ -45,9 +45,9 @@ class MyFlower extends THREE.Object3D {
         else {
             curve = new THREE.CubicBezierCurve3(
                 new THREE.Vector3(0, 0, 0),
-                new THREE.Vector3(0, height / 2, 0),
-                new THREE.Vector3(0, height, distance / 2),
-                new THREE.Vector3(0, 2 * height / 3, distance)
+                new THREE.Vector3(0, height, -distance/3),
+                new THREE.Vector3(0, height, -distance/3),
+                new THREE.Vector3(0, height, distance),
             );
         }
 
@@ -57,7 +57,21 @@ class MyFlower extends THREE.Object3D {
         this.add(stemMesh);
         const flowerHead = new MyFlowerHead(this.app, 0.1, 5, colorPetals, colorCenter);
         this.add(flowerHead);
-        flowerHead.position.set(0, height, 0)
+
+        if(state == "w"){
+            flowerHead.position.set(0, 0.6 * height, distance)
+            flowerHead.rotation.set(0, 0, -Math.PI/2)
+        }
+            
+        else if(state == "u"){
+            flowerHead.position.set(0, height, distance)
+            flowerHead.rotation.set(0, 0, -Math.PI/2)
+        }
+        else{
+            flowerHead.position.set(0, height, distance)
+            flowerHead.rotation.set(0, -Math.PI/2, 0)
+        }
+            
     }
 }
 
