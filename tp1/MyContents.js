@@ -181,7 +181,6 @@ class MyContents {
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x777777, 1);
         this.app.scene.add(ambientLight);
-        /*
 
         const directionalLight1 = new THREE.DirectionalLight(this.white, 0.8);
         directionalLight1.position.set(1, 2, -1);
@@ -190,7 +189,6 @@ class MyContents {
         const directionalLight2 = new THREE.DirectionalLight(this.white, 0.8);
         directionalLight2.position.set(1, 2, 1);
         this.app.scene.add(directionalLight2);
-        */
 
         this.buildBox()
 
@@ -334,7 +332,7 @@ class MyContents {
         window.rotation.set(0, Math.PI / 2, 0,);
         window.position.set(-7.4, this.windowY, this.windowZ)
         this.app.scene.add(window);
-/*
+
         let windowLight = new THREE.RectAreaLight(0xffffff, 100, this.windowWidth, this.windowHeight);
         windowLight.position.set(-8.3, this.windowY, this.windowZ)
         this.app.scene.add(windowLight)
@@ -348,7 +346,7 @@ class MyContents {
         let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.spotLight);
         lampTable.position.set(0, 5.5, 5);
         this.app.scene.add(lampTable);
-        */
+        
 
         //TAPETE
         let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
@@ -387,7 +385,6 @@ class MyContents {
         sofa2.position.set(2.3, 0, -6.2);
         this.app.scene.add(sofa2);
 
-        /*
 
         //CANDEEIRO SOFAS
         let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5, Math.PI / 4, 1, 0.2);
@@ -417,7 +414,7 @@ class MyContents {
         lightFloorLamp.position.set(0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
         this.app.scene.add(floorLamp);
 
-        */
+
         //MESA DOS SOFÁS
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
         coffeeTable.rotation.set(0, Math.PI / 2, 0);
@@ -435,8 +432,6 @@ class MyContents {
         vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
         vinylPlayerHolder.position.set(-6.5, 0, -4.5)
         this.app.scene.add(vinylPlayerHolder);
-
-        /*
 
         //LUZES DE PAREDE
         const wallLampX = 0.15 - this.wallXPos;
@@ -479,9 +474,7 @@ class MyContents {
         this.app.scene.add(wallLampFRight);
         this.app.scene.add(wallLampBLeft);
         this.app.scene.add(wallLampBRight);
-        */
 
-        /*
 
         //LUZES DE TETO
         const ceilingLightX = 5;
@@ -534,7 +527,6 @@ class MyContents {
         ceilinglamp4.position.set(ceilingLightX, ceilingLightY, -ceilingLightZ);
         ceilinglamp4.scale.x = 0.4;
         this.app.scene.add(ceilinglamp4);
-        */
 
 
         let car = new MyCar(this.app);
