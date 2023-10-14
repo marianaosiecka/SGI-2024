@@ -33,14 +33,6 @@ class MyCar extends THREE.Object3D  {
         this.endPoint2
     );
 
-/*    
-    this.windowCurve = new THREE.CubicBezierCurve3(
-        new THREE.Vector3(this.endPoint1.x, this.endPoint1.y - 0.15, 0), 
-        new THREE.Vector3(this.endPoint1.x + 0.25 * (4/3) * Math.tan(angle / 4), this.endPoint1.y - 0.15, 0),
-        new THREE.Vector3(this.endPoint2.x - 0.15, this.endPoint2.y + 0.25 * (4/3) * Math.tan(angle / 4), 0),
-        new THREE.Vector3(this.endPoint2.x - 0.15, this.endPoint2.y, 0)
-    );
-*/
     this.endPoint3 = new THREE.Vector3(this.endPoint2.x + this.radius/2, 0, 0);
 
     this.hoodCurve = new THREE.CubicBezierCurve3(

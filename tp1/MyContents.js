@@ -518,7 +518,6 @@ class MyContents {
         const carGeometry = new THREE.BufferGeometry().setFromPoints([
             ...car.backRoofCurve.getPoints(50),
             ...car.frontRoofCurve.getPoints(50),
-            //...car.windowCurve.getPoints(50),
             ...car.hoodCurve.getPoints(50),
             ...car.backWheelCurve.getPoints(50),
             ...car.smallBackWheelCurve.getPoints(50),
@@ -533,7 +532,7 @@ class MyContents {
         carFrame.addObject(carMesh);
         this.setScale(carFrame, 0.8, 0.8, 0.8);
 
-        let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.jpg'))
+        let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.png'))
         newspaper.position.set(0, 0.9, -4.9);
         newspaper.rotation.set(0, Math.PI / 10, 0);
         this.app.scene.add(newspaper);
