@@ -12,8 +12,26 @@ class MyVase extends THREE.Object3D {
         super();
         this.type = 'Group';
         this.app = app;
+        this.height = height;
+        this.upRadius = upRadius;        
 
-        this.material = new THREE.MeshPhongMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: 0.6, specular: 0xffffff, shininess: 50 });
+        //this.material = new THREE.MeshPhongMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: 0.6, specular: 0xffffff, shininess: 50 });
+        this.material = new THREE.MeshPhysicalMaterial({
+            /*roughness: 0,   
+            transmission: 0.7,  
+            thickness: 1*/
+            metalness: .9,
+            roughness: .05,
+            envMapIntensity: 0.9,
+            clearcoat: 1,
+            transparent: true,
+            // transmission: .95,
+            opacity: .5,
+            reflectivity: 0.2,
+            ior: 0.9,
+            side: THREE.DoubleSide,
+            color: color
+        });
         this.builder = new MyNurbsBuilder(this.app);
 
         this.samplesU = 12;
@@ -56,7 +74,7 @@ class MyVase extends THREE.Object3D {
         this.add(vaseMesh2)
     }
 
-    createFlowers(numFlowers, heightRange, distanceRange, petalColors, states, colorCenter, colorStem) {
+    createRandomFlowers(numFlowers, heightRange, distanceRange, petalColors, states, colorCenter, colorStem) {
         const flowers = []
         for (let i = 0; i < numFlowers; i++) {
             const randomHeight = Math.random() * (heightRange[1] - heightRange[0]) + heightRange[0];
@@ -73,6 +91,23 @@ class MyVase extends THREE.Object3D {
             flowers.push(flower);
         }
         return flowers;
+    }
+
+    createFlowers(colorStem, colorCenter, petalsColors){
+        let flower1 = new MyFlower(this.app, 1.76*this.height, 1.5*this.upRadius, petalsColors[0], colorCenter, colorStem, "w");
+
+        let flower2 = new MyFlower(this.app, 1.94*this.height, 0.75*this.upRadius, petalsColors[1], colorCenter, colorStem, "u");
+
+        let flower3 = new MyFlower(this.app, 1.17*this.height, 1.25*this.upRadius, petalsColors[2], colorCenter, colorStem);
+        flower3.rotation.y = Math.PI/2;
+
+        let flower4 = new MyFlower(this.app, 1.3*this.height, 1.25*this.upRadius, petalsColors[0], colorCenter, colorStem);
+        flower4.rotation.y = Math.PI;
+
+        this.add(flower1);
+        this.add(flower2);
+        this.add(flower3);
+        this.add(flower4);
     }
 }
 

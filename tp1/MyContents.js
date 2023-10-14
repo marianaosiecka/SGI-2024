@@ -166,6 +166,7 @@ class MyContents {
             this.app.scene.add(this.axis)
         }
 
+        
         // add a point light on top of the model
         const pointLight = new THREE.PointLight(this.white, 10);
         pointLight.position.set(0, 20, 0);
@@ -175,10 +176,12 @@ class MyContents {
         const sphereSize = 0.5;
         const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
         this.app.scene.add(pointLightHelper);
+        
 
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x777777, 1);
         this.app.scene.add(ambientLight);
+        /*
 
         const directionalLight1 = new THREE.DirectionalLight(this.white, 0.8);
         directionalLight1.position.set(1, 2, -1);
@@ -187,6 +190,7 @@ class MyContents {
         const directionalLight2 = new THREE.DirectionalLight(this.white, 0.8);
         directionalLight2.position.set(1, 2, 1);
         this.app.scene.add(directionalLight2);
+        */
 
         this.buildBox()
 
@@ -317,6 +321,12 @@ class MyContents {
         carFrame.rotation.set(0, -Math.PI / 2, 0)
         this.app.scene.add(carFrame);
 
+        let frame4Texture = new THREE.TextureLoader().load('pictures/photography2.jpg');
+        let frame4 = new MyFrame(this.app, 1.3, 1.3, 0.1, "#e8d9b3", this.white, frame4Texture)
+        frame4.position.set(3.2, 3.4, -7.8);
+        frame4.rotation.set(0, -Math.PI / 2, 0);
+        this.app.scene.add(frame4);
+
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
         let window = new MyWindow(this.app, this.windowWidth , this.windowHeight, 0.3, "#f7ecd0", windowTexture)
@@ -324,10 +334,11 @@ class MyContents {
         window.rotation.set(0, Math.PI / 2, 0,);
         window.position.set(-7.4, this.windowY, this.windowZ)
         this.app.scene.add(window);
-
+/*
         let windowLight = new THREE.RectAreaLight(0xffffff, 100, this.windowWidth, this.windowHeight);
         windowLight.position.set(-8.3, this.windowY, this.windowZ)
         this.app.scene.add(windowLight)
+        
 
         //SPOT LIGHT
         this.spotLight = new THREE.SpotLight(this.lightColor, 8, 10, Math.PI / 4, 1, 0.2);
@@ -337,6 +348,7 @@ class MyContents {
         let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.spotLight);
         lampTable.position.set(0, 5.5, 5);
         this.app.scene.add(lampTable);
+        */
 
         //TAPETE
         let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
@@ -375,9 +387,12 @@ class MyContents {
         sofa2.position.set(2.3, 0, -6.2);
         this.app.scene.add(sofa2);
 
+        /*
+
         //CANDEEIRO SOFAS
         let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5, Math.PI / 4, 1, 0.2);
         spotLightSofas.target = carpet;
+        
 
         let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
         lampSofas.position.set(0, 5.5, -4.8);
@@ -388,6 +403,7 @@ class MyContents {
         const floorLampY = 0;
         const floorLampZ = -6;
         const floorLampHeight = 2.8;
+
 
         //luz que ilumina a lâmpada
         let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 14, Math.PI / 40, 2, 0.2);
@@ -401,6 +417,7 @@ class MyContents {
         lightFloorLamp.position.set(0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
         this.app.scene.add(floorLamp);
 
+        */
         //MESA DOS SOFÁS
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
         coffeeTable.rotation.set(0, Math.PI / 2, 0);
@@ -409,15 +426,17 @@ class MyContents {
         this.app.scene.add(coffeeTable);
 
         // GIRA DISCOS 
-        let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.5, 1.5, 1, this.orange);
+        let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.8, 1.8, 1.3, this.orange);
         vinylPlayerHolder.buildPlayer(this.green, this.lightBlue);
 
         let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35", "#A41A1A", "#FFD700"]
         vinylPlayerHolder.buildCovers(coverColors)
         const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
         vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
-        vinylPlayerHolder.position.set(-7, 0, -5)
+        vinylPlayerHolder.position.set(-6.5, 0, -4.5)
         this.app.scene.add(vinylPlayerHolder);
+
+        /*
 
         //LUZES DE PAREDE
         const wallLampX = 0.15 - this.wallXPos;
@@ -460,6 +479,9 @@ class MyContents {
         this.app.scene.add(wallLampFRight);
         this.app.scene.add(wallLampBLeft);
         this.app.scene.add(wallLampBRight);
+        */
+
+        /*
 
         //LUZES DE TETO
         const ceilingLightX = 5;
@@ -512,6 +534,7 @@ class MyContents {
         ceilinglamp4.position.set(ceilingLightX, ceilingLightY, -ceilingLightZ);
         ceilinglamp4.scale.x = 0.4;
         this.app.scene.add(ceilinglamp4);
+        */
 
 
         let car = new MyCar(this.app);
@@ -545,23 +568,10 @@ class MyContents {
         this.app.scene.add(spiralSpring);
 
         let vase = new MyVase(this.app, 1.7, 0.4, "#F2F1E5");
-        //vase.createFlowers(4, [1.6, 2.8], [0.1, 0.5], ["#51385C", "#DA4B0E", "#83BACC"], ["w", "u", "n"], "#F3ED52", "#40874B")
+        vase.createFlowers("#40874B", "#F3ED52", ["#51385C", "#DA4B0E", "#83BACC"]);
+        vase.position.set(-5, 0, -7);
+        vase.rotation.set(0, -Math.PI / 2, 0);
         this.app.scene.add(vase);
-
-        const colorCenter = "#F3ED52"
-        const colorStem = "#40874B"
-        let flower1 = new MyFlower(this.app, 3, 0.6, "#51385C", colorCenter, colorStem, "w");
-        this.app.scene.add(flower1)
-        let flower2 = new MyFlower(this.app, 3.3, 0.3, "#DA4B0E", colorCenter, colorStem, "u");
-        this.app.scene.add(flower2)
-        let flower3 = new MyFlower(this.app, 2, 0.5, "#83BACC", colorCenter, colorStem);
-        flower3.rotation.y = Math.PI/2
-        this.app.scene.add(flower3)
-        let flower4 = new MyFlower(this.app, 2.2, 0.5, "#51385C", colorCenter, colorStem);
-        flower4.rotation.y = Math.PI
-        this.app.scene.add(flower4)
-
-
     }
 
     createHelperObject(x, y, z) {

@@ -42,13 +42,15 @@ class MyGuiInterface  {
         const data = {  
             'diffuse color': this.contents.diffusePlaneColor,
             'specular color': this.contents.specularPlaneColor,
-            'color': this.contents.spotLight.color
+            //'color': this.contents.spotLight.color
         };
 
+        /*
         const spotLightTargetPosition = {
             'targetX' : this.contents.spotLight.target.position.x,
             'targetY' : this.contents.spotLight.target.position.y
         }
+        */
 
         // adds a folder to the gui interface for the plane
         const planeFolder = this.datgui.addFolder( 'Plane' );
@@ -64,6 +66,7 @@ class MyGuiInterface  {
         cameraFolder.add(this.app.activeCamera.position, 'x', 0, 10).name("x coord")
         cameraFolder.open()
 
+        /*
         // folder in the gui interface for the light
         const spotLightFolder = this.datgui.addFolder('SpotLight')
         spotLightFolder.addColor(data, 'color').onChange( (value) => { this.contents.spotLight.color = value } );
@@ -77,6 +80,7 @@ class MyGuiInterface  {
         spotLightFolder.add(spotLightTargetPosition, 'targetX', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetX(value) } );
         spotLightFolder.add(spotLightTargetPosition, 'targetY', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetY(value) } );
         spotLightFolder.open()
+        */
     }
 }
 
