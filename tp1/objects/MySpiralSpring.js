@@ -1,39 +1,42 @@
 import * as THREE from 'three';
 
-class MySpiralSpring extends THREE.Object3D  {
+class MySpiralSpring extends THREE.Object3D {
 
-    /**
-       constructs the object
-       @param {MyApp} app The application object
-    */ 
-    constructor(app, color) {
+  /**
+     constructs the object
+     @param {MyApp} app The application object
+  */
+  constructor(app, color) {
     super();
     this.type = 'Group';
     this.app = app;
 
-    const numTurns = 3;      //Número de voltas na espiral
-    const radius = 0.08;     //Raio da espiral
-    const looseness = 0.5;   //Determina o quão "larga" é a espiral quanto menor o valor, mais apertada é
-    const segments = 150;    //Número de segmentos na espiral, quanto mais segmentos menos se nota as particulas individuais
-    const sphereCount = segments * numTurns; // Número de esferas
+    this.numTurns = 8;                              //Número de voltas na espiral
+    this.spiralRadius = 0.08;                       //Raio da espiral
+    this.looseness = 0.2;                           //Determina o quão "larga" é a espiral quanto menor o valor, mais apertada é
+    this.segments = 150;                            //Número de segmentos na espiral, quanto mais segmentos menos se nota as particulas individuais
+    this.divCount = this.segments * this.numTurns;  //Número de divisões
+    this.tubeRadius = 0.03;                         //Raio do tubo
 
-
-    for (let i = 0; i < sphereCount; i++) {
-        const t = i / segments;                     //Representa um número de transição entre 0 e 1; permite a progressão ao longo da espiral
-        const angle = t * 2 * Math.PI * numTurns;   //Multiplica por 2*PI para normalizar para radianos
-        const x = radius * Math.cos(angle);
-        const y = radius * Math.sin(angle);
-        const z = (looseness / segments) * i;
-
-        const sphere = new THREE.SphereGeometry(0.04, 10, 10);
-        const sphereMaterial = new THREE.MeshPhongMaterial({ color: color, specular:"#FFFFFF", shininess:8 });
-        const sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
-        sphereMesh.position.set(x, y, z);
-        this.add(sphereMesh);
+    const points = [];
+    for (let i = 0; i < this.divCount; i++) {
+      const t = i / this.divCount;                   //Representa um número de transição entre 0 e 1; 
+      const angle = t * 2 * Math.PI * this.numTurns; //Multiplica por 2*PI para normalizar para radianos
+      const x = this.spiralRadius * Math.cos(angle);
+      const y = this.spiralRadius * Math.sin(angle);
+      const z = (this.looseness / this.segments) * i;
+      points.push(new THREE.Vector3(x, y, z));
     }
-    
+
+    const curve = new THREE.CatmullRomCurve3(points);
+    this.tubeGeometry = new THREE.TubeGeometry(curve, this.divCount, this.tubeRadius, 10, false);
+    this.tubeMaterial = new THREE.MeshPhongMaterial({ color: color, specular: "#FFFFFF", shininess: 8 });
+    this.spiralMesh = new THREE.Mesh(this.tubeGeometry, this.tubeMaterial);
+    this.add(this.spiralMesh);
   }
+
 }
+
 
 MySpiralSpring.prototype.isGroup = true;
 export { MySpiralSpring };

@@ -410,7 +410,7 @@ class MyContents {
 
         // GIRA DISCOS 
         let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.5, 1.5, 1, this.orange);
-        vinylPlayerHolder.buildPlayer(this.green, this.blue);
+        vinylPlayerHolder.buildPlayer(this.green, this.lightBlue);
 
         let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35", "#A41A1A", "#FFD700"]
         vinylPlayerHolder.buildCovers(coverColors)
@@ -540,16 +540,27 @@ class MyContents {
 
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
         spiralSpring.rotation.set(0, -Math.PI/6, 0);
-        spiralSpring.scale.set(0.4, 0.4, 0.4);
+        this.setScale(spiralSpring, 0.3, 0.3, 0.3);
         spiralSpring.position.set(-0.4, 0.94, -4.4);
         this.app.scene.add(spiralSpring);
 
-        let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");
-       // vase.createFlowers(4, [2.5, 3.2], [0.05, 0.3], ["#51385C"], "#F3ED52", "#40874B")
+        let vase = new MyVase(this.app, 1.7, 0.4, "#F2F1E5");
+        //vase.createFlowers(4, [1.6, 2.8], [0.1, 0.5], ["#51385C", "#DA4B0E", "#83BACC"], ["w", "u", "n"], "#F3ED52", "#40874B")
         this.app.scene.add(vase);
 
-        let flower = new MyFlower(this.app, 2.8, 0.3, "#51385C", "#F3ED52", "#40874B", "w");
-        this.app.scene.add(flower)
+        const colorCenter = "#F3ED52"
+        const colorStem = "#40874B"
+        let flower1 = new MyFlower(this.app, 3, 0.6, "#51385C", colorCenter, colorStem, "w");
+        this.app.scene.add(flower1)
+        let flower2 = new MyFlower(this.app, 3.3, 0.3, "#DA4B0E", colorCenter, colorStem, "u");
+        this.app.scene.add(flower2)
+        let flower3 = new MyFlower(this.app, 2, 0.5, "#83BACC", colorCenter, colorStem);
+        flower3.rotation.y = Math.PI/2
+        this.app.scene.add(flower3)
+        let flower4 = new MyFlower(this.app, 2.2, 0.5, "#51385C", colorCenter, colorStem);
+        flower4.rotation.y = Math.PI
+        this.app.scene.add(flower4)
+
 
     }
 
