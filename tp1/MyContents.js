@@ -25,7 +25,7 @@ class MyContents {
         })
 
         this.mapSize = 4096
-        this.nbrPolyg = 10
+        this.nbrPolyg = 100
         this.volumeDimX = 10
         this.volumeDimY = 10
         this.volumeDimZ = 10
@@ -71,11 +71,11 @@ class MyContents {
         light2.shadow.mapSize.height = this.mapSize;
         light2.shadow.camera.near = 0.5;
         light2.shadow.camera.far = 100;
-        this.app.scene.add(light2);
+       // this.app.scene.add(light2);
 
         // creates a helper for the light
         const helper2 = new THREE.PointLightHelper(light2, 1);
-        this.app.scene.add(helper2);
+      //  this.app.scene.add(helper2);
 
         // creates the floating box
         this.buildFloatingBox()
@@ -100,14 +100,16 @@ class MyContents {
         this.app.scene.add(mesh);
     }
 
+
     /**
      * builds a floor
      */
     buildFloor() {
         // Create a plane Mesh with basic material
-        var floor = new THREE.PlaneGeometry(30, 30);
+        //var floor = new THREE.PlaneGeometry(30, 30);
+        var floor = new THREE.BoxGeometry(30, 30*0.1*30, 30)
         let mesh = new THREE.Mesh(floor, this.floorMaterial);
-        mesh.rotation.x = - Math.PI / 2;
+        mesh.rotation.x = Math.PI / 2;
         mesh.position.y = 0
 
         // cast and receives shadows
@@ -115,6 +117,7 @@ class MyContents {
         mesh.castShadow = true;
         this.app.scene.add(mesh);
     }
+
 
     rebuildVolume() {
         for (let i = 0; i < this.nbrPolyg; i++) {
@@ -128,105 +131,61 @@ class MyContents {
 
 
     buildVolume() {
-
-
         const volumeDimXd2 = this.volumeDimX / 2
-
         const volumeDimYd2 = this.volumeDimY / 2
-
         const volumeDimZd2 = this.volumeDimZ / 2
 
-
         const maxDimX = this.volumeDimX / 3
-
         const maxDimY = this.volumeDimY / 3
 
 
-
-
         for (let i = 0; i < this.nbrPolyg; i++) {
-
-
             const dimX = maxDimX * Math.random()
-
             const dimY = maxDimY * Math.random()
 
-
             const rotX = 2 * Math.PI * Math.random()
-
             const rotY = 2 * Math.PI * Math.random()
-
             const rotZ = 2 * Math.PI * Math.random()
 
-
             const posX = this.volumeDimX * Math.random() - volumeDimXd2
-
             const posY = this.volumeDimY * Math.random() - volumeDimYd2
-
             const posZ = this.volumeDimZ * Math.random() - volumeDimZd2
 
-
             const colorR = Math.random()
-
             const colorG = Math.random()
-
             const colorB = Math.random()
-
             const colorP = new THREE.Color(colorR, colorG, colorB);
-
             var smallP = new THREE.PlaneGeometry(dimX, dimY)
-
             this.volumeMeshes[i] =
-
                 new THREE.Mesh(smallP,
-
                     new THREE.MeshStandardMaterial({ color: colorP }))
 
-
-
             this.volumeMeshes[i].rotation.x = rotX
-
             this.volumeMeshes[i].rotation.y = rotY
-
             this.volumeMeshes[i].rotation.z = rotZ
 
-
             this.volumeMeshes[i].position.x = posX
-
             this.volumeMeshes[i].position.y = posY
-
             this.volumeMeshes[i].position.z = posZ
 
-
             this.volumeMeshes[i].receiveShadow = true
-
             this.volumeMeshes[i].castShadow = true
 
-
             this.app.scene.add(this.volumeMeshes[i])
-
         }
-
 
     }
 
 
     /**
-
      * updates the contents
-
      * this method is called from the render method of the app
-
      *
-
      */
-
     update() {
 
 
-
     }
-
 
 }
 
