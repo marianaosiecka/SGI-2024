@@ -20,13 +20,13 @@ class MyFlowerHead extends THREE.Object3D {
 
         // CENTER
         const center = new THREE.SphereGeometry(centerRadius, 10, 10);
-        const centerMaterial = new THREE.MeshPhongMaterial({ color: colorCenter });
+        const centerMaterial = new THREE.MeshBasicMaterial({ color: colorCenter });
         let centerMesh = new THREE.Mesh(center, centerMaterial);
         centerMesh.scale.x = 0.7
 
 
         // PETALS
-        const petalMaterial = new THREE.MeshPhongMaterial({ color: colorPetals, side: THREE.DoubleSide });
+        const petalMaterial = new THREE.MeshBasicMaterial({ color: colorPetals, side: THREE.DoubleSide });
         const petal = new THREE.SphereGeometry(1.15*centerRadius, 10, 10);
         for (let i = 0; i < numPetals; i++) {
             let angle = i * 2/numPetals * Math.PI

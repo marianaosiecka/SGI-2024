@@ -582,7 +582,7 @@ class MyContents {
         vase.rotation.set(0, Math.PI / 2, 0);
         this.app.scene.add(vase);
 
-        let ballon1 = new MyBalloon(this.app, 0.4, 2, "#db7f39", "#e0ddd3", 1);
+        let ballon1 = new MyBalloon(this.app, 0.4, 2, "#b0eff7", "#e0ddd3", 1);
         ballon1.position.set(this.wallXPos - 2.5, 5.55, this.wallZPos - 2.5);
         this.app.scene.add(ballon1);
 

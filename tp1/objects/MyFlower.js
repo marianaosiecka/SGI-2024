@@ -13,7 +13,7 @@ class MyFlower extends THREE.Object3D {
         this.app = app;
 
         // STEM
-        this.stemMaterial = new THREE.MeshPhongMaterial({ color: colorStem, side: THREE.DoubleSide });
+        this.stemMaterial = new THREE.MeshBasicMaterial({ color: colorStem, side: THREE.DoubleSide });
         let curve;
         const segments = 20;
         const radius = 0.02;
