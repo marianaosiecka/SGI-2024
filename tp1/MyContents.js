@@ -25,7 +25,7 @@ class MyContents {
         })
 
         this.mapSize = 4096
-        this.nbrPolyg = 250
+        this.nbrPolyg =250
         this.volumeDimX = 10
         this.volumeDimY = 10
         this.volumeDimZ = 10
@@ -52,7 +52,7 @@ class MyContents {
         light1.shadow.mapSize.width = this.mapSize;
         light1.shadow.mapSize.height = this.mapSize;
         light1.shadow.camera.near = 0.5;
-        light1.shadow.camera.far = 100;
+        light1.shadow.camera.far = 27;
         light1.shadow.camera.left = -3;
         light1.shadow.camera.right = 3;
         light1.shadow.camera.bottom = -3;
@@ -71,11 +71,11 @@ class MyContents {
         light2.shadow.mapSize.height = this.mapSize;
         light2.shadow.camera.near = 0.5;
         light2.shadow.camera.far = 100;
-       // this.app.scene.add(light2);
+        this.app.scene.add(light2);
 
         // creates a helper for the light
         const helper2 = new THREE.PointLightHelper(light2, 1);
-      //  this.app.scene.add(helper2);
+        this.app.scene.add(helper2);
 
         // creates the floating box
         this.buildFloatingBox()
