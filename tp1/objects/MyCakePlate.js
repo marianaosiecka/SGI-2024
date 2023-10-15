@@ -20,22 +20,19 @@ class MyCakePlate extends THREE.Object3D  {
         this.base1 = new THREE.CylinderGeometry(radius/4, radius/2, height + 0.05, radialSegments);
         this.baseMesh1 = new THREE.Mesh(this.base1, this.baseMaterial);
         this.baseMesh1.position.y = -0.4;
+        this.baseMesh1.castShadow = true;
+        this.baseMesh1.receiveShadow = true;
         this.add(this.baseMesh1)
 
         this.base2 = new THREE.CylinderGeometry(radius/8, radius/4, height+0.3, radialSegments);
         this.baseMesh2 = new THREE.Mesh(this.base2, this.baseMaterial)
         this.baseMesh2.position.y = -0.3;
+        this.baseMesh2.castShadow = true;
+        this.baseMesh2.receiveShadow = true;
         this.add(this.baseMesh2)
     
     }
 
-    changeColorTop(color) {
-        this.topMesh.material.color = new THREE.Color(color);
-    }
-
-    changeColorBase(color) {
-        this.baseMesh.material.color = new THREE.Color(color);
-    }
 }
 
 

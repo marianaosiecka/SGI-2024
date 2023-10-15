@@ -32,6 +32,8 @@ class MySpiralSpring extends THREE.Object3D {
     this.tubeGeometry = new THREE.TubeGeometry(curve, this.divCount, this.tubeRadius, 10, false);
     this.tubeMaterial = new THREE.MeshPhongMaterial({ color: color, specular: "#FFFFFF", shininess: 8, side: THREE.DoubleSide });
     this.spiralMesh = new THREE.Mesh(this.tubeGeometry, this.tubeMaterial);
+    this.spiralMesh.castShadow = true;
+    this.spiralMesh.receiveShadow = true;
     this.add(this.spiralMesh);
   }
 

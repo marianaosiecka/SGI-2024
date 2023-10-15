@@ -53,6 +53,8 @@ class MyFlower extends THREE.Object3D {
 
         const stem = new THREE.TubeGeometry(curve, segments, radius, segments, false);
         let stemMesh = new THREE.Mesh(stem, this.stemMaterial);
+        stemMesh.castShadow = true;
+        stemMesh.receiveShadow = true;
 
         this.add(stemMesh);
         const flowerHead = new MyFlowerHead(this.app, 0.1, 5, colorPetals, colorCenter);

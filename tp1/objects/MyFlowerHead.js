@@ -34,6 +34,8 @@ class MyFlowerHead extends THREE.Object3D {
             petalMesh.position.z = 0.2 * Math.sin(angle);
             petalMesh.rotation.y = angle;
             */
+            petalMesh.castShadow = true;
+            petalMesh.receiveShadow = true;
             this.add(petalMesh);
         }
 

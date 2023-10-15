@@ -13,6 +13,7 @@ class MyCarpet extends THREE.Object3D  {
         this.carpet = new THREE.BoxGeometry(width, height, depth);
         this.carpetMaterial = new THREE.MeshPhongMaterial({color: color, specular:color, shininess:5, map:carpetTexture, opacity:0.7});
         this.carpetMesh = new THREE.Mesh(this.carpet, this.carpetMaterial);
+        this.carpetMesh.receiveShadow = true;
         this.add(this.carpetMesh);
     }
 
