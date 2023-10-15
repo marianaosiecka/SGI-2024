@@ -23,7 +23,6 @@ class MyPlate extends THREE.Object3D  {
         this.baseMaterial = new THREE.MeshBasicMaterial({ color: colorBase });
         this.baseMesh = new THREE.Mesh(this.base, this.baseMaterial);
         this.baseMesh.position.y = -height - 0.03;
-        this.baseMesh.castShadow = true;
         this.baseMesh.receiveShadow = true;
         this.add(this.baseMesh);
     }

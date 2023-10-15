@@ -32,8 +32,8 @@ class MyApp {
 
         this.coffeeTablePosition = new THREE.Vector3(0, 0.9, -4.9);
         this.cakePosition = new THREE.Vector3(0, 1.9, 4.5);
-        this.vinylPosition = new THREE.Vector3(-7, 2, -5);
-        this.flowersPosition = new THREE.Vector3(-5, 2, -7);
+        this.vinylPosition = new THREE.Vector3(-7, 2, -5.5);
+        this.flowersPosition = new THREE.Vector3(-6, 2, 7);
         this.photosPosition = new THREE.Vector3(0, 2, -8);
         this.paintingsPosition = new THREE.Vector3(0, 2, 8);
         this.windowPosition = new THREE.Vector3(-7.4, 3.5, 0);
@@ -141,13 +141,13 @@ class MyApp {
         this.cameras['Cake'] = cakeCamera;
 
         // vinyl camera
-        let vinylCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-        vinylCamera.position.set(-2, 2.4, -4.8);
+        let vinylCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        vinylCamera.position.set(-2, 2.4, -5.3);
         this.cameras['Vinyl'] = vinylCamera;
 
         // flowers camera
-        let flowersCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-        flowersCamera.position.set(-3, 4.7, -2.7);
+        let flowersCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        flowersCamera.position.set(-4, 3.7, 2.7);   
         this.cameras['Flowers'] = flowersCamera;
 
         // photos camera

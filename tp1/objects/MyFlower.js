@@ -35,7 +35,7 @@ class MyFlower extends THREE.Object3D {
             height = 3/4 * height;
             curve = new THREE.CubicBezierCurve3(
                 new THREE.Vector3(0, 0, 0),
-                new THREE.Vector3(0, 1/2 * height, -0.2),
+                new THREE.Vector3(0, height / 2, -0.2),
                 new THREE.Vector3(0, height / 2, 0),
                 new THREE.Vector3(0, height, distance)
             );        
