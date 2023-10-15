@@ -65,12 +65,15 @@ class MyWindow extends THREE.Object3D {
 
         // GLASS
         this.glassMaterial = new THREE.MeshPhysicalMaterial({
+            transmission: 1,
+            side: THREE.DoubleSide,
+            reflectivity: 0.5,
+            thickness: 0.08,
             transparent: true,
             opacity: 0.2,
-            side: THREE.DoubleSide,
-            reflectivity: 0.8,
-            color: 0xffffff
+            color: 0xffffff,
         });
+
         this.glass = new THREE.PlaneGeometry(width, height / 2);
         this.upGlassMesh = new THREE.Mesh(this.glass, this.glassMaterial);
         this.upGlassMesh.position.z = -depth / 3

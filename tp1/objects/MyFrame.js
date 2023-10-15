@@ -71,12 +71,14 @@ class MyFrame extends THREE.Object3D  {
 
         // GLASS
         this.glassMaterial = new THREE.MeshPhysicalMaterial({
+            transmission: 1,
+            side: THREE.DoubleSide,
+            reflectivity: 0.5,
+            thickness: 0.08,
             transparent: true,
             opacity: 0.2,
-            side: THREE.DoubleSide,
-            reflectivity: 0.8,
-            color: 0xffffff
-        });        
+            color: 0xffffff,
+        });     
         this.glassMesh = new THREE.Mesh(this.insideBorder, this.glassMaterial); 
         this.glassMesh.rotation.y = Math.PI / 2;
         this.glassMesh.position.x = depth/2 - 0.01;
