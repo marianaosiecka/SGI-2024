@@ -74,6 +74,8 @@ class MyCake extends THREE.Object3D  {
 
         this.buildFilling(-this.sliceAngle, sliceX, sliceY, sliceZ, 0, rotationY, rotationZ);
 
+        this.sliceMesh.castShadow = true;
+        this.sliceMesh.receiveShadow = true;
         this.add(this.sliceMesh);
     }
 

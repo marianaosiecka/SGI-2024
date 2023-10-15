@@ -15,7 +15,7 @@ class MyWindow extends THREE.Object3D {
         this.height = height;
         this.depth = depth;
 
-        this.windowMaterial = new THREE.MeshPhongMaterial({ color: color });
+        this.windowMaterial = new THREE.MeshPhongMaterial({ color: color, specular:color });
 
         // FRAME
         this.frameHorizontal = new THREE.BoxGeometry(width, width / 10, depth);

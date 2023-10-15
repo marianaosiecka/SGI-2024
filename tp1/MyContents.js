@@ -22,6 +22,7 @@ import { MyCar } from './objects/MyCar.js';
 import { MyNewspaper } from './objects/MyNewspaper.js';
 import { MyVase } from './objects/MyVase.js';
 import { MySpiralSpring } from './objects/MySpiralSpring.js';
+import { MyBalloon } from './objects/MyBalloon.js';
 
 /**
  *  This class contains the contents of out application
@@ -294,43 +295,43 @@ class MyContents {
         
         //CANDEEIRO DE TETO DO BOLO
         let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
-        lampTable.position.set(0, 5.5, 5);
+        lampTable.position.set(0, 5.5, 4.8);
         this.app.scene.add(lampTable);
 
         // MOLDURAS
         let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
-        let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, "#e8d9b3", this.white, frame1Texture)
+        let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, "#e0ddd3", this.white, frame1Texture)
         frame1.position.set(4, 3.5, 7.8)
         frame1.rotation.set(0, Math.PI / 2, 0)
         this.app.scene.add(frame1);
 
         let frame2Texture = new THREE.TextureLoader().load('pictures/painting1.jpg');
-        let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, "#e8d9b3", this.white, frame2Texture);
+        let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, "#e0ddd3", this.white, frame2Texture);
         frame2.position.set(-4, 3.2, 7.8)
         frame2.rotation.set(0, Math.PI / 2, 0)
         this.app.scene.add(frame2)
 
         let frame3Texture = new THREE.TextureLoader().load('pictures/photography1.jpg');
-        let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, "#e8d9b3", this.white, frame3Texture)
+        let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, "#e0ddd3", this.white, frame3Texture)
         frame3.position.set(0, 3, -7.8);
         frame3.rotation.set(0, -Math.PI / 2, 0);
         this.app.scene.add(frame3);
 
         let carFrameTexture = new THREE.TextureLoader().load('textures/white_texture.png');
-        let carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, "#e8d9b3", this.white, carFrameTexture);
+        let carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, "#e0ddd3", this.white, carFrameTexture);
         carFrame.position.set(-3.5, 4, -7.8)
         carFrame.rotation.set(0, -Math.PI / 2, 0)
         this.app.scene.add(carFrame);
 
         let frame4Texture = new THREE.TextureLoader().load('pictures/photography2.jpg');
-        let frame4 = new MyFrame(this.app, 1.3, 1.3, 0.1, "#e8d9b3", this.white, frame4Texture)
+        let frame4 = new MyFrame(this.app, 1.3, 1.3, 0.1, "#e0ddd3", this.white, frame4Texture)
         frame4.position.set(3.2, 3.4, -7.8);
         frame4.rotation.set(0, -Math.PI / 2, 0);
         this.app.scene.add(frame4);
 
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
-        let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#f7ecd0", windowTexture)
+        let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#e0ddd3", windowTexture)
         window.bottomDownPart();
         window.rotation.set(0, Math.PI / 2, 0,);
         window.position.set(-7.4, this.windowY, this.windowZ)
@@ -422,7 +423,7 @@ class MyContents {
         
         const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
         vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
-        vinylPlayerHolder.position.set(-6.7, -0.1, -5)
+        vinylPlayerHolder.position.set(-6.7, -0.1, -5.5)
         this.app.scene.add(vinylPlayerHolder);
 
         //LUZES DE PAREDE
@@ -570,27 +571,16 @@ class MyContents {
         spiralSpring.position.set(-0.4, 0.94, -4.4);
         this.app.scene.add(spiralSpring);
 
-        let vase = new MyVase(this.app, 1.7, 0.4, "#F2F1E5");
+        let vase = new MyVase(this.app, 1.8, 0.4, "#F2F1E5");
         vase.createFlowers("#40874B", "#F3ED52", ["#51385C", "#DA4B0E", "#83BACC"]);
-        vase.position.set(-5, 0, -7);
-        vase.rotation.set(0, -Math.PI / 2, 0);
+        vase.position.set(-6, 0, 7);
+        vase.scale.z = -1;
+        vase.rotation.set(0, Math.PI / 2, 0);
         this.app.scene.add(vase);
 
-        /*
-        const colorCenter = "#F3ED52"
-        const colorStem = "#40874B"
-        let flower1 = new MyFlower(this.app, 3, 0.6, "#51385C", colorCenter, colorStem, "w");
-        this.app.scene.add(flower1)
-        let flower2 = new MyFlower(this.app, 3.3, 0.3, "#DA4B0E", colorCenter, colorStem, "u");
-        this.app.scene.add(flower2)
-        let flower3 = new MyFlower(this.app, 2, 0.5, "#83BACC", colorCenter, colorStem);
-        flower3.rotation.y = Math.PI / 2
-        this.app.scene.add(flower3)
-        let flower4 = new MyFlower(this.app, 2.2, 0.5, "#51385C", colorCenter, colorStem);
-        flower4.rotation.y = Math.PI
-        this.app.scene.add(flower4)
-        */
-
+        let ballon1 = new MyBalloon(this.app, 0.4, 2, "#a61f1f", "#e0ddd3");
+        ballon1.position.set(this.wallXPos - 3, 4, this.wallZPos - 1.5);
+        this.app.scene.add(ballon1);
     }
 
     createHelperObject(x, y, z) {

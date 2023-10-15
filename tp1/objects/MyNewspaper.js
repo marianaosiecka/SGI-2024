@@ -41,6 +41,8 @@ class MyNewspaper extends THREE.Object3D  {
 
             let surfaceData = this.builder.build(controlPoints, this.orderU, this.orderV, this.samplesU, this.samplesV)  
             let page = new THREE.Mesh(surfaceData, this.material);
+            page.castShadow = true;
+            page.receiveShadow = true;
             this.add(page);
         }
     
