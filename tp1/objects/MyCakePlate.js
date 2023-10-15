@@ -15,7 +15,6 @@ class MyCakePlate extends THREE.Object3D  {
         this.plate = new MyPlate(this.app, radius, height, radialSegments, colorTop, colorTop);
         this.add(this.plate)
 
-        
         this.baseMaterial = new THREE.MeshBasicMaterial({ color: colorBase });
     
         this.base1 = new THREE.CylinderGeometry(radius/4, radius/2, height + 0.05, radialSegments);

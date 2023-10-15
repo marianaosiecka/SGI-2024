@@ -34,7 +34,8 @@ class MyApp  {
         this.cakePosition = new THREE.Vector3(0, 1.9, 4.5);
         this.vinylPosition = new THREE.Vector3(-7, 2, -5);
         this.flowersPosition = new THREE.Vector3(-5, 2, -7);
-        this.paintingsPosition = new THREE.Vector3(0, 2, -8);
+        this.photosPosition = new THREE.Vector3(0, 2, -8);
+        this.paintingsPosition = new THREE.Vector3(0, 2, 8);
     }
     /**
      * initializes the application
@@ -56,6 +57,8 @@ class MyApp  {
         this.renderer = new THREE.WebGLRenderer({antialias:true});
         this.renderer.setPixelRatio( window.devicePixelRatio );
         this.renderer.setClearColor("#000000");
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         // Configure renderer size
         this.renderer.setSize( window.innerWidth, window.innerHeight );
@@ -77,7 +80,6 @@ class MyApp  {
         const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         perspective1.position.set(10,10,3)
         this.cameras['Perspective'] = perspective1
-        console.log(perspective1.position)
 
         // new camera from tp
         const perspective2 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
@@ -147,6 +149,11 @@ class MyApp  {
         flowersCamera.position.set(-3, 4.7, -2.7);   
         this.cameras['Flowers'] = flowersCamera;
 
+        // photos camera
+        let photosCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        photosCamera.position.set(0, 2.5, -1);   
+        this.cameras['Photos'] = photosCamera;
+
         // paintings camera
         let paintingsCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
         paintingsCamera.position.set(0, 2.5, -1);   
@@ -169,6 +176,9 @@ class MyApp  {
                 break;
             case 'Flowers':
                 this.controls.target = this.flowersPosition;
+                break;
+            case 'Photos':
+                this.controls.target = this.photosPosition;
                 break;
             case 'Paintings':
                 this.controls.target = this.paintingsPosition;
@@ -249,11 +259,6 @@ class MyApp  {
     render () {
         this.stats.begin()
         this.updateCameraIfRequired()
-
-        // update the animation if contents were provided
-        if (this.activeCamera !== undefined && this.activeCamera !== null) {
-            this.contents.update()
-        }
 
         // required if controls.enableDamping or controls.autoRotate are set to true
         this.controls.update();

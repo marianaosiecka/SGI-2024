@@ -16,6 +16,7 @@ class MyPlate extends THREE.Object3D  {
         this.topMesh = new THREE.Mesh(this.top, this.topMaterial);
         this.add(this.topMesh);
 
+
         this.base = new THREE.CylinderGeometry(radius - 0.2, radius - 0.4, height + 0.06, radialSegments);         
         this.baseMaterial = new THREE.MeshBasicMaterial({ color: colorBase });
         this.baseMesh = new THREE.Mesh(this.base, this.baseMaterial);

@@ -205,12 +205,12 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.shelf1Mesh = new THREE.Mesh(this.shelf1, this.shelfMaterial);
         this.shelfY = this.squareY + this.squareHeight + 0.5;
         this.shelf1Mesh.position.y = this.shelfY
-        this.shelf1Mesh.position.x = -0.3
+        this.shelf1Mesh.position.x = -0.6
 
         this.coverMaterial = new THREE.MeshBasicMaterial({ map: coverTexture });
         this.coverMesh = new THREE.Mesh(this.cover, this.coverMaterial);
         this.coverMesh.position.y = this.shelfY + 0.015 + this.coverHeight/2
-        this.coverMesh.position.x = -0.3
+        this.coverMesh.position.x = -0.6
         this.coverMesh.rotation.z = Math.PI / 14
 
         this.add(this.coverMesh)

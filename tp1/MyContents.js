@@ -22,7 +22,6 @@ import { MyCar } from './objects/MyCar.js';
 import { MyNewspaper } from './objects/MyNewspaper.js';
 import { MyVase } from './objects/MyVase.js';
 import { MySpiralSpring } from './objects/MySpiralSpring.js';
-import { MyFlower } from './objects/MyFlower.js';
 
 /**
  *  This class contains the contents of out application
@@ -36,13 +35,6 @@ class MyContents {
     constructor(app) {
         this.app = app
         this.axis = null
-
-        // box related attributes
-        this.boxMesh = null
-        this.boxMeshSize = 1.0
-        this.boxEnabled = false
-        this.lastBoxEnabled = null
-        this.boxDisplacement = new THREE.Vector3(0, 2, 0)
 
         // plane related attributes
         this.diffusePlaneColor = "#B8C8D4"
@@ -67,24 +59,12 @@ class MyContents {
         this.wallXPos = 7.5;
         this.wallZPos = 8;
         this.wallHeight = 6;
+
+        // shadow related attribtues
+        this.mapSize = 1024
     }
 
-    /**
-     * builds the box mesh with material assigned
-     */
-    buildBox() {
-        let boxMaterial = new THREE.MeshPhongMaterial({
-            color: "#ffff77",
-            specular: "#000000", emissive: "#000000", shininess: 90
-        })
-
-        // Create a Cube Mesh with basic material
-        let box = new THREE.BoxGeometry(this.boxMeshSize, this.boxMeshSize, this.boxMeshSize);
-        this.boxMesh = new THREE.Mesh(box, boxMaterial);
-        this.boxMesh.rotation.x = -Math.PI / 2;
-        this.boxMesh.position.y = this.boxDisplacement.y;
-    }
-
+    
     buildWalls() {
         let wall = new THREE.PlaneGeometry(15, 6);
         let wall1 = new THREE.PlaneGeometry(16, 6);
@@ -160,11 +140,12 @@ class MyContents {
     init() {
 
         // create once 
-        if (this.axis === null) {
+        /*if (this.axis === null) {
             // create and attach the axis to the scene
             this.axis = new MyAxis(this)
             this.app.scene.add(this.axis)
         }
+        */
 
         
         // add a point light on top of the model
@@ -190,8 +171,6 @@ class MyContents {
         directionalLight2.position.set(1, 2, 1);
         this.app.scene.add(directionalLight2);
 
-        this.buildBox()
-
         // Create a Plane Mesh with basic material
         let floor = new THREE.PlaneGeometry(15, 16);
         let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
@@ -209,6 +188,7 @@ class MyContents {
         let table = new MyTable(this.app, 3.5, 0.1, 5, 1.2, tableTexture);
         table.buildLegs(0.2, 0.1, 20, this.brown);
         table.position.set(0, 0, 5.4);
+        table.receiveShadow = true;
         this.app.scene.add(table);
 
 
@@ -254,11 +234,15 @@ class MyContents {
         // PRATO DO BOLO
         let cakePlate = new MyCakePlate(this.app, 0.7, 0.05, 50, this.offWhite, "#c2c2b2")
         cakePlate.position.set(0, 1.7, 4.5);
+        cakePlate.receiveShadow = true;
+        cakePlate.castShadow = true;
         this.app.scene.add(cakePlate)
 
         // PRATO DA FATIA
         let plateSlice = new MyPlate(this.app, 0.52, 0.05, 50, this.offWhite, "#c2c2b2");
         plateSlice.position.set(1.1, 1.38, 6.3)
+        plateSlice.receiveShadow = true;
+        plateSlice.castShadow = true;
         this.app.scene.add(plateSlice);
 
         // BOLO & FATIA
@@ -267,6 +251,8 @@ class MyContents {
         cake.buildSlice(-1.3, -0.3, -2); // pos relativa ao bolo
         cake.position.set(0, 1.9, 4.5);
         cake.rotation.set(0, Math.PI, 0);
+        cake.receiveShadow = true;
+        cake.castShadow = true;
         this.app.scene.add(cake);
 
         // VELA
@@ -342,6 +328,11 @@ class MyContents {
         
         //LUZ DA MESA (BOLO SPOT LIGHT)
         this.tableLight = new THREE.SpotLight(this.lightColor, 4, 10, Math.PI / 3, 1, 0.2);
+        this.tableLight.castShadow = true;
+        this.tableLight.shadow.mapSize.width = this.mapSize;
+        this.tableLight.shadow.mapSize.height = this.mapSize;
+        this.tableLight.shadow.camera.near = 0.5;
+        this.tableLight.shadow.camera.far = 27;
         this.tableLight.target = cake;
 
         //CANDEEIRO DE TETO
@@ -374,6 +365,8 @@ class MyContents {
 
         //SOFAS
         let sofa1 = new MySofa(this.app, 1, 0.4, 0.1, this.brown);
+        sofa1.castShadow = true;
+        sofa1.receiveShadow = true;
         sofa1.rotation.set(0, -Math.PI / 3, 0);
         sofa1.setPillow(pillow1, 0.6, -0.3);
         sofa1.setPillow(pillow2, 0.7, 0.3);
@@ -381,6 +374,8 @@ class MyContents {
         this.app.scene.add(sofa1);
 
         let sofa2 = new MySofa(this.app, 1, 0.4, 0.1, this.brown);
+        sofa2.castShadow = true;
+        sofa2.receiveShadow = true;
         sofa2.rotation.set(0, Math.PI / 4 + Math.PI, 0);
         sofa2.setPillow(pillow3, 0.6, -0.3);
         sofa2.setPillow(pillow4, 0.7, 0.3);
@@ -391,7 +386,11 @@ class MyContents {
         //CANDEEIRO SOFAS
         let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5, Math.PI / 4, 1, 0.2);
         spotLightSofas.target = carpet;
-        
+        spotLightSofas.castShadow = true;
+        spotLightSofas.shadow.mapSize.width = this.mapSize;
+        spotLightSofas.shadow.mapSize.height = this.mapSize;
+        spotLightSofas.shadow.camera.near = 0.5;
+        spotLightSofas.shadow.camera.far = 27;
 
         let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
         lampSofas.position.set(0, 5.5, -4.8);
@@ -419,6 +418,8 @@ class MyContents {
 
         //MESA DOS SOFÁS
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
+        coffeeTable.receiveShadow = true;
+        coffeeTable.castShadow = true;
         coffeeTable.rotation.set(0, Math.PI / 2, 0);
         coffeeTable.position.set(0, 0.05, -4.2);
         coffeeTable.buildBooks(["#E57373", "#FFD700", "#FFA07A", "#85A1CC", "#AED9E0", "#FFB74D"]);
@@ -430,9 +431,10 @@ class MyContents {
 
         let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35", "#A41A1A", "#FFD700"]
         vinylPlayerHolder.buildCovers(coverColors)
+        
         const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
         vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
-        vinylPlayerHolder.position.set(-6.5, 0, -4.5)
+        vinylPlayerHolder.position.set(-6.7, -0.1, -5)
         this.app.scene.add(vinylPlayerHolder);
 
         //LUZES DE PAREDE
@@ -641,52 +643,6 @@ class MyContents {
     updatePlaneShininess(value) {
         this.planeShininess = value
         this.planeMaterial.shininess = this.planeShininess
-    }
-
-    /**
-     * rebuilds the box mesh if required
-     * this method is called from the gui interface
-     */
-    rebuildBox() {
-        // remove boxMesh if exists
-        if (this.boxMesh !== undefined && this.boxMesh !== null) {
-            this.app.scene.remove(this.boxMesh)
-        }
-        this.buildBox();
-        this.lastBoxEnabled = null
-    }
-
-    /**
-     * updates the box mesh if required
-     * this method is called from the render method of the app
-     * updates are trigered by boxEnabled property changes
-     */
-    updateBoxIfRequired() {
-        if (this.boxEnabled !== this.lastBoxEnabled) {
-            this.lastBoxEnabled = this.boxEnabled
-            if (this.boxEnabled) {
-                this.app.scene.add(this.boxMesh)
-            }
-            else {
-                this.app.scene.remove(this.boxMesh)
-            }
-        }
-    }
-
-    /**
-     * updates the contents
-     * this method is called from the render method of the app
-     * 
-     */
-    update() {
-        // check if box mesh needs to be updated
-        this.updateBoxIfRequired()
-
-        // sets the box mesh position based on the displacement vector
-        this.boxMesh.position.x = this.boxDisplacement.x
-        this.boxMesh.position.y = this.boxDisplacement.y
-        this.boxMesh.position.z = this.boxDisplacement.z
-
     }
 
 }
