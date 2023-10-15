@@ -56,18 +56,18 @@ class MyFrame extends THREE.Object3D  {
 
         this.upDownInside = new THREE.BoxGeometry(depthInsideBorder, borderInside, widthInsideBorder);
         this.upInsideMesh = new THREE.Mesh(this.upDownInside, this.insideBorderMaterial);
-        this.upInsideMesh.position.x = -depthInsideBorder;
+        this.upInsideMesh.position.x = -depthInsideBorder/3;
         this.upInsideMesh.position.y = heightInsideBorder/2 - borderInside/2;
         this.downInsideMesh = new THREE.Mesh(this.upDownInside, this.insideBorderMaterial);
         this.downInsideMesh.position.y = -heightInsideBorder/2 + borderInside/2;
-        this.downInsideMesh.position.x = -depthInsideBorder;
+        this.downInsideMesh.position.x = -depthInsideBorder/3;
 
         this.sidesInside = new THREE.BoxGeometry(depthInsideBorder, heightInsideBorder, borderInside);
         this.leftInsideMesh = new THREE.Mesh(this.sidesInside, this.insideBorderMaterial);
-        this.leftInsideMesh.position.x = -depthInsideBorder;
+        this.leftInsideMesh.position.x = -depthInsideBorder/3;
         this.leftInsideMesh.position.z = widthInsideBorder/2 - borderInside/2;
         this.rightInsideMesh = new THREE.Mesh(this.sidesInside, this.insideBorderMaterial);
-        this.rightInsideMesh.position.x = -depthInsideBorder;
+        this.rightInsideMesh.position.x = -depthInsideBorder/3;
         this.rightInsideMesh.position.z = -widthInsideBorder/2 + borderInside/2;
 
 
@@ -76,7 +76,7 @@ class MyFrame extends THREE.Object3D  {
         this.pictureMaterial = new THREE.MeshBasicMaterial({ map: texture });
         this.pictureMesh = new THREE.Mesh(this.picture, this.pictureMaterial);
         this.pictureMesh.rotation.y = Math.PI / 2;
-        this.pictureMesh.position.x = - depthInsideBorder - depthInsideBorder/2;
+        this.pictureMesh.position.x = this.rightInsideMesh.position.x;
 
         // GLASS
         this.glassMaterial = new THREE.MeshPhongMaterial({ transparent: true, opacity: 0.2, color: 0xffffff, specular: 0xffffff, shininess:40 });

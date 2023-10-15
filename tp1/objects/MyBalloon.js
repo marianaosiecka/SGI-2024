@@ -6,13 +6,18 @@ class MyBalloon extends THREE.Object3D  {
        constructs the object
        @param {MyApp} app The application object
     */ 
-    constructor(app, radius, height, colorBalloon, colorStem) {
+    constructor(app, radius, height, colorBalloon, colorStem, switchString) {
         super();
         this.app = app;
         this.type = 'Group';
 
-        let topHemisphere = new THREE.SphereGeometry(radius, 30, 30, 0, Math.PI);   
-        let ballonMaterial = new THREE.MeshPhongMaterial({ color: colorBalloon, specular:colorBalloon});
+        let topHemisphere = new THREE.SphereGeometry(radius, 30, 30, 0, Math.PI);  
+        let ballonMaterial = new THREE.MeshPhysicalMaterial({ transmission: 0.8,
+            side: THREE.DoubleSide,
+            reflectivity: 0.05,
+            thickness: 0.08,
+            color: colorBalloon,
+            roughness: 0.3});
         let topHemisphereMesh = new THREE.Mesh(topHemisphere, ballonMaterial);
         topHemisphereMesh.rotation.set(-Math.PI/2, 0, 0);
         topHemisphereMesh.scale.z = 1.1;
@@ -25,26 +30,25 @@ class MyBalloon extends THREE.Object3D  {
         bottomHemisphereMesh.receiveShadow = true;
         bottomHemisphereMesh.castShadow = true;
 
-        // STEM
-        this.stemMaterial = new THREE.MeshBasicMaterial({ color: colorStem, side: THREE.DoubleSide });
+        this.stringMaterial = new THREE.MeshBasicMaterial({ color: colorStem, side: THREE.DoubleSide });
         let curve;
         const segments = 20;
-        const stemRadius = 0.02;
-
+        const stringRadius = 0.02;
+        
         curve = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0, height / 4, -0.3),
-            new THREE.Vector3(0, height / 2, 0.1),
-            new THREE.Vector3(0, height, 0)
+            new THREE.Vector4(0, 0, 0, 1),
+            new THREE.Vector4(0, height / 4, switchString*-0.3, 1),
+            new THREE.Vector4(0, height / 2, switchString*0.1, 1),
+            new THREE.Vector4(0, height, 0, 1)
         );
 
-        const stem = new THREE.TubeGeometry(curve, segments, stemRadius, segments, false);
-        let stemMesh = new THREE.Mesh(stem, this.stemMaterial);
-        stemMesh.position.y = -radius*1.1 - radius*1.5 - height/2;
-        stemMesh.castShadow = true;
-        stemMesh.receiveShadow = true;
+        const stem = new THREE.TubeGeometry(curve, segments, stringRadius, segments, false);
+        let stingMesh = new THREE.Mesh(stem, this.stringMaterial);
+        stingMesh.position.y = - height - radius*1.5;
+        stingMesh.castShadow = true;
+        stingMesh.receiveShadow = true;
 
-        this.add(stemMesh);
+        this.add(stingMesh);
         this.add(topHemisphereMesh);
         this.add(bottomHemisphereMesh);
     }

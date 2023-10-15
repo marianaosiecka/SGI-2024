@@ -151,30 +151,25 @@ class MyContents {
             this.app.scene.add(this.axis)
         }
         */
-
         
         // add a point light on top of the model
-        const pointLight = new THREE.PointLight(this.white, 10);
-        pointLight.position.set(0, 20, 0);
+        const pointLight = new THREE.PointLight(this.white, 10, 0, 1);
+        pointLight.position.set(0, 10, 0);
         this.app.scene.add(pointLight);
 
         // add a point light helper for the previous point light
         const sphereSize = 0.5;
         const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
         this.app.scene.add(pointLightHelper);
-        
 
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x777777, 1);
         this.app.scene.add(ambientLight);
 
-        const directionalLight1 = new THREE.DirectionalLight(this.white, 0.8);
-        directionalLight1.position.set(1, 2, -1);
-        this.app.scene.add(directionalLight1);
-
-        const directionalLight2 = new THREE.DirectionalLight(this.white, 0.8);
-        directionalLight2.position.set(1, 2, 1);
-        this.app.scene.add(directionalLight2);
+        const directionalLight = new THREE.DirectionalLight(this.white, 0.5);
+        directionalLight.position.set(0, 1, 0); 
+        directionalLight.target = this.createHelperObject(0, 6, 0);
+        this.app.scene.add(directionalLight);
 
         // Create a Plane Mesh with basic material
         let floor = new THREE.PlaneGeometry(15, 16);
@@ -182,9 +177,18 @@ class MyContents {
         let floorMaterial = new THREE.MeshPhongMaterial({ color: "#e8d7c8", map: floorTexture });
         this.floorMesh = new THREE.Mesh(floor, floorMaterial);
         this.floorMesh.rotation.x = -Math.PI / 2;
-        this.floorMesh.position.y = -0;
+        this.floorMesh.position.y = 0;
         this.floorMesh.receiveShadow = true;
         this.app.scene.add(this.floorMesh);
+
+        // Create a Plane Mesh with basic material
+        let ceiling = new THREE.PlaneGeometry(15, 16);
+        let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege});
+        this.ceilingMesh = new THREE.Mesh(ceiling, ceilingMaterial);
+        this.ceilingMesh.rotation.x = Math.PI / 2;
+        this.ceilingMesh.position.y = 6;
+        this.ceilingMesh.receiveShadow = true;
+        this.app.scene.add(this.ceilingMesh);
 
         this.buildWalls();
 
@@ -202,7 +206,7 @@ class MyContents {
         const widthSeatDinnerTableChair = 1;
         const heightSeatDinnerTableChair = 0.1;
         const depthSeatDinnerTableChair = 0.9;
-        const heightDinnerTableChair = 0.8;
+        const heightDinnerTableChair = 0.7;
 
         const widthLegDinnerTableChair = 0.1;
         const heightLegDinnerTableChair = 0.7;
@@ -301,31 +305,31 @@ class MyContents {
         // MOLDURAS
         let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
         let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, "#e0ddd3", this.white, frame1Texture)
-        frame1.position.set(4, 3.5, 7.8)
+        frame1.position.set(4, 3.5, this.wallZPos - 0.04)
         frame1.rotation.set(0, Math.PI / 2, 0)
         this.app.scene.add(frame1);
 
         let frame2Texture = new THREE.TextureLoader().load('pictures/painting1.jpg');
         let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, "#e0ddd3", this.white, frame2Texture);
-        frame2.position.set(-4, 3.2, 7.8)
+        frame2.position.set(-4, 3.2, this.wallZPos - 0.05)
         frame2.rotation.set(0, Math.PI / 2, 0)
         this.app.scene.add(frame2)
 
         let frame3Texture = new THREE.TextureLoader().load('pictures/photography1.jpg');
         let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, "#e0ddd3", this.white, frame3Texture)
-        frame3.position.set(0, 3, -7.8);
+        frame3.position.set(0, 3, -this.wallZPos + 0.05);
         frame3.rotation.set(0, -Math.PI / 2, 0);
         this.app.scene.add(frame3);
 
         let carFrameTexture = new THREE.TextureLoader().load('textures/white_texture.png');
         let carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, "#e0ddd3", this.white, carFrameTexture);
-        carFrame.position.set(-3.5, 4, -7.8)
+        carFrame.position.set(-3.5, 4, -this.wallZPos + 0.05)
         carFrame.rotation.set(0, -Math.PI / 2, 0)
         this.app.scene.add(carFrame);
 
         let frame4Texture = new THREE.TextureLoader().load('pictures/photography2.jpg');
         let frame4 = new MyFrame(this.app, 1.3, 1.3, 0.1, "#e0ddd3", this.white, frame4Texture)
-        frame4.position.set(3.2, 3.4, -7.8);
+        frame4.position.set(3.2, 3.4, -this.wallZPos + 0.05);
         frame4.rotation.set(0, -Math.PI / 2, 0);
         this.app.scene.add(frame4);
 
@@ -396,7 +400,7 @@ class MyContents {
         const floorLampHeight = 2.8;
 
         //luz que ilumina a lâmpada
-        let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 14, Math.PI / 40, 2, 0.2);
+        let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 6, Math.PI / 40, 2, 0.2);
         lampHighlight.position.set(0, 0, 5);
         //luz que sai do candeeiro
         let lightFloorLamp = new THREE.SpotLight(this.lightColor, 20, 10, Math.PI / 6, 1, 0.8);
@@ -475,7 +479,7 @@ class MyContents {
         const ceilingLightZ = 4;
 
         //highlight é o que faz parecer que a luz está ligada (aponta para o candeeiro em si)
-        let ceilingHighlight1 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
+        let ceilingHighlight1 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         //ceiling light é a luz que sai do candeeiro
         let ceilingLight1 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight1.castShadow = true;
@@ -493,7 +497,7 @@ class MyContents {
         ceilinglamp1.scale.x = 0.4;
         this.app.scene.add(ceilinglamp1);
 
-        let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
+        let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight2.castShadow = true;
         ceilingLight2.shadow.mapSize.width = this.mapSize;
@@ -509,7 +513,7 @@ class MyContents {
         ceilinglamp2.scale.x = 0.4;
         this.app.scene.add(ceilinglamp2);
 
-        let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
+        let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight3.castShadow = true;
         ceilingLight3.shadow.mapSize.width = this.mapSize;
@@ -525,7 +529,7 @@ class MyContents {
         ceilinglamp3.scale.x = 0.4;
         this.app.scene.add(ceilinglamp3);
 
-        let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
+        let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight4.castShadow = true;
         ceilingLight4.shadow.mapSize.width = this.mapSize;
@@ -578,9 +582,20 @@ class MyContents {
         vase.rotation.set(0, Math.PI / 2, 0);
         this.app.scene.add(vase);
 
-        let ballon1 = new MyBalloon(this.app, 0.4, 2, "#a61f1f", "#e0ddd3");
-        ballon1.position.set(this.wallXPos - 3, 4, this.wallZPos - 1.5);
+        let ballon1 = new MyBalloon(this.app, 0.4, 2, "#db7f39", "#e0ddd3", 1);
+        ballon1.position.set(this.wallXPos - 2.5, 5.55, this.wallZPos - 2.5);
         this.app.scene.add(ballon1);
+
+        let ballon2 = new MyBalloon(this.app, 0.4, 2.5, "#8aa168", "#e0ddd3", -1);
+        this.setScale(ballon2, 1.2);
+        ballon2.position.set(this.wallXPos - 2, 5.45, this.wallZPos - 1.5);
+        this.app.scene.add(ballon2);
+
+        let ballon3 = new MyBalloon(this.app, 0.4, 1.6, "#f0d75b", "#e0ddd3", -1);
+        this.setScale(ballon3, 0.8);
+        ballon3.position.set(this.wallXPos - 1.2, 5.64, this.wallZPos - 2.2);
+        this.app.scene.add(ballon3);
+
     }
 
     createHelperObject(x, y, z) {

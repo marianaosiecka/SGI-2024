@@ -28,7 +28,7 @@ class MyLamp extends THREE.Object3D  {
         this.lightMesh.position.y = - height/2.5 - radiusTop/2 - radiusLight/3;
         this.add(this.lightMesh);
 
-        this.spotLightLamp = new THREE.SpotLight( "#fcf7dc", 10, 4.5, Math.PI/4, 1, 0.2);
+        this.spotLightLamp = new THREE.SpotLight( "#fcf7dc", 10, 3, Math.PI/4, 1, 0.2);
         this.spotLightLamp.position.y = -3;
         this.spotLightLamp.target = this.lightMesh;
         this.add(this.spotLightLamp);
