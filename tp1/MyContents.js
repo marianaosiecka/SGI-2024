@@ -575,7 +575,7 @@ class MyContents {
         spiralSpring.position.set(-0.4, 0.94, -4.4);
         this.app.scene.add(spiralSpring);
 
-        let vase = new MyVase(this.app, 1.8, 0.4, "#F2F1E5");
+        let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");
         vase.createFlowers("#40874B", "#F3ED52", ["#51385C", "#DA4B0E", "#83BACC"]);
         vase.position.set(-6, 0, 7);
         vase.scale.z = -1;

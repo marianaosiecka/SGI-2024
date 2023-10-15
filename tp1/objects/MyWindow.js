@@ -6,7 +6,7 @@ class MyWindow extends THREE.Object3D {
        constructs the object
        @param {MyApp} app The application object
     */
-    constructor(app, width, height, depth, color, texture) {
+    constructor(app, width, height, depth, color, texture, glassMaterial) {
         super();
         this.app = app;
         this.type = 'Group';
@@ -65,23 +65,16 @@ class MyWindow extends THREE.Object3D {
 
         // GLASS
         this.glassMaterial = new THREE.MeshPhysicalMaterial({
-            /*roughness: 0,   
-            transmission: 0.7,  
-            thickness: 1*/
-            metalness: .9,
-            roughness: .05,
-            envMapIntensity: 0.9,
-            clearcoat: 1,
+            transmission: 1,
+            side: THREE.DoubleSide,
+            reflectivity: 0.5,
+            thickness: 0.08,
             transparent: true,
-            // transmission: .95,
-            opacity: .5,
-            reflectivity: 0.2,
-            ior: 0.9,
-            side: THREE.BackSide,
+            opacity: 0.2,
+            color: 0xffffff,
         });
 
         this.glass = new THREE.PlaneGeometry(width, height / 2);
-        //this.glassMaterial = new THREE.MeshPhongMaterial({ transparent: true, opacity: 0.2, color: 0xffffff, specular: 0xffffff, shininess: 100 });
         this.upGlassMesh = new THREE.Mesh(this.glass, this.glassMaterial);
         this.upGlassMesh.position.z = -depth / 3
         this.upGlassMesh.position.y = height / 4

@@ -41,16 +41,18 @@ class MyGuiInterface  {
             'targetY' : this.contents.tableLight.target.position.y
         }
 
+        /*
         // adds a folder to the gui interface for the plane
         const planeFolder = this.datgui.addFolder( 'Plane' );
         planeFolder.addColor( data, 'diffuse color' ).onChange( (value) => { this.contents.updateDiffusePlaneColor(value) } );
         planeFolder.addColor( data, 'specular color' ).onChange( (value) => { this.contents.updateSpecularPlaneColor(value) } );
         planeFolder.add(this.contents, 'planeShininess', 0, 1000).name("shininess").onChange( (value) => { this.contents.updatePlaneShininess(value) } );
         planeFolder.open();
+        */
 
         // adds a folder to the gui interface for the camera
         const cameraFolder = this.datgui.addFolder('Cameras')
-        cameraFolder.add(this.app, 'activeCameraName', [ 'Perspective', 'Perspective2', 'Left', 'Right', 'Top', 'Front', 'Back', 'CoffeeTable', 'Cake', 'Vinyl', 'Flowers', 'Photos', 'Paintings' ] ).name("active camera");
+        cameraFolder.add(this.app, 'activeCameraName', [ 'Perspective', 'Perspective2', 'Left', 'Right', 'Top', 'Front', 'Back', 'CoffeeTable', 'Cake', 'Vinyl', 'Flowers', 'Photos', 'Paintings', 'Window' ] ).name("active camera");
         // note that we are using a property from the app 
         cameraFolder.add(this.app.activeCamera.position, 'x', 0, 10).name("x coord")
         cameraFolder.open()
@@ -67,9 +69,9 @@ class MyGuiInterface  {
         spotLightFolder.add(this.contents.tableLight.position, 'y', -20, 20).onChange( (value) => { this.contents.tableLight.position.y = value } );
         spotLightFolder.add(tableLightTargetPosition, 'targetX', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetX(this.contents.tableLight, value) } );
         spotLightFolder.add(tableLightTargetPosition, 'targetY', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetY(this.contents.tableLight, value) } );
-        spotLightFolder.open()
+        spotLightFolder.close()
 
-        this.datgui.close();
+        //this.datgui.close();
     }
 }
 

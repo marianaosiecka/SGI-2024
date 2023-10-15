@@ -43,7 +43,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.rightMesh.position.z = -width/2;
 
         // LEGS
-        this.leg = new THREE.CylinderGeometry(depth/20, depth/20, height/2);
+        this.leg = new THREE.CylinderGeometry(depth/20, depth/20, height/2 + 0.1);
         this.frontLeftLegMesh = new THREE.Mesh(this.leg, this.furnitureMaterial);
         this.frontLeftLegMesh.rotation.x = - Math.PI/6
         this.frontLeftLegMesh.position.y = legsHeight/2;
@@ -56,7 +56,6 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.backLeftLegMesh.position.x = -depth/4;
         this.backLeftLegMesh.position.z = width/3;
 
-        this.leg = new THREE.CylinderGeometry(depth/20, depth/20, height/2);
         this.frontRightLegMesh = new THREE.Mesh(this.leg, this.furnitureMaterial);
         this.frontRightLegMesh.rotation.x = Math.PI/6
         this.frontRightLegMesh.position.y = legsHeight/2;
@@ -122,7 +121,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         let vinylShape = new THREE.Shape();
         vinylShape.absarc(0, 0, playerWidth/2 + playerWidth/10, 0, Math.PI*2, false)
         this.vinyl = new THREE.ShapeGeometry(vinylShape);
-        this.vinylMaterial = new THREE.MeshPhongMaterial({ color: 0x000000, specular: 0x000000, shininess: 100 })
+        this.vinylMaterial = new THREE.MeshPhongMaterial({ color: 0x000000, specular: "#404040", shininess: 15 })
         this.vinylMesh = new THREE.Mesh(this.vinyl, this.vinylMaterial)
         this.vinylMesh.rotation.x = -Math.PI/2
         this.vinylMesh.position.y = playerBoxY + playerHeight/2 + 0.06;
@@ -132,7 +131,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         let vinylCenterShape = new THREE.Shape();
         vinylCenterShape.absarc(0, 0, (playerWidth/2 + playerWidth/10)/3, 0, Math.PI*2, false)
         this.vinylCenter = new THREE.ShapeGeometry(vinylCenterShape);
-        this.vinylCenterMaterial = new THREE.MeshBasicMaterial({ color: colorCenterVinyl })
+        this.vinylCenterMaterial = new THREE.MeshPhongMaterial({ color: colorCenterVinyl })
         this.vinyCenterMesh = new THREE.Mesh(this.vinylCenter, this.vinylCenterMaterial)
         this.vinyCenterMesh.rotation.x = -Math.PI/2
         this.vinyCenterMesh.position.y = playerBoxY + playerHeight/2 + 0.06 + 0.01;
@@ -207,13 +206,13 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.shelf1Mesh = new THREE.Mesh(this.shelf1, this.shelfMaterial);
         this.shelfY = this.squareY + this.squareHeight + 0.5;
         this.shelf1Mesh.position.y = this.shelfY
-        this.shelf1Mesh.position.x = -0.6
+        this.shelf1Mesh.position.x = -0.7
 
         this.coverMaterial = new THREE.MeshBasicMaterial({ map: coverTexture });
         this.coverMesh = new THREE.Mesh(this.cover, this.coverMaterial);
         this.coverMesh.position.y = this.shelfY + 0.015 + this.coverHeight/2
-        this.coverMesh.position.x = -0.6
-        this.coverMesh.rotation.z = Math.PI / 14
+        this.coverMesh.position.x = -0.68
+        this.coverMesh.rotation.z = Math.PI / 13
         this.coverMesh.castShadow = true;
         this.coverMesh.receiveShadow = true;
 

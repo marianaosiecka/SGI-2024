@@ -8,63 +8,81 @@ class MyVase extends THREE.Object3D {
        constructs the object
        @param {MyApp} app The application object
     */
-    constructor(app, height, upRadius, color) {
+    constructor(app, height, radius, color) {
         super();
         this.type = 'Group';
         this.app = app;
         this.height = height;
-        this.upRadius = upRadius;        
+        this.radius = radius;
 
-        //this.material = new THREE.MeshPhongMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: 0.6, specular: 0xffffff, shininess: 50 });
         this.material = new THREE.MeshPhysicalMaterial({
-            /*roughness: 0,   
-            transmission: 0.7,  
-            thickness: 1*/
-            metalness: .9,
-            roughness: .05,
-            envMapIntensity: 0.9,
-            clearcoat: 1,
-            transparent: true,
-            // transmission: .95,
-            opacity: .5,
-            reflectivity: 0.2,
-            ior: 0.9,
+            transmission: 1,
             side: THREE.DoubleSide,
-            color: color
+            reflectivity: 0.5,
+            thickness: 0.08,
+            color: color,
+            roughness: 0.05
         });
+
         this.builder = new MyNurbsBuilder(this.app);
 
-        this.samplesU = 12;
-        this.samplesV = 12;
-        this.orderU = 2;
-        this.orderV = 4;
+        this.samplesU = 24;
+        this.samplesV = 24;
+        this.orderU = 6;
+        this.orderV = 3;
 
         let controlPoints = [
             // U = 0
             [
-                [0, height, -upRadius, 1],
-                [0, 3 / 4 * height, -1 / 2 * upRadius, 1],
-                [0, 1 / 2 * height, -1 / 3 * upRadius, 1],
-                [0, 1 / 4 * height, -1 / 2 * upRadius, 1],
-                [0, 0, -3 / 2 * upRadius, 1]
+                [0, 0, -radius, 1],
+                [7/6 * radius, 0, -radius, 1],
+                [7/6 * radius, 0, radius, 1],
+                [0, 0, radius, 1]
             ],
             // U = 1
             [
-                [1.5*upRadius, height, 0, 1],
-                [1.8*(1 / 2 * upRadius), 3 / 4 * height, 0, 1],
-                [1.8*(1 / 3 * upRadius), 1 / 2 * height, 0, 1],
-                [1.8*(1 / 2 * upRadius), 1 / 4 * height, 0, 1],
-                [1.8*(3 / 2 * upRadius), 0, 0, 1]
+                [0, 0.125 * height, - 1.7 * radius, 1],
+                [7/6 * 1.7 * radius, 0.125 * height, - 1.7 * radius, 1],
+                [7/6 * 1.7 * radius, 0.125 * height, 1.7 * radius, 1],
+                [0, 0.125 * height, 1.7 * radius, 1]
             ],
             // U = 2
             [
-                [0, height, upRadius, 1],
-                [0, 3 / 4 * height, 1 / 2 * upRadius, 1],
-                [0, 1 / 2 * height, 1 / 3 * upRadius, 1],
-                [0, 1 / 4 * height, 1 / 2 * upRadius, 1],
-                [0, 0, 3 / 2 * upRadius, 1]
+                [0, 0.285 * height, -2.5 * radius, 1],
+                [7/6 * 2.5 * radius, 0.285 * height, -2.5 * radius, 1],
+                [7/6 * 2.5 * radius, 0.285 * height, 2.5 * radius, 1],
+                [0, 0.285 * height, 2.5 * radius, 1]
             ],
+            // U = 3
+            [
+                [0, 0.46 * height, -3 * radius, 1],
+                [7/6 * 3 * radius, 0.46 * height, -3 * radius, 1],
+                [7/6 * 3 * radius, 0.46 * height, 3 * radius, 1],
+                [0, 0.46 * height, 3 * radius, 1]
+            ],
+            // U = 4
+            [
+                [0, 0.81 * height, -1.4 * radius, 1],
+                [7/6 * 1.4 * radius, 0.81 * height, -1.4 * radius, 1],
+                [7/6 * 1.4 * radius, 0.81 * height, 1.4 * radius, 1],
+                [0, 0.81 * height, 1.4 * radius, 1]
+            ],
+            // U = 5
+            [
+                [0, 0.885 * height, -0.95 * radius, 1],
+                [7/6 * 0.95 * radius, 0.885 * height, -0.95 * radius, 1],
+                [7/6 * 0.95 * radius, 0.885 * height, 0.95 * radius, 1],
+                [0, 0.885 * height, 0.95 * radius, 1]
+            ],
+            // U = 6
+            [
+                [0, height, -0.95 * radius, 1],
+                [7/6 * 0.95 * radius, height, -0.95 * radius, 1],
+                [7/6 * 0.95 * radius, height, 0.95 * radius, 1],
+                [0, height, 0.95 * radius, 1]
+            ]
         ];
+
 
         let vaseData = this.builder.build(controlPoints, this.orderU, this.orderV, this.samplesU, this.samplesV)
         let vaseMesh1 = new THREE.Mesh(vaseData, this.material);
@@ -97,15 +115,15 @@ class MyVase extends THREE.Object3D {
         return flowers;
     }
 
-    createFlowers(colorStem, colorCenter, petalsColors){
-        let flower1 = new MyFlower(this.app, 1.76*this.height, 1.5*this.upRadius, petalsColors[0], colorCenter, colorStem, "w");
+    createFlowers(colorStem, colorCenter, petalsColors) {
+        let flower1 = new MyFlower(this.app, 1.76 * this.height, 1.5 * this.radius, petalsColors[0], colorCenter, colorStem, "w");
 
-        let flower2 = new MyFlower(this.app, 1.94*this.height, 0.75*this.upRadius, petalsColors[1], colorCenter, colorStem, "u");
+        let flower2 = new MyFlower(this.app, 1.94 * this.height, 0.75 * this.radius, petalsColors[1], colorCenter, colorStem, "u");
 
-        let flower3 = new MyFlower(this.app, 1.17*this.height, 1.25*this.upRadius, petalsColors[2], colorCenter, colorStem);
-        flower3.rotation.y = Math.PI/2;
+        let flower3 = new MyFlower(this.app, 1.17 * this.height, 1.25 * this.radius, petalsColors[2], colorCenter, colorStem);
+        flower3.rotation.y = Math.PI / 2;
 
-        let flower4 = new MyFlower(this.app, 1.3*this.height, 1.25*this.upRadius, petalsColors[0], colorCenter, colorStem);
+        let flower4 = new MyFlower(this.app, 1.3 * this.height, 1.25 * this.radius, petalsColors[0], colorCenter, colorStem);
         flower4.rotation.y = Math.PI;
 
         this.add(flower1);

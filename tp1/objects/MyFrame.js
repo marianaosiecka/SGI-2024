@@ -39,15 +39,6 @@ class MyFrame extends THREE.Object3D  {
         this.rightMesh.castShadow = true;
 
         // INSIDE BORDER
-        /*
-        const borderInside = height > width ? width/9 : height/9;
-        this.insideBorderMaterial = new THREE.MeshBasicMaterial({ color: colorBorder })
-        this.insideBorder = new THREE.PlaneGeometry(width - borderFrame*2, height - borderFrame*2);
-        this.insideBorderMesh = new THREE.Mesh(this.insideBorder, this.insideBorderMaterial);
-        this.insideBorderMesh.rotation.y = Math.PI / 2;
-        this.insideBorderMesh.position.x = -depth/2;
-        */
-
         const borderInside = height > width ? width/9 : height/9;
         this.insideBorderMaterial = new THREE.MeshBasicMaterial({ color: colorBorder });
         const widthInsideBorder = width - borderFrame*2;
@@ -79,7 +70,15 @@ class MyFrame extends THREE.Object3D  {
         this.pictureMesh.position.x = this.rightInsideMesh.position.x;
 
         // GLASS
-        this.glassMaterial = new THREE.MeshPhongMaterial({ transparent: true, opacity: 0.2, color: 0xffffff, specular: 0xffffff, shininess:40 });
+        this.glassMaterial = new THREE.MeshPhysicalMaterial({
+            transmission: 1,
+            side: THREE.DoubleSide,
+            reflectivity: 0.5,
+            thickness: 0.08,
+            transparent: true,
+            opacity: 0.2,
+            color: 0xffffff,
+        });     
         this.glassMesh = new THREE.Mesh(this.insideBorder, this.glassMaterial); 
         this.glassMesh.rotation.y = Math.PI / 2;
         this.glassMesh.position.x = depth/2 - 0.01;
