@@ -19,6 +19,8 @@ class MyCoffeeTable extends THREE.Object3D  {
         this.top = new THREE.BoxGeometry(width, height, depth);
         this.topMesh = new THREE.Mesh(this.top, this.tableMaterial);
         this.topMesh.position.y = height + this.sideHeight;
+        this.topMesh.castShadow = true;
+        this.topMesh.receiveShadow = true;
         this.add(this.topMesh);
 
         this.left = new THREE.BoxGeometry(width, height, this.sideHeight);
@@ -26,6 +28,8 @@ class MyCoffeeTable extends THREE.Object3D  {
         this.leftMesh.rotation.x = Math.PI/2;
         this.leftMesh.position.y = height+this.sideHeight/2;
         this.leftMesh.position.z = depth/2 - this.halfSideWidth;
+        this.leftMesh.castShadow = true;
+        this.leftMesh.receiveShadow = true;
         this.add(this.leftMesh);
 
         this.right = new THREE.BoxGeometry(width, height, this.sideHeight);
@@ -33,6 +37,8 @@ class MyCoffeeTable extends THREE.Object3D  {
         this.rightMesh.rotation.x = Math.PI/2;
         this.rightMesh.position.y = height+this.sideHeight/2;
         this.rightMesh.position.z = -depth/2 + this.halfSideWidth;
+        this.rightMesh.castShadow = true;
+        this.rightMesh.receiveShadow = true;
         this.add(this.rightMesh);
 
         this.bottom = new THREE.BoxGeometry(width, height, depth);
@@ -113,7 +119,6 @@ class MyCoffeeTable extends THREE.Object3D  {
         this.book12Mesh.position.y = bookY;
         this.book12Mesh.rotation.x = -Math.PI/14;
         this.book12Mesh.position.z = -bookZ + 0.37;
-
 
         this.add(this.book1Mesh)
         this.add(this.book2Mesh)

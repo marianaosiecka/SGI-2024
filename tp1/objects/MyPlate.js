@@ -14,6 +14,8 @@ class MyPlate extends THREE.Object3D  {
         this.top = new THREE.CylinderGeometry(radius, radius, height, radialSegments);         
         this.topMaterial = new THREE.MeshBasicMaterial({ color: colorTop });
         this.topMesh = new THREE.Mesh(this.top, this.topMaterial);
+        this.topMesh.castShadow = true;
+        this.topMesh.receiveShadow = true;
         this.add(this.topMesh);
 
 
@@ -21,6 +23,8 @@ class MyPlate extends THREE.Object3D  {
         this.baseMaterial = new THREE.MeshBasicMaterial({ color: colorBase });
         this.baseMesh = new THREE.Mesh(this.base, this.baseMaterial);
         this.baseMesh.position.y = -height - 0.03;
+        this.baseMesh.castShadow = true;
+        this.baseMesh.receiveShadow = true;
         this.add(this.baseMesh);
     }
 

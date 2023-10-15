@@ -22,6 +22,8 @@ class MyChair extends THREE.Object3D {
         this.seat = new THREE.BoxGeometry(widthSeat, heightSeat, depthSeat);
         this.seatMesh = new THREE.Mesh(this.seat, this.chairMaterial);
         this.seatMesh.position.y = heightChair;
+        this.seatMesh.castShadow = true;
+        this.seatMesh.receiveShadow = true;
         this.add(this.seatMesh);
 
         this.legPositions = [
@@ -40,6 +42,8 @@ class MyChair extends THREE.Object3D {
             this.legMesh.position.x = this.legPositions[i][0];
             this.legMesh.position.y = this.legPositions[i][1];
             this.legMesh.position.z = this.legPositions[i][2];
+            this.legMesh.castShadow = true;
+            this.legMesh.receiveShadow = true;
             this.add(this.legMesh);
         }
     }

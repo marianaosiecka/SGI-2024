@@ -31,6 +31,8 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.upMesh.position.y = height
         this.downMesh = new THREE.Mesh(this.upDown, this.furnitureMaterial);
         this.downMesh.position.y = legsHeight;
+        this.downMesh.castShadow = true
+        this.downMesh.receiveShadow = true
 
         this.sides = new THREE.BoxGeometry(depth, squareHeight + border, border);
         this.leftMesh = new THREE.Mesh(this.sides, this.furnitureMaterial);
@@ -67,9 +69,8 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.backRightLegMesh.position.x = -depth/4;
         this.backRightLegMesh.position.z = -width/3;
 
-
         
-        this.add( this.upMesh )
+        this.add(this.upMesh)
         this.add(this.downMesh)
         this.add(this.leftMesh);
         this.add(this.rightMesh);
@@ -195,7 +196,8 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.lastCoverMesh.rotation.x = Math.PI/8
         this.lastCoverMesh.position.y = this.squareY;
         this.lastCoverMesh.position.z = this.width/2 - this.border/2 - 0.08 - (coverColors.length)*coverSpacing
-
+        this.lastCoverMesh.castShadow = true;
+        this.lastCoverMesh.receiveShadow = true;
         this.add(this.lastCoverMesh)
     }
 
@@ -212,6 +214,8 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.coverMesh.position.y = this.shelfY + 0.015 + this.coverHeight/2
         this.coverMesh.position.x = -0.6
         this.coverMesh.rotation.z = Math.PI / 14
+        this.coverMesh.castShadow = true;
+        this.coverMesh.receiveShadow = true;
 
         this.add(this.coverMesh)
         this.add(this.shelf1Mesh)

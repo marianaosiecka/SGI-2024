@@ -27,7 +27,7 @@ class MyCake extends THREE.Object3D  {
         this.cake = new THREE.CylinderGeometry(radius, radius, height, radialSegments, 1, false, 0, 2*Math.PI - sliceAngle);    
         this.cakeMesh = new THREE.Mesh(this.cake, this.cakeMaterial);
         this.buildFilling(this.sliceAngle);
-
+        
         this.add(this.cakeMesh)
     }
 

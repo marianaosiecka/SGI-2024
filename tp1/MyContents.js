@@ -79,18 +79,21 @@ class MyContents {
         this.wall1Mesh = new THREE.Mesh(wall, wallMaterial);
         this.wall1Mesh.position.z = -this.wallZPos;
         this.wall1Mesh.position.y = 3;
+        this.wall1Mesh.receiveShadow = true;
         this.app.scene.add(this.wall1Mesh);
         // left
         this.wall2Mesh = new THREE.Mesh(wall, wallMaterial);
         this.wall2Mesh.rotation.x = Math.PI;
         this.wall2Mesh.position.z = this.wallZPos;
         this.wall2Mesh.position.y = 3;
+        this.wall2Mesh.receiveShadow = true;
         this.app.scene.add(this.wall2Mesh);
 
         // back
         const windowWallRightWidth = - (-8 - (this.windowZ - (this.windowWidth / 2)))
         this.windowWallRight = new THREE.PlaneGeometry(windowWallRightWidth, 6);
         this.windowWallRightMesh = new THREE.Mesh(this.windowWallRight, wallMaterial)
+        this.windowWallRightMesh.receiveShadow = true;
         this.windowWallRightMesh.rotation.y = Math.PI / 2;
         this.windowWallRightMesh.position.y = 3;
         this.windowWallRightMesh.position.x = -7.5;
@@ -98,6 +101,7 @@ class MyContents {
 
         this.windowWallLeft = new THREE.PlaneGeometry(16 - windowWallRightWidth - this.windowWidth, 6);
         this.windowWallLeftMesh = new THREE.Mesh(this.windowWallLeft, wallMaterial)
+        this.windowWallLeftMesh.receiveShadow = true;
         this.windowWallLeftMesh.rotation.y = Math.PI / 2;
         this.windowWallLeftMesh.position.y = 3;
         this.windowWallLeftMesh.position.x = -7.5;
@@ -106,6 +110,7 @@ class MyContents {
         const windowWallTopHeight = 6 - (this.windowY + this.windowHeight / 2)
         this.windowWallTop = new THREE.PlaneGeometry(this.windowWidth, windowWallTopHeight);
         this.windowWallTopMesh = new THREE.Mesh(this.windowWallTop, wallMaterial)
+        this.windowWallTopMesh.receiveShadow = true;
         this.windowWallTopMesh.rotation.y = Math.PI / 2;
         this.windowWallTopMesh.position.x = -7.5;
         this.windowWallTopMesh.position.z = this.windowZ;
@@ -113,6 +118,7 @@ class MyContents {
 
         this.windowWallDown = new THREE.PlaneGeometry(this.windowWidth, 6 - windowWallTopHeight - this.windowHeight);
         this.windowWallDownMesh = new THREE.Mesh(this.windowWallDown, wallMaterial)
+        this.windowWallDownMesh.receiveShadow = true;
         this.windowWallDownMesh.rotation.y = Math.PI / 2;
         this.windowWallDownMesh.position.x = -7.5;
         this.windowWallDownMesh.position.z = this.windowZ;
@@ -123,14 +129,12 @@ class MyContents {
         this.app.scene.add(this.windowWallTopMesh);
         this.app.scene.add(this.windowWallDownMesh);
 
-
-
-
         // front
         this.wall4Mesh = new THREE.Mesh(wall1, wallMaterial);
         this.wall4Mesh.rotation.y = - Math.PI / 2;
         this.wall4Mesh.position.y = 3;
         this.wall4Mesh.position.x = this.wallXPos;
+        this.wall4Mesh.receiveShadow = true;
         this.app.scene.add(this.wall4Mesh);
     }
 
@@ -178,6 +182,7 @@ class MyContents {
         this.floorMesh = new THREE.Mesh(floor, floorMaterial);
         this.floorMesh.rotation.x = -Math.PI / 2;
         this.floorMesh.position.y = -0;
+        this.floorMesh.receiveShadow = true;
         this.app.scene.add(this.floorMesh);
 
         this.buildWalls();
@@ -185,10 +190,9 @@ class MyContents {
 
         //MESA
         let tableTexture = new THREE.TextureLoader().load('textures/wood_texture.jpg');
-        let table = new MyTable(this.app, 3.5, 0.1, 5, 1.2, tableTexture);
+        let table = new MyTable(this.app, 3.8, 0.1, 6, 1.2, tableTexture);
         table.buildLegs(0.2, 0.1, 20, this.brown);
-        table.position.set(0, 0, 5.4);
-        table.receiveShadow = true;
+        table.position.set(0, 0, 4.8);
         this.app.scene.add(table);
 
 
@@ -207,55 +211,54 @@ class MyContents {
         let chair1 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
         chair1.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
         chair1.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, colorDinnerTableChair);
-        chair1.position.set(-1.8, 0, 6.3)
+        chair1.position.set(-1.8, 0, 6)
         this.app.scene.add(chair1);
 
         let chair2 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
         chair2.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
         chair2.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, colorDinnerTableChair);
-        chair2.position.set(-1.8, 0, 4.6)
+        chair2.position.set(-1.8, 0, 3.6)
         this.app.scene.add(chair2);
 
         let chair3 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
         chair3.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
         chair3.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, colorDinnerTableChair);
         chair3.rotation.set(0, Math.PI - 0.5, 0)
-        chair3.position.set(2.3, 0, 6.3)
+        chair3.position.set(2.3, 0, 6)
         this.app.scene.add(chair3);
 
         let chair4 = new MyChair(this.app, widthSeatDinnerTableChair, heightSeatDinnerTableChair, depthSeatDinnerTableChair, heightDinnerTableChair, colorDinnerTableChair);
         chair4.buildLegs(widthLegDinnerTableChair, heightLegDinnerTableChair, depthLegDinnerTableChair, colorLegDinnerTableChair);
         chair4.buildBackRest(heightSeatDinnerTableChair, widthSeatDinnerTableChair, depthSeatDinnerTableChair, colorDinnerTableChair);
         chair4.rotation.set(0, Math.PI, 0);
-        chair4.position.set(1.8, 0, 4.6)
+        chair4.position.set(1.8, 0, 3.6);
         this.app.scene.add(chair4);
 
 
         // PRATO DO BOLO
         let cakePlate = new MyCakePlate(this.app, 0.7, 0.05, 50, this.offWhite, "#c2c2b2")
-        cakePlate.position.set(0, 1.7, 4.5);
-        cakePlate.receiveShadow = true;
-        cakePlate.castShadow = true;
+        cakePlate.position.set(0, 1.7, 4);
         this.app.scene.add(cakePlate)
 
         // PRATO DA FATIA
-        let plateSlice = new MyPlate(this.app, 0.52, 0.05, 50, this.offWhite, "#c2c2b2");
-        plateSlice.position.set(1.1, 1.38, 6.3)
-        plateSlice.receiveShadow = true;
-        plateSlice.castShadow = true;
-        this.app.scene.add(plateSlice);
+        let plateSlice1 = new MyPlate(this.app, 0.52, 0.05, 50, this.offWhite, "#c2c2b2");
+        plateSlice1.position.set(1.1, 1.38, 5.8)
+        this.app.scene.add(plateSlice1);
+
+        let plateSlice2 = new MyPlate(this.app, 0.52, 0.05, 50, this.offWhite, "#c2c2b2");
+        plateSlice2.position.set(-1.1, 1.38, 5.8)
+        this.app.scene.add(plateSlice2);
+
 
         // BOLO & FATIA
         let fillingTexture = new THREE.TextureLoader().load('textures/cake_slice_texture.png');
         let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#E1A693", "#614E3F", fillingTexture);
         cake.buildSlice(-1.3, -0.3, -2); // pos relativa ao bolo
-        cake.position.set(0, 1.9, 4.5);
+        cake.position.set(0, 1.9, 4);
         cake.rotation.set(0, Math.PI, 0);
-        cake.receiveShadow = true;
-        cake.castShadow = true;
         this.app.scene.add(cake);
 
-        // VELA
+        // VELAS
         let candle1 = new MyCandle(this.app, 0.03, 0.18, 40, this.orange, this.yellow);
         candle1.position.set(cake.position.x - 0.2, cake.position.y + 0.275, cake.position.z + 0.15);
         this.app.scene.add(candle1);
@@ -273,13 +276,26 @@ class MyContents {
         candle4.position.set(cake.position.x + 0.2, 1.76, cake.position.z - 0.3);
         this.app.scene.add(candle4);
 
-
         // GARFO
-        let fork = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
-        this.setScale(fork, 0.2)
-        fork.position.set(0.95, 1.27, 7)
-        this.app.scene.add(fork)
+        let fork1 = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
+        this.setScale(fork1, 0.2)
+        fork1.position.set(0.95, 1.27, 6.5)
+        this.app.scene.add(fork1)
 
+        let fork2 = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
+        fork2.rotation.set(0, Math.PI - Math.PI/14, 0)
+        this.setScale(fork2, 0.2)
+        fork2.position.set(-0.95, 1.27, 5.2)
+        this.app.scene.add(fork2)
+
+        //LUZ DA MESA (BOLO SPOT LIGHT)
+        this.tableLight = new THREE.SpotLight(this.lightColor, 4, 5, Math.PI / 3, 1, 0.2);
+        this.tableLight.target = cake;
+        
+        //CANDEEIRO DE TETO DO BOLO
+        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
+        lampTable.position.set(0, 5.5, 5);
+        this.app.scene.add(lampTable);
 
         // MOLDURAS
         let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
@@ -325,21 +341,6 @@ class MyContents {
         windowLight.position.set(-8.3, this.windowY, this.windowZ)
         windowLight.rotation.set(0, -Math.PI / 2, 0)
         this.app.scene.add(windowLight)
-        
-        //LUZ DA MESA (BOLO SPOT LIGHT)
-        this.tableLight = new THREE.SpotLight(this.lightColor, 4, 10, Math.PI / 3, 1, 0.2);
-        this.tableLight.castShadow = true;
-        this.tableLight.shadow.mapSize.width = this.mapSize;
-        this.tableLight.shadow.mapSize.height = this.mapSize;
-        this.tableLight.shadow.camera.near = 0.5;
-        this.tableLight.shadow.camera.far = 27;
-        this.tableLight.target = cake;
-
-        //CANDEEIRO DE TETO
-        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
-        lampTable.position.set(0, 5.5, 5);
-        this.app.scene.add(lampTable);
-        
 
         //TAPETE
         let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
@@ -365,8 +366,6 @@ class MyContents {
 
         //SOFAS
         let sofa1 = new MySofa(this.app, 1, 0.4, 0.1, this.brown);
-        sofa1.castShadow = true;
-        sofa1.receiveShadow = true;
         sofa1.rotation.set(0, -Math.PI / 3, 0);
         sofa1.setPillow(pillow1, 0.6, -0.3);
         sofa1.setPillow(pillow2, 0.7, 0.3);
@@ -374,8 +373,6 @@ class MyContents {
         this.app.scene.add(sofa1);
 
         let sofa2 = new MySofa(this.app, 1, 0.4, 0.1, this.brown);
-        sofa2.castShadow = true;
-        sofa2.receiveShadow = true;
         sofa2.rotation.set(0, Math.PI / 4 + Math.PI, 0);
         sofa2.setPillow(pillow3, 0.6, -0.3);
         sofa2.setPillow(pillow4, 0.7, 0.3);
@@ -384,13 +381,8 @@ class MyContents {
 
 
         //CANDEEIRO SOFAS
-        let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5, Math.PI / 4, 1, 0.2);
+        let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5.2, Math.PI / 4, 1, 0.2);
         spotLightSofas.target = carpet;
-        spotLightSofas.castShadow = true;
-        spotLightSofas.shadow.mapSize.width = this.mapSize;
-        spotLightSofas.shadow.mapSize.height = this.mapSize;
-        spotLightSofas.shadow.camera.near = 0.5;
-        spotLightSofas.shadow.camera.far = 27;
 
         let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
         lampSofas.position.set(0, 5.5, -4.8);
@@ -401,7 +393,6 @@ class MyContents {
         const floorLampY = 0;
         const floorLampZ = -6;
         const floorLampHeight = 2.8;
-
 
         //luz que ilumina a lâmpada
         let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 14, Math.PI / 40, 2, 0.2);
@@ -415,11 +406,8 @@ class MyContents {
         lightFloorLamp.position.set(0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
         this.app.scene.add(floorLamp);
 
-
         //MESA DOS SOFÁS
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
-        coffeeTable.receiveShadow = true;
-        coffeeTable.castShadow = true;
         coffeeTable.rotation.set(0, Math.PI / 2, 0);
         coffeeTable.position.set(0, 0.05, -4.2);
         coffeeTable.buildBooks(["#E57373", "#FFD700", "#FFA07A", "#85A1CC", "#AED9E0", "#FFB74D"]);
@@ -443,7 +431,7 @@ class MyContents {
         const wallLampZ = this.wallZPos / 2;
         const wallLightY = - 0.15;
 
-        //luzes das luzes de parede
+        //spot lights das luzes de parede
         let lightWallLampFLeft = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI / 4, 1, 0.8);
         lightWallLampFLeft.position.y = wallLightY;
         lightWallLampFLeft.target = this.createHelperObject(wallLampX, this.wallHeight, wallLampZ);
@@ -489,6 +477,11 @@ class MyContents {
         let ceilingHighlight1 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
         //ceiling light é a luz que sai do candeeiro
         let ceilingLight1 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
+        ceilingLight1.castShadow = true;
+        ceilingLight1.shadow.mapSize.width = this.mapSize;
+        ceilingLight1.shadow.mapSize.height = this.mapSize;
+        ceilingLight1.shadow.camera.near = 0.5;
+        ceilingLight1.shadow.camera.far = 27;
         ceilingLight1.target = this.createHelperObject(-ceilingLightX, 0, ceilingLightZ);
         //criação do próprio candeeiro
         let ceilinglamp1 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight1, ceilingLight1);
@@ -501,6 +494,11 @@ class MyContents {
 
         let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
         let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
+        ceilingLight2.castShadow = true;
+        ceilingLight2.shadow.mapSize.width = this.mapSize;
+        ceilingLight2.shadow.mapSize.height = this.mapSize;
+        ceilingLight2.shadow.camera.near = 0.5;
+        ceilingLight2.shadow.camera.far = 27;
         ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
         let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight2, ceilingLight2);
         ceilinglamp2.rotation.set(0, 0, Math.PI / 2);
@@ -512,6 +510,11 @@ class MyContents {
 
         let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
         let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
+        ceilingLight3.castShadow = true;
+        ceilingLight3.shadow.mapSize.width = this.mapSize;
+        ceilingLight3.shadow.mapSize.height = this.mapSize;
+        ceilingLight3.shadow.camera.near = 0.5;
+        ceilingLight3.shadow.camera.far = 27;
         ceilingLight3.target = this.createHelperObject(-ceilingLightX, 0, -ceilingLightZ);
         let ceilinglamp3 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight3, ceilingLight3);
         ceilinglamp3.rotation.set(0, 0, Math.PI / 2);
@@ -523,6 +526,11 @@ class MyContents {
 
         let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 10, 1, 0.8);
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
+        ceilingLight4.castShadow = true;
+        ceilingLight4.shadow.mapSize.width = this.mapSize;
+        ceilingLight4.shadow.mapSize.height = this.mapSize;
+        ceilingLight4.shadow.camera.near = 0.5;
+        ceilingLight4.shadow.camera.far = 27;
         ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight4, ceilingLight4);
         ceilinglamp4.rotation.set(0, 0, Math.PI / 2);

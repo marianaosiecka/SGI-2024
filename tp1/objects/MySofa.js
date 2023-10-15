@@ -23,6 +23,8 @@ class MySofa extends THREE.Object3D  {
         this.upperBackMesh = new THREE.Mesh(this.upperBack, this.sofaMaterial);
         this.upperBackMesh.rotation.z = Math.PI/2;
         this.upperBackMesh.position.y = radius;
+        this.upperBackMesh.castShadow = true;
+        this.upperBackMesh.receiveShadow = true;
         this.add(this.upperBackMesh);
 
         this.legSize = radius/3;
@@ -33,12 +35,16 @@ class MySofa extends THREE.Object3D  {
         this.lowerBack = new THREE.BoxGeometry(height, radius + floorHeight/2, this.seatDepth);         
         this.lowerBackMesh = new THREE.Mesh(this.lowerBack, this.sofaMaterial);
         this.lowerBackMesh.position.y = (this.radius/2 + this.floorHeight/2);
+        this.lowerBackMesh.castShadow = true;
+        this.lowerBackMesh.receiveShadow = true;
         this.add(this.lowerBackMesh);
 
         this.seat = new THREE.BoxGeometry(this.seatWidth, this.seatHeight, this.seatDepth);         
         this.seatMesh = new THREE.Mesh(this.seat, this.sofaMaterial);
         this.seatMesh.position.x = this.seatWidth/2;
         this.seatMesh.position.y = this.floorHeight + this.legSize + radius/4.4;
+        this.seatMesh.castShadow = true;
+        this.seatMesh.receiveShadow = true;
         this.add(this.seatMesh);
 
         this.leg = new THREE.BoxGeometry(radius/4, this.legSize, radius/4);         
@@ -46,12 +52,16 @@ class MySofa extends THREE.Object3D  {
         this.leg1Mesh.position.x = this.seatWidth - radius/8;
         this.leg1Mesh.position.z = this.seatDepth/2 - radius/8;
         this.leg1Mesh.position.y = this.floorHeight + this.legSize/2;
+        this.leg1Mesh.castShadow = true;
+        this.leg1Mesh.receiveShadow = true;
         this.add(this.leg1Mesh);
 
         this.leg2Mesh = new THREE.Mesh(this.leg, this.sofaMaterial);
         this.leg2Mesh.position.x = this.seatWidth - radius/8;
         this.leg2Mesh.position.z = this.seatWidth - radius/4 - this.seatDepth + 0.025;
         this.leg2Mesh.position.y = this.floorHeight + this.legSize/2;
+        this.leg2Mesh.castShadow = true;
+        this.leg2Mesh.receiveShadow = true;
         this.add(this.leg2Mesh);
 
         this.arm = new THREE.BoxGeometry(radius/5, height, this.seatDepth/1.75); 

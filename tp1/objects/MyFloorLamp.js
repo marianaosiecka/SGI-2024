@@ -13,14 +13,16 @@ class MyFloorLamp extends THREE.Object3D  {
 
         this.lampFoot = new THREE.ConeGeometry(radius, footHeight, radialSegments);         
         this.lampFootMaterial = new THREE.MeshPhongMaterial({ color: colorFoot, specular:"#777777", shininess: 5});
-        this.lampFootesh = new THREE.Mesh(this.lampFoot, this.lampFootMaterial);
-        this.lampFootesh.position.y = footHeight/2;
-        this.add(this.lampFootesh);
+        this.lampFootMesh = new THREE.Mesh(this.lampFoot, this.lampFootMaterial);
+        this.lampFootMesh.position.y = footHeight/2;
+        this.add(this.lampFootMesh);
 
         const armRadius = 0.04;
         this.lampArm1 = new THREE.CylinderGeometry(armRadius, armRadius, armHeight, radialSegments);         
         this.lampArm1Mesh = new THREE.Mesh(this.lampArm1, this.lampFootMaterial);
         this.lampArm1Mesh.position.y = armHeight/2 + footHeight;
+        this.lampArm1Mesh.castShadow = true;
+        this.lampArm1Mesh.receiveShadow = true;
         this.add(this.lampArm1Mesh);
 
         const armRotation = Math.PI/3;
@@ -29,6 +31,8 @@ class MyFloorLamp extends THREE.Object3D  {
         this.lampArm2Mesh.rotation.x = armRotation;
         this.lampArm2Mesh.position.z = footHeight*1.5;
         this.lampArm2Mesh.position.y = armHeight*2.9/3; + footHeight;
+        this.lampArm2Mesh.castShadow = true;
+        this.lampArm2Mesh.receiveShadow = true;
         this.add(this.lampArm2Mesh);
 
         this.lampArm3 = new THREE.CylinderGeometry(armRadius, armRadius, armHeight/10, radialSegments);         
@@ -36,6 +40,8 @@ class MyFloorLamp extends THREE.Object3D  {
         this.lampArm3Mesh.rotation.x = Math.PI/7 + Math.PI/2;
         this.lampArm3Mesh.position.z = Math.cos(Math.PI/6) * (footHeight*1.5 + armHeight/2.4) + Math.sin(Math.PI/3) * armHeight/17;
         this.lampArm3Mesh.position.y = this.lampArm2Mesh.position.y + Math.sin(Math.PI/6) * (footHeight*1.5 + armHeight/2.4) - armHeight/13
+        this.lampArm3Mesh.castShadow = true;
+        this.lampArm3Mesh.receiveShadow = true;
         this.add(this.lampArm3Mesh);
 
         this.lampHead = new THREE.SphereGeometry(topRadius, radialSegments, radialSegments, 0, Math.PI*2, 0, Math.PI/2)
@@ -45,6 +51,8 @@ class MyFloorLamp extends THREE.Object3D  {
         this.lampHeadMesh.position.y = this.lampArm3Mesh.position.y - topRadius*1.5 + 0.12;
         this.lampHeadMesh.position.z = this.lampArm3Mesh.position.z + topRadius*1.5
         this.lampHeadMesh.scale.y = 1.5;
+        this.lampHeadMesh.castShadow = true;
+        this.lampHeadMesh.receiveShadow = true;
         this.add(this.lampHeadMesh);
 
         this.lampLight = new THREE.SphereGeometry(lightRadius, radialSegments, radialSegments, 0, Math.PI*2, Math.PI/2, Math.PI/2);   

@@ -69,6 +69,10 @@ class MyVase extends THREE.Object3D {
         let vaseData = this.builder.build(controlPoints, this.orderU, this.orderV, this.samplesU, this.samplesV)
         let vaseMesh1 = new THREE.Mesh(vaseData, this.material);
         let vaseMesh2 = new THREE.Mesh(vaseData, this.material);
+        vaseMesh1.castShadow = true;
+        vaseMesh1.receiveShadow = true;
+        vaseMesh2.castShadow = true;
+        vaseMesh2.receiveShadow = true;
         vaseMesh2.rotation.y = Math.PI;
         this.add(vaseMesh1);
         this.add(vaseMesh2)

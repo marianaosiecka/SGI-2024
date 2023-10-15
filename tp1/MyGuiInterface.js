@@ -49,14 +49,14 @@ class MyGuiInterface  {
         planeFolder.open();
 
         // adds a folder to the gui interface for the camera
-        const cameraFolder = this.datgui.addFolder('Camera')
+        const cameraFolder = this.datgui.addFolder('Cameras')
         cameraFolder.add(this.app, 'activeCameraName', [ 'Perspective', 'Perspective2', 'Left', 'Right', 'Top', 'Front', 'Back', 'CoffeeTable', 'Cake', 'Vinyl', 'Flowers', 'Photos', 'Paintings' ] ).name("active camera");
         // note that we are using a property from the app 
         cameraFolder.add(this.app.activeCamera.position, 'x', 0, 10).name("x coord")
         cameraFolder.open()
 
-        // folder in the gui interface for the light
-        const spotLightFolder = this.datgui.addFolder('SpotLight')
+        // folder in the gui interface for the cake spotlight
+        const spotLightFolder = this.datgui.addFolder('Cake SpotLight')
         spotLightFolder.addColor(data, 'color').onChange( (value) => { this.contents.tableLight.color = value } );
         spotLightFolder.add(this.contents.tableLight, 'intensity', 0, 20).onChange( (value) => { this.contents.tableLight.intensity = value } );
         spotLightFolder.add(this.contents.tableLight, 'distance', 0, 15).onChange( (value) => { this.contents.tableLight.distance = value } );
@@ -68,6 +68,8 @@ class MyGuiInterface  {
         spotLightFolder.add(tableLightTargetPosition, 'targetX', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetX(this.contents.tableLight, value) } );
         spotLightFolder.add(tableLightTargetPosition, 'targetY', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetY(this.contents.tableLight, value) } );
         spotLightFolder.open()
+
+        this.datgui.close();
     }
 }
 

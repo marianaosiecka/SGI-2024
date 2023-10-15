@@ -26,6 +26,8 @@ class MyTable extends THREE.Object3D  {
         this.top = new THREE.BoxGeometry(this.widthTop, this.heightTop, this.depthTop); 
         this.topMesh = new THREE.Mesh(this.top, this.tableMaterial);
         this.topMesh.position.y = this.heightTable;
+        this.topMesh.castShadow = true;
+        this.topMesh.receiveShadow = true;
         this.add(this.topMesh);
 
         const distanceLegToEdge = 0.5;
@@ -48,6 +50,8 @@ class MyTable extends THREE.Object3D  {
             this.legMesh.position.x = this.legPositions[i][0];
             this.legMesh.position.y = this.legPositions[i][1];
             this.legMesh.position.z = this.legPositions[i][2];
+            this.legMesh.castShadow = true;
+            this.legMesh.receiveShadow = true;
             this.add(this.legMesh);
         }
     }
