@@ -126,7 +126,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.vinylMesh = new THREE.Mesh(this.vinyl, this.vinylMaterial)
         this.vinylMesh.rotation.x = -Math.PI/2
         this.vinylMesh.position.y = playerBoxY + playerHeight/2 + 0.06;
-        this.vinylMesh.position.x = playerWidth/9;
+        this.vinylMesh.position.x = playerWidth/9;                   
         this.vinylMesh.position.z = playerWidth/9;
         
         let vinylCenterShape = new THREE.Shape();
