@@ -105,7 +105,7 @@ class MyContents {
         let planeUVRate = planeSizeV / planeSizeU;
 
         let planeTextureUVRate = 3354 / 2385; // image dimensions
-        let planeTextureRepeatU = 1;
+        let planeTextureRepeatU = 2.5;
         let planeTextureRepeatV = planeTextureRepeatU * planeUVRate * planeTextureUVRate;
 
         this.planeTexture.repeat.set(planeTextureRepeatU, planeTextureRepeatV );
