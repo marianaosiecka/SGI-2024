@@ -25,7 +25,6 @@ class MyContents {
         // plane related attributes
 
         //texture
-
         this.planeTexture = new THREE.TextureLoader().load('textures/feup_b.jpg');
         this.planeTexture.wrapS = THREE.RepeatWrapping;
         this.planeTexture.wrapT = THREE.RepeatWrapping;
@@ -59,9 +58,24 @@ class MyContents {
      * builds the box mesh with material assigned
      */
     buildBox() {
+        //box texture
+        let boxTexture = new THREE.TextureLoader().load('textures/feup_entry.jpg');
+        boxTexture.wrapS = THREE.MirroredRepeatWrapping;
+        boxTexture.wrapT = THREE.MirroredRepeatWrapping;
+
+        let boxUVRate = 1; // this.boxMeshSize/this.boxMeshSize -> 1
+
+        let boxTextureUVRate = 2272 / 1704; // image dimensions
+        let boxTextureRepeatU = 1.5;
+        let boxTextureRepeatV = boxTextureRepeatU * boxUVRate * boxTextureUVRate;
+
+        boxTexture.repeat.set(boxTextureRepeatU, boxTextureRepeatV );
+        //boxTexture.rotation = 45 * Math.PI/180;
+        boxTexture.offset = new THREE.Vector2(0,0);
+
         let boxMaterial = new THREE.MeshPhongMaterial({
-            color: "#ffff77",
-            specular: "#000000", emissive: "#000000", shininess: 90
+            specular: "#000000", emissive: "#000000", shininess: 90,
+            map: boxTexture
         })
 
         // Create a Cube Mesh with basic material
