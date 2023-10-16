@@ -27,8 +27,8 @@ class MyContents {
         //texture
 
         this.planeTexture = new THREE.TextureLoader().load('textures/feup_b.jpg');
-        this.planeTexture.wrapS = THREE.MirroredRepeatWrapping;
-        this.planeTexture.wrapT = THREE.MirroredRepeatWrapping;
+        this.planeTexture.wrapS = THREE.RepeatWrapping;
+        this.planeTexture.wrapT = THREE.RepeatWrapping;
 
         // material
         this.diffusePlaneColor = "rgb(128,0,0)"
@@ -105,12 +105,12 @@ class MyContents {
         let planeUVRate = planeSizeV / planeSizeU;
 
         let planeTextureUVRate = 3354 / 2385; // image dimensions
-        let planeTextureRepeatU = 2.5;
+        let planeTextureRepeatU = 1;
         let planeTextureRepeatV = planeTextureRepeatU * planeUVRate * planeTextureUVRate;
 
         this.planeTexture.repeat.set(planeTextureRepeatU, planeTextureRepeatV );
         this.planeTexture.rotation = 0;
-        this.planeTexture.offset = new THREE.Vector2(0,0);
+        this.planeTexture.offset = new THREE.Vector2(0.2,0.1);
 
         var plane = new THREE.PlaneGeometry( planeSizeU, planeSizeV );
         this.planeMesh = new THREE.Mesh( plane, this.planeMaterial );
