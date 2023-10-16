@@ -31,26 +31,26 @@ class MyContents {
         this.planeTexture.wrapT = THREE.RepeatWrapping;
 
         // material
-        this.diffusePlaneColor = "rgb(128,128,128)"
+        this.diffusePlaneColor = "rgb(128,0,0)"
         this.specularPlaneColor = "rgb(0,0,0)"
         this.planeShininess = 0
 
         // relating texture and material:
         // two alternatives with different results
         // alternative 1
-
+        /*
         this.planeMaterial = new THREE.MeshPhongMaterial({
             color: this.diffusePlaneColor,
             specular: this.specularPlaneColor,
             emissive: "#000000", shininess: this.planeShininess,
             map: this.planeTexture
         })
-
+        */
         // end of alternative 1
 
         // alternative 2
-        // this.planeMaterial = new THREE.MeshLambertMaterial({
-        //        map : this.planeTexture });
+        this.planeMaterial = new THREE.MeshLambertMaterial({
+                map : this.planeTexture });
         // end of alternative 2
         let plane = new THREE.PlaneGeometry(10, 10);
     }
