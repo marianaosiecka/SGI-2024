@@ -57,6 +57,12 @@ class MyGuiInterface  {
         // note that we are using a property from the app 
         cameraFolder.add(this.app.activeCamera.position, 'x', 0, 10).name("x coord")
         cameraFolder.open()
+
+        // adds a folder to the gui interface for the plane texture
+        const planeTextureFolder = this.datgui.addFolder( 'Plane Texture' );
+        planeTextureFolder.add( this.contents, 'textureWrapUName', [ 'Repeat', 'Clamp', 'Mirror Repeat' ] ).onChange( (value) => { this.contents.updatePlaneTextureUWrap(value) } );
+        planeTextureFolder.add( this.contents, 'textureWrapVName', [ 'Repeat', 'Clamp', 'Mirror Repeat' ] ).onChange( (value) => { this.contents.updatePlaneTextureVWrap(value) } );
+        planeTextureFolder.open();
     }
 }
 

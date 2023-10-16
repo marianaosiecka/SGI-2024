@@ -22,36 +22,46 @@ class MyContents {
         this.boxDisplacement = new THREE.Vector3(0, 2, 0)
 
         // plane related attributes
-        // plane related attributes
+        this.wraps = ['Repeat', 'Clamp', 'Mirror Repeat']
+        this.wraps['Repeat'] = THREE.RepeatWrapping;
+        this.wraps['Clamp'] = THREE.ClampToEdgeWrapping;
+        this.wraps['Mirror Repeat'] = THREE.MirroredRepeatWrapping;
+        this.planeTextureWrap = this.wraps['Repeat'];
+        this.textureWrapUName = 'Repeat';
+        this.textureWrapVName = 'Repeat';
 
         //texture
         this.planeTexture = new THREE.TextureLoader().load('textures/feup_b.jpg');
-        this.planeTexture.wrapS = THREE.RepeatWrapping;
-        this.planeTexture.wrapT = THREE.RepeatWrapping;
+        this.updatePlaneTextureUWrap('Repeat')
+        this.updatePlaneTextureVWrap('Repeat')
+        this.planeTexture.wrapS =  this.planeTextureWrap
+        this.planeTexture.wrapT =  this.planeTextureWrap
 
         // material
-        this.diffusePlaneColor = "rgb(128,0,0)"
+        this.diffusePlaneColor = "rgb(128,128,128)"
         this.specularPlaneColor = "rgb(0,0,0)"
         this.planeShininess = 0
 
         // relating texture and material:
         // two alternatives with different results
         // alternative 1
-        /*
         this.planeMaterial = new THREE.MeshPhongMaterial({
             color: this.diffusePlaneColor,
             specular: this.specularPlaneColor,
-            emissive: "#000000", shininess: this.planeShininess,
+            emissive: "#000000", 
+            shininess: this.planeShininess,
             map: this.planeTexture
         })
-        */
+        
         // end of alternative 1
 
         // alternative 2
+        /*
         this.planeMaterial = new THREE.MeshLambertMaterial({
                 map : this.planeTexture });
         // end of alternative 2
         let plane = new THREE.PlaneGeometry(10, 10);
+        */
     }
 
     /**
@@ -126,13 +136,43 @@ class MyContents {
         this.planeTexture.rotation = 45 * Math.PI/180;
         this.planeTexture.offset = new THREE.Vector2(0,0);
 
-        var plane = new THREE.PlaneGeometry( planeSizeU, planeSizeV );
-        this.planeMesh = new THREE.Mesh( plane, this.planeMaterial );
+        this.plane = new THREE.PlaneGeometry( planeSizeU, planeSizeV );
+        this.planeMesh = new THREE.Mesh( this.plane, this.planeMaterial );
         this.planeMesh.rotation.x = -Math.PI / 2;
         this.planeMesh.position.y = 0;
         this.app.scene.add( this.planeMesh );
     }
 
+    /**
+     * updates the plane texture wrap
+     * @param value 
+     */
+    updatePlaneTextureUWrap(value) {
+        this.textureWrapUName = value;
+        this.planeTextureWrap = this.wraps[value]
+        if (this.planeMesh !== undefined && this.planeMesh !== null) {
+            this.planeMaterial.map.wrapS = this.planeTextureWrap
+            this.app.scene.remove(this.planeMesh)
+            this.planeMesh = new THREE.Mesh( this.plane, this.planeMaterial );
+            this.planeMesh.rotation.x = -Math.PI / 2;
+            this.app.scene.add(this.planeMesh)
+        }
+    }
+    /**
+     * updates the plane texture wrap
+     * @param value 
+     */
+    updatePlaneTextureVWrap(value) {
+        this.textureWrapVName = value;
+        this.planeTextureWrap = this.wraps[value]
+        if (this.planeMesh !== undefined && this.planeMesh !== null) {
+            this.planeMaterial.map.wrapT = this.planeTextureWrap
+            this.app.scene.remove(this.planeMesh)
+            this.planeMesh = new THREE.Mesh( this.plane, this.planeMaterial );
+            this.planeMesh.rotation.x = -Math.PI / 2;
+            this.app.scene.add(this.planeMesh)
+        }
+    }
     /**
      * updates the diffuse plane color and the material
      * @param {THREE.Color} value 
