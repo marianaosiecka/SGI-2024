@@ -109,8 +109,8 @@ class MyContents {
         let planeTextureRepeatV = planeTextureRepeatU * planeUVRate * planeTextureUVRate;
 
         this.planeTexture.repeat.set(planeTextureRepeatU, planeTextureRepeatV );
-        this.planeTexture.rotation = 0;
-        this.planeTexture.offset = new THREE.Vector2(0.2,0.1);
+        this.planeTexture.rotation = 45 * Math.PI/180;
+        this.planeTexture.offset = new THREE.Vector2(0,0);
 
         var plane = new THREE.PlaneGeometry( planeSizeU, planeSizeV );
         this.planeMesh = new THREE.Mesh( plane, this.planeMaterial );
