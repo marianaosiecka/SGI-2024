@@ -80,8 +80,8 @@ class MySofa extends THREE.Object3D  {
         this.add(this.arm2Mesh);
     }
 
-    setPillow(pillow, pillowHeight, distance) {
-        pillow.position.x = this.height + 0.1;
+    setPillow(pillow, distanceFromBack, pillowHeight, distance) {
+        pillow.position.x = this.height + 0.1 - distanceFromBack;
         pillow.position.y = this.seatMesh.position.y + this.seatHeight/2 + pillowHeight/2;
         pillow.position.z = this.position.z + distance;
         this.add(pillow);
