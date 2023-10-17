@@ -173,13 +173,24 @@ class MyContents {
 
         // Create a Plane Mesh with basic material
         let floor = new THREE.PlaneGeometry(15, 16);
+
         let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
+        let floorUVRate = 15 / 16;
+        let textureUVRate = 626 / 417; // image dimensions
+        let textureRepeatU = 2;
+        let textureRepeatV = textureRepeatU * floorUVRate * textureUVRate;
+        floorTexture.wrapS = THREE.RepeatWrapping;
+        floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set(textureRepeatU, textureRepeatV );
+        floorTexture.offset = new THREE.Vector2(0,0);
+
         let floorMaterial = new THREE.MeshPhongMaterial({ color: "#e8d7c8", map: floorTexture });
-        this.floorMesh = new THREE.Mesh(floor, floorMaterial);
-        this.floorMesh.rotation.x = -Math.PI / 2;
-        this.floorMesh.position.y = 0;
-        this.floorMesh.receiveShadow = true;
-        this.app.scene.add(this.floorMesh);
+
+        let floorMesh = new THREE.Mesh(floor, floorMaterial);
+        floorMesh.rotation.x = -Math.PI / 2;
+        floorMesh.position.y = 0;
+        floorMesh.receiveShadow = true;
+        this.app.scene.add(floorMesh);
 
         // Create a Plane Mesh with basic material
         let ceiling = new THREE.PlaneGeometry(15, 16);

@@ -10,6 +10,15 @@ class MyPillow extends THREE.Object3D  {
         super();
         this.app = app;
         
+        let pillowUVRate = width / height;
+        let textureUVRate = 654 / 1002; // image dimensions
+        let textureRepeatU = 1.5;
+        let textureRepeatV = textureRepeatU * pillowUVRate * textureUVRate;
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.MirroredRepeatWrapping;
+        texture.repeat.set(textureRepeatU, textureRepeatV );
+        texture.rotation = Math.PI/6;
+        texture.offset = new THREE.Vector2(0,0);
         this.pillowMaterial = new THREE.MeshPhongMaterial({ color: color , specular:"#777777", shininess:6, map: texture});
         
         this.pillow = new THREE.BoxGeometry(width, height, depth);         
