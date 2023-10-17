@@ -22,6 +22,7 @@ class MyContents {
         this.polyline = null
         this.quadraticBezierCurve = null
         this.cubicBezierCurve = null
+        this.catmullRomCurve = null
 
         // number of samples to use for the curves (not for polyline)
         this.numberOfSamples = 16
@@ -46,6 +47,10 @@ class MyContents {
         if (this.cubicBezierCurve !== null)
             this.app.scene.remove(this.cubicBezierCurve)
         this.initCubicBezierCurve()
+
+        if (this.catmullRomCurve !== null)
+            this.app.scene.remove(this.catmullRomCurve)
+        this.initCatmullRomCurve()
 
     }
 
@@ -104,13 +109,13 @@ class MyContents {
         // sample a number of points on the curve
         let sampledPoints = curve.getPoints( this.numberOfSamples );
         
-        this.curveGeometry = new THREE.BufferGeometry().setFromPoints( sampledPoints )
-        this.lineMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } )
+        let curveGeometry = new THREE.BufferGeometry().setFromPoints( sampledPoints )
+        let lineMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } )
         
-        this.lineObj = new THREE.Line( this.curveGeometry, this.lineMaterial )
-        this.lineObj.position.set(position.x,position.y,position.z)
+        this.quadraticBezierCurve = new THREE.Line( curveGeometry, lineMaterial )
+        this.quadraticBezierCurve.position.set(position.x,position.y,position.z)
     
-        this.app.scene.add( this.lineObj );     
+        this.app.scene.add( this.quadraticBezierCurve );     
     }
 
     initCubicBezierCurve() {
@@ -131,13 +136,43 @@ class MyContents {
         // sample a number of points on the curve
         let sampledPoints = curve.getPoints( this.numberOfSamples );
         
-        this.curveGeometry = new THREE.BufferGeometry().setFromPoints( sampledPoints )
-        this.lineMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } )
+        let curveGeometry = new THREE.BufferGeometry().setFromPoints( sampledPoints )
+        let lineMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } )
         
-        this.lineObj = new THREE.Line( this.curveGeometry, this.lineMaterial )
-        this.lineObj.position.set(position.x,position.y,position.z)
+        this.cubicBezierCurve = new THREE.Line( curveGeometry, lineMaterial )
+        this.cubicBezierCurve.position.set(position.x,position.y,position.z)
     
-        this.app.scene.add( this.lineObj );     
+        this.app.scene.add( this.cubicBezierCurve );     
+    }
+
+    initCatmullRomCurve() {
+
+        let points = [
+            new THREE.Vector3(-0.6, 0, 1), 
+            new THREE.Vector3(-0.3, 0.6, 0.3),
+            new THREE.Vector3(0, 0, 0), 
+            new THREE.Vector3(0.3, -0.6, 0.5),
+            new THREE.Vector3(0.6, 0, 0),
+            new THREE.Vector3(0.9, 0.6, -0.5),
+            new THREE.Vector3(1.2, 0, -1)
+        ]
+
+        let position = new THREE.Vector3(0, 0, 0)
+
+        this.drawHull(position, points);
+
+        let curve = new THREE.CatmullRomCurve3(points)
+
+        // sample a number of points on the curve
+        let sampledPoints = curve.getPoints( this.numberOfSamples );
+        
+        let curveGeometry = new THREE.BufferGeometry().setFromPoints( sampledPoints )
+        let lineMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } )
+        
+        this.catmullRomCurve = new THREE.Line( curveGeometry, lineMaterial )
+        this.catmullRomCurve.position.set(position.x,position.y,position.z)
+    
+        this.app.scene.add( this.catmullRomCurve );     
     }
 
     /**
