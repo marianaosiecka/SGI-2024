@@ -216,13 +216,24 @@ class MyContents {
 
         // Create a Plane Mesh with basic material
         let floor = new THREE.PlaneGeometry(15, 16);
+
         let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
+        let floorUVRate = 15 / 16;
+        let textureUVRate = 626 / 417; // image dimensions
+        let textureRepeatU = 2;
+        let textureRepeatV = textureRepeatU * floorUVRate * textureUVRate;
+        floorTexture.wrapS = THREE.RepeatWrapping;
+        floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set(textureRepeatU, textureRepeatV );
+        floorTexture.offset = new THREE.Vector2(0,0);
+
         let floorMaterial = new THREE.MeshPhongMaterial({ color: "#e8d7c8", map: floorTexture });
-        this.floorMesh = new THREE.Mesh(floor, floorMaterial);
-        this.floorMesh.rotation.x = -Math.PI / 2;
-        this.floorMesh.position.y = 0;
-        this.floorMesh.receiveShadow = true;
-        this.app.scene.add(this.floorMesh);
+
+        let floorMesh = new THREE.Mesh(floor, floorMaterial);
+        floorMesh.rotation.x = -Math.PI / 2;
+        floorMesh.position.y = 0;
+        floorMesh.receiveShadow = true;
+        this.app.scene.add(floorMesh);
 
         // Create a Plane Mesh with basic material
         let ceiling = new THREE.PlaneGeometry(15, 16);
@@ -401,29 +412,39 @@ class MyContents {
         let pillow2Texture = new THREE.TextureLoader().load('textures/pillow1_print.jpg');
         let pillow3Texture = new THREE.TextureLoader().load('textures/pillow4_print.jpg');
         let pillow4Texture = new THREE.TextureLoader().load('textures/pillow2_print.jpg');
-        const angleY = Math.PI / 12;
-        const angleZ = Math.PI / 15;
-        let pillow1 = new MyPillow(this.app, 0.6, 0.3, 0.6, this.white, pillow1Texture);
-        pillow1.rotation.set(0, angleY, angleZ);
-        let pillow2 = new MyPillow(this.app, 0.7, 0.35, 0.7, this.white, pillow2Texture);
-        pillow2.rotation.set(0, -angleY, angleZ);
-        let pillow3 = new MyPillow(this.app, 0.6, 0.3, 0.6, this.white, pillow3Texture);
-        pillow3.rotation.set(0, 0, angleZ);
-        let pillow4 = new MyPillow(this.app, 0.7, 0.35, 0.7, this.white, pillow4Texture);
-        pillow4.rotation.set(0, -angleY, angleZ);
+
+        let pillow1 = new MyPillow(this.app, pillow1Texture);
+        this.setScale(pillow1, 0.4)
+        pillow1.rotation.y = Math.PI/2.5;
+        pillow1.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI/16)
+    
+        let pillow2 = new MyPillow(this.app, pillow2Texture);
+        this.setScale(pillow2, 0.3)
+        pillow2.rotation.y = -Math.PI/2.5;
+        pillow2.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI/16)
+
+        let pillow3 = new MyPillow(this.app, pillow3Texture);
+        this.setScale(pillow3, 0.3)
+        pillow3.rotation.y = Math.PI/1.5;
+        pillow3.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI/14)
+
+        let pillow4 = new MyPillow(this.app, pillow4Texture);
+        this.setScale(pillow4, 0.35)
+        pillow4.rotation.y = -Math.PI/2.7;
+        pillow4.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI/16)
 
         //SOFAS
         let sofa1 = new MySofa(this.app, 1, 0.4, 0.1, this.brown);
         sofa1.rotation.set(0, -Math.PI / 3, 0);
-        sofa1.setPillow(pillow1, 0.6, -0.3);
-        sofa1.setPillow(pillow2, 0.7, 0.3);
+        sofa1.setPillow(pillow1, 0.12, 0.75, -0.4);
+        sofa1.setPillow(pillow2, 0.1, 0.6, 0.5);
         sofa1.position.set(-2.5, 0, -6.2);
         this.app.scene.add(sofa1);
 
         let sofa2 = new MySofa(this.app, 1, 0.4, 0.1, this.brown);
         sofa2.rotation.set(0, Math.PI / 4 + Math.PI, 0);
-        sofa2.setPillow(pillow3, 0.6, -0.3);
-        sofa2.setPillow(pillow4, 0.7, 0.3);
+        sofa2.setPillow(pillow3, -0.13, 0.6, -0.3);
+        sofa2.setPillow(pillow4, 0.1, 0.7, 0);
         sofa2.position.set(2.3, 0, -6.2);
         this.app.scene.add(sofa2);
 

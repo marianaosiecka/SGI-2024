@@ -16,9 +16,15 @@ class MyTable extends THREE.Object3D  {
         this.depthTop = depthTop;
         this.heightTable = heightTable;
 
+        let topUVRate = widthTop / depthTop;
+        let textureUVRate = 2000 / 1333; // image dimensions
+        let textureRepeatU = 1;
+        let textureRepeatV = textureRepeatU * topUVRate * textureUVRate;
         this.topTexture = topTexture;
         this.topTexture.wrapS = THREE.RepeatWrapping;
         this.topTexture.wrapT = THREE.RepeatWrapping;
+        this.topTexture.repeat.set(textureRepeatU, textureRepeatV );
+        this.topTexture.offset = new THREE.Vector2(0,0);
 
         this.tableMaterial = new THREE.MeshPhongMaterial({ color: "#FFFFFF", specular:"#71381D", shininess: 8, map: this.topTexture });
         

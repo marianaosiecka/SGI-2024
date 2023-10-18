@@ -11,7 +11,18 @@ class MyCarpet extends THREE.Object3D  {
         this.app = app;
 
         this.carpet = new THREE.BoxGeometry(width, height, depth);
+
+        let carpetUVRate = width / depth;
+        let textureUVRate = 459 / 612; // image dimensions
+        let textureRepeatU = 1.5;
+        let textureRepeatV = textureRepeatU * carpetUVRate * textureUVRate;
+        carpetTexture.wrapS = THREE.RepeatWrapping;
+        carpetTexture.wrapT = THREE.RepeatWrapping;
+        carpetTexture.repeat.set(textureRepeatU, textureRepeatV );
+        carpetTexture.offset = new THREE.Vector2(0,0);
+
         this.carpetMaterial = new THREE.MeshPhongMaterial({color: color, specular:color, shininess:5, map:carpetTexture, opacity:0.7});
+        
         this.carpetMesh = new THREE.Mesh(this.carpet, this.carpetMaterial);
         this.carpetMesh.receiveShadow = true;
         this.add(this.carpetMesh);
