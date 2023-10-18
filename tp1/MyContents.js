@@ -455,7 +455,7 @@ class MyContents {
         this.app.scene.add(ceilinglamp2);
 
         let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
-        let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
+        let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 1.2);
         ceilingLight3.castShadow = true;
         ceilingLight3.shadow.mapSize.width = this.mapSize;
         ceilingLight3.shadow.mapSize.height = this.mapSize;
@@ -675,7 +675,7 @@ class MyContents {
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
         spiralSpring.rotation.set(0, -Math.PI / 6, 0);
         this.setScale(spiralSpring, 0.3, 0.3, 0.3);
-        spiralSpring.position.set(-0.4, 0.94, -4.4);
+        spiralSpring.position.set(-0.4, 0.92, -4.4);
         this.app.scene.add(spiralSpring);
 
         //VASO
@@ -691,7 +691,7 @@ class MyContents {
         door.buildDoor(Math.PI/4);
         door.position.set(7.5, this.doorY, this.doorZ);
         door.rotation.set(0, Math.PI, 0);
-        this.app.scene.add(door);
+        //this.app.scene.add(door);
     }
 
     /**
