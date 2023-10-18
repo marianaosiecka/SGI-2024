@@ -31,4 +31,5 @@
 
 - We had some difficulties when trying to simulate certain types of materials, like glass.
 - Sometimes we struggled with the lights' position when they were part of an object's group.
-- Whe had problems when trying to create cameras targeting specific features.
+- We had problems when trying to create cameras targeting specific features.
+- Whe had difficulties when trying to adapt the texture to some parts of the pillows because they are curved surfaces.
