@@ -5,8 +5,13 @@ class MyWindow extends THREE.Object3D {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} width The width of the window
+       @param {number} height The height of the window
+       @param {number} depth The depth of the window
+       @param {number} color The color of the window frame
+       @param {THREE.Texture} texture The texture for the window view
     */
-    constructor(app, width, height, depth, color, texture, glassMaterial) {
+    constructor(app, width, height, depth, color, texture) {
         super();
         this.app = app;
         this.type = 'Group';
@@ -29,7 +34,6 @@ class MyWindow extends THREE.Object3D {
         this.frameRightMesh.position.x = width / 2 - depth / 10
         this.frameLeftMesh = new THREE.Mesh(this.frameVertical, this.windowMaterial);
         this.frameLeftMesh.position.x = -width / 2 + depth / 10
-
 
         // BOTTOM UP PART
         this.centerFrameUpHorizontal = new THREE.BoxGeometry(width, width / 14, depth / 3);
@@ -63,6 +67,7 @@ class MyWindow extends THREE.Object3D {
         this.verticalLineMesh2.position.x = -width / 4 + width / 8
         this.verticalLineMesh2.position.z = -depth / 3;
 
+
         // GLASS
         this.glassMaterial = new THREE.MeshPhysicalMaterial({
             transmission: 1,
@@ -79,6 +84,7 @@ class MyWindow extends THREE.Object3D {
         this.upGlassMesh.position.z = -depth / 3
         this.upGlassMesh.position.y = height / 4
 
+        // VIEW
         this.view = new THREE.PlaneGeometry(width + 1, height + 1)
         this.viewMaterial = new THREE.MeshBasicMaterial({ map: texture })
         this.viewMesh = new THREE.Mesh(this.view, this.viewMaterial);
@@ -98,7 +104,7 @@ class MyWindow extends THREE.Object3D {
         this.add(this.verticalLineMesh2)
         this.add(this.upGlassMesh)
 
-        this.add(this.viewMesh)
+        this.add(this.viewMesh);
     }
 
     bottomDownPart(y = 0) {
@@ -124,6 +130,7 @@ class MyWindow extends THREE.Object3D {
         this.centerFrameDownLeftMesh.position.x = - width / 2 + width / 10;
         this.centerFrameDownLeftMesh.position.y = -height / 4 + y;
 
+        // GLASS
         this.downGlassMesh = new THREE.Mesh(this.glass, this.glassMaterial);
         this.downGlassMesh.position.y = -height / 4 + y
         this.downGlassMesh.position.z = depth / 3 - depth / 6
@@ -133,12 +140,6 @@ class MyWindow extends THREE.Object3D {
         this.add(this.centerFrameDownRightMesh);
         this.add(this.centerFrameDownLeftMesh);
         this.add(this.downGlassMesh)
-    }
-
-
-
-    changeColor(color) {
-        this.window.material.color = new THREE.Color(color);
     }
 }
 

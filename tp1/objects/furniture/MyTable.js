@@ -5,6 +5,11 @@ class MyTable extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} widthTop The width of the table top
+       @param {number} heightTop The height of the table top
+       @param {number} depthTop The depth of the table top
+       @param {number} heightTable The height of the entire table
+       @param {THREE.Texture} topTexture The texture for the table top
     */ 
     constructor(app, widthTop, heightTop, depthTop, heightTable, topTexture) {
         super();

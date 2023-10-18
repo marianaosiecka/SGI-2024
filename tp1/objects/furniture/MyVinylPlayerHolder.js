@@ -5,6 +5,10 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} width The width of the vinyl player holder
+       @param {number} height The height of the vinyl player holder
+       @param {number} depth The depth of the vinyl player holder
+       @param {string} color The color of the vinyl player holder
     */ 
     constructor(app, width, height, depth, color) {
         super();
@@ -18,22 +22,21 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         // FURNITURE
         this.furnitureMaterial = new THREE.MeshPhongMaterial({ color: color });
 
-        const border = depth/10;
-        this.border = border;
-        const squareHeight = height/2;
-        this.squareHeight = squareHeight
+        this.border = depth/10;
+        this.squareHeight = height/2;
         const legsHeight = height/2;
-        const squareY = (legsHeight + height) / 2;
-        this.squareY = squareY
+        this.squareY = (legsHeight + height) / 2;
 
-        this.upDown = new THREE.BoxGeometry(depth, border, width);
+        // Create top and bottom parts of the furniture
+        this.upDown = new THREE.BoxGeometry(depth, this.border, width);
         this.upMesh = new THREE.Mesh(this.upDown, this.furnitureMaterial);
         this.upMesh.position.y = height
         this.downMesh = new THREE.Mesh(this.upDown, this.furnitureMaterial);
         this.downMesh.position.y = legsHeight;
         this.downMesh.castShadow = true
 
-        this.sides = new THREE.BoxGeometry(depth, squareHeight + border, border);
+        // Create left and right parts of the furniture
+        this.sides = new THREE.BoxGeometry(depth, this.squareHeight + this.border, this.border);
         this.leftMesh = new THREE.Mesh(this.sides, this.furnitureMaterial);
         this.leftMesh.position.y = this.squareY
         this.leftMesh.position.z = width/2;
@@ -67,7 +70,6 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.backRightLegMesh.position.x = -depth/4;
         this.backRightLegMesh.position.z = -width/3;
 
-        
         this.add(this.upMesh)
         this.add(this.downMesh)
         this.add(this.leftMesh);
@@ -84,7 +86,6 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         const playerDepth = playerWidth + playerWidth/3;
 
         this.blackMaterial = new THREE.MeshBasicMaterial({color: 0x000000})
-
 
         // BOX
         this.playerBox = new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth);
@@ -115,7 +116,6 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.playerBackRightLegMesh.position.z = -3*(playerDepth/2)/4;
         this.playerBackRightLegMesh.position.x = -3*(playerWidth/2)/4;
 
-
         // VINYL
         let vinylShape = new THREE.Shape();
         vinylShape.absarc(0, 0, playerWidth/2 + playerWidth/10, 0, Math.PI*2, false)
@@ -127,6 +127,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.vinylMesh.position.x = playerWidth/9;                   
         this.vinylMesh.position.z = playerWidth/9;
         
+        // Create the center of the vinyl
         let vinylCenterShape = new THREE.Shape();
         vinylCenterShape.absarc(0, 0, (playerWidth/2 + playerWidth/10)/3, 0, Math.PI*2, false)
         this.vinylCenter = new THREE.ShapeGeometry(vinylCenterShape);
@@ -137,7 +138,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.vinyCenterMesh.position.x = playerWidth/9;
         this.vinyCenterMesh.position.z = playerWidth/9;
 
-        // VOLUME
+        // VOLUME BUTTON
         this.volume = new THREE.CylinderGeometry(playerWidth/16, playerWidth/16, playerHeight/3)
         this.volumeMesh = new THREE.Mesh(this.volume, this.blackMaterial);
         this.volumeMesh.position.y = playerBoxY + playerHeight/2 + playerHeight/8
@@ -153,6 +154,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.downCylinderMesh.position.x = -playerWidth/3
         this.downCylinderMesh.position.z = -4*playerDepth/10
 
+        // Up part of the play button
         this.upCylinder = new THREE.CylinderGeometry(0.01, 0.01, playerWidth)
         this.upCylinderMesh = new THREE.Mesh(this.upCylinder, this.blackMaterial)
         this.upCylinderMesh.rotation.x = Math.PI/2
@@ -160,7 +162,6 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.upCylinderMesh.position.y = downCylinderY + downCylinderHeight/2 + 0.01
         this.upCylinderMesh.position.x = -playerWidth/3 - Math.sin(- Math.PI/3) * playerWidth/2
         this.upCylinderMesh.position.z = -4*playerDepth/10 + Math.cos(-Math.PI/3) * playerWidth/2
-
 
         this.add(this.playerBoxMesh)
         this.add(this.playerFrontLeftLegMesh)
@@ -172,7 +173,6 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.add(this.volumeMesh)
         this.add(this.downCylinderMesh)
         this.add(this.upCylinderMesh)
-
     }
 
     buildCovers(coverColors){

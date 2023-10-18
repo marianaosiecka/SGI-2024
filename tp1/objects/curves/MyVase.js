@@ -7,6 +7,9 @@ class MyVase extends THREE.Object3D {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} height The height of the vase
+       @param {number} radius The radius of the vase
+       @param {string} color The color of the vase material
     */
     constructor(app, height, radius, color) {
         super();
@@ -82,7 +85,6 @@ class MyVase extends THREE.Object3D {
             ]
         ];
 
-
         let vaseData = this.builder.build(controlPoints, this.orderU, this.orderV, this.samplesU, this.samplesV)
         let vaseMesh1 = new THREE.Mesh(vaseData, this.material);
         let vaseMesh2 = new THREE.Mesh(vaseData, this.material);
@@ -91,6 +93,7 @@ class MyVase extends THREE.Object3D {
         this.add(vaseMesh2)
     }
 
+    // Create random flowers with specified parameters
     createRandomFlowers(numFlowers, heightRange, distanceRange, petalColors, states, colorCenter, colorStem) {
         const flowers = []
         for (let i = 0; i < numFlowers; i++) {
@@ -110,6 +113,7 @@ class MyVase extends THREE.Object3D {
         return flowers;
     }
 
+    // Create specific flowers with specified parameters
     createFlowers(colorStem, colorCenter, petalsColors) {
         let flower1 = new MyFlower(this.app, 1.76 * this.height, 1.5 * this.radius, petalsColors[0], colorCenter, colorStem, "w");
 

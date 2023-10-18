@@ -6,6 +6,7 @@ class MyNewspaper extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {Texture} texture The texture to be applied to the newspaper pages
     */ 
     constructor(app, texture) {
         super();

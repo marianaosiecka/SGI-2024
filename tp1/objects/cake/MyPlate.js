@@ -5,6 +5,11 @@ class MyPlate extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} radius The radius of the plate
+       @param {number} height The height of the plate
+       @param {number} radialSegments The number of radial segments for the plate's geometry
+       @param {string} colorTop The color of the top part of the plate
+       @param {string} colorBase The color of the base part of the plate
     */ 
     constructor(app, radius, height, radialSegments, colorTop, colorBase) {
         super();

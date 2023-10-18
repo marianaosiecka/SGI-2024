@@ -55,21 +55,6 @@ class MyContents {
         this.wallZPos = 8;
         this.wallHeight = 6;
 
-        // shadow related attribtues
-        this.mapSize = 1024
-    }
-
-    /**
-     * initializes the walls
-     */
-    buildWalls() {
-        const wallHeight = 6;
-        const wallFrontBackWidth = 16;
-        const wallSideWidth = 15;
-
-        let wall = new THREE.PlaneGeometry(wallSideWidth, wallHeight);
-        let wallMaterial = new THREE.MeshPhongMaterial({ color: this.bege })
-
         this.doorHeight = 4.5;
         this.doorWidth = 2.5;
         this.doorY = this.doorHeight / 2;
@@ -80,48 +65,63 @@ class MyContents {
         this.windowY = 3.5;
         this.windowZ = 0;
 
+        // shadow related attribtues
+        this.mapSize = 1024
+    }
+
+    /**
+     * initializes the walls
+     */
+    buildWalls() {
+        const wallFrontBackWidth = 16;
+        const wallSideWidth = 15;
+
+        let wall = new THREE.PlaneGeometry(wallSideWidth, this.wallHeight);
+        let wallMaterial = new THREE.MeshPhongMaterial({ color: this.bege })
+
         // right
         this.wall1Mesh = new THREE.Mesh(wall, wallMaterial);
         this.wall1Mesh.position.z = -this.wallZPos;
-        this.wall1Mesh.position.y = wallHeight / 2;
+        this.wall1Mesh.position.y = this.wallHeight / 2;
         this.wall1Mesh.receiveShadow = true;
         this.app.scene.add(this.wall1Mesh);
+
         // left
         this.wall2Mesh = new THREE.Mesh(wall, wallMaterial);
         this.wall2Mesh.rotation.x = Math.PI;
         this.wall2Mesh.position.z = this.wallZPos;
-        this.wall2Mesh.position.y = wallHeight / 2;
+        this.wall2Mesh.position.y = this.wallHeight / 2;
         this.wall2Mesh.receiveShadow = true;
         this.app.scene.add(this.wall2Mesh);
 
-        // back
+        // back (window wall)
         const windowWallRightWidth = - (-wallFrontBackWidth / 2 - (this.windowZ - (this.windowWidth / 2)))
-        this.windowWallRight = new THREE.PlaneGeometry(windowWallRightWidth, wallHeight);
+        this.windowWallRight = new THREE.PlaneGeometry(windowWallRightWidth, this.wallHeight);
         this.windowWallRightMesh = new THREE.Mesh(this.windowWallRight, wallMaterial)
         this.windowWallRightMesh.receiveShadow = true;
         this.windowWallRightMesh.rotation.y = Math.PI / 2;
-        this.windowWallRightMesh.position.y = wallHeight / 2;
+        this.windowWallRightMesh.position.y = this.wallHeight / 2;
         this.windowWallRightMesh.position.x = -wallSideWidth / 2;
         this.windowWallRightMesh.position.z = (-wallFrontBackWidth / 2 + (this.windowZ - (this.windowWidth / 2))) / 2;
 
-        this.windowWallLeft = new THREE.PlaneGeometry(wallFrontBackWidth - windowWallRightWidth - this.windowWidth, wallHeight);
+        this.windowWallLeft = new THREE.PlaneGeometry(wallFrontBackWidth - windowWallRightWidth - this.windowWidth, this.wallHeight);
         this.windowWallLeftMesh = new THREE.Mesh(this.windowWallLeft, wallMaterial)
         this.windowWallLeftMesh.receiveShadow = true;
         this.windowWallLeftMesh.rotation.y = Math.PI / 2;
-        this.windowWallLeftMesh.position.y = wallHeight / 2;
+        this.windowWallLeftMesh.position.y = this.wallHeight / 2;
         this.windowWallLeftMesh.position.x = -wallSideWidth / 2;
         this.windowWallLeftMesh.position.z = (wallFrontBackWidth / 2 + (this.windowZ + (this.windowWidth / 2))) / 2
 
-        const windowWallTopHeight = wallHeight - (this.windowY + this.windowHeight / 2)
+        const windowWallTopHeight = this.wallHeight - (this.windowY + this.windowHeight / 2)
         this.windowWallTop = new THREE.PlaneGeometry(this.windowWidth, windowWallTopHeight);
         this.windowWallTopMesh = new THREE.Mesh(this.windowWallTop, wallMaterial)
         this.windowWallTopMesh.receiveShadow = true;
         this.windowWallTopMesh.rotation.y = Math.PI / 2;
         this.windowWallTopMesh.position.x = -wallSideWidth / 2;
         this.windowWallTopMesh.position.z = this.windowZ;
-        this.windowWallTopMesh.position.y = (wallHeight + (this.windowY + (this.windowHeight / 2))) / 2
+        this.windowWallTopMesh.position.y = (this.wallHeight + (this.windowY + (this.windowHeight / 2))) / 2
 
-        this.windowWallDown = new THREE.PlaneGeometry(this.windowWidth, wallHeight - windowWallTopHeight - this.windowHeight);
+        this.windowWallDown = new THREE.PlaneGeometry(this.windowWidth, this.wallHeight - windowWallTopHeight - this.windowHeight);
         this.windowWallDownMesh = new THREE.Mesh(this.windowWallDown, wallMaterial)
         this.windowWallDownMesh.receiveShadow = true;
         this.windowWallDownMesh.rotation.y = Math.PI / 2;
@@ -134,34 +134,34 @@ class MyContents {
         this.app.scene.add(this.windowWallTopMesh);
         this.app.scene.add(this.windowWallDownMesh);
 
-        // front
+        // front (door wall)
         const doorWallRightWidth = - (-wallFrontBackWidth / 2 - (this.doorZ - (this.doorWidth / 2)))
-        this.doorWallRight = new THREE.PlaneGeometry(doorWallRightWidth, wallHeight);
+        this.doorWallRight = new THREE.PlaneGeometry(doorWallRightWidth, this.wallHeight);
         this.doorWallRightMesh = new THREE.Mesh(this.doorWallRight, wallMaterial)
         this.doorWallRightMesh.receiveShadow = true;
         this.doorWallRightMesh.rotation.y = -Math.PI / 2;
-        this.doorWallRightMesh.position.y = wallHeight / 2;
+        this.doorWallRightMesh.position.y = this.wallHeight / 2;
         this.doorWallRightMesh.position.x = wallSideWidth / 2;
         this.doorWallRightMesh.position.z = (-wallFrontBackWidth / 2 + (this.doorZ - (this.doorWidth / 2))) / 2;
 
-        this.doorWallLeft = new THREE.PlaneGeometry(wallFrontBackWidth - doorWallRightWidth - this.doorWidth, wallHeight);
+        this.doorWallLeft = new THREE.PlaneGeometry(wallFrontBackWidth - doorWallRightWidth - this.doorWidth, this.wallHeight);
         this.doorWallLeftMesh = new THREE.Mesh(this.doorWallLeft, wallMaterial)
         this.doorWallLeftMesh.receiveShadow = true;
         this.doorWallLeftMesh.rotation.y = -Math.PI / 2;
-        this.doorWallLeftMesh.position.y = wallHeight / 2;
+        this.doorWallLeftMesh.position.y = this.wallHeight / 2;
         this.doorWallLeftMesh.position.x = wallSideWidth / 2;
         this.doorWallLeftMesh.position.z = (wallFrontBackWidth / 2 + (this.doorZ + (this.doorWidth / 2))) / 2
 
-        const doorWallTopHeight = wallHeight - (this.doorY + this.doorHeight / 2)
+        const doorWallTopHeight = this.wallHeight - (this.doorY + this.doorHeight / 2)
         this.doorWallTop = new THREE.PlaneGeometry(this.doorWidth, doorWallTopHeight);
         this.doorWallTopMesh = new THREE.Mesh(this.doorWallTop, wallMaterial)
         this.doorWallTopMesh.receiveShadow = true;
         this.doorWallTopMesh.rotation.y = -Math.PI / 2;
         this.doorWallTopMesh.position.x = wallSideWidth / 2;
         this.doorWallTopMesh.position.z = this.doorZ;
-        this.doorWallTopMesh.position.y = (wallHeight + (this.doorY + (this.doorHeight / 2))) / 2
+        this.doorWallTopMesh.position.y = (this.wallHeight + (this.doorY + (this.doorHeight / 2))) / 2
 
-        this.doorWallDown = new THREE.PlaneGeometry(this.doorWidth, wallHeight - doorWallTopHeight - this.doorHeight);
+        this.doorWallDown = new THREE.PlaneGeometry(this.doorWidth, this.wallHeight - doorWallTopHeight - this.doorHeight);
         this.doorWallDownMesh = new THREE.Mesh(this.doorWallDown, wallMaterial)
         this.doorWallDownMesh.receiveShadow = true;
         this.doorWallDownMesh.rotation.y = -Math.PI / 2;
@@ -175,10 +175,41 @@ class MyContents {
         this.app.scene.add(this.doorWallDownMesh);
     }
 
+    buildFloor() {
+        let floor = new THREE.PlaneGeometry(15, 16);
+        let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
+        let floorUVRate = 15 / 16;
+        let textureUVRate = 626 / 417; // image dimensions
+        let textureRepeatU = 2;
+        let textureRepeatV = textureRepeatU * floorUVRate * textureUVRate;
+        floorTexture.wrapS = THREE.RepeatWrapping;
+        floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set(textureRepeatU, textureRepeatV);
+        floorTexture.offset = new THREE.Vector2(0, 0);
+
+        let floorMaterial = new THREE.MeshPhongMaterial({ color: "#e8d7c8", map: floorTexture });
+
+        let floorMesh = new THREE.Mesh(floor, floorMaterial);
+        floorMesh.rotation.x = -Math.PI / 2;
+        floorMesh.position.y = 0;
+        floorMesh.receiveShadow = true;
+        this.app.scene.add(floorMesh);
+    }
+
+    buildCeiling() {
+        let ceiling = new THREE.PlaneGeometry(15, 16);
+        let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege });
+        this.ceilingMesh = new THREE.Mesh(ceiling, ceilingMaterial);
+        this.ceilingMesh.rotation.x = Math.PI / 2;
+        this.ceilingMesh.position.y = 6;
+        this.ceilingMesh.receiveShadow = true;
+        this.app.scene.add(this.ceilingMesh);
+    }
+
     /**
      * initializes the table
      */
-    buildTableScene() {
+    buildTable() {
         //MESA
         let tableTexture = new THREE.TextureLoader().load('textures/wood_texture.jpg');
         let table = new MyTable(this.app, 3.8, 0.1, 6, 1.2, tableTexture);
@@ -228,7 +259,7 @@ class MyContents {
     /**
      * initializes the cake
      */
-    buildCakeScene() {
+    buildCake() {
         // PRATO DO BOLO
         let cakePlate = new MyCakePlate(this.app, 0.7, 0.05, 50, this.offWhite, "#c2c2b2")
         cakePlate.position.set(0, 1.7, 4);
@@ -243,9 +274,9 @@ class MyContents {
         plateSlice2.position.set(-1.1, 1.38, 5.8)
         this.app.scene.add(plateSlice2);
 
-        // BOLO & FATIA
+        // BOLO E FATIA
         let fillingTexture = new THREE.TextureLoader().load('textures/cake_slice_texture.png');
-        let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#E1A693", "#614E3F", fillingTexture);
+        let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#E1A693", fillingTexture);
         cake.buildSlice(-1.3, -0.3, -2); // pos relativa ao bolo
         cake.position.set(0, 1.9, 4);
         cake.rotation.set(0, Math.PI, 0);
@@ -269,7 +300,7 @@ class MyContents {
         candle4.position.set(cake.position.x + 0.2, 1.76, cake.position.z - 0.3);
         this.app.scene.add(candle4);
 
-        // GARFO
+        // GARFOS
         let fork1 = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
         this.setScale(fork1, 0.2)
         fork1.position.set(0.95, 1.27, 6.5)
@@ -281,7 +312,7 @@ class MyContents {
         fork2.position.set(-0.95, 1.27, 5.2)
         this.app.scene.add(fork2)
 
-        //LUZ DA MESA (BOLO SPOT LIGHT)
+        // LUZ DA MESA (BOLO SPOT LIGHT)
         this.tableLight = new THREE.SpotLight(this.lightColor, 5.5, 5, Math.PI / 3, 1, 0.2);
         this.tableLight.target = cake;
     }
@@ -290,7 +321,7 @@ class MyContents {
      * initializes the frames
      */
     buildFrames() {
-        // MOLDURAS
+        // PAREDE ESQUERDA (pinturas)
         let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
         let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, "#e0ddd3", this.white, frame1Texture)
         frame1.position.set(4, 3.5, this.wallZPos - 0.04)
@@ -301,8 +332,9 @@ class MyContents {
         let frame2 = new MyFrame(this.app, 2.09, 2.1, 0.1, "#e0ddd3", this.white, frame2Texture);
         frame2.position.set(-4, 3.2, this.wallZPos - 0.05)
         frame2.rotation.set(0, Math.PI / 2, 0)
-        this.app.scene.add(frame2)
+        this.app.scene.add(frame2);
 
+        // PAREDE DIREITA (car e fotografias)
         let frame3Texture = new THREE.TextureLoader().load('pictures/photography1.jpg');
         let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, "#e0ddd3", this.white, frame3Texture)
         frame3.position.set(0, 3, -this.wallZPos + 0.05);
@@ -372,13 +404,12 @@ class MyContents {
      * initializes the wall lights
      */
     buildWallLights() {
-        //LUZES DE PAREDE
         const wallLampX = 0.15 - this.wallXPos;
         const wallLampY = this.wallHeight - this.wallHeight / 2.5;
         const wallLampZ = this.wallZPos / 2;
         const wallLightY = - 0.15;
 
-        //spot lights das luzes de parede
+        // spot lights das luzes de parede
         let lightWallLampFLeft = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI / 4, 1, 0.8);
         lightWallLampFLeft.position.y = wallLightY;
         lightWallLampFLeft.target = this.createHelperObject(wallLampX, this.wallHeight, wallLampZ);
@@ -419,7 +450,6 @@ class MyContents {
      * initializes the ceiling lights
      */
     buildCeilingLights() {
-        //LUZES DE TETO
         const ceilingLightX = 5;
         const ceilingLightY = this.wallHeight - 0.04;
         const ceilingLightZ = 4;
@@ -505,7 +535,6 @@ class MyContents {
      * initializes the vinyl
      */
     buildVinyl() {
-        //GIRA DISCOS 
         let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.8, 1.8, 1.3, this.orange);
         vinylPlayerHolder.buildPlayer(this.green, this.lightBlue);
 
@@ -518,81 +547,7 @@ class MyContents {
         this.app.scene.add(vinylPlayerHolder);
     }
 
-    /**
-     * initializes the contents
-     */
-    init() {
-
-        // create once
-        /*
-        if (this.axis === null) {
-            // create and attach the axis to the scene
-            this.axis = new MyAxis(this)
-            this.app.scene.add(this.axis)
-        }*/
-
-        this.buildWalls();
-        this.buildTableScene();
-        this.buildCakeScene();
-        this.buildSofas();
-        this.buildFrames();
-        this.buildWallLights();
-        this.buildCeilingLights();
-        this.buildBalloons();
-        this.buildVinyl();
-
-        // LUZES 
-        const pointLight = new THREE.PointLight(this.white, 10, 0, 1);
-        pointLight.position.set(0, 10, 0);
-        this.app.scene.add(pointLight);
-
-        const sphereSize = 0.5;
-        const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-        this.app.scene.add(pointLightHelper);
-
-        const ambientLight = new THREE.AmbientLight(0x777777, 1);
-        this.app.scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(this.white, 0.5);
-        directionalLight.position.set(0, 1, 0);
-        directionalLight.target = this.createHelperObject(0, 6, 0);
-        this.app.scene.add(directionalLight);
-
-        // CHÃO
-        let floor = new THREE.PlaneGeometry(15, 16);
-        let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
-        let floorUVRate = 15 / 16;
-        let textureUVRate = 626 / 417; // image dimensions
-        let textureRepeatU = 2;
-        let textureRepeatV = textureRepeatU * floorUVRate * textureUVRate;
-        floorTexture.wrapS = THREE.RepeatWrapping;
-        floorTexture.wrapT = THREE.RepeatWrapping;
-        floorTexture.repeat.set(textureRepeatU, textureRepeatV);
-        floorTexture.offset = new THREE.Vector2(0, 0);
-
-        let floorMaterial = new THREE.MeshPhongMaterial({ color: "#e8d7c8", map: floorTexture });
-
-        let floorMesh = new THREE.Mesh(floor, floorMaterial);
-        floorMesh.rotation.x = -Math.PI / 2;
-        floorMesh.position.y = 0;
-        floorMesh.receiveShadow = true;
-        this.app.scene.add(floorMesh);
-
-        // TETO
-        let ceiling = new THREE.PlaneGeometry(15, 16);
-        let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege });
-        this.ceilingMesh = new THREE.Mesh(ceiling, ceilingMaterial);
-        this.ceilingMesh.rotation.x = Math.PI / 2;
-        this.ceilingMesh.position.y = 6;
-        this.ceilingMesh.receiveShadow = true;
-        this.app.scene.add(this.ceilingMesh);
-
-        // CANDEEIRO DE TETO DO BOLO
-        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
-        lampTable.position.set(0, 5.5, 4.8);
-        this.app.scene.add(lampTable);
-
-        // JANELA
+    buildWindow() {
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
         let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#a3a3a3", windowTexture)
         window.bottomDownPart();
@@ -605,17 +560,89 @@ class MyContents {
         windowLight.position.set(-8.1, this.windowY, this.windowZ)
         windowLight.rotation.set(0, -Math.PI / 2, 0)
         this.app.scene.add(windowLight)
-        
+    }
 
+    buildFlowers() {
+        let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");
+        vase.createFlowers("#40874B", "#F3ED52", ["#51385C", "#DA4B0E", "#83BACC"]);
+        vase.position.set(-6, 0, 7);
+        vase.scale.z = -1;
+        vase.rotation.set(0, Math.PI / 2, 0);
+        this.app.scene.add(vase);
+    }
+
+    buildCar() {
+        // CAROCHA
+        let car = new MyCar(this.app);
+        const carGeometry = new THREE.BufferGeometry().setFromPoints([
+            ...car.backRoofCurve.getPoints(50),
+            ...car.frontRoofCurve.getPoints(50),
+            ...car.hoodCurve.getPoints(50),
+            ...car.backWheelCurve.getPoints(50),
+            ...car.smallBackWheelCurve.getPoints(50),
+            ...car.frontWheelCurve.getPoints(50),
+            ...car.smallFrontWheelCurve.getPoints(50),
+        ]);
+
+        const carMaterial = new THREE.LineBasicMaterial({ color: "#000000" });
+        const carMesh = new THREE.Line(carGeometry, carMaterial);
+        carMesh.rotation.y = Math.PI / 2;
+        carMesh.position.set(0.02, -0.53, 0.75)
+        this.carFrame.addObject(carMesh);
+        this.setScale(this.carFrame, 0.8, 0.8, 0.8);
+    }
+
+    buildDoor() {
+        let door = new MyDoor(this.app, this.doorHeight, this.doorWidth, 0.4, this.brown, this.brown, "#d4af37");
+        door.buildDoor(Math.PI / 4);
+        door.position.set(7.5, this.doorY, this.doorZ);
+        door.rotation.set(0, Math.PI, 0);
+        this.app.scene.add(door);
+    }
+
+    buildSpiralSpring() {
+        // MOLA
+        let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
+        spiralSpring.rotation.set(0, -Math.PI / 6, 0);
+        this.setScale(spiralSpring, 0.3, 0.3, 0.3);
+        spiralSpring.position.set(-0.4, 0.94, -4.4);
+        this.app.scene.add(spiralSpring);
+    }
+
+    buildCoffeeTable() {
+        // MESA DOS SOFÁS
+        let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
+        coffeeTable.rotation.set(0, Math.PI / 2, 0);
+        coffeeTable.position.set(0, 0.05, -4.2);
+        coffeeTable.buildBooks(["#E57373", "#FFD700", "#FFA07A", "#85A1CC", "#AED9E0", "#FFB74D"]);
+        this.app.scene.add(coffeeTable);
+    }
+
+    buildNewspaper() {
+        // JORNAL
+        let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.png'))
+        newspaper.position.set(0, 0.9, -4.9);
+        newspaper.rotation.set(0, Math.PI / 10, 0);
+        this.app.scene.add(newspaper);
+    }
+
+    buildCarpet() {
         // TAPETE
         let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
-        let carpet = new MyCarpet(this.app, 7.5, 0.1, 5, this.lightBlue, carpetTexture);
-        carpet.position.set(0, 0.05, -5);
-        this.app.scene.add(carpet);
+        this.carpet = new MyCarpet(this.app, 7.5, 0.1, 5, this.lightBlue, carpetTexture);
+        this.carpet.position.set(0, 0.05, -5);
+        this.app.scene.add(this.carpet);
+    }
+
+    buildLamps() {
+        // CANDEEIRO DE TETO DO BOLO
+        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
+        lampTable.position.set(0, 5.5, 4.8);
+        this.app.scene.add(lampTable);
 
         //CANDEEIRO SOFAS
         let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5.2, Math.PI / 4, 1, 0.2);
-        spotLightSofas.target = carpet;
+        spotLightSofas.target = this.carpet;
 
         let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
         lampSofas.position.set(0, 5.5, -4.8);
@@ -638,60 +665,63 @@ class MyContents {
         floorLamp.position.set(floorLampX, floorLampY, floorLampZ);
         lightFloorLamp.position.set(0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
         this.app.scene.add(floorLamp);
+    }
 
-        //MESA DOS SOFÁS
-        let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
-        coffeeTable.rotation.set(0, Math.PI / 2, 0);
-        coffeeTable.position.set(0, 0.05, -4.2);
-        coffeeTable.buildBooks(["#E57373", "#FFD700", "#FFA07A", "#85A1CC", "#AED9E0", "#FFB74D"]);
-        this.app.scene.add(coffeeTable);
+    buildSceneLights() {
+        const pointLight = new THREE.PointLight(this.white, 10, 0, 1);
+        pointLight.position.set(0, 10, 0);
+        this.app.scene.add(pointLight);
 
-        //CAROCHA
-        let car = new MyCar(this.app);
-        const carGeometry = new THREE.BufferGeometry().setFromPoints([
-            ...car.backRoofCurve.getPoints(50),
-            ...car.frontRoofCurve.getPoints(50),
-            ...car.hoodCurve.getPoints(50),
-            ...car.backWheelCurve.getPoints(50),
-            ...car.smallBackWheelCurve.getPoints(50),
-            ...car.frontWheelCurve.getPoints(50),
-            ...car.smallFrontWheelCurve.getPoints(50),
-        ]);
+        const sphereSize = 0.5;
+        const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+        this.app.scene.add(pointLightHelper);
 
-        const carMaterial = new THREE.LineBasicMaterial({ color: "#000000" });
-        const carMesh = new THREE.Line(carGeometry, carMaterial);
-        carMesh.rotation.y = Math.PI / 2;
-        carMesh.position.set(0.02, -0.53, 0.75)
-        this.carFrame.addObject(carMesh);
-        this.setScale(this.carFrame, 0.8, 0.8, 0.8);
+        const ambientLight = new THREE.AmbientLight(0x777777, 1);
+        this.app.scene.add(ambientLight);
 
-        //JORNAL
-        let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.png'))
-        newspaper.position.set(0, 0.9, -4.9);
-        newspaper.rotation.set(0, Math.PI / 10, 0);
-        this.app.scene.add(newspaper);
+        const directionalLight = new THREE.DirectionalLight(this.white, 0.5);
+        directionalLight.position.set(0, 1, 0);
+        directionalLight.target = this.createHelperObject(0, 6, 0);
+        this.app.scene.add(directionalLight);
+    }
 
-        //MOLA
-        let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
-        spiralSpring.rotation.set(0, -Math.PI / 6, 0);
-        this.setScale(spiralSpring, 0.3, 0.3, 0.3);
-        spiralSpring.position.set(-0.4, 0.94, -4.4);
-        this.app.scene.add(spiralSpring);
+    /**
+     * initializes the contents
+     */
+    init() {
+        // create once
+        /*
+        if (this.axis === null) {
+            // create and attach the axis to the scene
+            this.axis = new MyAxis(this)
+            this.app.scene.add(this.axis)
+        }*/
 
-        //VASO
-        let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");
-        vase.createFlowers("#40874B", "#F3ED52", ["#51385C", "#DA4B0E", "#83BACC"]);
-        vase.position.set(-6, 0, 7);
-        vase.scale.z = -1;
-        vase.rotation.set(0, Math.PI / 2, 0);
-        this.app.scene.add(vase);
+        this.buildWalls();
+        this.buildFloor();
+        this.buildCeiling();
 
-        // PORTA
-        let door = new MyDoor(this.app, this.doorHeight, this.doorWidth, 0.4, this.brown, this.brown, "#d4af37");
-        door.buildDoor(Math.PI/4);
-        door.position.set(7.5, this.doorY, this.doorZ);
-        door.rotation.set(0, Math.PI, 0);
-        this.app.scene.add(door);
+        this.buildTable();
+        this.buildCake();
+        this.buildFrames();
+        this.buildWindow();
+
+        this.buildFlowers();
+        this.buildCar();
+        this.buildSpiralSpring();
+        this.buildNewspaper();
+
+        this.buildSofas();
+        this.buildCoffeeTable();
+        this.buildCarpet();
+        this.buildVinyl();
+        this.buildDoor()
+        this.buildBalloons();
+
+        this.buildSceneLights();
+        this.buildWallLights();
+        this.buildCeilingLights();
+        this.buildLamps();
     }
 
     /**

@@ -5,7 +5,12 @@ class MyCarpet extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
-    */ 
+       @param {number} width The width of the carpet
+       @param {number} height The height of the carpet
+       @param {number} depth The depth of the carpet
+       @param {color} color The color of the carpet
+       @param {carpetTexture} carpetTexture The texture for the carpet
+       */ 
     constructor(app, width, height, depth, color, carpetTexture) {
         super();
         this.app = app;

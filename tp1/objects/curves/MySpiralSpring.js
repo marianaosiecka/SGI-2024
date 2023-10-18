@@ -5,6 +5,7 @@ class MySpiralSpring extends THREE.Object3D {
   /**
      constructs the object
      @param {MyApp} app The application object
+     @param {color} color The color of the spiral spring
   */
   constructor(app, color) {
     super();

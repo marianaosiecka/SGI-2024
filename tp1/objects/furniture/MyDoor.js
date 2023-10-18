@@ -5,6 +5,13 @@ class MyDoor extends THREE.Object3D {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} height The height of the door
+       @param {number} width The width of the door
+       @param {number} depth The depth of the door
+       @param {string} color The color of the door material
+       @param {string} rectanglesColor The color of the rectangles on the door
+       @param {string} knobColor The color of the door knob
+     
     */
     constructor(app, height, width, depth, color, rectanglesColor, knobColor) {
         super();
@@ -19,8 +26,7 @@ class MyDoor extends THREE.Object3D {
         this.rectanglesMaterial = new THREE.MeshPhongMaterial({ color: rectanglesColor, specular: "#777777", shininess: 1 })
         this.knobMaterial = new THREE.MeshPhongMaterial({ color: knobColor, shininess: 10, specular: 0xffffff });
 
-
-        // frame
+        // FRAME
         let frameUp = new THREE.BoxGeometry(depth, 0.07 * height, width);
         let frameUpMesh = new THREE.Mesh(frameUp, this.material);
         frameUpMesh.position.y = height / 2 - (0.07 * height) / 2;
@@ -37,12 +43,14 @@ class MyDoor extends THREE.Object3D {
         this.buildDoor();
     }
 
+    // Build the door and its components
     buildDoor() {
         const doorHeight = this.height - 0.07 * this.height;
         const doorWidth = this.width - 2 * 0.14 * this.width;
         const doorDepth = 2 * this.depth / 3;
         const doorY = - 0.07 * this.height / 2
 
+        // DOOR
         let door = new THREE.BoxGeometry(doorDepth, doorHeight, doorWidth);
         let doorMesh = new THREE.Mesh(door, this.material);
         doorMesh.position.x = -this.depth / 2 + doorDepth / 2;
@@ -56,7 +64,7 @@ class MyDoor extends THREE.Object3D {
         const topRectangleHeight = 0.55 * doorHeight;
         const downRectangleHeight = 0.2 * doorHeight
 
-        // TOP
+        // TOP RECTANGLE
         let topRectangleHorizontal = new THREE.BoxGeometry(rectanglesDepth, rectanglesBorder, rectanglesWidth + rectanglesBorder);
         let topRectangleTopMesh = new THREE.Mesh(topRectangleHorizontal, this.rectanglesMaterial);
         topRectangleTopMesh.position.x = rectanglesX;
@@ -79,7 +87,7 @@ class MyDoor extends THREE.Object3D {
         topRectangleLeftMesh.position.z = rectanglesWidth / 2;
         this.add(topRectangleLeftMesh);
 
-        // DOWN
+        // DOWN RECTANGLE
         let downRectangleHorizontal = new THREE.BoxGeometry(rectanglesDepth, rectanglesBorder, rectanglesWidth + rectanglesBorder);
         let downRectangledownMesh = new THREE.Mesh(downRectangleHorizontal, this.rectanglesMaterial);
         downRectangledownMesh.position.x = rectanglesX;
@@ -101,7 +109,6 @@ class MyDoor extends THREE.Object3D {
         downRectangleLeftMesh.position.y = doorY - doorHeight / 2 + topRectangleHeight / 8 + downRectangleHeight / 2;
         downRectangleLeftMesh.position.z = rectanglesWidth / 2;
         this.add(downRectangleLeftMesh);
-
 
         // KNOB
         let knobSphere = new THREE.CylinderGeometry(doorWidth / 25, doorWidth / 25, doorDepth / 10, 20, 20, false);

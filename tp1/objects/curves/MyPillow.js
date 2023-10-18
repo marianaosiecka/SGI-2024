@@ -6,6 +6,7 @@ class MyPillow extends THREE.Object3D {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {Texture} texture The texture to be applied to the pillow
     */
     constructor(app, texture) {
         super();

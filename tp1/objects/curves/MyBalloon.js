@@ -5,6 +5,11 @@ class MyBalloon extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} radius The radius of the balloon
+       @param {number} height The height of the balloon
+       @param {string} colorBalloon The color of the balloon's surface
+       @param {string} colorStem The color of the balloon's string
+       @param {number} switchString A parameter to switch the direction of the string
     */ 
     constructor(app, radius, height, colorBalloon, colorStem, switchString) {
         super();

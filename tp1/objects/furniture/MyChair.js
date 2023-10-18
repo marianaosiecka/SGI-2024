@@ -5,7 +5,12 @@ class MyChair extends THREE.Object3D {
     /**
        constructs the object
        @param {MyApp} app The application object
-    */
+       @param {number} widthSeat The width of the seat
+       @param {number} heightSeat The height of the seat
+       @param {number} depthSeat The depth of the seat
+       @param {number} heightChair The overall height of the chair
+       @param {color} color The color of the chair
+       */
     constructor(app, widthSeat, heightSeat, depthSeat, heightChair, color) {
         super();
         this.app = app;

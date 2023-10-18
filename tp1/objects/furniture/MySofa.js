@@ -6,6 +6,10 @@ class MySofa extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} radius The radius of the upper backrest
+       @param {number} height The height of the sofa
+       @param {number} floorHeight The height of the floor (for positioning)
+       @param {color} color The color of the sofa
     */ 
     constructor(app, radius, height, floorHeight, color) {      
         super();
@@ -70,6 +74,13 @@ class MySofa extends THREE.Object3D  {
         this.add(this.arm2Mesh);
     }
 
+    /**
+     * Set the position and add a pillow to the sofa
+     * @param {THREE.Object3D} pillow The pillow to be added
+     * @param {number} distanceFromBack The distance from the backrest to the pillow
+     * @param {number} pillowHeight The height of the pillow
+     * @param {number} distance The distance of the pillow from the initial position
+     */
     setPillow(pillow, distanceFromBack, pillowHeight, distance) {
         pillow.position.x = this.height + 0.1 - distanceFromBack;
         pillow.position.y = this.seatMesh.position.y + this.seatHeight/2 + pillowHeight/2;

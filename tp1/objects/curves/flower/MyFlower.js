@@ -6,6 +6,12 @@ class MyFlower extends THREE.Object3D {
     /**
        constructs the object
        @param {MyApp} app The application object
+       @param {number} height The height of the flower stem
+       @param {number} distance The distance from the flower head to the stem
+       @param {List} colorPetals A list of strings of colors for the flower petals
+       @param {string} colorCenter The color of the flower center
+       @param {string} colorStem The color of the flower stem
+       @param {string} state The state of the flower ("w" for wilted, "u" for facing up, or any other state for normal)
     */
     constructor(app, height, distance, colorPetals, colorCenter, colorStem, state) {
         super();
@@ -51,10 +57,13 @@ class MyFlower extends THREE.Object3D {
             );
         }
 
+
         const stem = new THREE.TubeGeometry(curve, segments, radius, segments, false);
         let stemMesh = new THREE.Mesh(stem, this.stemMaterial);
-
         this.add(stemMesh);
+        
+
+        // Create and position the flower head
         const flowerHead = new MyFlowerHead(this.app, 0.1, 5, colorPetals, colorCenter, this.stemMaterial);
         this.add(flowerHead);
 
@@ -70,8 +79,7 @@ class MyFlower extends THREE.Object3D {
         else{
             flowerHead.position.set(0, height, distance)
             flowerHead.rotation.set(0, -Math.PI/2, 0)
-        }
-            
+        } 
     }
 }
 

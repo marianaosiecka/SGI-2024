@@ -5,7 +5,13 @@ class MyCandle extends THREE.Object3D  {
     /**
        constructs the object
        @param {MyApp} app The application object
-    */ 
+       @param {number} radius The radius of the candle
+       @param {number} height The height of the candle
+       @param {number} radialSegments The number of radial segments for the candle geometry
+       @param {string} colorWax The color of the candle wax
+       @param {string} colorFlame The color of the candle flame
+
+       */ 
     constructor(app, radius, height, radialSegments, colorWax, colorFlame) {
         super();
         this.app = app;
