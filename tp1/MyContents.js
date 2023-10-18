@@ -23,6 +23,7 @@ import { MyNewspaper } from './objects/MyNewspaper.js';
 import { MyVase } from './objects/MyVase.js';
 import { MySpiralSpring } from './objects/MySpiralSpring.js';
 import { MyBalloon } from './objects/MyBalloon.js';
+import { MyDoor } from './objects/MyDoor.js';
 
 /**
  *  This class contains the contents of out application
@@ -187,12 +188,13 @@ class MyContents {
      */
     init() {
 
-        // create once 
+        // create once
+        /*
         if (this.axis === null) {
             // create and attach the axis to the scene
             this.axis = new MyAxis(this)
             this.app.scene.add(this.axis)
-        }
+        }*/
 
 
         // add a point light on top of the model
@@ -660,6 +662,13 @@ class MyContents {
         ballon3.position.set(this.wallXPos - 1.2, 5.64, this.wallZPos - 2.2);
         this.app.scene.add(ballon3);
 
+
+        // PORTA
+        let door = new MyDoor(this.app, this.doorHeight, this.doorWidth, 0.4, "#FFFFFF", "#000000");
+        door.buildDoor(Math.PI/4);
+        door.position.set(7.5, this.doorY, this.doorZ);
+        door.rotation.set(0, Math.PI, 0);
+        this.app.scene.add(door);
     }
 
     createHelperObject(x, y, z) {
