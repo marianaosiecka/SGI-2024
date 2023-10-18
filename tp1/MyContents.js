@@ -38,13 +38,6 @@ class MyContents {
         this.app = app
         this.axis = null
 
-        // plane related attributes
-        this.diffusePlaneColor = "#B8C8D4"
-        this.specularPlaneColor = "#777777"
-        this.planeShininess = 30
-        this.planeMaterial1 = new THREE.MeshPhongMaterial({ color: "#c8e3f7" })
-        this.planeMaterial2 = new THREE.MeshPhongMaterial({ color: "#FFFFFF" })
-
         // COLORS
         this.green = "#5e6e47";
         this.darkBlue = "#1B4984";
@@ -66,12 +59,13 @@ class MyContents {
         this.mapSize = 1024
     }
 
-
+    /**
+     * initializes the walls
+     */
     buildWalls() {
         const wallHeight = 6;
         const wallFrontBackWidth = 16;
         const wallSideWidth = 15;
-
 
         let wall = new THREE.PlaneGeometry(wallSideWidth, wallHeight);
         let wallMaterial = new THREE.MeshPhongMaterial({ color: this.bege })
@@ -140,8 +134,6 @@ class MyContents {
         this.app.scene.add(this.windowWallTopMesh);
         this.app.scene.add(this.windowWallDownMesh);
 
-
-
         // front
         const doorWallRightWidth = - (-wallFrontBackWidth / 2 - (this.doorZ - (this.doorWidth / 2)))
         this.doorWallRight = new THREE.PlaneGeometry(doorWallRightWidth, wallHeight);
@@ -184,78 +176,15 @@ class MyContents {
     }
 
     /**
-     * initializes the contents
+     * initializes the table
      */
-    init() {
-
-        // create once
-        /*
-        if (this.axis === null) {
-            // create and attach the axis to the scene
-            this.axis = new MyAxis(this)
-            this.app.scene.add(this.axis)
-        }*/
-
-
-        // add a point light on top of the model
-        const pointLight = new THREE.PointLight(this.white, 10, 0, 1);
-        pointLight.position.set(0, 10, 0);
-        this.app.scene.add(pointLight);
-
-        // add a point light helper for the previous point light
-        const sphereSize = 0.5;
-        const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-        this.app.scene.add(pointLightHelper);
-
-        // add an ambient light
-        const ambientLight = new THREE.AmbientLight(0x777777, 1);
-        this.app.scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(this.white, 0.5);
-        directionalLight.position.set(0, 1, 0);
-        directionalLight.target = this.createHelperObject(0, 6, 0);
-        this.app.scene.add(directionalLight);
-
-        // Create a Plane Mesh with basic material
-        let floor = new THREE.PlaneGeometry(15, 16);
-
-        let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
-        let floorUVRate = 15 / 16;
-        let textureUVRate = 626 / 417; // image dimensions
-        let textureRepeatU = 2;
-        let textureRepeatV = textureRepeatU * floorUVRate * textureUVRate;
-        floorTexture.wrapS = THREE.RepeatWrapping;
-        floorTexture.wrapT = THREE.RepeatWrapping;
-        floorTexture.repeat.set(textureRepeatU, textureRepeatV );
-        floorTexture.offset = new THREE.Vector2(0,0);
-
-        let floorMaterial = new THREE.MeshPhongMaterial({ color: "#e8d7c8", map: floorTexture });
-
-        let floorMesh = new THREE.Mesh(floor, floorMaterial);
-        floorMesh.rotation.x = -Math.PI / 2;
-        floorMesh.position.y = 0;
-        floorMesh.receiveShadow = true;
-        this.app.scene.add(floorMesh);
-
-        // Create a Plane Mesh with basic material
-        let ceiling = new THREE.PlaneGeometry(15, 16);
-        let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege });
-        this.ceilingMesh = new THREE.Mesh(ceiling, ceilingMaterial);
-        this.ceilingMesh.rotation.x = Math.PI / 2;
-        this.ceilingMesh.position.y = 6;
-        this.ceilingMesh.receiveShadow = true;
-        this.app.scene.add(this.ceilingMesh);
-
-        this.buildWalls();
-
-
+    buildTableScene() {
         //MESA
         let tableTexture = new THREE.TextureLoader().load('textures/wood_texture.jpg');
         let table = new MyTable(this.app, 3.8, 0.1, 6, 1.2, tableTexture);
         table.buildLegs(0.2, 0.1, 20, this.brown);
         table.position.set(0, 0, 4.8);
         this.app.scene.add(table);
-
 
         //CADEIRAS
         const colorDinnerTableChair = this.yellow;
@@ -294,8 +223,12 @@ class MyContents {
         chair4.rotation.set(0, Math.PI, 0);
         chair4.position.set(1.8, 0, 3.6);
         this.app.scene.add(chair4);
+    }
 
-
+    /**
+     * initializes the cake
+     */
+    buildCakeScene() {
         // PRATO DO BOLO
         let cakePlate = new MyCakePlate(this.app, 0.7, 0.05, 50, this.offWhite, "#c2c2b2")
         cakePlate.position.set(0, 1.7, 4);
@@ -309,7 +242,6 @@ class MyContents {
         let plateSlice2 = new MyPlate(this.app, 0.52, 0.05, 50, this.offWhite, "#c2c2b2");
         plateSlice2.position.set(-1.1, 1.38, 5.8)
         this.app.scene.add(plateSlice2);
-
 
         // BOLO & FATIA
         let fillingTexture = new THREE.TextureLoader().load('textures/cake_slice_texture.png');
@@ -352,12 +284,12 @@ class MyContents {
         //LUZ DA MESA (BOLO SPOT LIGHT)
         this.tableLight = new THREE.SpotLight(this.lightColor, 5.5, 5, Math.PI / 3, 1, 0.2);
         this.tableLight.target = cake;
+    }
 
-        //CANDEEIRO DE TETO DO BOLO
-        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
-        lampTable.position.set(0, 5.5, 4.8);
-        this.app.scene.add(lampTable);
-
+    /**
+     * initializes the frames
+     */
+    buildFrames() {
         // MOLDURAS
         let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
         let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, "#e0ddd3", this.white, frame1Texture)
@@ -378,38 +310,23 @@ class MyContents {
         this.app.scene.add(frame3);
 
         let carFrameTexture = new THREE.TextureLoader().load('textures/white_texture.png');
-        let carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, "#e0ddd3", this.white, carFrameTexture);
-        carFrame.position.set(-3.5, 4, -this.wallZPos + 0.05)
-        carFrame.rotation.set(0, -Math.PI / 2, 0)
-        this.app.scene.add(carFrame);
+        this.carFrame = new MyFrame(this.app, 2.3, 1.3, 0.1, "#e0ddd3", this.white, carFrameTexture);
+        this.carFrame.position.set(-3.5, 4, -this.wallZPos + 0.05)
+        this.carFrame.rotation.set(0, -Math.PI / 2, 0)
+        this.app.scene.add(this.carFrame);
 
         let frame4Texture = new THREE.TextureLoader().load('pictures/photography2.jpg');
         let frame4 = new MyFrame(this.app, 1.3, 1.3, 0.1, "#e0ddd3", this.white, frame4Texture)
         frame4.position.set(3.2, 3.4, -this.wallZPos + 0.05);
         frame4.rotation.set(0, -Math.PI / 2, 0);
         this.app.scene.add(frame4);
+    }
 
-        // JANELA
-        let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
-        let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#a3a3a3", windowTexture)
-        window.bottomDownPart();
-        window.rotation.set(0, Math.PI / 2, 0,);
-        window.position.set(-7.4, this.windowY, this.windowZ)
-        this.app.scene.add(window);
-
-        let windowLight = new THREE.RectAreaLight(0xffffff, 100, this.windowWidth, this.windowHeight);
-        this.setScale(windowLight, 2)
-        windowLight.position.set(-8.1, this.windowY, this.windowZ)
-        windowLight.rotation.set(0, Math.PI / 2, 0)
-        this.app.scene.add(windowLight)
-
-        //TAPETE
-        let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
-        let carpet = new MyCarpet(this.app, 7.5, 0.1, 5, this.lightBlue, carpetTexture);
-        carpet.position.set(0, 0.05, -5);
-        this.app.scene.add(carpet);
-
-        //ALMOFADAS
+    /**
+     * initializes the sofas
+     */
+    buildSofas() {
+        // ALMOFADAS
         let pillow1Texture = new THREE.TextureLoader().load('textures/pillow3_print.jpg');
         let pillow2Texture = new THREE.TextureLoader().load('textures/pillow1_print.jpg');
         let pillow3Texture = new THREE.TextureLoader().load('textures/pillow4_print.jpg');
@@ -417,23 +334,23 @@ class MyContents {
 
         let pillow1 = new MyPillow(this.app, pillow1Texture);
         this.setScale(pillow1, 0.4)
-        pillow1.rotation.y = Math.PI/2.5;
-        pillow1.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI/16)
-    
+        pillow1.rotation.y = Math.PI / 2.5;
+        pillow1.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI / 16)
+
         let pillow2 = new MyPillow(this.app, pillow2Texture);
         this.setScale(pillow2, 0.3)
-        pillow2.rotation.y = -Math.PI/2.5;
-        pillow2.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI/16)
+        pillow2.rotation.y = -Math.PI / 2.5;
+        pillow2.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 16)
 
         let pillow3 = new MyPillow(this.app, pillow3Texture);
         this.setScale(pillow3, 0.3)
-        pillow3.rotation.y = Math.PI/1.5;
-        pillow3.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI/14)
+        pillow3.rotation.y = Math.PI / 1.5;
+        pillow3.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI / 14)
 
         let pillow4 = new MyPillow(this.app, pillow4Texture);
         this.setScale(pillow4, 0.35)
-        pillow4.rotation.y = -Math.PI/2.7;
-        pillow4.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI/16)
+        pillow4.rotation.y = -Math.PI / 2.7;
+        pillow4.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 16)
 
         //SOFAS
         let sofa1 = new MySofa(this.app, 1, 0.4, 0.1, this.brown);
@@ -449,53 +366,12 @@ class MyContents {
         sofa2.setPillow(pillow4, 0.1, 0.7, 0);
         sofa2.position.set(2.3, 0, -6.2);
         this.app.scene.add(sofa2);
+    }
 
-
-        //CANDEEIRO SOFAS
-        let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5.2, Math.PI / 4, 1, 0.2);
-        spotLightSofas.target = carpet;
-
-        let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
-        lampSofas.position.set(0, 5.5, -4.8);
-        this.app.scene.add(lampSofas);
-
-        //CANDEEIRO CHÃO
-        const floorLampX = 4.7;
-        const floorLampY = 0;
-        const floorLampZ = -6;
-        const floorLampHeight = 2.8;
-
-        //luz que ilumina a lâmpada
-        let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 6, Math.PI / 40, 2, 0.2);
-        lampHighlight.position.set(0, 0, 5);
-        //luz que sai do candeeiro
-        let lightFloorLamp = new THREE.SpotLight(this.lightColor, 20, 10, Math.PI / 6, 1, 0.8);
-
-        let floorLamp = new MyFloorLamp(this.app, 0.4, 0.3, 0.2, 0.2, floorLampHeight, 40, this.darkBlue, this.darkBlue, this.lightColor, lampHighlight, lightFloorLamp);
-        floorLamp.rotation.set(0, -Math.PI / 4, 0);
-        floorLamp.position.set(floorLampX, floorLampY, floorLampZ);
-        lightFloorLamp.position.set(0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
-        this.app.scene.add(floorLamp);
-
-        //MESA DOS SOFÁS
-        let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
-        coffeeTable.rotation.set(0, Math.PI / 2, 0);
-        coffeeTable.position.set(0, 0.05, -4.2);
-        coffeeTable.buildBooks(["#E57373", "#FFD700", "#FFA07A", "#85A1CC", "#AED9E0", "#FFB74D"]);
-        this.app.scene.add(coffeeTable);
-
-        // GIRA DISCOS 
-        let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.8, 1.8, 1.3, this.orange);
-        vinylPlayerHolder.buildPlayer(this.green, this.lightBlue);
-
-        let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35", "#A41A1A", "#FFD700"]
-        vinylPlayerHolder.buildCovers(coverColors)
-
-        const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
-        vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
-        vinylPlayerHolder.position.set(-6.7, -0.1, -5.5)
-        this.app.scene.add(vinylPlayerHolder);
-
+    /**
+     * initializes the wall lights
+     */
+    buildWallLights() {
         //LUZES DE PAREDE
         const wallLampX = 0.15 - this.wallXPos;
         const wallLampY = this.wallHeight - this.wallHeight / 2.5;
@@ -537,8 +413,12 @@ class MyContents {
         this.app.scene.add(wallLampFRight);
         this.app.scene.add(wallLampBLeft);
         this.app.scene.add(wallLampBRight);
+    }
 
-
+    /**
+     * initializes the ceiling lights
+     */
+    buildCeilingLights() {
         //LUZES DE TETO
         const ceilingLightX = 5;
         const ceilingLightY = this.wallHeight - 0.04;
@@ -565,7 +445,6 @@ class MyContents {
 
         let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
-        
         ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
         let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight2, ceilingLight2);
         ceilinglamp2.rotation.set(0, 0, Math.PI / 2);
@@ -593,7 +472,6 @@ class MyContents {
 
         let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
-        
         ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight4, ceilingLight4);
         ceilinglamp4.rotation.set(0, 0, Math.PI / 2);
@@ -602,8 +480,173 @@ class MyContents {
         ceilinglamp4.position.set(ceilingLightX, ceilingLightY, -ceilingLightZ);
         ceilinglamp4.scale.x = 0.4;
         this.app.scene.add(ceilinglamp4);
+    }
 
+    /**
+     * initializes the balloons
+     */
+    buildBalloons() {
+        let ballon1 = new MyBalloon(this.app, 0.4, 2, "#b0eff7", "#e0ddd3", 1);
+        ballon1.position.set(this.wallXPos - 2.5, 5.55, this.wallZPos - 2.5);
+        this.app.scene.add(ballon1);
 
+        let ballon2 = new MyBalloon(this.app, 0.4, 2.5, "#8aa168", "#e0ddd3", -1);
+        this.setScale(ballon2, 1.2);
+        ballon2.position.set(this.wallXPos - 2, 5.45, this.wallZPos - 1.5);
+        this.app.scene.add(ballon2);
+
+        let ballon3 = new MyBalloon(this.app, 0.4, 1.6, "#f0d75b", "#e0ddd3", -1);
+        this.setScale(ballon3, 0.8);
+        ballon3.position.set(this.wallXPos - 1.2, 5.64, this.wallZPos - 2.2);
+        this.app.scene.add(ballon3);
+    }
+
+    /**
+     * initializes the vinyl
+     */
+    buildVinyl() {
+        //GIRA DISCOS 
+        let vinylPlayerHolder = new MyVinylPlayerHolder(this.app, 1.8, 1.8, 1.3, this.orange);
+        vinylPlayerHolder.buildPlayer(this.green, this.lightBlue);
+
+        let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35", "#A41A1A", "#FFD700"]
+        vinylPlayerHolder.buildCovers(coverColors)
+
+        const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
+        vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
+        vinylPlayerHolder.position.set(-6.7, -0.1, -5.5)
+        this.app.scene.add(vinylPlayerHolder);
+    }
+
+    /**
+     * initializes the contents
+     */
+    init() {
+
+        // create once
+        /*
+        if (this.axis === null) {
+            // create and attach the axis to the scene
+            this.axis = new MyAxis(this)
+            this.app.scene.add(this.axis)
+        }*/
+
+        this.buildWalls();
+        this.buildTableScene();
+        this.buildCakeScene();
+        this.buildSofas();
+        this.buildFrames();
+        this.buildWallLights();
+        this.buildCeilingLights();
+        this.buildBalloons();
+        this.buildVinyl();
+
+        // LUZES 
+        const pointLight = new THREE.PointLight(this.white, 10, 0, 1);
+        pointLight.position.set(0, 10, 0);
+        this.app.scene.add(pointLight);
+
+        const sphereSize = 0.5;
+        const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+        this.app.scene.add(pointLightHelper);
+
+        const ambientLight = new THREE.AmbientLight(0x777777, 1);
+        this.app.scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(this.white, 0.5);
+        directionalLight.position.set(0, 1, 0);
+        directionalLight.target = this.createHelperObject(0, 6, 0);
+        this.app.scene.add(directionalLight);
+
+        // CHÃO
+        let floor = new THREE.PlaneGeometry(15, 16);
+        let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
+        let floorUVRate = 15 / 16;
+        let textureUVRate = 626 / 417; // image dimensions
+        let textureRepeatU = 2;
+        let textureRepeatV = textureRepeatU * floorUVRate * textureUVRate;
+        floorTexture.wrapS = THREE.RepeatWrapping;
+        floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set(textureRepeatU, textureRepeatV);
+        floorTexture.offset = new THREE.Vector2(0, 0);
+
+        let floorMaterial = new THREE.MeshPhongMaterial({ color: "#e8d7c8", map: floorTexture });
+
+        let floorMesh = new THREE.Mesh(floor, floorMaterial);
+        floorMesh.rotation.x = -Math.PI / 2;
+        floorMesh.position.y = 0;
+        floorMesh.receiveShadow = true;
+        this.app.scene.add(floorMesh);
+
+        // TETO
+        let ceiling = new THREE.PlaneGeometry(15, 16);
+        let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege });
+        this.ceilingMesh = new THREE.Mesh(ceiling, ceilingMaterial);
+        this.ceilingMesh.rotation.x = Math.PI / 2;
+        this.ceilingMesh.position.y = 6;
+        this.ceilingMesh.receiveShadow = true;
+        this.app.scene.add(this.ceilingMesh);
+
+        // CANDEEIRO DE TETO DO BOLO
+        let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
+        lampTable.position.set(0, 5.5, 4.8);
+        this.app.scene.add(lampTable);
+
+        // JANELA
+        let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
+        let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#a3a3a3", windowTexture)
+        window.bottomDownPart();
+        window.rotation.set(0, Math.PI / 2, 0,);
+        window.position.set(-7.4, this.windowY, this.windowZ)
+        this.app.scene.add(window);
+
+        let windowLight = new THREE.RectAreaLight(0xffffff, 100, this.windowWidth, this.windowHeight);
+        this.setScale(windowLight, 2)
+        windowLight.position.set(-8.1, this.windowY, this.windowZ)
+        windowLight.rotation.set(0, -Math.PI / 2, 0)
+        this.app.scene.add(windowLight)
+        
+
+        // TAPETE
+        let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
+        let carpet = new MyCarpet(this.app, 7.5, 0.1, 5, this.lightBlue, carpetTexture);
+        carpet.position.set(0, 0.05, -5);
+        this.app.scene.add(carpet);
+
+        //CANDEEIRO SOFAS
+        let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5.2, Math.PI / 4, 1, 0.2);
+        spotLightSofas.target = carpet;
+
+        let lampSofas = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, spotLightSofas);
+        lampSofas.position.set(0, 5.5, -4.8);
+        this.app.scene.add(lampSofas);
+
+        //CANDEEIRO CHÃO
+        const floorLampX = 4.7;
+        const floorLampY = 0;
+        const floorLampZ = -6;
+        const floorLampHeight = 2.8;
+
+        //luz que ilumina a lâmpada
+        let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 6, Math.PI / 40, 2, 0.2);
+        lampHighlight.position.set(0, 0, 5);
+        //luz que sai do candeeiro
+        let lightFloorLamp = new THREE.SpotLight(this.lightColor, 20, 10, Math.PI / 6, 1, 0.8);
+
+        let floorLamp = new MyFloorLamp(this.app, 0.4, 0.3, 0.2, 0.2, floorLampHeight, 40, this.darkBlue, this.darkBlue, this.lightColor, lampHighlight, lightFloorLamp);
+        floorLamp.rotation.set(0, -Math.PI / 4, 0);
+        floorLamp.position.set(floorLampX, floorLampY, floorLampZ);
+        lightFloorLamp.position.set(0, floorLamp.getLightYPos(), - Math.cos(floorLampHeight) + 1);
+        this.app.scene.add(floorLamp);
+
+        //MESA DOS SOFÁS
+        let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
+        coffeeTable.rotation.set(0, Math.PI / 2, 0);
+        coffeeTable.position.set(0, 0.05, -4.2);
+        coffeeTable.buildBooks(["#E57373", "#FFD700", "#FFA07A", "#85A1CC", "#AED9E0", "#FFB74D"]);
+        this.app.scene.add(coffeeTable);
+
+        //CAROCHA
         let car = new MyCar(this.app);
         const carGeometry = new THREE.BufferGeometry().setFromPoints([
             ...car.backRoofCurve.getPoints(50),
@@ -619,20 +662,23 @@ class MyContents {
         const carMesh = new THREE.Line(carGeometry, carMaterial);
         carMesh.rotation.y = Math.PI / 2;
         carMesh.position.set(0.02, -0.53, 0.75)
-        carFrame.addObject(carMesh);
-        this.setScale(carFrame, 0.8, 0.8, 0.8);
+        this.carFrame.addObject(carMesh);
+        this.setScale(this.carFrame, 0.8, 0.8, 0.8);
 
+        //JORNAL
         let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.png'))
         newspaper.position.set(0, 0.9, -4.9);
         newspaper.rotation.set(0, Math.PI / 10, 0);
         this.app.scene.add(newspaper);
 
+        //MOLA
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
         spiralSpring.rotation.set(0, -Math.PI / 6, 0);
         this.setScale(spiralSpring, 0.3, 0.3, 0.3);
         spiralSpring.position.set(-0.4, 0.94, -4.4);
         this.app.scene.add(spiralSpring);
 
+        //VASO
         let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");
         vase.createFlowers("#40874B", "#F3ED52", ["#51385C", "#DA4B0E", "#83BACC"]);
         vase.position.set(-6, 0, 7);
@@ -640,28 +686,20 @@ class MyContents {
         vase.rotation.set(0, Math.PI / 2, 0);
         this.app.scene.add(vase);
 
-        let ballon1 = new MyBalloon(this.app, 0.4, 2, "#b0eff7", "#e0ddd3", 1);
-        ballon1.position.set(this.wallXPos - 2.5, 5.55, this.wallZPos - 2.5);
-        this.app.scene.add(ballon1);
-
-        let ballon2 = new MyBalloon(this.app, 0.4, 2.5, "#8aa168", "#e0ddd3", -1);
-        this.setScale(ballon2, 1.2);
-        ballon2.position.set(this.wallXPos - 2, 5.45, this.wallZPos - 1.5);
-        this.app.scene.add(ballon2);
-
-        let ballon3 = new MyBalloon(this.app, 0.4, 1.6, "#f0d75b", "#e0ddd3", -1);
-        this.setScale(ballon3, 0.8);
-        ballon3.position.set(this.wallXPos - 1.2, 5.64, this.wallZPos - 2.2);
-        this.app.scene.add(ballon3);
-
-
         // PORTA
         let door = new MyDoor(this.app, this.doorHeight, this.doorWidth, 0.4, this.brown, this.brown, "#d4af37");
+        door.buildDoor(Math.PI/4);
         door.position.set(7.5, this.doorY, this.doorZ);
         door.rotation.set(0, Math.PI, 0);
         this.app.scene.add(door);
     }
 
+    /**
+     * creates an object at position (x, y, z) an adds it to the scene
+     * @param x 
+     * @param y 
+     * @param z 
+     */
     createHelperObject(x, y, z) {
         let obj = new THREE.Object3D();
         obj.position.set(x, y, z);
@@ -669,6 +707,11 @@ class MyContents {
         return obj;
     }
 
+    /**
+     * sets scale of object
+     * @param object
+     * @param s is the scale percentage
+     */
     setScale(object, s) {
         object.scale.x = s;
         object.scale.y = s;
