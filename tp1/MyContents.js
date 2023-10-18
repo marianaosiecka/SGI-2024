@@ -65,11 +65,20 @@ class MyContents {
         this.mapSize = 1024
     }
 
-    
+
     buildWalls() {
-        let wall = new THREE.PlaneGeometry(15, 6);
-        let wall1 = new THREE.PlaneGeometry(16, 6);
+        const wallHeight = 6;
+        const wallFrontBackWidth = 16;
+        const wallSideWidth = 15;
+
+
+        let wall = new THREE.PlaneGeometry(wallSideWidth, wallHeight);
         let wallMaterial = new THREE.MeshPhongMaterial({ color: this.bege })
+
+        this.doorHeight = 4.5;
+        this.doorWidth = 2.5;
+        this.doorY = this.doorHeight / 2;
+        this.doorZ = 0;
 
         this.windowHeight = 3;
         this.windowWidth = 2.2;
@@ -79,49 +88,49 @@ class MyContents {
         // right
         this.wall1Mesh = new THREE.Mesh(wall, wallMaterial);
         this.wall1Mesh.position.z = -this.wallZPos;
-        this.wall1Mesh.position.y = 3;
+        this.wall1Mesh.position.y = wallHeight / 2;
         this.wall1Mesh.receiveShadow = true;
         this.app.scene.add(this.wall1Mesh);
         // left
         this.wall2Mesh = new THREE.Mesh(wall, wallMaterial);
         this.wall2Mesh.rotation.x = Math.PI;
         this.wall2Mesh.position.z = this.wallZPos;
-        this.wall2Mesh.position.y = 3;
+        this.wall2Mesh.position.y = wallHeight / 2;
         this.wall2Mesh.receiveShadow = true;
         this.app.scene.add(this.wall2Mesh);
 
         // back
-        const windowWallRightWidth = - (-8 - (this.windowZ - (this.windowWidth / 2)))
-        this.windowWallRight = new THREE.PlaneGeometry(windowWallRightWidth, 6);
+        const windowWallRightWidth = - (-wallFrontBackWidth / 2 - (this.windowZ - (this.windowWidth / 2)))
+        this.windowWallRight = new THREE.PlaneGeometry(windowWallRightWidth, wallHeight);
         this.windowWallRightMesh = new THREE.Mesh(this.windowWallRight, wallMaterial)
         this.windowWallRightMesh.receiveShadow = true;
         this.windowWallRightMesh.rotation.y = Math.PI / 2;
-        this.windowWallRightMesh.position.y = 3;
-        this.windowWallRightMesh.position.x = -7.5;
-        this.windowWallRightMesh.position.z = ((-8) + (this.windowZ - (this.windowWidth / 2))) / 2;
+        this.windowWallRightMesh.position.y = wallHeight / 2;
+        this.windowWallRightMesh.position.x = -wallSideWidth / 2;
+        this.windowWallRightMesh.position.z = (-wallFrontBackWidth / 2 + (this.windowZ - (this.windowWidth / 2))) / 2;
 
-        this.windowWallLeft = new THREE.PlaneGeometry(16 - windowWallRightWidth - this.windowWidth, 6);
+        this.windowWallLeft = new THREE.PlaneGeometry(wallFrontBackWidth - windowWallRightWidth - this.windowWidth, wallHeight);
         this.windowWallLeftMesh = new THREE.Mesh(this.windowWallLeft, wallMaterial)
         this.windowWallLeftMesh.receiveShadow = true;
         this.windowWallLeftMesh.rotation.y = Math.PI / 2;
-        this.windowWallLeftMesh.position.y = 3;
-        this.windowWallLeftMesh.position.x = -7.5;
-        this.windowWallLeftMesh.position.z = (8 + (this.windowZ + (this.windowWidth / 2))) / 2
+        this.windowWallLeftMesh.position.y = wallHeight / 2;
+        this.windowWallLeftMesh.position.x = -wallSideWidth / 2;
+        this.windowWallLeftMesh.position.z = (wallFrontBackWidth / 2 + (this.windowZ + (this.windowWidth / 2))) / 2
 
-        const windowWallTopHeight = 6 - (this.windowY + this.windowHeight / 2)
+        const windowWallTopHeight = wallHeight - (this.windowY + this.windowHeight / 2)
         this.windowWallTop = new THREE.PlaneGeometry(this.windowWidth, windowWallTopHeight);
         this.windowWallTopMesh = new THREE.Mesh(this.windowWallTop, wallMaterial)
         this.windowWallTopMesh.receiveShadow = true;
         this.windowWallTopMesh.rotation.y = Math.PI / 2;
-        this.windowWallTopMesh.position.x = -7.5;
+        this.windowWallTopMesh.position.x = -wallSideWidth / 2;
         this.windowWallTopMesh.position.z = this.windowZ;
-        this.windowWallTopMesh.position.y = (6 + (this.windowY + (this.windowHeight / 2))) / 2
+        this.windowWallTopMesh.position.y = (wallHeight + (this.windowY + (this.windowHeight / 2))) / 2
 
-        this.windowWallDown = new THREE.PlaneGeometry(this.windowWidth, 6 - windowWallTopHeight - this.windowHeight);
+        this.windowWallDown = new THREE.PlaneGeometry(this.windowWidth, wallHeight - windowWallTopHeight - this.windowHeight);
         this.windowWallDownMesh = new THREE.Mesh(this.windowWallDown, wallMaterial)
         this.windowWallDownMesh.receiveShadow = true;
         this.windowWallDownMesh.rotation.y = Math.PI / 2;
-        this.windowWallDownMesh.position.x = -7.5;
+        this.windowWallDownMesh.position.x = -wallSideWidth / 2;
         this.windowWallDownMesh.position.z = this.windowZ;
         this.windowWallDownMesh.position.y = (this.windowY - this.windowHeight / 2) / 2;
 
@@ -130,13 +139,47 @@ class MyContents {
         this.app.scene.add(this.windowWallTopMesh);
         this.app.scene.add(this.windowWallDownMesh);
 
+
+
         // front
-        this.wall4Mesh = new THREE.Mesh(wall1, wallMaterial);
-        this.wall4Mesh.rotation.y = - Math.PI / 2;
-        this.wall4Mesh.position.y = 3;
-        this.wall4Mesh.position.x = this.wallXPos;
-        this.wall4Mesh.receiveShadow = true;
-        this.app.scene.add(this.wall4Mesh);
+        const doorWallRightWidth = - (-wallFrontBackWidth / 2 - (this.doorZ - (this.doorWidth / 2)))
+        this.doorWallRight = new THREE.PlaneGeometry(doorWallRightWidth, wallHeight);
+        this.doorWallRightMesh = new THREE.Mesh(this.doorWallRight, wallMaterial)
+        this.doorWallRightMesh.receiveShadow = true;
+        this.doorWallRightMesh.rotation.y = -Math.PI / 2;
+        this.doorWallRightMesh.position.y = wallHeight / 2;
+        this.doorWallRightMesh.position.x = wallSideWidth / 2;
+        this.doorWallRightMesh.position.z = (-wallFrontBackWidth / 2 + (this.doorZ - (this.doorWidth / 2))) / 2;
+
+        this.doorWallLeft = new THREE.PlaneGeometry(wallFrontBackWidth - doorWallRightWidth - this.doorWidth, wallHeight);
+        this.doorWallLeftMesh = new THREE.Mesh(this.doorWallLeft, wallMaterial)
+        this.doorWallLeftMesh.receiveShadow = true;
+        this.doorWallLeftMesh.rotation.y = -Math.PI / 2;
+        this.doorWallLeftMesh.position.y = wallHeight / 2;
+        this.doorWallLeftMesh.position.x = wallSideWidth / 2;
+        this.doorWallLeftMesh.position.z = (wallFrontBackWidth / 2 + (this.doorZ + (this.doorWidth / 2))) / 2
+
+        const doorWallTopHeight = wallHeight - (this.doorY + this.doorHeight / 2)
+        this.doorWallTop = new THREE.PlaneGeometry(this.doorWidth, doorWallTopHeight);
+        this.doorWallTopMesh = new THREE.Mesh(this.doorWallTop, wallMaterial)
+        this.doorWallTopMesh.receiveShadow = true;
+        this.doorWallTopMesh.rotation.y = -Math.PI / 2;
+        this.doorWallTopMesh.position.x = wallSideWidth / 2;
+        this.doorWallTopMesh.position.z = this.doorZ;
+        this.doorWallTopMesh.position.y = (wallHeight + (this.doorY + (this.doorHeight / 2))) / 2
+
+        this.doorWallDown = new THREE.PlaneGeometry(this.doorWidth, wallHeight - doorWallTopHeight - this.doorHeight);
+        this.doorWallDownMesh = new THREE.Mesh(this.doorWallDown, wallMaterial)
+        this.doorWallDownMesh.receiveShadow = true;
+        this.doorWallDownMesh.rotation.y = -Math.PI / 2;
+        this.doorWallDownMesh.position.x = wallSideWidth / 2;
+        this.doorWallDownMesh.position.z = this.doorZ;
+        this.doorWallDownMesh.position.y = (this.doorY - this.doorHeight / 2) / 2;
+
+        this.app.scene.add(this.doorWallRightMesh);
+        this.app.scene.add(this.doorWallLeftMesh);
+        this.app.scene.add(this.doorWallTopMesh);
+        this.app.scene.add(this.doorWallDownMesh);
     }
 
     /**
@@ -145,13 +188,13 @@ class MyContents {
     init() {
 
         // create once 
-        /*if (this.axis === null) {
+        if (this.axis === null) {
             // create and attach the axis to the scene
             this.axis = new MyAxis(this)
             this.app.scene.add(this.axis)
         }
-        */
-        
+
+
         // add a point light on top of the model
         const pointLight = new THREE.PointLight(this.white, 10, 0, 1);
         pointLight.position.set(0, 10, 0);
@@ -167,7 +210,7 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         const directionalLight = new THREE.DirectionalLight(this.white, 0.5);
-        directionalLight.position.set(0, 1, 0); 
+        directionalLight.position.set(0, 1, 0);
         directionalLight.target = this.createHelperObject(0, 6, 0);
         this.app.scene.add(directionalLight);
 
@@ -183,7 +226,7 @@ class MyContents {
 
         // Create a Plane Mesh with basic material
         let ceiling = new THREE.PlaneGeometry(15, 16);
-        let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege});
+        let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege });
         this.ceilingMesh = new THREE.Mesh(ceiling, ceilingMaterial);
         this.ceilingMesh.rotation.x = Math.PI / 2;
         this.ceilingMesh.position.y = 6;
@@ -277,7 +320,7 @@ class MyContents {
         this.app.scene.add(candle3);
 
         let candle4 = new MyCandle(this.app, 0.03, 0.18, 40, this.orange, this.yellow);
-        candle4.rotation.set(0, -Math.PI/2.8, Math.PI/2)
+        candle4.rotation.set(0, -Math.PI / 2.8, Math.PI / 2)
         candle4.position.set(cake.position.x + 0.2, 1.76, cake.position.z - 0.3);
         this.app.scene.add(candle4);
 
@@ -288,7 +331,7 @@ class MyContents {
         this.app.scene.add(fork1)
 
         let fork2 = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
-        fork2.rotation.set(0, Math.PI - Math.PI/14, 0)
+        fork2.rotation.set(0, Math.PI - Math.PI / 14, 0)
         this.setScale(fork2, 0.2)
         fork2.position.set(-0.95, 1.27, 5.2)
         this.app.scene.add(fork2)
@@ -296,7 +339,7 @@ class MyContents {
         //LUZ DA MESA (BOLO SPOT LIGHT)
         this.tableLight = new THREE.SpotLight(this.lightColor, 4, 5, Math.PI / 3, 1, 0.2);
         this.tableLight.target = cake;
-        
+
         //CANDEEIRO DE TETO DO BOLO
         let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
         lampTable.position.set(0, 5.5, 4.8);
@@ -424,7 +467,7 @@ class MyContents {
 
         let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35", "#A41A1A", "#FFD700"]
         vinylPlayerHolder.buildCovers(coverColors)
-        
+
         const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
         vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
         vinylPlayerHolder.position.set(-6.7, -0.1, -5.5)
