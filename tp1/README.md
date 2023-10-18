@@ -10,13 +10,13 @@
 ----
 ## Project information
 
-- Main strong points:
+- Main strong points
   - the cake and slice sizes are relative to each other;
   - vinyl holder and furniture;
   - good lighting;
   - the extras complement quite nicely the scene.
 
-- Scene
+- Scene Description
   - When you walk through the door you see our living room.
   - In the living room there is a table with a birthday cake with candles, a slice cut out of the cake, two plates and two forks. There are four chairs around the table and some festive balloons. The lamp on top of the table is a spotlight targeting the cake. On the left corner on the back there is a big vase with four flowers. 
   - On the center of the back wall is a window with a view to the outside.
