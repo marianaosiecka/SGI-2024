@@ -143,17 +143,17 @@ class MyApp {
 
         // vinyl camera
         let vinylCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
-        vinylCamera.position.set(-2, 2.4, -5.3);
+        vinylCamera.position.set(-2, 4.5, -2);
         this.cameras['Vinyl'] = vinylCamera;
 
         // flowers camera
         let flowersCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
-        flowersCamera.position.set(-4, 3.7, 2.7);   
+        flowersCamera.position.set(-5, 1.7, 3);   
         this.cameras['Flowers'] = flowersCamera;
 
         // photos camera
         let photosCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-        photosCamera.position.set(0, 2.5, -1);
+        photosCamera.position.set(0, 3.5, 2);
         this.cameras['Photos'] = photosCamera;
 
         // paintings camera
@@ -166,8 +166,9 @@ class MyApp {
         windowCamera.position.set(-4.5, 3.5, 0);
         this.cameras['Window'] = windowCamera;
 
+        // door camera
         let doorCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-        doorCamera.position.set(2.5, 3, 0);
+        doorCamera.position.set(0, 3, 0);
         this.cameras['Door'] = doorCamera;
     }
 
