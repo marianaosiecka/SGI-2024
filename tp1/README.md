@@ -11,10 +11,10 @@
 ## Project information
 
 - Main strong points
-  - the cake and slice sizes are relative to each other;
-  - vinyl holder and furniture;
-  - good lighting;
-  - the extras complement quite nicely the scene.
+  - The cake and slice sizes are relative to each other.
+  - Vinyl holder and furniture.
+  - Good lighting.
+  - The extras complement quite nicely the scene.
 
 - Scene Description
   - When you walk through the door you see our living room.
@@ -26,9 +26,12 @@
   
 - http://127.0.0.1:5593/tp1/
 
+![Scene screenshot](screenshots/scene.png)
+
 ----
 ## Issues/Problems
 
 - We had some difficulties when trying to simulate certain types of materials, like glass.
 - Sometimes we struggled with the lights' position when they were part of an object's group.
-- Whe had problems when trying to create cameras targeting specific features.
+- We had problems when trying to create cameras targeting specific features.
+- Whe had difficulties when trying to adapt the texture to some parts of the pillows because they are curved surfaces.
