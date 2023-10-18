@@ -12,7 +12,7 @@ class MyNewspaper extends THREE.Object3D  {
         this.type = 'Group';
         this.app = app;
 
-        this.material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+        this.material = new THREE.MeshPhongMaterial({ map: texture, side: THREE.DoubleSide });
         this.builder = new MyNurbsBuilder(this.app);
 
         this.samplesU = 12;     

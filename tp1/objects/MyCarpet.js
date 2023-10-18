@@ -18,8 +18,9 @@ class MyCarpet extends THREE.Object3D  {
         let textureRepeatV = textureRepeatU * carpetUVRate * textureUVRate;
         carpetTexture.wrapS = THREE.RepeatWrapping;
         carpetTexture.wrapT = THREE.RepeatWrapping;
+        carpetTexture.rotation = Math.PI/4;
         carpetTexture.repeat.set(textureRepeatU, textureRepeatV );
-        carpetTexture.offset = new THREE.Vector2(0,0);
+        carpetTexture.offset = new THREE.Vector2(0,1);
 
         this.carpetMaterial = new THREE.MeshPhongMaterial({color: color, specular:color, shininess:5, map:carpetTexture, opacity:0.7});
         
