@@ -22,7 +22,7 @@ class MyCandle extends THREE.Object3D  {
         this.flameMesh.position.y = height - 0.05;
         this.add(this.flameMesh);
 
-        this.candleLight = new THREE.PointLight("#fac569", 0.1, 2);
+        this.candleLight = new THREE.PointLight("#fac569", 0.1, 1, 0.5);
         this.candleLight.position.y = height ;
         this.add(this.candleLight);
     }

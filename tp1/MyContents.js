@@ -1,29 +1,29 @@
 import * as THREE from 'three';
 import { MyAxis } from './MyAxis.js';
-import { MyTable } from './objects/MyTable.js';
-import { MyPlate } from './objects/MyPlate.js';
-import { MyCake } from './objects/MyCake.js';
-import { MyChair } from './objects/MyChair.js';
-import { MyFrame } from './objects/MyFrame.js';
-import { MyLamp } from './objects/MyLamp.js';
-import { MyCarpet } from './objects/MyCarpet.js';
-import { MySofa } from './objects/MySofa.js';
-import { MyPillow } from './objects/MyPillow.js';
-import { MyCakePlate } from './objects/MyCakePlate.js';
-import { MyFork } from './objects/MyFork.js';
-import { MyCandle } from './objects/MyCandle.js';
-import { MyFloorLamp } from './objects/MyFloorLamp.js';
-import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
-import { MyWallLamp } from './objects/MyWallLamp.js';
-import { MyCeilingLamp } from './objects/MyCeilingLamp.js';
-import { MyWindow } from './objects/MyWindow.js';
-import { MyVinylPlayerHolder } from './objects/MyVinylPlayerHolder.js';
-import { MyCar } from './objects/MyCar.js';
-import { MyNewspaper } from './objects/MyNewspaper.js';
-import { MyVase } from './objects/MyVase.js';
-import { MySpiralSpring } from './objects/MySpiralSpring.js';
-import { MyBalloon } from './objects/MyBalloon.js';
-import { MyDoor } from './objects/MyDoor.js';
+import { MyTable } from './objects/furniture/MyTable.js';
+import { MyPlate } from './objects/cake/MyPlate.js';
+import { MyCake } from './objects/cake/MyCake.js';
+import { MyChair } from './objects/furniture/MyChair.js';
+import { MyFrame } from './objects/furniture/MyFrame.js';
+import { MyLamp } from './objects/lights/MyLamp.js';
+import { MyCarpet } from './objects/furniture/MyCarpet.js';
+import { MySofa } from './objects/furniture/MySofa.js';
+import { MyPillow } from './objects/curves/MyPillow.js';
+import { MyCakePlate } from './objects/cake/MyCakePlate.js';
+import { MyFork } from './objects/cake/MyFork.js';
+import { MyCandle } from './objects/cake/MyCandle.js';
+import { MyFloorLamp } from './objects/lights/MyFloorLamp.js';
+import { MyCoffeeTable } from './objects/furniture/MyCoffeeTable.js';
+import { MyWallLamp } from './objects/lights/MyWallLamp.js';
+import { MyCeilingLamp } from './objects/lights/MyCeilingLamp.js';
+import { MyWindow } from './objects/furniture/MyWindow.js';
+import { MyVinylPlayerHolder } from './objects/furniture/MyVinylPlayerHolder.js';
+import { MyCar } from './objects/curves/MyCar.js';
+import { MyNewspaper } from './objects/curves/MyNewspaper.js';
+import { MyVase } from './objects/curves/MyVase.js';
+import { MySpiralSpring } from './objects/curves/MySpiralSpring.js';
+import { MyBalloon } from './objects/curves/MyBalloon.js';
+import { MyDoor } from './objects/furniture/MyDoor.js';
 
 /**
  *  This class contains the contents of out application
@@ -350,7 +350,7 @@ class MyContents {
         this.app.scene.add(fork2)
 
         //LUZ DA MESA (BOLO SPOT LIGHT)
-        this.tableLight = new THREE.SpotLight(this.lightColor, 4, 5, Math.PI / 3, 1, 0.2);
+        this.tableLight = new THREE.SpotLight(this.lightColor, 5.5, 5, Math.PI / 3, 1, 0.2);
         this.tableLight.target = cake;
 
         //CANDEEIRO DE TETO DO BOLO
@@ -565,11 +565,7 @@ class MyContents {
 
         let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
-        ceilingLight2.castShadow = true;
-        ceilingLight2.shadow.mapSize.width = this.mapSize;
-        ceilingLight2.shadow.mapSize.height = this.mapSize;
-        ceilingLight2.shadow.camera.near = 0.5;
-        ceilingLight2.shadow.camera.far = 27;
+        
         ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
         let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight2, ceilingLight2);
         ceilinglamp2.rotation.set(0, 0, Math.PI / 2);
@@ -597,11 +593,7 @@ class MyContents {
 
         let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
-        ceilingLight4.castShadow = true;
-        ceilingLight4.shadow.mapSize.width = this.mapSize;
-        ceilingLight4.shadow.mapSize.height = this.mapSize;
-        ceilingLight4.shadow.camera.near = 0.5;
-        ceilingLight4.shadow.camera.far = 27;
+        
         ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight4, ceilingLight4);
         ceilinglamp4.rotation.set(0, 0, Math.PI / 2);

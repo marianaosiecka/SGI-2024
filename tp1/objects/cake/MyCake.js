@@ -21,7 +21,7 @@ class MyCake extends THREE.Object3D  {
         this.colorFilling = colorFilling;
 
         this.cakeMaterial = new THREE.MeshPhongMaterial({ color: colorCake });
-        this.fillingMaterial = new THREE.MeshBasicMaterial({ color: colorFilling, map: filingTexture})
+        this.fillingMaterial = new THREE.MeshPhongMaterial({ map: filingTexture, reflectivity:0, shininess: 0})
         
 
         this.cake = new THREE.CylinderGeometry(radius, radius, height, radialSegments, 1, false, 0, 2*Math.PI - sliceAngle);    

@@ -35,8 +35,6 @@ class MyFlowerHead extends THREE.Object3D {
             petalMesh.scale.x = 0.3;
             petalMesh.scale.z = 2.5;
             petalMesh.rotation.x = angle 
-            petalMesh.castShadow = true;
-            petalMesh.receiveShadow = true;
             this.add(petalMesh);
         }
 

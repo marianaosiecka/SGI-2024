@@ -22,21 +22,11 @@ class MyFrame extends THREE.Object3D  {
         this.downMesh = new THREE.Mesh(this.upDown, this.frameMaterial);
         this.downMesh.position.y = -height/2 + borderFrame/2;
 
-        this.upMesh.receiveShadow = true;
-        this.upMesh.castShadow = true;
-        this.downMesh.receiveShadow = true;
-        this.downMesh.castShadow = true;
-
         this.sides = new THREE.BoxGeometry(depth, height, borderFrame);
         this.leftMesh = new THREE.Mesh(this.sides, this.frameMaterial);
         this.leftMesh.position.z = width/2 - borderFrame/2;
         this.rightMesh = new THREE.Mesh(this.sides, this.frameMaterial);
         this.rightMesh.position.z = -width/2 + borderFrame/2;
-
-        this.leftMesh.receiveShadow = true;
-        this.leftMesh.castShadow = true;
-        this.rightMesh.receiveShadow = true;
-        this.rightMesh.castShadow = true;
 
         // INSIDE BORDER
         const borderInside = height > width ? width/9 : height/9;

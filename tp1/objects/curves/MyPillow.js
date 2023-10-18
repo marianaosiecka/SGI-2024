@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { MyNurbsBuilder } from '../MyNurbsBuilder.js';
+import { MyNurbsBuilder } from '../../MyNurbsBuilder.js';
 
 class MyPillow extends THREE.Object3D {
 
@@ -10,15 +10,7 @@ class MyPillow extends THREE.Object3D {
     constructor(app, texture) {
         super();
         this.app = app;
-
-        let pillowUVRate = 1;
-        let textureUVRate = 654 / 1002; // image dimensions
-        let textureRepeatU = 2;
-        let textureRepeatV = textureRepeatU * pillowUVRate * textureUVRate;
-        texture.wrapS = THREE.MirroredRepeatWrapping;
-        texture.wrapT = THREE.MirroredRepeatWrapping;
-        texture.repeat.set(textureRepeatU, textureRepeatV);
-        texture.offset = new THREE.Vector2(1, 0);
+        
         this.pillowMaterial = new THREE.MeshPhongMaterial({ specular: "#777777", shininess: 6, map: texture, side: THREE.DoubleSide });
 
         this.builder = new MyNurbsBuilder(this.app);
