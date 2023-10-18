@@ -11,10 +11,10 @@
 ## Project information
 
 - Main strong points
-  - the cake and slice sizes are relative to each other;
-  - vinyl holder and furniture;
-  - good lighting;
-  - the extras complement quite nicely the scene.
+  - The cake and slice sizes are relative to each other.
+  - Vinyl holder and furniture.
+  - Good lighting.
+  - The extras complement quite nicely the scene.
 
 - Scene Description
   - When you walk through the door you see our living room.
@@ -25,6 +25,8 @@
   - The living room is decorated with paintings and photos and has several light sources illuminating the scene. 
   
 - http://127.0.0.1:5593/tp1/
+
+![Scene screenshot](screenshots/scene.png)
 
 ----
 ## Issues/Problems
