@@ -391,7 +391,7 @@ class MyContents {
 
         // JANELA
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
-        let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#e0ddd3", windowTexture)
+        let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#a3a3a3", windowTexture)
         window.bottomDownPart();
         window.rotation.set(0, Math.PI / 2, 0,);
         window.position.set(-7.4, this.windowY, this.windowZ)
@@ -399,8 +399,8 @@ class MyContents {
 
         let windowLight = new THREE.RectAreaLight(0xffffff, 100, this.windowWidth, this.windowHeight);
         this.setScale(windowLight, 2)
-        windowLight.position.set(-8.3, this.windowY, this.windowZ)
-        windowLight.rotation.set(0, -Math.PI / 2, 0)
+        windowLight.position.set(-8.1, this.windowY, this.windowZ)
+        windowLight.rotation.set(0, Math.PI / 2, 0)
         this.app.scene.add(windowLight)
 
         //TAPETE
@@ -656,8 +656,7 @@ class MyContents {
 
 
         // PORTA
-        let door = new MyDoor(this.app, this.doorHeight, this.doorWidth, 0.4, "#FFFFFF", "#000000");
-        door.buildDoor(Math.PI/4);
+        let door = new MyDoor(this.app, this.doorHeight, this.doorWidth, 0.4, this.brown, this.brown, "#d4af37");
         door.position.set(7.5, this.doorY, this.doorZ);
         door.rotation.set(0, Math.PI, 0);
         this.app.scene.add(door);

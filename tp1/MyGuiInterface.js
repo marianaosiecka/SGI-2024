@@ -52,7 +52,7 @@ class MyGuiInterface  {
 
         // adds a folder to the gui interface for the camera
         const cameraFolder = this.datgui.addFolder('Cameras')
-        cameraFolder.add(this.app, 'activeCameraName', [ 'Perspective', 'Perspective2', 'Left', 'Right', 'Top', 'Front', 'Back', 'CoffeeTable', 'Cake', 'Vinyl', 'Flowers', 'Photos', 'Paintings', 'Window' ] ).name("active camera");
+        cameraFolder.add(this.app, 'activeCameraName', [ 'Perspective', 'Perspective2', 'Left', 'Right', 'Top', 'Front', 'Back', 'CoffeeTable', 'Cake', 'Vinyl', 'Flowers', 'Photos', 'Paintings', 'Window', 'Door' ] ).name("active camera");
         // note that we are using a property from the app 
         cameraFolder.add(this.app.activeCamera.position, 'x', 0, 10).name("x coord")
         cameraFolder.open()

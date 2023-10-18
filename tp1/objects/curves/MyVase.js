@@ -17,7 +17,6 @@ class MyVase extends THREE.Object3D {
 
         this.material = new THREE.MeshPhysicalMaterial({
             transmission: 1,
-            side: THREE.DoubleSide,
             reflectivity: 0.5,
             thickness: 0.08,
             color: color,

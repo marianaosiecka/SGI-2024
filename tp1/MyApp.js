@@ -37,6 +37,7 @@ class MyApp {
         this.photosPosition = new THREE.Vector3(0, 2, -8);
         this.paintingsPosition = new THREE.Vector3(0, 2, 8);
         this.windowPosition = new THREE.Vector3(-7.4, 3.5, 0);
+        this.doorPosition = new THREE.Vector3(7, 3, 0)
     }
     /**
      * initializes the application
@@ -164,6 +165,10 @@ class MyApp {
         let windowCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
         windowCamera.position.set(-4.5, 3.5, 0);
         this.cameras['Window'] = windowCamera;
+
+        let doorCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        doorCamera.position.set(2.5, 3, 0);
+        this.cameras['Door'] = doorCamera;
     }
 
     /**
@@ -191,6 +196,9 @@ class MyApp {
                 break;
             case 'Window':
                 this.controls.target = this.windowPosition;
+                break;
+            case 'Door':
+                this.controls.target = this.doorPosition;
                 break;
         }
     }
