@@ -56,7 +56,6 @@ class MyGuiInterface  {
         spotLightFolder.add(tableLightTargetPosition, 'targetY', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetY(this.contents.tableLight, value) } );
         spotLightFolder.close();
 
-        // camera follows bird option
         this.datgui.add(this.contents, 'showAxis', true).name('show axis').onChange( () => { this.contents.updateAxis() });
      }
 
