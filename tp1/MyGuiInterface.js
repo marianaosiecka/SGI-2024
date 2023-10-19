@@ -13,7 +13,7 @@ class MyGuiInterface  {
      */
     constructor(app) {
         this.app = app
-        this.datgui =  new GUI();
+        this.datgui =  new GUI()
         this.contents = null
     }
 
@@ -29,12 +29,6 @@ class MyGuiInterface  {
      * Initialize the gui interface
      */
     init() {
-
-        const data = {  
-            'diffuse color': this.contents.diffusePlaneColor,
-            'specular color': this.contents.specularPlaneColor,
-            'color': this.contents.tableLight.color
-        };
 
         const tableLightTargetPosition = {
             'targetX' : this.contents.tableLight.target.position.x,
@@ -59,7 +53,7 @@ class MyGuiInterface  {
 
         // folder in the gui interface for the cake spotlight
         const spotLightFolder = this.datgui.addFolder('Cake SpotLight')
-        spotLightFolder.addColor(data, 'color').onChange( (value) => { this.contents.tableLight.color = value } );
+        spotLightFolder.addColor(this.contents.tableLight, 'color').onChange( (value) => { this.contents.tableLight.color = value } );
         spotLightFolder.add(this.contents.tableLight, 'intensity', 0, 20).onChange( (value) => { this.contents.tableLight.intensity = value } );
         spotLightFolder.add(this.contents.tableLight, 'distance', 0, 15).onChange( (value) => { this.contents.tableLight.distance = value } );
         spotLightFolder.add(this.contents.tableLight, 'angle',  0, 180).onChange( (value) => { this.contents.tableLight.angle = value*(Math.PI/180) } );
@@ -69,10 +63,12 @@ class MyGuiInterface  {
         spotLightFolder.add(this.contents.tableLight.position, 'y', -20, 20).onChange( (value) => { this.contents.tableLight.position.y = value } );
         spotLightFolder.add(tableLightTargetPosition, 'targetX', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetX(this.contents.tableLight, value) } );
         spotLightFolder.add(tableLightTargetPosition, 'targetY', -20, 20).onChange( (value) => { this.contents.updateSpotLightTargetY(this.contents.tableLight, value) } );
-        spotLightFolder.close()
+        spotLightFolder.close();
 
-        //this.datgui.close();
-    }
+        // camera follows bird option
+        this.datgui.add(this.contents, 'showAxis', true).name('show axis').onChange( () => { this.contents.updateAxis() });
+     }
+
 }
 
 export { MyGuiInterface };

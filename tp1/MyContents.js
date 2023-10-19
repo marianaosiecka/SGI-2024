@@ -36,7 +36,8 @@ class MyContents {
     */
     constructor(app) {
         this.app = app
-        this.axis = null
+        this.showAxis = false;
+        this.axis = new MyAxis(this.app)
 
         // COLORS
         this.green = "#5e6e47";
@@ -733,14 +734,6 @@ class MyContents {
      * initializes the contents
      */
     init() {
-        // create once
-        /*
-        if (this.axis === null) {
-            // create and attach the axis to the scene
-            this.axis = new MyAxis(this)
-            this.app.scene.add(this.axis)
-        }*/
-
         this.buildWalls();
         this.buildFloor();
         this.buildCeiling();
@@ -790,6 +783,14 @@ class MyContents {
         object.scale.x = s;
         object.scale.y = s;
         object.scale.z = s;
+    }
+
+    updateAxis(){
+        if (this.showAxis) {
+            this.app.scene.add(this.axis)
+        } else {
+            this.app.scene.remove(this.axis);
+        }
     }
 
     /**
