@@ -24,9 +24,11 @@
   - On the right back corner there is a vinyl playing on top of its holder. The cover of the vinyl that is currently playing is sitting on top of a small shelf.
   - The living room is decorated with paintings and photos and has several light sources illuminating the scene. 
   
-- http://127.0.0.1:5593/tp1/
+- **Link to the scene**: http://127.0.0.1:5593/tp1/
 
 ![Scene screenshot](screenshots/scene.png)
+
+Note that the door is not on the scene for better visibility.
 
 ----
 ## Issues/Problems
