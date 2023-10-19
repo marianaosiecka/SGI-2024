@@ -25,6 +25,8 @@ class MyNewspaper extends THREE.Object3D  {
         let maxPageY = 0.25;
     
         for (let i=0; i<numberPages; i++){
+
+            //making a "U" shape
             let controlPoints = [
                 // U = 0
                 [

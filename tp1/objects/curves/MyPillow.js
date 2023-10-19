@@ -21,6 +21,7 @@ class MyPillow extends THREE.Object3D {
         this.orderV = 2
 
         // build nurb #1
+        //front and back of the pillow
         let controlPoints1 =
             [   // U = 0
                 [ // V = 0..2;
@@ -43,6 +44,7 @@ class MyPillow extends THREE.Object3D {
             ]
 
         // build nurb #2
+        //sides, top and bottom of the pillow
         let controlPoints2 =
             [   // U = 0
                 [ // V = 0..2;
@@ -68,33 +70,27 @@ class MyPillow extends THREE.Object3D {
         let surfaceData2 = this.builder.build(controlPoints2, this.orderU, this.orderV, this.samplesU, this.samplesV)
 
         let front = new THREE.Mesh(surfaceData1, this.pillowMaterial);
-        front.position.set(0, 0, 0)
         this.add(front)
 
         let back = new THREE.Mesh(surfaceData1, this.pillowMaterial);
         back.scale.z = -1
-        back.position.set(0, 0, 0)
         this.add(back)
 
         let top = new THREE.Mesh(surfaceData2, this.pillowMaterial);
-        top.position.set(0, 0, 0)
         this.add(top)
 
         let bottom = new THREE.Mesh(surfaceData2, this.pillowMaterial);
         bottom.scale.y = -1
-        bottom.position.set(0, 0, 0)
         this.add(bottom)
 
         let rightSide = new THREE.Mesh(surfaceData2, this.pillowMaterial);
         rightSide.scale.y = -1
         rightSide.rotation.set(0, 0, Math.PI / 2);
-        rightSide.position.set(0, 0, 0)
         this.add(rightSide)
 
         let leftSide = new THREE.Mesh(surfaceData2, this.pillowMaterial);
         leftSide.scale.y = -1
         leftSide.rotation.set(0, 0, -Math.PI / 2);
-        leftSide.position.set(0, 0, 0)
         this.add(leftSide)
     }
 

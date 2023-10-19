@@ -10,7 +10,7 @@ class MyChair extends THREE.Object3D {
        @param {number} depthSeat The depth of the seat
        @param {number} heightChair The overall height of the chair
        @param {color} color The color of the chair
-       */
+    */
     constructor(app, widthSeat, heightSeat, depthSeat, heightChair, color) {
         super();
         this.app = app;
@@ -29,6 +29,7 @@ class MyChair extends THREE.Object3D {
         this.seatMesh.position.y = heightChair;
         this.add(this.seatMesh);
 
+        //position of the legs of one chair array
         this.legPositions = [
             [this.depthSeat / 3, this.heightChair / 2, -this.widthSeat / 3],
             [-this.depthSeat / 3, this.heightChair / 2, this.widthSeat / 3],
@@ -37,6 +38,7 @@ class MyChair extends THREE.Object3D {
         ]
     }
 
+    //builds the legs of the chair using the position array
     buildLegs(width, height, depth, color) {
         this.leg = new THREE.BoxGeometry(width, height, depth);
         this.legMaterial = new THREE.MeshPhongMaterial({ color: color, specular: color, shininess: 3 });
@@ -49,6 +51,7 @@ class MyChair extends THREE.Object3D {
         }
     }
 
+    //builds the back of the chair with consideration to the position of the rest of the chair
     buildBackRest(width, height, depth, color) {
         this.back = new THREE.BoxGeometry(width, height, depth);
         this.backMaterial = new THREE.MeshPhongMaterial({ color: color, specular: color, shininess: 3 });
@@ -58,16 +61,9 @@ class MyChair extends THREE.Object3D {
         this.add(this.backMesh);
     }
 
+    //flips just the back of the chair
     flipChair() {
         this.backMesh.position.z = this.zPos - this.width / 2;
-    }
-
-    changeColorSeat(color) {
-        this.seatMesh.material.color = new THREE.Color(color);
-    }
-
-    changeColorBack(color) {
-        this.backMesh.material.color = new THREE.Color(color);
     }
 }
 

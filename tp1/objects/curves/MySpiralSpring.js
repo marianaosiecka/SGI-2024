@@ -12,18 +12,19 @@ class MySpiralSpring extends THREE.Object3D {
     this.type = 'Group';
     this.app = app;
 
-    this.numTurns = 8;                              //Número de voltas na espiral
-    this.spiralRadius = 0.08;                       //Raio da espiral
-    this.looseness = 0.2;                           //Determina o quão "larga" é a espiral quanto menor o valor, mais apertada é
-    this.segments = 150;                            //Número de segmentos na espiral, quanto mais segmentos menos se nota as particulas individuais
-    this.divCount = this.segments * this.numTurns;  //Número de divisões
-    this.tubeRadius = 0.03;                         //Raio do tubo
+    this.numTurns = 8;                              //number of turns of the spiral
+    this.spiralRadius = 0.08;                       //turn radius
+    this.looseness = 0.2;                           //determines how wide or tight the turn is
+    this.segments = 150;                            //number of segments in the spiral
+    this.divCount = this.segments * this.numTurns;  //number of division
+    this.tubeRadius = 0.03;                         //tube radius
 
     const points = [];
     for (let i = 0; i < this.divCount; i++) {
-      const t = i / this.divCount;                   //Representa um número de transição entre 0 e 1; 
-      const angle = t * 2 * Math.PI * this.numTurns; //Multiplica por 2*PI para normalizar para radianos
-      const x = this.spiralRadius * Math.cos(angle);
+      const t = i / this.divCount;                   //transition number between 0 and 1; 
+      const angle = t * 2 * Math.PI * this.numTurns; //normalizing to radians
+      //coordinates of the points that make the curve
+      const x = this.spiralRadius * Math.cos(angle); 
       const y = this.spiralRadius * Math.sin(angle);
       const z = (this.looseness / this.segments) * i;
       points.push(new THREE.Vector3(x, y, z));

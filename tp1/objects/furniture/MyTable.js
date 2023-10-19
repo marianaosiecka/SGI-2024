@@ -33,7 +33,7 @@ class MyTable extends THREE.Object3D  {
 
         this.tableMaterial = new THREE.MeshPhongMaterial({ color: "#FFFFFF", specular:"#71381D", shininess: 8, map: this.topTexture });
         
-        //tampo da mesa     
+        //table top     
         this.top = new THREE.BoxGeometry(this.widthTop, this.heightTop, this.depthTop); 
         this.topMesh = new THREE.Mesh(this.top, this.tableMaterial);
         this.topMesh.position.y = this.heightTable;
@@ -43,6 +43,7 @@ class MyTable extends THREE.Object3D  {
 
         const distanceLegToEdge = 0.5;
 
+        //position of the legs of the table array
         this.legPositions = [
             [this.widthTop/2 - distanceLegToEdge, this.heightTable/2, this.depthTop/2 - distanceLegToEdge], 
             [-this.widthTop/2 + distanceLegToEdge, this.heightTable/2, this.depthTop/2 - distanceLegToEdge], 
@@ -52,7 +53,7 @@ class MyTable extends THREE.Object3D  {
 
     }
 
-    
+    //builds the legs of the table using the position array
     buildLegs (radiusTop, radiusBottom, radialSegments, legColor) {
         this.leg = new THREE.CylinderGeometry(radiusTop, radiusBottom, this.heightTable, radialSegments);         
         this.legMaterial = new THREE.MeshPhongMaterial({ color: legColor, specular:"#777777", shininess:10});

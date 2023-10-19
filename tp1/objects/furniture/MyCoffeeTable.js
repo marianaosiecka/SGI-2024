@@ -9,7 +9,7 @@ class MyCoffeeTable extends THREE.Object3D {
        @param {number} height The height of the coffee table
        @param {number} depth The depth of the coffee table
        @param {color} color The color of the coffee table
-       */
+    */
     constructor(app, width, height, depth, color) {
         super();
         this.app = app;
@@ -19,13 +19,16 @@ class MyCoffeeTable extends THREE.Object3D {
         this.sideHeight = depth / 3.5;
         this.halfSideWidth = height / 2;
 
+        //table material
         this.tableMaterial = new THREE.MeshPhongMaterial({ color: color, specular: color, shininess: 5 });
+        //table top
         this.top = new THREE.BoxGeometry(width, height, depth);
         this.topMesh = new THREE.Mesh(this.top, this.tableMaterial);
         this.topMesh.position.y = height + this.sideHeight;
         this.topMesh.receiveShadow = true;
         this.add(this.topMesh);
 
+        //left side of the table
         this.left = new THREE.BoxGeometry(width, height, this.sideHeight);
         this.leftMesh = new THREE.Mesh(this.left, this.tableMaterial);
         this.leftMesh.rotation.x = Math.PI / 2;
@@ -33,6 +36,7 @@ class MyCoffeeTable extends THREE.Object3D {
         this.leftMesh.position.z = depth / 2 - this.halfSideWidth;
         this.add(this.leftMesh);
 
+        //right side of the table
         this.right = new THREE.BoxGeometry(width, height, this.sideHeight);
         this.rightMesh = new THREE.Mesh(this.right, this.tableMaterial);
         this.rightMesh.rotation.x = Math.PI / 2;
@@ -40,6 +44,7 @@ class MyCoffeeTable extends THREE.Object3D {
         this.rightMesh.position.z = -depth / 2 + this.halfSideWidth;
         this.add(this.rightMesh);
 
+        //table bottom 
         this.bottom = new THREE.BoxGeometry(width, height, depth);
         this.bottomMesh = new THREE.Mesh(this.bottom, this.tableMaterial);
         this.bottomMesh.position.y = this.halfSideWidth;

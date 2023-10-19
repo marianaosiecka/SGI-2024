@@ -1,56 +1,72 @@
 import * as THREE from 'three';
 
-class MyCeilingLamp extends THREE.Object3D  {
+class MyCeilingLamp extends THREE.Object3D {
 
     /**
-       constructs the object
-       @param {MyApp} app The application object
-    */ 
+    * Constructs the object.
+    * @param {MyApp} app - The application object.
+    * @param {number} width - The width of the lamp.
+    * @param {number} height - The height of the lamp.
+    * @param {number} depth - The depth of the lamp.
+    * @param {number} color - The color of the lamp material.
+    * @param {number} lightColor - The color of the light material.
+    * @param {Object3D} highlight - The bulb highlight.
+    * @param {Light} light - The light source for the lamp.
+    */
     constructor(app, width, height, depth, color, lightColor, highlight, light) {
         super();
         this.app = app;
         this.type = 'Group';
-        this.sideWidth = depth/2;
-        this.sideDepth = width/3;
+        this.sideWidth = depth / 2;
+        this.sideDepth = width / 3;
 
-        this.lampMaterial = new THREE.MeshPhongMaterial({color: color, specular:color, shininess:5});
-        this.front = new THREE.BoxGeometry(width, height, depth);
-        this.frontMesh = new THREE.Mesh(this.front, this.lampMaterial);
-        this.add(this.frontMesh);
-
-        this.side = new THREE.BoxGeometry(this.sideWidth, height, this.sideDepth);
-        this.leftMesh = new THREE.Mesh(this.side, this.lampMaterial);
-        this.leftMesh.position.x = -width/2 - this.sideWidth/2;
-        this.leftMesh.position.z = depth/2 - this.sideDepth/2;
-        this.add(this.leftMesh);
-
-        this.rightMesh = new THREE.Mesh(this.side, this.lampMaterial);
-        this.rightMesh.position.x = -width/2 - this.sideWidth/2;
-        this.rightMesh.position.z = -depth/2 + this.sideDepth/2;
-        this.add(this.rightMesh);
-
-        this.bottomWidth = width + this.sideWidth;
-        this.bottomHeight = height/5;
-        this.bottom = new THREE.BoxGeometry(this.bottomWidth, this.bottomHeight, depth);
-        this.bottomMesh = new THREE.Mesh(this.bottom, this.lampMaterial);
-        this.bottomMesh.position.x = -this.bottomWidth/2 + width/2;
-        this.bottomMesh.position.y = -height/2 - this.bottomHeight/2;
-        this.add(this.bottomMesh);
-
-        this.topMesh = new THREE.Mesh(this.bottom, this.lampMaterial);
-        this.topMesh.position.x = -this.bottomWidth/2 + width/2;
-        this.topMesh.position.y = height/2 + this.bottomHeight/2;
+        this.lampMaterial = new THREE.MeshPhongMaterial({ color: color, specular: color, shininess: 5 });
+        
+        //top of the lamp box
+        this.top = new THREE.BoxGeometry(width, height, depth);
+        this.topMesh = new THREE.Mesh(this.top, this.lampMaterial);
         this.add(this.topMesh);
 
-        this.light = new THREE.BoxGeometry(this.sideWidth/2, height, depth-depth*0.2);
-        this.lightMaterial = new THREE.MeshPhongMaterial({color: lightColor, specular:"#FFFFFF", shininess:5});
+        this.side = new THREE.BoxGeometry(this.sideWidth, height, this.sideDepth);
+        //left side of the lamp box (the smallest)
+        this.leftMesh = new THREE.Mesh(this.side, this.lampMaterial);
+        this.leftMesh.position.x = -width / 2 - this.sideWidth / 2;
+        this.leftMesh.position.z = depth / 2 - this.sideDepth / 2;
+        this.add(this.leftMesh);
+
+        //right side of the lamp box (the smallest)
+        this.rightMesh = new THREE.Mesh(this.side, this.lampMaterial);
+        this.rightMesh.position.x = -width / 2 - this.sideWidth / 2;
+        this.rightMesh.position.z = -depth / 2 + this.sideDepth / 2;
+        this.add(this.rightMesh);
+
+        this.backWidth = width + this.sideWidth;
+        this.bottomHeight = height / 5;
+        
+        //back of the lamp box
+        this.bottom = new THREE.BoxGeometry(this.bottomWidth, this.bottomHeight, depth);
+        this.bottomMesh = new THREE.Mesh(this.bottom, this.lampMaterial);
+        this.bottomMesh.position.x = -this.bottomWidth / 2 + width / 2;
+        this.bottomMesh.position.y = -height / 2 - this.bottomHeight / 2;
+        this.add(this.bottomMesh);
+
+        //front of the lamp box
+        this.frontMesh = new THREE.Mesh(this.bottom, this.lampMaterial);
+        this.frontMesh.position.x = -this.bottomWidth / 2 + width / 2;
+        this.frontMesh.position.y = height / 2 + this.bottomHeight / 2;
+        this.add(this.frontMesh);
+
+        //light bulb
+        this.light = new THREE.BoxGeometry(this.sideWidth / 2, height, depth - depth * 0.2);
+        this.lightMaterial = new THREE.MeshPhongMaterial({ color: lightColor, specular: "#FFFFFF", shininess: 5 });
         this.lightMesh = new THREE.Mesh(this.light, this.lightMaterial);
-        this.lightMesh.position.x = -width - this.sideWidth/4;
+        this.lightMesh.position.x = -width - this.sideWidth / 4;
         this.add(this.lightMesh);
 
+        //light bulb highlight (makes it look like the light is turned on)
         highlight.target = this.lightMesh;
         this.add(highlight)
-        
+
         this.add(light);
     }
 }

@@ -18,33 +18,37 @@ class MySofa extends THREE.Object3D  {
         
         this.radius = radius;
         this.height = height;
-        //floorHeight é a altura do tapete
         this.floorHeight = floorHeight;
         
         this.sofaMaterial = new THREE.MeshPhongMaterial({ color: color , specular:"#777777", shininess:2});
         
+        //upper back of the sofa
         this.upperBack = new THREE.CylinderGeometry(radius, radius, height, 50, 50, false, 0, Math.PI);         
         this.upperBackMesh = new THREE.Mesh(this.upperBack, this.sofaMaterial);
         this.upperBackMesh.rotation.z = Math.PI/2;
         this.upperBackMesh.position.y = radius;
         this.add(this.upperBackMesh);
 
+        //sofa properties
         this.legSize = radius/3;
         this.seatWidth = radius*1.35;
         this.seatHeight = radius/2.2;
         this.seatDepth = 2*radius;
 
+        //lower back of the sofa
         this.lowerBack = new THREE.BoxGeometry(height, radius + floorHeight/2, this.seatDepth);         
         this.lowerBackMesh = new THREE.Mesh(this.lowerBack, this.sofaMaterial);
         this.lowerBackMesh.position.y = (this.radius/2 + this.floorHeight/2);
         this.add(this.lowerBackMesh);
 
+        //seat
         this.seat = new THREE.BoxGeometry(this.seatWidth, this.seatHeight, this.seatDepth);         
         this.seatMesh = new THREE.Mesh(this.seat, this.sofaMaterial);
         this.seatMesh.position.x = this.seatWidth/2;
         this.seatMesh.position.y = this.floorHeight + this.legSize + radius/4.4;
         this.add(this.seatMesh);
 
+        //left sofa leg
         this.leg = new THREE.BoxGeometry(radius/4, this.legSize, radius/4);         
         this.leg1Mesh = new THREE.Mesh(this.leg, this.sofaMaterial);
         this.leg1Mesh.position.x = this.seatWidth - radius/8;
@@ -52,12 +56,14 @@ class MySofa extends THREE.Object3D  {
         this.leg1Mesh.position.y = this.floorHeight + this.legSize/2;
         this.add(this.leg1Mesh);
 
+        //right sofa leg
         this.leg2Mesh = new THREE.Mesh(this.leg, this.sofaMaterial);
         this.leg2Mesh.position.x = this.seatWidth - radius/8;
         this.leg2Mesh.position.z = this.seatWidth - radius/4 - this.seatDepth + 0.025;
         this.leg2Mesh.position.y = this.floorHeight + this.legSize/2;
         this.add(this.leg2Mesh);
 
+        //left sofa arm
         this.arm = new THREE.BoxGeometry(radius/5, height, this.seatDepth/1.75); 
         this.arm1Mesh = new THREE.Mesh(this.arm, this.sofaMaterial);
         this.arm1Mesh.rotation.y = Math.PI/2;
@@ -66,6 +72,7 @@ class MySofa extends THREE.Object3D  {
         this.arm1Mesh.position.y = radius;
         this.add(this.arm1Mesh);
 
+        //right sofa arm
         this.arm2Mesh = new THREE.Mesh(this.arm, this.sofaMaterial);
         this.arm2Mesh.rotation.y = Math.PI/2;
         this.arm2Mesh.position.x = this.seatMesh.position.x + 0.1;

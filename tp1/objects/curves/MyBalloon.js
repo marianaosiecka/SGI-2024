@@ -16,26 +16,30 @@ class MyBalloon extends THREE.Object3D  {
         this.app = app;
         this.type = 'Group';
 
-        let topHemisphere = new THREE.SphereGeometry(radius, 30, 30, 0, Math.PI);  
+        //rubber material 
         let ballonMaterial = new THREE.MeshPhysicalMaterial({ transmission: 0.8,
             side: THREE.DoubleSide,
             reflectivity: 0.05,
             thickness: 0.08,
             color: colorBalloon,
             roughness: 0.3});
+            
+        //top hemisphere shape
+        let topHemisphere = new THREE.SphereGeometry(radius, 30, 30, 0, Math.PI);  
         let topHemisphereMesh = new THREE.Mesh(topHemisphere, ballonMaterial);
         topHemisphereMesh.rotation.set(-Math.PI/2, 0, 0);
         topHemisphereMesh.scale.z = 1.1;
         topHemisphereMesh.receiveShadow = true;
         topHemisphereMesh.castShadow = true;
         
+        //bottom hemisphere shape
         let bottomHemisphereMesh = new THREE.Mesh(topHemisphere, ballonMaterial);
         bottomHemisphereMesh.scale.z = 1.5;
         bottomHemisphereMesh.rotation.set(Math.PI/2, 0, 0);
         bottomHemisphereMesh.receiveShadow = true;
         bottomHemisphereMesh.castShadow = true;
 
-        this.stringMaterial = new THREE.MeshBasicMaterial({ color: colorStem, side: THREE.DoubleSide });
+        this.stringMaterial = new THREE.MeshPhongMaterial({ color: colorStem, side: THREE.DoubleSide, shininess:0, specular: "#FFFFFF" });
         let curve;
         const segments = 20;
         const stringRadius = 0.02;
@@ -47,8 +51,8 @@ class MyBalloon extends THREE.Object3D  {
             new THREE.Vector4(0, height, 0, 1)
         );
 
-        const stem = new THREE.TubeGeometry(curve, segments, stringRadius, segments, false);
-        let stingMesh = new THREE.Mesh(stem, this.stringMaterial);
+        const string = new THREE.TubeGeometry(curve, segments, stringRadius, segments, false);
+        let stingMesh = new THREE.Mesh(string, this.stringMaterial);
         stingMesh.position.y = - height - radius*1.5;
         stingMesh.castShadow = true;
         stingMesh.receiveShadow = true;

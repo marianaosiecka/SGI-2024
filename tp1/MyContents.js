@@ -210,14 +210,14 @@ class MyContents {
      * initializes the table
      */
     buildTable() {
-        //MESA
+        //TABLE
         let tableTexture = new THREE.TextureLoader().load('textures/wood_texture.jpg');
         let table = new MyTable(this.app, 3.8, 0.1, 6, 1.2, tableTexture);
         table.buildLegs(0.2, 0.1, 20, this.brown);
         table.position.set(0, 0, 4.8);
         this.app.scene.add(table);
 
-        //CADEIRAS
+        //CHAIRS
         const colorDinnerTableChair = this.yellow;
         const widthSeatDinnerTableChair = 1;
         const heightSeatDinnerTableChair = 0.1;
@@ -260,12 +260,12 @@ class MyContents {
      * initializes the cake
      */
     buildCake() {
-        // PRATO DO BOLO
+        // CAKE PLATE
         let cakePlate = new MyCakePlate(this.app, 0.7, 0.05, 50, this.offWhite, "#c2c2b2")
         cakePlate.position.set(0, 1.7, 4);
         this.app.scene.add(cakePlate)
 
-        // PRATO DA FATIA
+        // SLICE PLATE
         let plateSlice1 = new MyPlate(this.app, 0.52, 0.05, 50, this.offWhite, "#c2c2b2");
         plateSlice1.position.set(1.1, 1.38, 5.8)
         this.app.scene.add(plateSlice1);
@@ -274,7 +274,7 @@ class MyContents {
         plateSlice2.position.set(-1.1, 1.38, 5.8)
         this.app.scene.add(plateSlice2);
 
-        // BOLO E FATIA
+        // CAKE AND SLICE
         let fillingTexture = new THREE.TextureLoader().load('textures/cake_slice_texture.png');
         let cake = new MyCake(this.app, 0.6, 0.4, 25, 1, "#E1A693", fillingTexture);
         cake.buildSlice(-1.3, -0.3, -2); // pos relativa ao bolo
@@ -282,7 +282,7 @@ class MyContents {
         cake.rotation.set(0, Math.PI, 0);
         this.app.scene.add(cake);
 
-        // VELAS
+        // CANDLES
         let candle1 = new MyCandle(this.app, 0.03, 0.18, 40, this.orange, this.yellow);
         candle1.position.set(cake.position.x - 0.2, cake.position.y + 0.275, cake.position.z + 0.15);
         this.app.scene.add(candle1);
@@ -300,7 +300,7 @@ class MyContents {
         candle4.position.set(cake.position.x + 0.2, 1.76, cake.position.z - 0.3);
         this.app.scene.add(candle4);
 
-        // GARFOS
+        // FORKS
         let fork1 = new MyFork(this.app, 5, 0.8, 0.03, "#9C9C9C");
         this.setScale(fork1, 0.2)
         fork1.position.set(0.95, 1.27, 6.5)
@@ -312,7 +312,7 @@ class MyContents {
         fork2.position.set(-0.95, 1.27, 5.2)
         this.app.scene.add(fork2)
 
-        // LUZ DA MESA (BOLO SPOT LIGHT)
+        // CAKE SPOTLIGHT
         this.tableLight = new THREE.SpotLight(this.lightColor, 5.5, 5, Math.PI / 3, 1, 0.2);
         this.tableLight.target = cake;
     }
@@ -321,7 +321,7 @@ class MyContents {
      * initializes the frames
      */
     buildFrames() {
-        // PAREDE ESQUERDA (pinturas)
+        // LEFT WALL (paintings)
         let frame1Texture = new THREE.TextureLoader().load('pictures/painting2.jpg');
         let frame1 = new MyFrame(this.app, 1.47, 2.3, 0.08, "#e0ddd3", this.white, frame1Texture)
         frame1.position.set(4, 3.5, this.wallZPos - 0.04)
@@ -334,7 +334,7 @@ class MyContents {
         frame2.rotation.set(0, Math.PI / 2, 0)
         this.app.scene.add(frame2);
 
-        // PAREDE DIREITA (car e fotografias)
+        // RIGHT WALL (car e photos)
         let frame3Texture = new THREE.TextureLoader().load('pictures/photography1.jpg');
         let frame3 = new MyFrame(this.app, 2.8, 2.05, 0.1, "#e0ddd3", this.white, frame3Texture)
         frame3.position.set(0, 3, -this.wallZPos + 0.05);
@@ -358,7 +358,7 @@ class MyContents {
      * initializes the sofas
      */
     buildSofas() {
-        // ALMOFADAS
+        // PILLOWS
         let pillow1Texture = new THREE.TextureLoader().load('textures/pillow3_print.jpg');
         let pillow2Texture = new THREE.TextureLoader().load('textures/pillow1_print.jpg');
         let pillow3Texture = new THREE.TextureLoader().load('textures/pillow4_print.jpg');
@@ -409,7 +409,8 @@ class MyContents {
         const wallLampZ = this.wallZPos / 2;
         const wallLightY = - 0.15;
 
-        // spot lights das luzes de parede
+        //WALL LIGHTS
+        //spotlights
         let lightWallLampFLeft = new THREE.SpotLight(this.lightColor, 6, 12, Math.PI / 4, 1, 0.8);
         lightWallLampFLeft.position.y = wallLightY;
         lightWallLampFLeft.target = this.createHelperObject(wallLampX, this.wallHeight, wallLampZ);
@@ -426,6 +427,7 @@ class MyContents {
         lightWallLampBRight.position.y = wallLightY;
         lightWallLampBRight.target = this.createHelperObject(-wallLampX, this.wallHeight, wallLampZ);
 
+        //wall light objects
         let wallLampFLeft = new MyWallLamp(this.app, 0.1, 0.3, 0.3, this.green, lightWallLampFLeft);
         wallLampFLeft.position.set(wallLampX, wallLampY, wallLampZ);
 
@@ -454,9 +456,9 @@ class MyContents {
         const ceilingLightY = this.wallHeight - 0.04;
         const ceilingLightZ = 4;
 
-        //highlight é o que faz parecer que a luz está ligada (aponta para o candeeiro em si)
+        //highlight makes the light seem turned on (targets the bulb)
         let ceilingHighlight1 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
-        //ceiling light é a luz que sai do candeeiro
+        //ceiling light is the light that comes out of the bulb
         let ceilingLight1 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight1.castShadow = true;
         ceilingLight1.shadow.mapSize.width = this.mapSize;
@@ -464,7 +466,7 @@ class MyContents {
         ceilingLight1.shadow.camera.near = 0.5;
         ceilingLight1.shadow.camera.far = 27;
         ceilingLight1.target = this.createHelperObject(-ceilingLightX, 0, ceilingLightZ);
-        //criação do próprio candeeiro
+        //object
         let ceilinglamp1 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight1, ceilingLight1);
         ceilinglamp1.rotation.set(0, 0, Math.PI / 2);
         ceilingHighlight1.rotation.set(0, 0, Math.PI / 2);
@@ -473,9 +475,12 @@ class MyContents {
         ceilinglamp1.scale.x = 0.4;
         this.app.scene.add(ceilinglamp1);
 
+        //highlight makes the light seem turned on (targets the bulb)
         let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
+        //ceiling light is the light that comes out of the bulb
         let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
+        //object
         let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight2, ceilingLight2);
         ceilinglamp2.rotation.set(0, 0, Math.PI / 2);
         ceilingHighlight2.rotation.set(0, 0, Math.PI / 2);
@@ -484,7 +489,9 @@ class MyContents {
         ceilinglamp2.scale.x = 0.4;
         this.app.scene.add(ceilinglamp2);
 
+        //highlight makes the light seem turned on (targets the bulb)
         let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
+        //ceiling light is the light that comes out of the bulb
         let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 1.2);
         ceilingLight3.castShadow = true;
         ceilingLight3.shadow.mapSize.width = this.mapSize;
@@ -492,6 +499,7 @@ class MyContents {
         ceilingLight3.shadow.camera.near = 0.5;
         ceilingLight3.shadow.camera.far = 27;
         ceilingLight3.target = this.createHelperObject(-ceilingLightX, 0, -ceilingLightZ);
+        //object
         let ceilinglamp3 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight3, ceilingLight3);
         ceilinglamp3.rotation.set(0, 0, Math.PI / 2);
         ceilingHighlight3.rotation.set(0, 0, Math.PI / 2);
@@ -500,9 +508,12 @@ class MyContents {
         ceilinglamp3.scale.x = 0.4;
         this.app.scene.add(ceilinglamp3);
 
+        //highlight makes the light seem turned on (targets the bulb)
         let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
+        //ceiling light is the light that comes out of the bulb
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
+        //object
         let ceilinglamp4 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight4, ceilingLight4);
         ceilinglamp4.rotation.set(0, 0, Math.PI / 2);
         ceilingHighlight4.rotation.set(0, 0, Math.PI / 2);
@@ -572,7 +583,7 @@ class MyContents {
     }
 
     buildCar() {
-        // CAROCHA
+        // BEETLE
         let car = new MyCar(this.app);
         const carGeometry = new THREE.BufferGeometry().setFromPoints([
             ...car.backRoofCurve.getPoints(50),
@@ -601,7 +612,6 @@ class MyContents {
     }
 
     buildSpiralSpring() {
-        // MOLA
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
         spiralSpring.rotation.set(0, -Math.PI / 6, 0);
         this.setScale(spiralSpring, 0.3, 0.3, 0.3);
@@ -610,7 +620,6 @@ class MyContents {
     }
 
     buildCoffeeTable() {
-        // MESA DOS SOFÁS
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
         coffeeTable.rotation.set(0, Math.PI / 2, 0);
         coffeeTable.position.set(0, 0.05, -4.2);
@@ -619,7 +628,6 @@ class MyContents {
     }
 
     buildNewspaper() {
-        // JORNAL
         let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.png'))
         newspaper.position.set(0, 0.9, -4.9);
         newspaper.rotation.set(0, Math.PI / 10, 0);
@@ -627,7 +635,6 @@ class MyContents {
     }
 
     buildCarpet() {
-        // TAPETE
         let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
         this.carpet = new MyCarpet(this.app, 7.5, 0.1, 5, this.lightBlue, carpetTexture);
         this.carpet.position.set(0, 0.05, -5);
@@ -635,12 +642,12 @@ class MyContents {
     }
 
     buildLamps() {
-        // CANDEEIRO DE TETO DO BOLO
+        //TABLE LAMP
         let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
         lampTable.position.set(0, 5.5, 4.8);
         this.app.scene.add(lampTable);
 
-        //CANDEEIRO SOFAS
+        //SOFAS' LAMP
         let spotLightSofas = new THREE.SpotLight(this.lightColor, 8, 5.2, Math.PI / 4, 1, 0.2);
         spotLightSofas.target = this.carpet;
 
@@ -648,18 +655,18 @@ class MyContents {
         lampSofas.position.set(0, 5.5, -4.8);
         this.app.scene.add(lampSofas);
 
-        //CANDEEIRO CHÃO
+        //FLOOR LAMP
         const floorLampX = 4.7;
         const floorLampY = 0;
         const floorLampZ = -6;
         const floorLampHeight = 2.8;
 
-        //luz que ilumina a lâmpada
+        //highlight makes the light seem turned on (targets the bulb)
         let lampHighlight = new THREE.SpotLight(this.lightColor, 20, 6, Math.PI / 40, 2, 0.2);
         lampHighlight.position.set(0, 0, 5);
-        //luz que sai do candeeiro
+        //light that comes out of the bulb
         let lightFloorLamp = new THREE.SpotLight(this.lightColor, 20, 10, Math.PI / 6, 1, 0.8);
-
+        //object
         let floorLamp = new MyFloorLamp(this.app, 0.4, 0.3, 0.2, 0.2, floorLampHeight, 40, this.darkBlue, this.darkBlue, this.lightColor, lampHighlight, lightFloorLamp);
         floorLamp.rotation.set(0, -Math.PI / 4, 0);
         floorLamp.position.set(floorLampX, floorLampY, floorLampZ);
