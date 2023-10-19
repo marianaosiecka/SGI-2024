@@ -200,6 +200,9 @@ class MyContents {
         this.app.scene.add(floorMesh);
     }
 
+    /**
+     * initializes the ceiling
+     */
     buildCeiling() {
         let ceiling = new THREE.PlaneGeometry(15, 16);
         let ceilingMaterial = new THREE.MeshPhongMaterial({ color: this.bege });
@@ -560,7 +563,7 @@ class MyContents {
         let coverColors = ["#00204A", "#A41A1A", "#6B1B7F", "#8B735B", "#000000", "#FF6B35", "#800000", "#007A7C", "#DAA520", "#967BB6", "#228B22", "#00204A", "#FF6B35", "#A41A1A", "#FFD700"]
         vinylPlayerHolder.buildCovers(coverColors)
 
-        const coverTexture = new THREE.TextureLoader().load('textures/cover4.jpg');
+        const coverTexture = new THREE.TextureLoader().load('textures/vinyl_cover.jpg');
         vinylPlayerHolder.buildNowPlayingShelf("#ffffff", coverTexture)
         vinylPlayerHolder.position.set(-6.7, -0.1, -5.5)
         this.app.scene.add(vinylPlayerHolder);

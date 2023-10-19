@@ -35,15 +35,6 @@ class MyGuiInterface  {
             'targetY' : this.contents.tableLight.target.position.y
         }
 
-        /*
-        // adds a folder to the gui interface for the plane
-        const planeFolder = this.datgui.addFolder( 'Plane' );
-        planeFolder.addColor( data, 'diffuse color' ).onChange( (value) => { this.contents.updateDiffusePlaneColor(value) } );
-        planeFolder.addColor( data, 'specular color' ).onChange( (value) => { this.contents.updateSpecularPlaneColor(value) } );
-        planeFolder.add(this.contents, 'planeShininess', 0, 1000).name("shininess").onChange( (value) => { this.contents.updatePlaneShininess(value) } );
-        planeFolder.open();
-        */
-
         // adds a folder to the gui interface for the camera
         const cameraFolder = this.datgui.addFolder('Cameras')
         cameraFolder.add(this.app, 'activeCameraName', [ 'Perspective', 'Perspective2', 'Left', 'Right', 'Top', 'Front', 'Back', 'CoffeeTable', 'Cake', 'Vinyl', 'Flowers', 'Photos', 'Paintings', 'Window', 'Door' ] ).name("active camera");
