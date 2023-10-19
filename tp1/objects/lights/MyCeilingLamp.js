@@ -41,19 +41,19 @@ class MyCeilingLamp extends THREE.Object3D {
         this.add(this.rightMesh);
 
         this.backWidth = width + this.sideWidth;
-        this.bottomHeight = height / 5;
+        this.backHeight = height / 5;
         
         //back of the lamp box
-        this.bottom = new THREE.BoxGeometry(this.bottomWidth, this.bottomHeight, depth);
-        this.bottomMesh = new THREE.Mesh(this.bottom, this.lampMaterial);
-        this.bottomMesh.position.x = -this.bottomWidth / 2 + width / 2;
-        this.bottomMesh.position.y = -height / 2 - this.bottomHeight / 2;
-        this.add(this.bottomMesh);
+        this.back = new THREE.BoxGeometry(this.backWidth, this.backHeight, depth);
+        this.backMesh = new THREE.Mesh(this.back, this.lampMaterial);
+        this.backMesh.position.x = -this.backWidth / 2 + width / 2;
+        this.backMesh.position.y = -height / 2 - this.backHeight / 2;
+        this.add(this.backMesh);
 
         //front of the lamp box
-        this.frontMesh = new THREE.Mesh(this.bottom, this.lampMaterial);
-        this.frontMesh.position.x = -this.bottomWidth / 2 + width / 2;
-        this.frontMesh.position.y = height / 2 + this.bottomHeight / 2;
+        this.frontMesh = new THREE.Mesh(this.back, this.lampMaterial);
+        this.frontMesh.position.x = -this.backWidth / 2 + width / 2;
+        this.frontMesh.position.y = height / 2 + this.backHeight / 2;
         this.add(this.frontMesh);
 
         //light bulb

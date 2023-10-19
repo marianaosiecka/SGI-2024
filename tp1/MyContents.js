@@ -175,6 +175,9 @@ class MyContents {
         this.app.scene.add(this.doorWallDownMesh);
     }
 
+    /**
+     * initializes the floor
+     */
     buildFloor() {
         let floor = new THREE.PlaneGeometry(15, 16);
         let floorTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg');
@@ -456,8 +459,9 @@ class MyContents {
         const ceilingLightY = this.wallHeight - 0.04;
         const ceilingLightZ = 4;
 
+        //LIGHT IN THE LEFT BACK CORNER
         //highlight makes the light seem turned on (targets the bulb)
-        let ceilingHighlight1 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
+        let ceilingHighlight1 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 20, 1, 0.8);
         //ceiling light is the light that comes out of the bulb
         let ceilingLight1 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight1.castShadow = true;
@@ -475,22 +479,9 @@ class MyContents {
         ceilinglamp1.scale.x = 0.4;
         this.app.scene.add(ceilinglamp1);
 
+        //LIGHT IN THE RIGHT BACK CORNER
         //highlight makes the light seem turned on (targets the bulb)
-        let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
-        //ceiling light is the light that comes out of the bulb
-        let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
-        ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
-        //object
-        let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight2, ceilingLight2);
-        ceilinglamp2.rotation.set(0, 0, Math.PI / 2);
-        ceilingHighlight2.rotation.set(0, 0, Math.PI / 2);
-        ceilingHighlight2.position.set(-this.wallHeight + 2, 0, 0);
-        ceilinglamp2.position.set(ceilingLightX, ceilingLightY, ceilingLightZ);
-        ceilinglamp2.scale.x = 0.4;
-        this.app.scene.add(ceilinglamp2);
-
-        //highlight makes the light seem turned on (targets the bulb)
-        let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
+        let ceilingHighlight3 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 20, 1, 0.8);
         //ceiling light is the light that comes out of the bulb
         let ceilingLight3 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 1.2);
         ceilingLight3.castShadow = true;
@@ -508,8 +499,24 @@ class MyContents {
         ceilinglamp3.scale.x = 0.4;
         this.app.scene.add(ceilinglamp3);
 
+        //LIGHT IN THE LEFT FRONT CORNER
         //highlight makes the light seem turned on (targets the bulb)
-        let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 18, 1, 0.8);
+        let ceilingHighlight2 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 20, 1, 0.8);
+        //ceiling light is the light that comes out of the bulb
+        let ceilingLight2 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
+        ceilingLight2.target = this.createHelperObject(ceilingLightX, 0, ceilingLightZ);
+        //object
+        let ceilinglamp2 = new MyCeilingLamp(this.app, 0.1, 0.4, 0.6, this.grey, this.lightColor, ceilingHighlight2, ceilingLight2);
+        ceilinglamp2.rotation.set(0, 0, Math.PI / 2);
+        ceilingHighlight2.rotation.set(0, 0, Math.PI / 2);
+        ceilingHighlight2.position.set(-this.wallHeight + 2, 0, 0);
+        ceilinglamp2.position.set(ceilingLightX, ceilingLightY, ceilingLightZ);
+        ceilinglamp2.scale.x = 0.4;
+        this.app.scene.add(ceilinglamp2);
+
+        //LIGHT IN THE RIGHT FRONT CORNER
+        //highlight makes the light seem turned on (targets the bulb)
+        let ceilingHighlight4 = new THREE.SpotLight(this.lightColor, 10, 6, Math.PI / 20, 1, 0.8);
         //ceiling light is the light that comes out of the bulb
         let ceilingLight4 = new THREE.SpotLight(this.lightColor, 15, 10, Math.PI / 3, 1, 0.8);
         ceilingLight4.target = this.createHelperObject(ceilingLightX, 0, -ceilingLightZ);
@@ -558,6 +565,9 @@ class MyContents {
         this.app.scene.add(vinylPlayerHolder);
     }
 
+    /**
+     * initializes the window
+     */
     buildWindow() {
         let windowTexture = new THREE.TextureLoader().load('textures/window_texture.jpg');
         let window = new MyWindow(this.app, this.windowWidth, this.windowHeight, 0.3, "#a3a3a3", windowTexture)
@@ -573,6 +583,9 @@ class MyContents {
         this.app.scene.add(windowLight)
     }
 
+    /**
+     * initializes the flowers
+     */
     buildFlowers() {
         let vase = new MyVase(this.app, 1.7, 0.3, "#F2F1E5");
         vase.createFlowers("#40874B", "#F3ED52", ["#51385C", "#DA4B0E", "#83BACC"]);
@@ -582,6 +595,9 @@ class MyContents {
         this.app.scene.add(vase);
     }
 
+    /**
+     * initializes the car
+     */
     buildCar() {
         // BEETLE
         let car = new MyCar(this.app);
@@ -603,6 +619,9 @@ class MyContents {
         this.setScale(this.carFrame, 0.8, 0.8, 0.8);
     }
 
+    /**
+     * initializes the door
+     */
     buildDoor() {
         let door = new MyDoor(this.app, this.doorHeight, this.doorWidth, 0.4, this.brown, this.brown, "#d4af37");
         door.buildDoor(Math.PI / 4);
@@ -611,6 +630,9 @@ class MyContents {
         this.app.scene.add(door);
     }
 
+    /**
+     * initializes the spiral spring
+     */
     buildSpiralSpring() {
         let spiralSpring = new MySpiralSpring(this.app, "#9C9C9C");
         spiralSpring.rotation.set(0, -Math.PI / 6, 0);
@@ -619,6 +641,9 @@ class MyContents {
         this.app.scene.add(spiralSpring);
     }
 
+    /**
+     * initializes the coffee table
+     */
     buildCoffeeTable() {
         let coffeeTable = new MyCoffeeTable(this.app, 1, 0.18, 2, this.green);
         coffeeTable.rotation.set(0, Math.PI / 2, 0);
@@ -627,6 +652,9 @@ class MyContents {
         this.app.scene.add(coffeeTable);
     }
 
+    /**
+     * initializes the newspaper
+     */
     buildNewspaper() {
         let newspaper = new MyNewspaper(this.app, new THREE.TextureLoader().load('textures/newspaper_texture.png'))
         newspaper.position.set(0, 0.9, -4.9);
@@ -634,6 +662,9 @@ class MyContents {
         this.app.scene.add(newspaper);
     }
 
+    /**
+     * initializes the carpet
+     */
     buildCarpet() {
         let carpetTexture = new THREE.TextureLoader().load('textures/carpet_texture.png');
         this.carpet = new MyCarpet(this.app, 7.5, 0.1, 5, this.lightBlue, carpetTexture);
@@ -641,6 +672,9 @@ class MyContents {
         this.app.scene.add(this.carpet);
     }
 
+    /**
+     * initializes the lamps
+     */
     buildLamps() {
         //TABLE LAMP
         let lampTable = new MyLamp(this.app, 0.02, 0.6, 0.4, 1, 40, this.orange, this.lightColor, this.tableLight);
@@ -674,6 +708,9 @@ class MyContents {
         this.app.scene.add(floorLamp);
     }
 
+    /**
+     * initializes the scene lights
+     */
     buildSceneLights() {
         const pointLight = new THREE.PointLight(this.white, 10, 0, 1);
         pointLight.position.set(0, 10, 0);
