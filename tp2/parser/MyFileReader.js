@@ -24,7 +24,7 @@ import { MySceneData } from './MySceneData.js';
 
 class MyFileReader  {
 
-    /**
+    /*
        constructs the object
        @param {MyApp} app The application object
     */ 
