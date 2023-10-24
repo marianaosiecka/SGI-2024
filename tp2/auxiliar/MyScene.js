@@ -1,23 +1,17 @@
 import * as THREE from 'three';
-import { MyApp } from './MyApp.js';
 
-/**
- * This class contains a 3D axis representation
- */
-class MyScene extends THREE.Object3D {
+class MyScene {
 
-    /**
-     * 
-     * @param {MyApp} app the application object
-     */
-    constructor(app) {
-        super();
-        this.app = app;
-        this.type = 'Group';
-        
+    constructor(background, ambient) {
+        this.scene = THREE.Scene();
+        this.scene.background = new THREE.Color(background);
+        this.scene.ambient = ambient;
+    }
+
+    setSceneFog(fogColor, fogNear, fogFar) {
+        this.scene.fog = new THREE.Fog(fogColor, fogNear, fogFar);
     }
 }
 
-MyScene.prototype.isGroup = true;
 
 export { MyScene };
