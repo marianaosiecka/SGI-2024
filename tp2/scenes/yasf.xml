@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<yaf>
+
+    <globals background="0 0 0 1" ambient="0 0 0 1" />
+
+    <fog color="1.0 1.0 1.0 1.0" near="0.0" far="100.0" />
+
+    <cameras initial="perpective1">
+        <perspective id="perpective1"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="10 10 3"
+            target="0 0.0 0" />
+
+        <perspective id="perpective2"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="0 8 3"
+            target="0 0.0 0" />
+
+        <orthogonal id="orthoLeft"
+            near="-10"
+            far="20"
+            location="-5 0 0"
+            target="0.0 0.0 0.0"
+            left="-10"
+            right="10"
+            bottom="-10"
+            top="10" />
+
+        <orthogonal id="orthoRight"
+            near="-10"
+            far="20"
+            location="5 0 0"
+            target="0.0 0.0 0.0"
+            left="-10"
+            right="10"
+            bottom="-10"
+            top="10" />
+
+        <orthogonal id="orthoTop"
+            near="-10"
+            far="20"
+            location="0 5 0"
+            target="0.0 0.0 0.0"
+            left="-10"
+            right="10"
+            bottom="-10"
+            top="10" />
+
+        <orthogonal id="orthoFront"
+            near="-10"
+            far="20"
+            location="0 0 5"
+            target="0.0 0.0 0.0"
+            left="-10"
+            right="10"
+            bottom="-10"
+            top="10" />
+
+        <orthogonal id="orthoBack"
+            near="-10"
+            far="20"
+            location="0 0 -5"
+            target="0.0 0.0 0.0"
+            left="-10"
+            right="10"
+            bottom="-10"
+            top="10" />
+
+
+    </cameras>
+
+    <textures>
+
+        <texture id="floorTex" filepath="scenes/textures/floor_texture.jpg" />
+        <texture id="tableTex" filepath="scenes/textures/wood_texture.jpg" />
+        <texture id="cakeFillingTex" filepath="scenes/textures/cake_slice_texture.png" />
+
+        <texture id="paiting1Tex" filepath="scenes/textures/paiting1.jpg" />
+        <texture id="paiting2Tex" filepath="scenes/textures/paiting2.jpg" />
+        <texture id="photography1Tex" filepath="scenes/textures/photography1.jpg" />
+        <texture id="photography2Tex" filepath="scenes/textures/photography2.jpg" />
+        <texture id="whiteTex" filepath="scenes/textures/white_texture.png" />
+
+        <texture id="pillow1Tex" filepath="scenes/textures/pillow1_print.jpg" />
+        <texture id="pillow2Tex" filepath="scenes/textures/pillow2_print.jpg" />
+        <texture id="pillow3Tex" filepath="scenes/textures/pillow3_print.jpg" />
+        <texture id="pillow4Tex" filepath="scenes/textures/pillow4_print.jpg" />
+
+        <texture id="vinylCoverTex" filepath="scenes/textures/vinyl_cover.jpg" />
+        <texture id="windowViewTex" filepath="scenes/textures/window_texture.jpg" />
+        <texture id="newspaperTex" filepath="scenes/textures/newspaper_texture.png" />
+        <texture id="carpetTex" filepath="scenes/textures/carpet_texture.png" />
+
+    </textures>
+
+    <materials>
+
+        <!-- color: this.bege -->
+        <material id="wallApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 0.98 0.93 1.0"
+            specular="0 0 0 0"
+            shininess="0" />
+
+        <material id="floorApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.91 0.84 0.78 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="floorTex"
+            texlength_s="15"
+            texlength_t="15" />
+
+
+        <material id="cakeApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.88 0.65 0.57 1.0"
+            specular="0 0 0 0"
+            shininess="0" />
+
+        <material id="cakeFillingApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.91 0.84 0.78 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="cakeFillingTex" />
+
+        <!-- dá para a base do prato do bolo (que têm o "prato" só com material do plateApp) e a
+        base dos pratos normais -->
+        <material id="plateApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.76 0.76 0.7 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="3" />
+
+        <!-- color: this.offWhite -->
+        <material id="plateApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.85 0.85 0.8 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="3" />
+
+        <!-- color: this.orange -->
+        <material id="candleWaxApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.8 0.47 0.13 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            shading="none" />
+
+        <!-- color: this.yellow -->
+        <material id="candleFlameApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.85 0.78 0.44 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            shading="none" />
+
+        <material id="forkApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.61 0.61 0.61 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="50" />
+
+
+        <material id="flowerStemApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.25 0.53 0.29 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            shading="none"
+            twosided="true" />
+
+        <material id="flowerCenterApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.95 0.93 0.32 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            shading="none" />
+
+        <material id="flowerPetalsPurpleApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.32 0.22 0.36 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            shading="none"
+            twosided="true" />
+
+        <material id="flowerPetalsOrangeApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.86 0.29 0.05 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            shading="none"
+            twosided="true" />
+
+        <material id="flowerPetalsBlueApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.51 0.73 0.8 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            shading="none"
+            twosided="true" />
+
+        <!-- falta o material do vaso (é physical?)-->
+
+        <!-- falta o material do balão (é physical?)-->
+
+        <material id="balloonStringApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.88 0.87 0.83 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="0"
+            twosided="true" />
+
+        <!-- falta o material do car -->
+
+
+        <material id="newspaperApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="newspaperTex"
+            twosided="true" />
+
+        <material id="pillow1App"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="6"
+            textureref="pillow1Tex"
+            twosided="true" />
+
+        <material id="pillow2App"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="6"
+            textureref="pillow2Tex"
+            twosided="true" />
+
+        <material id="pillow3App"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="6"
+            textureref="pillow3Tex"
+            twosided="true" />
+
+        <material id="pillow4App"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="6"
+            textureref="pillow4Tex"
+            twosided="true" />
+
+
+        <material id="spiralSpringApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.61 0.61 0.61 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="8"
+            twosided="true" />
+
+        
+        <!-- falta opacidade? -->
+        <!-- color: this.lightBlue -->
+        <material id="carpetApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.65 0.76 0.82 1.0"
+            specular="0.65 0.76 0.82 1.0"
+            shininess="5"
+            textureref="carpetTex"
+            twosided="true" />
+
+
+    </materials>
+
+</yaf> 
