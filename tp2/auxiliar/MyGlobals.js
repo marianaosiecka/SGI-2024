@@ -5,7 +5,7 @@ class MyScene {
     constructor(background, ambient) {
         this.scene = THREE.Scene();
         this.scene.background = new THREE.Color(background);
-        this.scene.ambient = ambient;
+        this.scene.ambient = new THREE.Color(ambient);
     }
 
     setSceneFog(fogColor, fogNear, fogFar) {

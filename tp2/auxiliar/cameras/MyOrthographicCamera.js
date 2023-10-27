@@ -2,17 +2,12 @@ import * as THREE from 'three';
 
 class MyOrthographicCamera {
 
-    constructor(id, near, far, left, right, bottom, top) {
-        this.id = id;
-        this.camera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
-    }
-
-    setCameraPosition(x, y, z) {
-        this.camera.position = new THREE.Vector3(x, y, z);
-    }
-
-    setCameraTarget(x, y, z) {
-        this.camera.target = new THREE.Vector3(x, y, z);
+    constructor(cameraData) {
+        this.isActive = false;
+        this.id = cameraData.id;
+        this.camera = new THREE.OrthographicCamera(cameraData.left, cameraData.right, cameraData.top, cameraData.bottom, cameraData.near, cameraData.far);
+        this.camera.target = cameraData.target;
+        //this.camera.position = transformação qualquer da location pq é diferente da position (acho que é tipo translação)
     }
 }
 

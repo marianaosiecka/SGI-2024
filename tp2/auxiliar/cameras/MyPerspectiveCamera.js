@@ -2,18 +2,13 @@ import * as THREE from 'three';
 
 class MyPerspectiveCamera {
 
-    constructor(id, angle, near, far) {
+    constructor(cameraData) {
+        this.isActive = false;
         const aspect = window.innerWidth / window.innerHeight;
-        this.id = id;
-        this.camera = new THREE.PerspectiveCamera(angle, aspect, near, far);
-    }
-
-    setCameraPosition(x, y, z) {
-        this.camera.position = new THREE.Vector3(x, y, z);
-    }
-
-    setCameraTarget(x, y, z) {
-        this.camera.target = new THREE.Vector3(x, y, z);
+        this.id = cameraData.id;
+        this.camera = new THREE.PerspectiveCamera(cameraData.angle, aspect, cameraData.near, cameraData.far);
+        this.camera.target = cameraData.target;
+        //this.camera.position = transformação qualquer da location pq é diferente da position (acho que é tipo translação)
     }
 }
 

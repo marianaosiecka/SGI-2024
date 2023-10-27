@@ -25,50 +25,37 @@ class MyMaterial {
      * 
      * @param {MyApp} app the application object
      */
-    constructor(app, id, color, specular, shininess, emissive, shading = "smooth") {
-        super();
-        this.app = app;
-        this.id = id;
-        this.color = color;
-        this.specular = specular;
-        this.shininess = shininess;
-        this.emissive = emissive;
-        this.shading = shading;
+    constructor(materialData, texture, bumpTexture) {
+        this.id = materialData.id;
+        this.color = materialData.color;
+        this.specular = materialData.specular;
+        this.shininess = materialData.shininess;
+        this.emissive = materialData.emissive;
+        this.shading = materialData.shading;
+        this.texture = texture;
+        this.twoSided = materialData.twosided;
+        this.bumpTexture = bumpTexture;
 
         this.flatShading = false;
-        if (shading == "flat") this.flatShading = true;
+        if (this.shading == "flat") this.flatShading = true;
 
-        if (this.shading == "none") this.material = new THREE.MeshBasicMaterial();
-        else this.material = new THREE.MeshPhongMaterial({ flatShading: flatShading, specular: this.specular, shininess: this.shininess, emissive: this.emissive });
+        this.material = new THREE.MeshPhongMaterial({ color:this.color, flatShading: this.flatShading, specular: this.specular, shininess: this.shininess, emissive: this.emissive, wireframe:this.wireframe});
 
-        this.material.color = color;
-
-        // set optional parameters default value
-        this.wireframe = false;
-        this.textureref = null;
-        this.texlength_s = 1;
-        this.texlength_t = 1;
-        this.twosided = false;
-    }
-
-    setShading(shading) {
-        if (shading == "none") {
-            this.material = new THREE.MeshBasicMaterial({ color: this.color })
+        if(this.textureref != null) {
+            this.texture.wrapS = materialData.texlength_s;
+            this.texture.wrapT = materialData.texlength_t;
+            this.material.map = this.texture;
         }
-        else if (shading == "flat") {
-            this.flatShading = true;
-            this.material.flatShading = this.flatShading;
+
+        if (this.twoSided) {
+            this.material.twoSided = THREE.DoubleSide;
+        }
+
+        if(materialData.bump_ref != null) {
+            this.material.bumpMap = this.bumpTexture;
+            this.material.bumpScale = materialData.bump_scale;
         }
     }
-
-    setTexture(textureref, texlength_s = 1, texlength_t = 1) {
-        this.texture = new MyTexture(this.app, textureref, texlength_s, texlength_t);
-    }
-
-    setTwoSided(twosided) {
-        this.twosided = twosided ? THREE.DoubleSide : null;;
-    }
-
 }
 
 

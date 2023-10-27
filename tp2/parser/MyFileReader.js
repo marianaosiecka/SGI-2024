@@ -24,7 +24,7 @@ import { MySceneData } from './MySceneData.js';
 
 class MyFileReader  {
 
-    /*
+    /**
        constructs the object
        @param {MyApp} app The application object
     */ 
@@ -52,7 +52,7 @@ class MyFileReader  {
 			this.xmlhttp.onload = this.onStateChange;
 			this.xmlhttp.reader = this;
 			this.xmlfilename = xmlfile;
- 			this.xmlhttp.open("GET", xmlfile, true); //  (httpMethod,  URL,  asynchronous)			
+ 			this.xmlhttp.open("GET", xmlfile, false); //  (httpMethod,  URL,  asynchronous)			
 			this.xmlhttp.setRequestHeader("Content-Type", "text/xml");
 			this.xmlhttp.send(null);
 		}

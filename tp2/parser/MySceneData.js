@@ -67,7 +67,7 @@ class MySceneData  {
             {name: "twosided", type: "boolean", required: false, default: false},
             {name: "bump_ref", type: "string", required: false, default: null}, // bump map is to be used in later classes
             {name: "bump_scale", type: "float", required: false, default: 1.0},
-		]
+		] 
 
         this.descriptors["orthogonal"] = [
 			{name: "id", type: "string"},
@@ -122,7 +122,7 @@ class MySceneData  {
 
         // to be used in final classes of TP2 or in TP3
         this.descriptors["model3d"] = [
-			{name: "filepath", type: "String"},
+			{name: "filepath", type: "string"},
             {name: "distance", type: "float", required: false, default: 0.0}, // The distance at which to display this level of detail. Default 0.0.  
 		]
 
