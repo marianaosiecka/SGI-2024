@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { MyApp } from './MyApp.js';
 
 class MyNode extends THREE.Object3D {
 

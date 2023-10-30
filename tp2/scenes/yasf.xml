@@ -282,4 +282,391 @@
 
     </materials>
 
+
+    <!-- GRAPH BLOCK -->
+
+    <!-- "rootid" identifies the root node -->   
+    <graph rootid="scene">
+        <!-- there must be one or more "node" blocks composed of: -->
+
+        <!--     node identification (required) -->
+        <!--     local geometric transformations (required) -->
+        <!--     material (optional) -->
+        <!--     descendant (required) -->
+        <node id="scene">
+            <children> 
+                <noderef id="leftWall" /> 
+				<noderef id="rightWall" /> 
+                <noderef id="frontWall" /> 
+				<noderef id="backWall" /> 
+				<noderef id="floor" /> 
+                <noderef id="ceiling" /> 
+				<noderef id="table" /> 
+				<noderef id="carpet" /> 
+				<noderef id="chair" /> 
+				<noderef id="cake" />
+				<noderef id="lamp" />
+
+                <pointlight id="light1" enabled="true" 
+                    color="1.0 1.0 1.0 1" 
+                    intensity="10.0"
+                    distance="0"
+                    decay="1.0"
+                    castshadow="false"
+                    position="0 10.0 0" 
+                /> 
+			            
+                <directionallight id="light2" enabled="true" 
+                    color="1.0 1.0 1.0 1" 
+                    intensity=".5"
+                    castshadow="false"
+                    position="0 1 0" 
+                /> 
+            </children> 
+        </node>
+
+        <node id="leftWall">
+            <transforms>
+				<translate value3="0 0 8" />
+				<rotate value3="0.0 90 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="15 6" />
+                </primitive>
+            </children> 
+        </node>
+        
+        <node id="rightWall">
+            <transforms>
+				<translate value3="0 0 -8" />
+				<rotate value3="0.0 90 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="15 6" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="frontWall">
+            <transforms>
+				<translate value3="7.5 0 0" />
+				<rotate value3="0.0 0.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="16 6" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="backWall">
+            <transforms>
+				<translate value3="-7.5 0 0" />
+				<rotate value3="0.0 0.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="16 6" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="floor">
+			<transforms>
+				<translate value3="0 0 0" />
+				<rotate value3="-90 0.0 0.0" />
+            </transforms> 
+
+			<materialref id="floorApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="15 16" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="ceiling">
+            <transforms>
+				<translate value3="0 6 0" />
+				<rotate value3="0.0 0.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="15 16" />
+                </primitive>
+            </children> 
+        </node>
+
+        <!--formato da perna da mesa; as outras "legs" só mudam a posição-->
+        <node id="tableLeg">
+			<transforms>
+				<scale value3="0.2 0.9 0.2" />
+            </transforms> 
+
+            <children>             
+                <primitive>
+                    <box xy1="0.0 0.0" xy2="1.0 1.0" />
+                </primitive>
+            </children> 
+        </node>
+		
+		<node id="tableLeg1">
+			<transforms>
+				<translate value3="0.45 0 0.42" />
+            </transforms> 
+
+            <children>             
+                <noderef id="tableLeg" />
+            </children> 
+        </node>
+		
+		<node id="tableLeg2">
+			<transforms>
+				<translate value3="0.45 0 -0.42" />
+            </transforms> 
+
+            <children>             
+                <noderef id="tableLeg" />
+            </children> 
+        </node>
+		
+		<node id="tableLeg3">
+			<transforms>
+				<translate value3="-0.45 0 0.42" />
+            </transforms> 
+
+            <children>             
+                <noderef id="tableLeg" />
+            </children> 
+        </node>
+		
+		<node id="tableLeg4">
+			<transforms>
+				<translate value3="-0.45 0 -0.42" />
+            </transforms> 
+
+            <children>             
+                <noderef id="tableLeg" />
+            </children> 
+        </node>
+
+
+        <node id="tableTop">
+            <transforms>
+                <scale value3="1 0.08 1"/>
+            </transforms>
+
+            <children>
+                <primitve>
+                    <box xy1="0.0 0.0" xy2="6.0 3.8" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="table">
+            <transforms>
+                <translate value3="0.0 0.0 4.8"/>
+            </transforms>   
+
+            <materialref id="tableApp" />
+			
+            <children>             
+                <noderef id="tableTop" />
+				<noderef id="tableLeg1" />
+				<noderef id="tableLeg2" />
+				<noderef id="tableLeg3" />
+				<noderef id="tableLeg4" />
+            </children>  
+        </node>
+
+        <node id="carpet">
+             <transforms>
+                <translate value3="0 0 -5"/>
+                <scale value3="7.5 0.1 5" />
+            </transforms>   
+
+            <materialref id="carpetApp" />
+        </node>
+
+        <!--formato da perna da mesa; as outras "legs" só mudam a posição-->
+        <node id="chairLeg">
+			<transforms>
+				<scale value3="0.1 0.9 0.1" />
+            </transforms> 
+
+            <children>             
+                <primitive>
+                    <box xy1="0.0 0.0" xy2="1.0 1.0" />
+                </primitive>
+            </children> 
+        </node>
+		
+		<node id="chairLeg1">
+			<transforms>
+				<translate value3="0.65 0 0.32" />
+            </transforms> 
+
+            <children>             
+                <noderef id="chairLeg" />
+            </children> 
+        </node>
+		
+		<node id="chairLeg2">
+			<transforms>
+				<translate value3="0.65 0 -0.32" />
+            </transforms> 
+
+            <children>             
+                <noderef id="chairLeg" />
+            </children> 
+        </node>
+		
+		<node id="chairLeg3">
+			<transforms>
+				<translate value3="-0.65 0 0.32" />
+            </transforms> 
+
+            <children>             
+                <noderef id="chairLeg" />
+            </children> 
+        </node>
+		
+		<node id="chairLeg4">
+			<transforms>
+				<translate value3="-0.65 0 -0.32" />
+            </transforms> 
+
+            <children>             
+                <noderef id="chairLeg" />
+            </children> 
+        </node>
+
+
+        <node id="chairSeat">
+            <transforms>
+                <scale value3="1 0.08 1"/>
+            </transforms>
+
+            <children>
+                <primitve>
+                    <box xy1="0.0 0.0" xy2="1.0 1.0" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="chairBack">
+            <transforms>
+                <rotate value3="0 0 90.0">
+                <scale value3="1 0.08 1"/>
+            </transforms>
+
+            <children>
+                <primitve>
+                    <box xy1="0.0 0.0" xy2="1.0 1.0" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="table">
+            <transforms>
+                <translate value3="0.0 0.0 4.8"/>
+            </transforms>   
+
+            <materialref id="tableApp" />
+			
+            <children>             
+				<noderef id="tableLeg1" />
+				<noderef id="tableLeg2" />
+				<noderef id="tableLeg3" />
+				<noderef id="tableLeg4" />
+                <noderef id="chairSeat" />
+                <noderef id="chairBack" />
+            </children>  
+        </node>
+
+        <node id="cake">
+            <transforms>
+                <translate value3="0.0 1.9 4" />
+                <rotation value3="0 90.0 0" />
+            </transforms>   
+
+            <materialref id="cakeApp" />
+                
+            <children>             
+                <primitive>
+                    <cylinder base="0.6" top="0.6" height="0.4" slices="25" stacks="1" capsclosed="true" thetastart=" 0" thetalenght="2 * Math.PI - 1" />
+                <primitive>
+            </children> 
+        </node>
+
+        <node id="lampCable">
+            <transforms>
+                <translate value3="0.0 0 0" />
+            </transforms>   
+
+            <children>             
+                <primitive>
+                    <cylinder base="0.02" top="0.02" height="1" slices="25" stacks="1" />
+                <primitive>
+            </children> 
+        </node> 
+
+        <node id="lampHead">
+            <transforms>
+                <translate value3="0.0 -1.1 0" />
+            </transforms>   
+
+            <children>             
+                <primitive>
+                    <sphere radius="0.6" slices="25" stacks="25" thetastart="0" thetalenght="Math.PI / 2" phistart="0" philength="Math.PI * 2"/>
+                <primitive>
+            </children> 
+        </node> 
+
+        <node id="lampBulb">
+            <transforms>
+                <translate value3="0.0 -0.83 0" />
+            </transforms>   
+
+            <materialref id="candleFlameApp" />
+
+            <children>             
+                <primitive>
+                    <sphere radius="0.4" slices="25" stacks="25" thetastart="Math.PI / 2" thetalenght="Math.PI / 2" phistart="0" philength="Math.PI * 2"/>
+                <primitive>
+            </children> 
+        </node> 
+
+        <node id="lamp">
+            <transforms>
+                <translate value3="0.0 5.5 4.8" />
+            </transforms>   
+
+            <materialref id="candleWaxApp" />
+
+            <children>             
+                <noderef id="lampCable" />
+				<noderef id="lampHead" />
+				<noderef id="lampBulb" />
+            </children> 
+        </node> 
+    </graph>
 </yaf> 
