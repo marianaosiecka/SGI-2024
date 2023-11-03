@@ -6,32 +6,49 @@ class MyNode extends THREE.Object3D {
      * 
      * @param {MyApp} app the application object
      */
-    constructor(app, id, ma, material, texture, mp = 1) {
+    constructor(app, id, material, transformations) {
         super();
         this.app = app;
-        this.type = 'Group';
-
         this.id = id;
         this.material = material;
-        this.texture = texture;
-        this.ma = ma;
-        this.mp = mp;
-
-        this.m = ma * mp;
-
+        this.transformations = transformations;
+        this.group = new THREE.Group();
     }
 
-    createDescendentNode(newNodeId, mp = 1, material = null, texture = null){
-        if(material == null)
-            material = this.material;
-        if(texture == null)
-            texture = this.texture;
+    visitChildren(children){
+        for(let child of children){
+            let childNode;
+            if(child.type == "node"){
+                childNode = new MyNode(this.app, child.id, this.material, this.transformations)
+            }
+            else if(child.type == "primitive"){
+                childNode = new MyPrimitive(child.data)
+            }
+            else if(child.type == "cylinder"){
 
-        this.add(new MyNode(this.app, newNodeId, this.ma, material, texture, mp));
-    }
+            }
+            // ...
 
-    // updatePos -> updateChildren
-    
+            // transformações
+            for(let childTransformation of child.transformations){
+                if(childTransformation.type == "T"){
+                    childNode.transformations += childTransformation;
+                } 
+                else if(childTransformation.type == "R" || childTransformation.type == "S"){
+                    childNode.transformations *= childTransformation;
+                } 
+            }
+
+            if(child.material != null) childNode.material = child.material;
+
+            childNode.visitChildren(child.children)
+            this.group.add(childNode.group)
+            
+        }
+
+        
+
+    }    
 }
 
 MyNode.prototype.isGroup = true;

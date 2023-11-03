@@ -30,7 +30,7 @@ class MySpotLight {
             this.light.shadow.mapSize.height = spotData.shadowmapsize;
             this.light.camera.far = spotData.shadowfar;
         }
-        if(spotData.enabled)
+        if(!spotData.enabled)
             this.light.intensity = 0;
     }
 }
