@@ -64,7 +64,7 @@ class MyFlower extends THREE.Object3D {
         
 
         // Create and position the flower head
-        const flowerHead = new MyFlowerHead(this.app, 0.1, 5, colorPetals, colorCenter, this.stemMaterial);
+        const flowerHead = new MyFlowerHead(this.app, 0.1, 10, colorPetals, colorCenter, this.stemMaterial);
         this.add(flowerHead);
 
         if(state == "w"){

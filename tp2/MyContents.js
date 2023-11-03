@@ -74,10 +74,13 @@ class MyContents  {
         for (var key in data.cameras) {
             let cameraData = data.cameras[key]
             let camera = null;
-            if(cameraData.type == "orthogonal") //nao sei se isto dá o .type
-                camera = new MyOrthographicCamera(cameraData);
+            let isActive = false;
+            if(data.activeCameraId == cameraData.id)
+                isActive = true;
+            if(cameraData.type == "orthogonal")
+                camera = new MyOrthographicCamera(cameraData, isActive);
             else
-                camera = new MyPerspectiveCamera(cameraData);
+                camera = new MyPerspectiveCamera(cameraData, isActive);
             this.cameras.add(cameraData.id, camera)
         //algo sobre ser active?
         }
@@ -102,7 +105,7 @@ class MyContents  {
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
-       
+        console.log(data)
         // refer to descriptors in class MySceneData.js
         // to see the data structure for each item
 

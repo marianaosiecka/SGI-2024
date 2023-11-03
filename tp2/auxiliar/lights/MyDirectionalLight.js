@@ -32,7 +32,7 @@ class MyDirectionalLight {
             this.light.camera.top = directionalData.shadowtop;
             this.light.camera.bottom = directionalData.shadowbottom;
         }
-        if(directionalData.enabled)
+        if(!directionalData.enabled)
             this.light.intensity = 0;
     }
 }
