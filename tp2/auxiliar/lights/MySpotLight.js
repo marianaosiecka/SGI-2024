@@ -22,8 +22,8 @@ class MySpotLight {
     constructor(spotData) {
         this.id = spotData.id;
         this.light = new THREE.PointLight(spotData.color, spotData.intensity, spotData.distance, spotData.angle, spotData.penumbra, spotData.decay);
-        this.light.position = spotData.position;
-        this.light.target = spotData.target;
+        this.light.position.set(spotData.position[0], spotData.position[1], spotData.position[2]);
+        //target can't be like this this.light.target.position.set(spotData.target[0], spotData.target[1], spotData.target[2]);
         if(spotData.castShadow){
             this.light.castShadow = true;
             this.light.shadow.mapSize.width = spotData.shadowmapsize;

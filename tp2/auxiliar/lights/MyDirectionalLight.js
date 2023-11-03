@@ -21,7 +21,7 @@ class MyDirectionalLight {
     constructor(directionalData) {
         this.id = directionalData.id;
         this.light = new THREE.DirectionalLight(directionalData.color, directionalData.intensity);
-        this.light.position = directionalData.position;
+        this.light.position.set(directionalData.position[0], directionalData.position[1], directionalData.position[2]);
         if(directionalData.castShadow){
             this.light.castShadow = true;
             this.light.shadow.mapSize.width = directionalData.shadowmapsize;

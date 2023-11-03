@@ -19,7 +19,7 @@ class MyPointLight {
     constructor(pointData) {
         this.id = pointData.id;
         this.light = new THREE.PointLight(pointData.color, pointData.intensity, pointData.distance, pointData.decay);
-        this.light.position = pointData.position;
+        this.light.position.set(pointData.position[0], pointData.position[1], pointData.position[2]);
         if(pointData.castShadow){
             this.light.castShadow = true;
             this.light.shadow.mapSize.width = pointData.shadowmapsize;
