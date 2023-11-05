@@ -20,12 +20,13 @@ class MyContents  {
         this.app = app
         this.axis = null
 
-        this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-		this.reader.open("scenes/demo/demo.xml");	
-    
         this.materials = new Map();
-        this.texture = new Map();
+        this.textures = new Map();
         this.cameras = new Map();
+
+        this.reader = new MyFileReader(app, this, this.onSceneLoaded);
+		this.reader.open("scenes/scene.xml");	
+
     }
 
     /**
@@ -47,6 +48,7 @@ class MyContents  {
     onSceneLoaded(data) {
         console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
         this.onAfterSceneLoadedAndBeforeRender(data);
+        this.visitData(data);
     }
 
     output(obj, indent = 0) {
@@ -56,8 +58,8 @@ class MyContents  {
     visitData(data) {
 
         for (var key in data.textures) {
-            let textureData = data.textures[key]   
-            this.textures.add(textureData.id, new MyTexture(textureData))
+            let textureData = data.textures[key]  
+            this.textures.set(textureData.id, new MyTexture(textureData))
         }
 
         for (var key in data.materials) {
@@ -68,7 +70,7 @@ class MyContents  {
             let bumpTex = this.textures.get(materialData.bump_ref);
             if (bumpTex == undefined)
                 bumpTex = null;
-            this.materials.add(materialData.id, new MyMaterial(materialData, tex, bumpTex))
+            this.materials.set(materialData.id, new MyMaterial(materialData, tex, bumpTex))
         }
 
         for (var key in data.cameras) {
@@ -81,26 +83,15 @@ class MyContents  {
                 camera = new MyOrthographicCamera(cameraData, isActive);
             else
                 camera = new MyPerspectiveCamera(cameraData, isActive);
-            this.cameras.add(cameraData.id, camera)
-        //algo sobre ser active?
+            this.cameras.set(cameraData.id, camera)
         }
 
         console.log("nodes:")
         for (var key in data.nodes) {
             let node = data.nodes[key]
-            this.output(node, 1)
-            for (let i=0; i< node.children.length; i++) {
-                let child = node.children[i]
-                if (child.type === "primitive") {
-                    console.log("" + new Array(2 * 4).join(' ') + " - " + child.type + " with "  + child.representations.length + " " + child.subtype + " representation(s)")
-                    if (child.subtype === "nurbs") {
-                        console.log("" + new Array(3 * 4).join(' ') + " - " + child.representations[0].controlpoints.length + " control points")
-                    }
-                }
-                else {
-                    this.output(child, 2)
-                }
-            }
+            let myNode = new MyNode(node.id, node.material, node.transformations)
+            myNode.visitChildren(node.children);
+            this.app.scene.add(myNode.group);
         }
     }
 

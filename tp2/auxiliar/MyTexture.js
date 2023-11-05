@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-class MyTexture extends THREE.Object3D {
+class MyTexture {
 
     /**
      * 
@@ -18,7 +18,7 @@ class MyTexture extends THREE.Object3D {
         if(textureData.isVideo) 
             this.texture = new THREE.VideoTexture(this.filepath); //supostamente é com um elemento HTML e nao com um filepath por isso ?idk?
         else
-            this.texture = new THREE.TextureLoader().load(filepath);
+            this.texture = new THREE.TextureLoader().load(this.filepath);
 
         this.texture.magFilter = textureData.magFilter;
         this.texture.minFilter = textureData.minFilter;

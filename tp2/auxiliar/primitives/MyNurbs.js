@@ -18,12 +18,14 @@ class MyNurbs{
      * 
      * 
      */
-    constructor(nurbsData, controlPointsData) {
+    constructor(nurbsData) {
         this.nurbsData = nurbsData;
+        console.log(nurbsData)
+        let dataControlPoints = nurbsData.controlpoints;
         this.controlPoints = [];
-        for (let i=0; i<controlPointsData.length; i++){
-            let data = controlPointsData[0];
-            this.controlPoints.push([data.xx, data.yy, data.zz]);
+        for (let i=0; i<dataControlPoints.length; i++){
+            let data = dataControlPoints[i];
+            this.controlPoints.push([data.xx, data.yy, data.zz, 1.0]);
         }
     }
 

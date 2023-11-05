@@ -12,6 +12,7 @@ class MyMaterial {
         this.specular = materialData.specular;
         this.shininess = materialData.shininess;
         this.emissive = materialData.emissive;
+        this.wireframe = materialData.wireframe;
         this.shading = materialData.shading;
         this.myTexture = myTexture;
         this.twoSided = materialData.twosided;
@@ -20,7 +21,7 @@ class MyMaterial {
         this.flatShading = false;
         if (this.shading == "flat") this.flatShading = true;
 
-        this.material = new THREE.MeshPhongMaterial({ color:this.color, flatShading: this.flatShading, specular: this.specular, shininess: this.shininess, emissive: this.emissive, wireframe:this.wireframe});
+        this.material = new THREE.MeshPhongMaterial({ color:this.color, flatShading: this.flatShading, specular: this.specular, shininess: this.shininess, emissive: this.emissive, wireframe: this.wireframe});
 
         if(this.textureref != null) {
             this.myTexture.texture.wrapS = materialData.texlength_s;
