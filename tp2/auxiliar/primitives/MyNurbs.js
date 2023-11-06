@@ -20,7 +20,6 @@ class MyNurbs{
      */
     constructor(nurbsData) {
         this.nurbsData = nurbsData;
-        console.log(nurbsData)
         let dataControlPoints = nurbsData.controlpoints;
         this.controlPoints = [];
         for (let i=0; i<dataControlPoints.length; i++){

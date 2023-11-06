@@ -184,7 +184,7 @@ class MyApp  {
 
         // render the scene
         this.renderer.render(this.scene, this.activeCamera);
-
+        
         // subsequent async calls to the render loop
         requestAnimationFrame( this.render.bind(this) );
 

@@ -8,33 +8,32 @@ class MyMaterial {
      */
     constructor(materialData, myTexture, bumpTexture) {
         this.id = materialData.id;
-        this.color = materialData.color;
-        this.specular = materialData.specular;
+        this.color = new THREE.Color(materialData.color.r, materialData.color.g, materialData.color.b)
+        this.specular = new THREE.Color(materialData.specular.r, materialData.specular.g, materialData.specular.b);
         this.shininess = materialData.shininess;
-        this.emissive = materialData.emissive;
+        this.emissive = new THREE.Color(materialData.emissive.r, materialData.emissive.g, materialData.emissive.b);
         this.wireframe = materialData.wireframe;
         this.shading = materialData.shading;
         this.myTexture = myTexture;
-        this.twoSided = materialData.twosided;
         this.bumpTexture = bumpTexture;
-
+        
         this.flatShading = false;
         if (this.shading == "flat") this.flatShading = true;
-
+ 
         this.material = new THREE.MeshPhongMaterial({ color:this.color, flatShading: this.flatShading, specular: this.specular, shininess: this.shininess, emissive: this.emissive, wireframe: this.wireframe});
 
-        if(this.textureref != null) {
-            this.myTexture.texture.wrapS = materialData.texlength_s;
-            this.myTexture.texture.wrapT = materialData.texlength_t;
-            this.material.map = this.myTexture.texture;
+        if(materialData.textureref != null) {
+            this.myTexture.wrapS = materialData.texlength_s;
+            this.myTexture.wrapT = materialData.texlength_t;
+            this.material.map = this.myTexture;
         }
 
-        if (this.twoSided) {
-            this.material.twoSided = THREE.DoubleSide;
-        }
+        if(materialData.twosided)
+            this.material.side = THREE.DoubleSide;
 
+            
         if(materialData.bump_ref != null) {
-            this.material.bumpMap = this.bumpTexture.texture;
+            this.material.bumpMap = this.bumpTexture;
             this.material.bumpScale = materialData.bump_scale;
         }
     }

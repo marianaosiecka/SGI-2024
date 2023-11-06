@@ -18,21 +18,21 @@ class MyDirectionalLight {
             {name: "shadowmapsize", type: "integer", required: false, default: 512},
 		]
     */
-    constructor(directionalData) {
-        this.id = directionalData.id;
-        this.light = new THREE.DirectionalLight(directionalData.color, directionalData.intensity);
-        this.light.position.set(directionalData.position[0], directionalData.position[1], directionalData.position[2]);
-        if(directionalData.castShadow){
+    constructor(node) {
+        let color = new THREE.Color(node.color.r, node.color.g, node.color.b);
+        this.light = new THREE.DirectionalLight(color, node.intensity);
+        this.light.position.set(node.position[0], node.position[1], node.position[2]);
+        if(node.castShadow){
             this.light.castShadow = true;
-            this.light.shadow.mapSize.width = directionalData.shadowmapsize;
-            this.light.shadow.mapSize.height = directionalData.shadowmapsize;
-            this.light.camera.far = directionalData.shadowfar;
-            this.light.camera.left = directionalData.shadowleft;
-            this.light.camera.right = directionalData.shadowright;
-            this.light.camera.top = directionalData.shadowtop;
-            this.light.camera.bottom = directionalData.shadowbottom;
+            this.light.shadow.mapSize.width = node.shadowmapsize;
+            this.light.shadow.mapSize.height = node.shadowmapsize;
+            this.light.camera.far = node.shadowfar;
+            this.light.camera.left = node.shadowleft;
+            this.light.camera.right = node.shadowright;
+            this.light.camera.top = node.shadowtop;
+            this.light.camera.bottom = node.shadowbottom;
         }
-        if(!directionalData.enabled)
+        if(!node.enabled)
             this.light.intensity = 0;
     }
 }

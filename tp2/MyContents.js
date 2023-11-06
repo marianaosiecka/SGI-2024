@@ -25,7 +25,7 @@ class MyContents  {
         this.cameras = new Map();
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-		this.reader.open("scenes/scene.xml");	
+        this.reader.open("scenes/demo/demo.xml");	
 
     }
 
@@ -46,9 +46,9 @@ class MyContents  {
      * @param {MySceneData} data the entire scene data object
      */
     onSceneLoaded(data) {
+        this.visitData(data);
         console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
         this.onAfterSceneLoadedAndBeforeRender(data);
-        this.visitData(data);
     }
 
     output(obj, indent = 0) {
@@ -59,18 +59,21 @@ class MyContents  {
 
         for (var key in data.textures) {
             let textureData = data.textures[key]  
-            this.textures.set(textureData.id, new MyTexture(textureData))
+            let myTexture = new MyTexture(textureData)
+            this.textures.set(textureData.id, myTexture.texture)
         }
 
         for (var key in data.materials) {
             let materialData = data.materials[key]
+
             let tex = this.textures.get(materialData.textureref);
-            if (tex == undefined)
-                tex = null;
+            if (tex == undefined) tex = null;
+
             let bumpTex = this.textures.get(materialData.bump_ref);
-            if (bumpTex == undefined)
-                bumpTex = null;
-            this.materials.set(materialData.id, new MyMaterial(materialData, tex, bumpTex))
+            if (bumpTex == undefined) bumpTex = null;
+            
+            let myMaterial = new MyMaterial(materialData, tex, bumpTex);
+            this.materials.set(materialData.id, myMaterial.material)
         }
 
         for (var key in data.cameras) {
@@ -85,14 +88,16 @@ class MyContents  {
                 camera = new MyPerspectiveCamera(cameraData, isActive);
             this.cameras.set(cameraData.id, camera)
         }
+        console.log("MATERIALS: ", this.materials)
 
-        console.log("nodes:")
-        for (var key in data.nodes) {
-            let node = data.nodes[key]
-            let myNode = new MyNode(node.id, node.material, node.transformations)
-            myNode.visitChildren(node.children);
-            this.app.scene.add(myNode.group);
-        }
+        let sceneNode = data.nodes.scene
+        let myScene = new MyNode(sceneNode.id, this.materials.get("tableApp"), sceneNode.transformations)
+        myScene.visitChildren(sceneNode.children, this.materials);
+
+        console.log(myScene.group)
+
+        myScene.group.visible = sceneNode.loaded;
+        this.app.scene.add(myScene.group);
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
@@ -100,9 +105,9 @@ class MyContents  {
         // refer to descriptors in class MySceneData.js
         // to see the data structure for each item
 
-        console.log(new THREE.Color('#FFFFFF'));
+        /* console.log(new THREE.Color('#FFFFFF'));
         
-        this.output(data.options)
+       this.output(data.options)
         console.log("textures:")
         for (var key in data.textures) {
             let texture = data.textures[key]
@@ -137,7 +142,7 @@ class MyContents  {
                     this.output(child, 2)
                 }
             }
-        }
+        }*/
     }
 
     update() {

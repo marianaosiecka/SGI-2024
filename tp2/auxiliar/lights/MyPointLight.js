@@ -16,17 +16,17 @@ class MyPointLight {
             {name: "shadowmapsize", type: "integer", required: false, default: 512},		
 		]
     */
-    constructor(pointData) {
-        this.id = pointData.id;
-        this.light = new THREE.PointLight(pointData.color, pointData.intensity, pointData.distance, pointData.decay);
-        this.light.position.set(pointData.position[0], pointData.position[1], pointData.position[2]);
-        if(pointData.castShadow){
+    constructor(node) {
+        let color = new THREE.Color(node.color.r, node.color.g, node.color.b);
+        this.light = new THREE.PointLight(color, node.intensity, node.distance, node.decay);
+        this.light.position.set(node.position[0], node.position[1], node.position[2]);
+        if(node.castShadow){
             this.light.castShadow = true;
-            this.light.shadow.mapSize.width = pointData.shadowmapsize;
-            this.light.shadow.mapSize.height = pointData.shadowmapsize;
-            this.light.camera.far = pointData.shadowfar;
+            this.light.shadow.mapSize.width = node.shadowmapsize;
+            this.light.shadow.mapSize.height = node.shadowmapsize;
+            this.light.camera.far = node.shadowfar;
         }
-        if(!pointData.enabled)
+        if(!node.enabled)
             this.light.intensity = 0;
     }
 }

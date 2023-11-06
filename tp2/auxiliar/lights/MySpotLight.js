@@ -19,18 +19,18 @@ class MySpotLight {
             {name: "shadowmapsize", type: "integer", required: false, default: 512},
 		]
     */
-    constructor(spotData) {
-        this.id = spotData.id;
-        this.light = new THREE.PointLight(spotData.color, spotData.intensity, spotData.distance, spotData.angle, spotData.penumbra, spotData.decay);
-        this.light.position.set(spotData.position[0], spotData.position[1], spotData.position[2]);
+    constructor(node) {
+        let color = new THREE.Color(node.color.r, node.color.g, node.color.b);
+        this.light = new THREE.SpotLight(color, node.intensity, node.distance, node.angle, node.penumbra, node.decay);
+        this.light.position.set(node.position[0], node.position[1], node.position[2]);
         //target can't be like this this.light.target.position.set(spotData.target[0], spotData.target[1], spotData.target[2]);
-        if(spotData.castShadow){
+        if(node.castShadow){
             this.light.castShadow = true;
-            this.light.shadow.mapSize.width = spotData.shadowmapsize;
-            this.light.shadow.mapSize.height = spotData.shadowmapsize;
-            this.light.camera.far = spotData.shadowfar;
+            this.light.shadow.mapSize.width = node.shadowmapsize;
+            this.light.shadow.mapSize.height = node.shadowmapsize;
+            this.light.camera.far = node.shadowfar;
         }
-        if(!spotData.enabled)
+        if(!node.enabled)
             this.light.intensity = 0;
     }
 }

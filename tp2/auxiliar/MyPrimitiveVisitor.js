@@ -14,6 +14,7 @@ class MyPrimitiveVisitor {
         this.tranformations = tranformations;
         this.material = material
         
+        
         let geometry = null;
         switch (node.subtype) {
             case "box": {
@@ -50,10 +51,17 @@ class MyPrimitiveVisitor {
 
         this.mesh = new THREE.Mesh(geometry, material);
 
-        this.mesh.position.set(tranformations.get("T")[0], tranformations.get("T")[1], tranformations.get("T")[2]);
-        this.mesh.rotation.set(tranformations.get("R")[0]*Math.PI/180, tranformations.get("R")[1]*Math.PI/180, tranformations.get("R")[2]*Math.PI/180);
-        this.mesh.scale.set(tranformations.get("S")[0], tranformations.get("S")[1], tranformations.get("S")[2]);
-             
+        if(node.subtype === "rectangle"){
+            this.mesh.position.x = (node.representations[0].xy1[0] + node.representations[0].xy2[0])/2;
+            this.mesh.position.y = (node.representations[0].xy1[1] + node.representations[0].xy2[1])/2;
+        }
+
+        if(node.subtype === "box"){
+            this.mesh.position.x = (node.representations[0].xyz1[0] + node.representations[0].xyz2[0])/2;
+            this.mesh.position.y = (node.representations[0].xyz1[1] + node.representations[0].xyz2[1])/2;
+            this.mesh.position.z = (node.representations[0].xyz1[2] + node.representations[0].xyz2[2])/2;
+        }
+ 
     }
 
 }
