@@ -58,7 +58,6 @@ class MyNode {
             }
         }
 
-        console.log(this.transformations)
         for(let key in this.transformations){
             let transformation = this.transformations[key]
             if(transformation.type == "T"){

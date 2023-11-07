@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MyAxis } from './MyAxis.js';
 import { MyFileReader } from './parser/MyFileReader.js';
+import { MyGlobals } from './auxiliar/MyGlobals.js';
 import { MyTexture } from './auxiliar/MyTexture.js';
 import { MyMaterial } from './auxiliar/MyMaterial.js';
 import { MyNode } from './auxiliar/MyNode.js';
@@ -19,6 +20,8 @@ class MyContents  {
     constructor(app) {
         this.app = app
         this.axis = null
+
+        this.defaultMaterial = new THREE.MeshBasicMaterial();
 
         this.materials = new Map();
         this.textures = new Map();
@@ -48,7 +51,7 @@ class MyContents  {
     onSceneLoaded(data) {
         this.visitData(data);
         console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
-        this.onAfterSceneLoadedAndBeforeRender(data);
+        //this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
     output(obj, indent = 0) {
@@ -57,12 +60,14 @@ class MyContents  {
 
     visitData(data) {
 
+        // TEXTURES
         for (var key in data.textures) {
             let textureData = data.textures[key]  
             let myTexture = new MyTexture(textureData)
             this.textures.set(textureData.id, myTexture.texture)
         }
 
+        // MATERIALS
         for (var key in data.materials) {
             let materialData = data.materials[key]
 
@@ -76,6 +81,7 @@ class MyContents  {
             this.materials.set(materialData.id, myMaterial.material)
         }
 
+        // CAMERAS
         for (var key in data.cameras) {
             let cameraData = data.cameras[key]
             let camera = null;
@@ -88,14 +94,18 @@ class MyContents  {
                 camera = new MyPerspectiveCamera(cameraData, isActive);
             this.cameras.set(cameraData.id, camera)
         }
-        console.log("MATERIALS: ", this.materials)
+        
+        // SCENE GLOBALS
+        let dataOptions = data.options;
+        let fogData = data.fog;
+        this.app.scene.add(new THREE.AmbientLight(dataOptions.ambient));
+        this.app.scene.background = dataOptions.background;
+        this.app.scene.fog = new THREE.Fog(fogData.color, fogData.near, fogData.far);
 
-        let sceneNode = data.nodes.scene
-        let myScene = new MyNode(sceneNode.id, this.materials.get("tableApp"), sceneNode.transformations)
+        // VISIT SCENE NODE CHILDREN
+        let sceneNode = data.nodes.scene;
+        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations);
         myScene.visitChildren(sceneNode.children, this.materials);
-
-        console.log(myScene.group)
-
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
     }
@@ -105,7 +115,7 @@ class MyContents  {
         // refer to descriptors in class MySceneData.js
         // to see the data structure for each item
 
-        /* console.log(new THREE.Color('#FFFFFF'));
+        //console.log(new THREE.Color('#FFFFFF'));
         
        this.output(data.options)
         console.log("textures:")
@@ -142,7 +152,7 @@ class MyContents  {
                     this.output(child, 2)
                 }
             }
-        }*/
+        }
     }
 
     update() {

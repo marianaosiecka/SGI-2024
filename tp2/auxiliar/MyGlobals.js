@@ -1,17 +1,17 @@
 import * as THREE from 'three';
 
-class MyScene {
+class MyGlobals {
 
-    constructor(background, ambient) {
-        this.scene = THREE.Scene();
-        this.scene.background = new THREE.Color(background);
-        this.scene.ambient = new THREE.Color(ambient);
+    constructor(globalsData) {
+        console.log(globalsData.background)
+        this.background = (globalsData.background);
+        this.ambient = new THREE.AmbientLight(globalsData.ambient);
     }
 
-    setSceneFog(fogColor, fogNear, fogFar) {
-        this.scene.fog = new THREE.Fog(fogColor, fogNear, fogFar);
+    setSceneFog(fogData) {
+        this.fog = new THREE.Fog(fogData.fogColor, fogData.fogNear, fogData.fogFar);
     }
 }
 
 
-export { MyScene };
+export { MyGlobals };
