@@ -28,7 +28,7 @@ class MyContents  {
         this.cameras = new Map();
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/demo/demo.xml");	
+        this.reader.open("scenes/scene.xml");	
 
     }
 

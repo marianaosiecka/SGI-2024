@@ -314,13 +314,6 @@
             shininess="8.0"
             twosided="true" />
         
-            <!--
-        <texture id="painting1Tex" filepath="scenes/textures/painting1.jpg" />
-        <texture id="painting2Tex" filepath="scenes/textures/painting2.jpg" />
-        <texture id="photography1Tex" filepath="scenes/textures/photography1.jpg" />
-        <texture id="photography2Tex" filepath="scenes/textures/photography2.jpg" />
-        <texture id="whiteTex" filepath="scenes/textures/white_texture.png" />
--->
         <material id="frameApp"
             emissive="0.0 0.0 0.0 1"
             color="0.878 0.867 0.827 1.0"
@@ -367,6 +360,13 @@
             shininess="0"
             textureref="painting2Tex"
             />
+        
+        <material id="vinylPlayerHolderA++"
+            emissive="0.0 0.0 0.0 1"
+            color="0.878 0.867 0.827 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="2.0"
+            twosided="true" />
 
     </materials>
 
@@ -413,6 +413,7 @@
                 <noderef id="photographyFrame3" />
                 <noderef id="paintingFrame1" />
                 <noderef id="paintingFrame2" />
+                <noderef id="vinylPlayerHolder" />
 
                 <pointlight id="light1" enabled="true" 
                     color="1.0 1.0 1.0 1" 
@@ -1867,6 +1868,88 @@
                 </primitive>
             </children>
         </node>
+
+        <node id="vinylPlayerHolder">
+            <materialref id="lampApp" />
+
+            <children>
+                <noderef id="vinylPlayerHolderLeg1" />
+                <noderef id="vinylPlayerHolderLeg2" />
+                <noderef id="vinylPlayerHolderLeg3" />
+                <noderef id="vinylPlayerHolderLeg4" />
+                <noderef id="vinylPlayerHolderBox"/>
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderBox">
+            <children>
+                <noderef id="vinylPlayerHolderBoxSide1" />
+                <noderef id="vinylPlayerHolderBoxSide2" />
+                <noderef id="vinylPlayerHolderBoxSide3" />
+                <noderef id="vinylPlayerHolderBoxSide4" />
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderBoxSide">
+            <children>
+                <primitive>
+                    <box xyz1="0.0 0.0 0.0" xyz2="1.0 1.0 1.0" /> 
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderLeg">
+            <children>
+                <primitive>
+                    <cylinder base="0.065" top="0.065" height="1" slices="32" stacks="1" thetastart="0" thetalength="360" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderLeg1">
+            <transforms>
+                <translate value3="0.325 0.45 0.6" />
+                <rotate value3="-30 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="vinylPlayerHolderLeg"/>
+            </children>
+        </node>
         
+        <node id="vinylPlayerHolderLeg2">
+            <transforms>
+                <translate value3="-0.325 0.45 0.6" />
+                <rotate value3="-30 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="vinylPlayerHolderLeg"/>
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderLeg3">
+            <transforms>
+                <translate value3="0.325 0.45 -0.6" />
+                <rotate value3="30 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="vinylPlayerHolderLeg"/>
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderLeg4">
+            <transforms>
+                <translate value3="-0.325 0.45 -0.6" />
+                <rotate value3="30 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="vinylPlayerHolderLeg"/>
+            </children>
+        </node>
+
+
     </graph>
 </yaf> 

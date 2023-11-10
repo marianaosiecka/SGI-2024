@@ -22,9 +22,12 @@ class MyNurbs{
         this.nurbsData = nurbsData;
         let dataControlPoints = nurbsData.controlpoints;
         this.controlPoints = [];
-        for (let i=0; i<dataControlPoints.length; i++){
-            let data = dataControlPoints[i];
-            this.controlPoints.push([data.xx, data.yy, data.zz, 1.0]);
+        for (let i=0; i < (nurbsData.degree_u + 1) * (nurbsData.degree_v + 1); i += nurbsData.degree_v + 1){
+            let a = [];
+            for(let j = 0; j < nurbsData.degree_v + 1; j++){
+                a.push(dataControlPoints[i+j])
+            }
+            this.controlPoints.push(a)            
         }
     }
 
@@ -58,7 +61,7 @@ class MyNurbs{
 
             for (var j = 0; j < row.length; j++) {
                 let item = row[j];
-                newRow.push(new THREE.Vector4(item[0], item[1], item[2], item[3]));
+                newRow.push(new THREE.Vector4(item.xx, item.yy, item.zz, 1.0));
             }
 
             stackedPoints[i] = newRow;

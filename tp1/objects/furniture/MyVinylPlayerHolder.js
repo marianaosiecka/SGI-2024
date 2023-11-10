@@ -45,7 +45,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.rightMesh.position.z = -width/2;
 
         // LEGS
-        this.leg = new THREE.CylinderGeometry(depth/20, depth/20, height/2 + 0.1);
+        this.leg = new THREE.CylinderGeometry(depth/20, depth/20, height/2 + 0.1); // depth = 1.3, height = 1.8
         this.frontLeftLegMesh = new THREE.Mesh(this.leg, this.furnitureMaterial);
         this.frontLeftLegMesh.rotation.x = - Math.PI/6
         this.frontLeftLegMesh.position.y = legsHeight/2;
