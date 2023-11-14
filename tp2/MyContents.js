@@ -28,7 +28,7 @@ class MyContents  {
         this.cameras = new Map();
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/scene.xml");	
+        this.reader.open("scenes/demo/demo.xml");	
 
     }
 
@@ -51,7 +51,7 @@ class MyContents  {
     onSceneLoaded(data) {
         this.visitData(data);
         console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
-        //this.onAfterSceneLoadedAndBeforeRender(data);
+        this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
     output(obj, indent = 0) {
@@ -95,6 +95,8 @@ class MyContents  {
             this.cameras.set(cameraData.id, camera)
         }
         
+        //let skybox = new THREE.BoxGeometry(data.skybox.width, data.skybox.height, data.skybox.depth)
+
         // SCENE GLOBALS
         let dataOptions = data.options;
         let fogData = data.fog;
