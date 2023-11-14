@@ -7,6 +7,7 @@ import { MyMaterial } from './auxiliar/MyMaterial.js';
 import { MyNode } from './auxiliar/MyNode.js';
 import { MyOrthographicCamera } from './auxiliar/cameras/MyOrthographicCamera.js';
 import { MyPerspectiveCamera } from './auxiliar/cameras/MyPerspectiveCamera.js';
+import { MyBox } from './auxiliar/primitives/MyBox.js';
 
 /**
  *  This class contains the contents of out application
@@ -26,9 +27,10 @@ class MyContents  {
         this.materials = new Map();
         this.textures = new Map();
         this.cameras = new Map();
+        this.skyboxes = new Map();
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/demo/demo.xml");	
+        this.reader.open("scenes/scene.xml");	
 
     }
 
@@ -95,7 +97,35 @@ class MyContents  {
             this.cameras.set(cameraData.id, camera)
         }
         
-        //let skybox = new THREE.BoxGeometry(data.skybox.width, data.skybox.height, data.skybox.depth)
+        // SKYBOXES
+        for (var key in data.skyboxes) {
+            let skyboxData = data.skyboxes[key];
+            
+            // geometry
+            let skyboxGeometry = new THREE.BoxGeometry(skyboxData.size[0], skyboxData.size[1], skyboxData.size[2])
+    
+            // textures
+            const front = new THREE.TextureLoader().load(skyboxData.front);
+            const back = new THREE.TextureLoader().load(skyboxData.back);
+            const up = new THREE.TextureLoader().load(skyboxData.up);
+            const down = new THREE.TextureLoader().load(skyboxData.down);
+            const right = new THREE.TextureLoader().load(skyboxData.right);
+            const left = new THREE.TextureLoader().load(skyboxData.left);
+            
+            // materials
+            const skyboxMaterials = [new THREE.MeshBasicMaterial({map: front, side:THREE.BackSide}), 
+                            new THREE.MeshBasicMaterial({map: back, side:THREE.BackSide}), 
+                            new THREE.MeshBasicMaterial({map: up, side:THREE.BackSide}), 
+                            new THREE.MeshBasicMaterial({map: down, side:THREE.BackSide}),
+                            new THREE.MeshBasicMaterial({map: left, side:THREE.BackSide}),
+                            new THREE.MeshBasicMaterial({map: right, side:THREE.BackSide})];
+
+            // mesh
+            let skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterials);
+            skybox.position.set(skyboxData.center[0], skyboxData.center[1], skyboxData.center[2])
+            this.skyboxes.set(skyboxData.id, skybox);
+            this.app.scene.add(skybox);
+        }
 
         // SCENE GLOBALS
         let dataOptions = data.options;
