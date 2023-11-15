@@ -120,7 +120,7 @@ class MyFileReader  {
 			this.checkForUnknownNodes(rootElement, this.data.primaryNodeIds)
 
 			this.loadGlobals(rootElement);
-			this.loadSkybox(rootElement);
+			//this.loadSkybox(rootElement);
 			this.loadFog(rootElement);
 			this.loadTextures(rootElement);
 			this.loadMaterials(rootElement);

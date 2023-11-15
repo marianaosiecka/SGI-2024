@@ -10,11 +10,13 @@ class MyNode {
      * 
      * @param {MyApp} app the application object
      */
-    constructor(id, material, transformations) {
+    constructor(id, material, transformations, app) {
         this.id = id;
         this.material = material;
         this.transformations = transformations;
 
+
+        this.app = app;
         this.group = new THREE.Group();
     }
 
@@ -32,7 +34,7 @@ class MyNode {
               
             
             if(child.type === "node"){
-                childNode = new MyNode(child.id, childMaterial, child.transformations)
+                childNode = new MyNode(child.id, childMaterial, child.transformations, this.app)
                 childNode.visitChildren(child.children, materials)
                 this.group.add(childNode.group)
             }
@@ -45,6 +47,15 @@ class MyNode {
                 let spotlight = new MySpotLight(child)
                 childNode = spotlight.light
                 this.group.add(childNode)
+
+                let spotlightTarget = spotlight.target
+                this.group.add(spotlightTarget)
+
+                let spotlightHelper = new THREE.SpotLightHelper(spotlight.light)
+                console.log(spotlightHelper)
+                childNode.updateMatrixWorld();
+                spotlightHelper.update();
+                this.group.add(spotlightHelper)
             }
             else if(child.type === "directionallight"){
                 let directionallight = new MyDirectionalLight(child)
@@ -66,9 +77,9 @@ class MyNode {
                                         this.group.position.z + transformation.translate[2])
             }
             else if (transformation.type == "R"){
-                this.group.rotation.set(this.group.rotation.x + transformation.rotation[0]*Math.PI/180, 
-                                        this.group.rotation.y + transformation.rotation[1]*Math.PI/180,
-                                        this.group.rotation.z + transformation.rotation[2]*Math.PI/180)
+                this.group.rotation.set(this.group.rotation.x + transformation.rotation[0], 
+                                        this.group.rotation.y + transformation.rotation[1],
+                                        this.group.rotation.z + transformation.rotation[2])
             }
             else if(transformation.type == "S"){
                 this.group.scale.set(this.group.scale.x * transformation.scale[0],

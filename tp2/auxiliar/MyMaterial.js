@@ -36,6 +36,8 @@ class MyMaterial {
             this.material.bumpMap = this.bumpTexture;
             this.material.bumpScale = materialData.bump_scale;
         }
+
+    
     }
 }
 

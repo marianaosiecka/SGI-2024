@@ -28,7 +28,7 @@ class MyContents  {
         this.cameras = new Map();
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/demo/demo.xml");	
+        this.reader.open("scenes/scene.xml");	
 
     }
 
@@ -50,8 +50,8 @@ class MyContents  {
      */
     onSceneLoaded(data) {
         this.visitData(data);
-        console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
-        this.onAfterSceneLoadedAndBeforeRender(data);
+        //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
+        //this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
     output(obj, indent = 0) {
@@ -106,10 +106,11 @@ class MyContents  {
 
         // VISIT SCENE NODE CHILDREN
         let sceneNode = data.nodes.scene;
-        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations);
+        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations, this.app);
         myScene.visitChildren(sceneNode.children, this.materials);
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
+        console.log(myScene.group)
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
