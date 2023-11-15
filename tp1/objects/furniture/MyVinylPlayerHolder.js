@@ -21,10 +21,10 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
 
         // FURNITURE
         this.furnitureMaterial = new THREE.MeshPhongMaterial({ color: color });
-
-        this.border = depth/10;
-        this.squareHeight = height/2;
-        const legsHeight = height/2;
+        // 1.8, 1.8, 1.3
+        this.border = depth/10; //0.13
+        this.squareHeight = height/2; // 0.9
+        const legsHeight = height/2; // 0.9
         this.squareY = (legsHeight + height) / 2;
 
         // Create top and bottom parts of the furniture
@@ -81,9 +81,10 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
     }
 
     buildPlayer(colorBox, colorCenterVinyl){
-        let playerWidth = this.depth - this.width/10;
-        const playerHeight = this.height/8;
-        const playerDepth = playerWidth + playerWidth/3;
+        let playerWidth = this.depth - this.width/10; //1.3 - 0.18 = 1.12
+        playerWidth/2 + playerWidth/10
+        const playerHeight = this.height/8; // 1.8/8 = 0.225
+        const playerDepth = playerWidth + playerWidth/3; // 1.5
 
         this.blackMaterial = new THREE.MeshBasicMaterial({color: 0x000000})
 
@@ -146,7 +147,7 @@ class MyVinylPlayerHolder extends THREE.Object3D  {
         this.volumeMesh.position.z = -4*playerDepth/10
 
         // PLAY
-        const downCylinderHeight = 2*playerHeight/3
+        const downCylinderHeight = 2*playerHeight/3 // 2 * 0.225 / 3
         this.downCylinder = new THREE.CylinderGeometry(playerDepth/25, playerDepth/25, downCylinderHeight);
         this.downCylinderMesh = new THREE.Mesh(this.downCylinder, this.blackMaterial);
         const downCylinderY = playerBoxY + playerHeight/2 + playerHeight/3

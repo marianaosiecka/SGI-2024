@@ -365,12 +365,58 @@
             textureref="painting2Tex"
             />
         
-        <material id="vinylPlayerHolderA++"
+        <material id="vinylPlayerHolderApp"
             emissive="0.0 0.0 0.0 1"
             color="0.878 0.867 0.827 1.0"
             specular="0.46 0.46 0.46 1.0"
             shininess="2.0"
             twosided="true" />
+        
+        <!--this.green-->
+        <material id="vinylPlayerBoxApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.369 0.431 0.278 1.0"
+            specular="0 0 0 1.0"
+            shininess="0"
+            twosided="true" />
+
+        
+        <material id="blackApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0 0 1.0"
+            specular="0 0 0 1.0"
+            shininess="0"
+            twosided="true" />  
+        
+        <!--this.lightBlue-->
+        <material id="lightBlueApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.655 0.765 0.820 1.0"
+            specular="0 0 0 1.0"
+            shininess="0"
+            twosided="true" /> 
+        
+        <material id="vinylApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0 0 1.0"
+            specular="0.251 0.251 0.251 1.0"
+            shininess="15"
+            twosided="true" /> 
+        
+        <material id="whiteApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0 0 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="1"
+            twosided="true" /> 
+        
+        <material id="vinylCoverApp"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="vinylCoverTex"
+            />
 
     </materials>
 
@@ -392,7 +438,7 @@
                 <noderef id="frontWall" /> 
 				<noderef id="backWall" /> 
 				<noderef id="floor" /> 
-                <noderef id="ceiling" /> 
+                <noderef id="ceiling" />
                 <noderef id="stairsLeftWall" /> 
 				<noderef id="stairsFrontWall" /> 
                 <noderef id="stairsRightWall" /> 
@@ -423,30 +469,37 @@
                 <noderef id="paintingFrame1" />
                 <noderef id="paintingFrame2" />
                 <noderef id="vinylPlayerHolder" />
+                <noderef id="vinylPlayer" />
+                <noderef id="vinylShelf" />
                 <noderef id="porch" />
 
                 <pointlight id="light1" enabled="true" 
-                    color="1.0 1.0 1.0 1" 
+                    color="0.969 1.0 0.88 1" 
                     intensity="10.0"
                     distance="0"
                     decay="1.0"
                     castshadow="false"
                     position="0 10.0 0" 
-                /> 
+                />
 			            
-                <directionallight id="light2" enabled="true" 
-                    color="1.0 1.0 1.0 1" 
+                <!--<directionallight id="light2" enabled="true" 
+                    color="1.0 1 1 1" 
                     intensity=".5"
                     castshadow="false"
                     position="0 1 0" 
-                /> 
+                />-->
+                 <directionallight id="light2" enabled="true" 
+                    color="1 1 1 1" 
+                    intensity="0.5" 
+                    position="0 1 0" />
+                
             </children> 
         </node>
 
         <node id="leftWall">
             <transforms>
 				<translate value3="7.5 0.0 8.0" />
-				<rotate value3="0.0 180.0 0.0" />
+				<rotate value3="0.0 3.1416 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -476,7 +529,7 @@
         <node id="frontWall">
             <transforms>
 				<translate value3="7.5 0.0 -8.0" />
-				<rotate value3="0.0 -90.0 0.0" />
+				<rotate value3="0.0 -1.5708 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -491,7 +544,7 @@
         <node id="backWall">
             <transforms>
 				<translate value3="-7.5 0.0 8.0" />
-				<rotate value3="0.0 90.0 0.0" />
+				<rotate value3="0.0 1.5708 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -506,7 +559,7 @@
        <node id="floor">
 			<transforms>
 				<translate value3="-7.5 0.0 8.0" />
-				<rotate value3="-90.0 0.0 0.0" />
+				<rotate value3="-1.5708 .0 0.0" />
             </transforms> 
 
 			<materialref id="floorApp" />
@@ -521,7 +574,7 @@
          <node id="ceiling">
             <transforms>
 				<translate value3="-7.5 6.0 -8.0" />
-				<rotate value3="90.0 0.0 0.0" />
+				<rotate value3="1.5708 0.0 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -536,7 +589,7 @@
         <node id="stairsLeftWall">
             <transforms>
 				<translate value3="12.5 0.0 16.0" />
-				<rotate value3="0.0 180.0 0.0" />
+				<rotate value3="0.0 3.1416 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -551,7 +604,7 @@
         <node id="stairsFrontWall">
             <transforms>
 				<translate value3="12.5 0.0 -8.0" />
-				<rotate value3="0.0 -90.0 0.0" />
+				<rotate value3="0.0 -1.5708 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -581,7 +634,7 @@
         <node id="stairsBackWall">
             <transforms>
 				<translate value3="2.5 0.0 16.0" />
-				<rotate value3="0.0 90.0 0.0" />
+				<rotate value3="0.0 1.5708 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -596,7 +649,7 @@
         <node id="stairsFloor">
             <transforms>
 				<translate value3="2.5 0.0 16.0" />
-				<rotate value3="-90.0 0.0 0.0" />
+				<rotate value3="-1.5708 0.0 0.0" />
             </transforms> 
 
 			<materialref id="floorApp" />
@@ -611,7 +664,7 @@
         <node id="stairsCeiling">
             <transforms>
 				<translate value3="2.5 6.0 8.0" />
-				<rotate value3="90.0 0.0 0.0" />
+				<rotate value3="1.5708 0.0 0.0" />
             </transforms> 
 
 			<materialref id="wallApp" />
@@ -705,7 +758,7 @@
         <node id="stairsSide" >
             <transforms>
                 <translate value3="1.5 2.4 -2.98" />
-                <rotate value3="0 -90 0" />
+                <rotate value3="0 -1.5708 0" />
                 <scale value3="1 0.75 0.75" />
             </transforms> 
                 
@@ -748,7 +801,7 @@
         <node id="vase1AndFlower">
             <transforms>
                 <translate value3="3.8 0.0 15.0" />
-                <rotate value3="0 -45.0 0" />
+                <rotate value3="0 -0.7854 0" />
                 <scale value3="0.8 1.2 0.8" />
             </transforms>   
 
@@ -872,7 +925,7 @@
 
         <node id="connectPorchColumnLeft" >
             <transforms>
-                <rotate value3="0 0 90" />
+                <rotate value3="0 0 1.5708" />
                 <translate value3="6 7.5 23.7" />
             </transforms> 
 
@@ -887,7 +940,7 @@
 
         <node id="connectPorchColumnRight" >
             <transforms>
-                <rotate value3="0 0 90" />
+                <rotate value3="0 0 1.5708" />
                 <translate value3="6 7.5 0" />
             </transforms> 
 
@@ -1001,7 +1054,7 @@
 
         <node id="tableTop">
             <transforms>
-                <rotate value3="0.0 90.0 0.0" />
+                <rotate value3="0.0 1.5708 0.0" />
                 <translate value3="0.0 0.94 0.0"/>
             </transforms>
 
@@ -1099,7 +1152,7 @@
             <transforms>
                 <translate value3="0.065 0.70 -0.45"/>
                 <scale value3="1.0 0.08 1.0"/>
-                <rotate value3="0.0 0.0 90.0" />
+                <rotate value3="0.0 0.0 1.5708" />
             </transforms>
 
             <children>
@@ -1111,7 +1164,7 @@
 
         <node id="chair1">
             <transforms>
-                <rotate value3="0 165 0" />
+                <rotate value3="0 -3.8798 0" />
                 <translate value3="3.1 0.0 6"/>
             </transforms>   
 
@@ -1129,7 +1182,7 @@
 
         <node id="chair2">
             <transforms>
-                <rotate value3="0 180 0" />
+                <rotate value3="0 3.1416 0" />
                 <translate value3="2.3 0.0 3.5"/>
             </transforms>   
 
@@ -1213,7 +1266,7 @@
 
             <children>             
                 <primitive>
-                    <cylinder base="0.02" top="0.02" height="1" slices="25" stacks="1" thetastart="0" thetalength="360" />
+                    <cylinder base="0.02" top="0.02" height="1" slices="25" stacks="1" thetastart="0" thetalength="6.2832" />
                 </primitive>
             </children> 
         </node> 
@@ -1225,7 +1278,7 @@
 
             <children>             
                 <primitive>
-                    <sphere radius="0.6" slices="25" stacks="25" thetastart="0" thetalength="90" phistart="0" philength="360"/>
+                    <sphere radius="0.6" slices="25" stacks="25" thetastart="0" thetalength="1.5708" phistart="0" philength="6.2832"/>
                 </primitive>
             </children> 
         </node> 
@@ -1239,7 +1292,7 @@
 
             <children>             
                 <primitive>
-                    <sphere radius="0.4" slices="25" stacks="25" thetastart="90.0" thetalength="90.0" phistart="0.0" philength="360.0"/>
+                    <sphere radius="0.4" slices="25" stacks="25" thetastart="1.5708" thetalength="1.5708" phistart="0.0" philength="6.2832"/>
                 </primitive>
             </children> 
         </node> 
@@ -1256,18 +1309,19 @@
 				<noderef id="lampHead" />
 				<noderef id="lampBulb" />
 
+
                 <spotlight id="lampTableSpotLight"
                     enabled="true" 
-                    color="0.99 0.97 0.86 1.0" 
-                    intensity="8.0"
+                    color="0.988 0.933 0.655 1.0" 
+                    intensity="6"
                     distance="10"
-                    angle="45.0"
+                    angle="0.7854"
                     penumbra="1.0"
-                    decay="0.2"
+                    decay="0.5"
                     castshadow="true"
-                    position="0 -0.83 0" 
-                    target="0.0 0.0 4.3"
-                    shadowfar="27.0"
+                    position="0 -0.5 0" 
+                    target="0 -10 0"
+                    shadowfar="27"
                     shadowmapsize="1024"
                 />
             </children> 
@@ -1324,7 +1378,7 @@
 
         <node id="vaseSide2">
             <transforms>
-                <rotate value3="0.0 180.0 0.0" />
+                <rotate value3="0.0 3.1416 0.0" />
             </transforms>
 
             <children>
@@ -1333,6 +1387,8 @@
         </node> 
         
         <node id="vase">
+            <materialref id="lightBlueApp"/>
+
             <children>
                 <noderef id ="vaseSide1" />
                 <noderef id ="vaseSide2" />
@@ -1344,7 +1400,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="0.02" top="0.02" height="2" slices="50" stacks="50" thetastart="0" thetalength="360"/>
+                    <cylinder base="0.02" top="0.02" height="2" slices="50" stacks="50" thetastart="0" thetalength="6.2832"/>
                 </primitive>
             </children>
         </node>
@@ -1358,7 +1414,7 @@
             
             <children>
                 <primitive>
-                    <sphere radius="0.1" slices="10" stacks="10" thetastart="0.0" thetalength="360.0" phistart="0.0" philength="360.0"/>
+                    <sphere radius="0.1" slices="10" stacks="10" thetastart="0.0" thetalength="6.2832" phistart="0.0" philength="6.2832"/>
                 </primitive>
             </children>
         </node>
@@ -1372,7 +1428,7 @@
 
             <children>
                 <primitive>
-                    <sphere radius="0.115" slices="10" stacks="10"  thetastart="0.0" thetalength="360.0" phistart="0.0" philength="360.0"/>
+                    <sphere radius="0.115" slices="10" stacks="10"  thetastart="0.0" thetalength="6.2832" phistart="0.0" philength="6.2832"/>
                 </primitive>
             </children>
         </node>
@@ -1385,7 +1441,7 @@
         
         <node id="flowerPetals2">
             <transforms>
-                <rotate value3="36.0 0.0 0.0" />
+                <rotate value3="0.62832 0.0 0.0" />
             </transforms>
             
             <children>
@@ -1395,7 +1451,7 @@
 
         <node id="flowerPetals3">
             <transforms>
-                <rotate value3="72.0 0.0 0.0" />
+                <rotate value3="1.25664 0.0 0.0" />
             </transforms>
             
             <children>
@@ -1405,7 +1461,7 @@
 
         <node id="flowerPetals4">
             <transforms>
-                <rotate value3="108.0 0.0 0.0" />
+                <rotate value3="1.88496 0.0 0.0" />
             </transforms>
             
             <children>
@@ -1415,7 +1471,7 @@
 
         <node id="flowerPetals5">
             <transforms>
-                <rotate value3="144.0 0.0 0.0" />
+                <rotate value3="2.51328 0.0 0.0" />
             </transforms>
             
             <children>
@@ -1426,7 +1482,7 @@
         <node id="flowerHead">
             <transforms>
                 <translate value3="0.0 1 0.0" />
-                <rotate value3="0.0 0.0 230.0" />
+                <rotate value3="0.0 0.0 4.01326667" />
             </transforms>
 
             <children>             
@@ -1448,7 +1504,7 @@
 
         <node id="flower2">
             <transforms>
-                <rotate value3="0 60 0" />
+                <rotate value3="0 1.0472 0" />
                 <translate value3="-0.1 1.4 0.0"/>
             </transforms>
 
@@ -1472,8 +1528,6 @@
                 <translate value3="-6.0 0.0 7.0" />
             </transforms>   
 
-            <materialref id="vaseApp" />
-
             <children>             
                 <noderef id="vase" />
 				<noderef id="flower1" />
@@ -1483,7 +1537,7 @@
         
         <node id="sofa1">
             <transforms>
-                <rotate value3="0.0 -60.0 0.0" />
+                <rotate value3="0.0 -1.0472 0.0" />
                 <translate value3="-2.5 0.0 -6.2" />
             </transforms>   
 
@@ -1502,13 +1556,13 @@
             
         <node id="upperBackSofa">
             <transforms>
-                <rotate value3="0.0 0.0 90.0" />
+                <rotate value3="0.0 0.0 1.5708" />
                 <translate value3="0.0 1.0 0.0"/>
             </transforms>
 
             <children>
                 <primitive>
-                    <cylinder base="1.0" top="1.0" height="0.4" slices="50" stacks="50" capsclose="true" thetastart="0.0" thetalength="180.0"/>
+                    <cylinder base="1.0" top="1.0" height="0.4" slices="50" stacks="50" capsclose="true" thetastart="0.0" thetalength="3.1416"/>
                 </primitive>
             </children>
         </node>
@@ -1575,7 +1629,7 @@
 
         <node id="leftArmSofa">
             <transforms>
-                <rotate value3="0.0 90.0 0.0"/>
+                <rotate value3="0.0 1.5708 0.0"/>
                 <translate value3="0.2 0.78 -0.8"/>
             </transforms>
 
@@ -1586,7 +1640,7 @@
 
         <node id="rightArmSofa">
             <transforms>
-                <rotate value3="0.0 90.0 0.0"/>
+                <rotate value3="0.0 1.5708 0.0"/>
                 <translate value3="0.2 0.78 1.0"/>
             </transforms>
 
@@ -1597,7 +1651,7 @@
 
         <node id="sofa2">
             <transforms>
-                <rotate value3="0.0 225.0 0.0" />
+                <rotate value3="0.0 3.927 0.0" />
                 <translate value3="2.3 0.0 -6.2" />
             </transforms>   
 
@@ -1625,27 +1679,28 @@
                 <noderef id="lampCable" />
 				<noderef id="lampHead" />
 				<noderef id="lampBulb" />
-                
+
                 <spotlight id="lampSofaSpotLight"
                     enabled="true" 
-                    color="0.99 0.97 0.86 1.0" 
-                    intensity="8.0"
-                    distance="5.2"
-                    angle="45.0"
+                    color="0.988 0.933 0.655 1.0" 
+                    intensity="6"
+                    distance="10"
+                    angle="0.7854"
                     penumbra="1.0"
-                    decay="0.2"
+                    decay="0.5"
                     castshadow="true"
-                    position="0 -0.83 0" 
-                    target="0.0 0.0 -4.5"
-                    shadowfar="27.0"
+                    position="0 -0.5 0" 
+                    target="0 -10 0"
+                    shadowfar="27"
                     shadowmapsize="1024"
-                /> 
+                />
+
             </children> 
         </node>
 
         <node id="coffeeTableSide">
             <transforms>
-                <rotate value3="0.0 90.0 0.0" />
+                <rotate value3="0.0 1.5708 0.0" />
             </transforms>
 
             <children>             
@@ -1668,7 +1723,7 @@
         <node id="leftSideCoffeeTable">
             <transforms>
                 <scale value3="0.465 1.0 1.0" />
-                <rotate value3="0.0 0.0 90.0" />
+                <rotate value3="0.0 0.0 1.5708" />
             </transforms>   
 
             <children>             
@@ -1680,7 +1735,7 @@
             <transforms>
                 <translate value3="2.0 0.0 0.0" />
                 <scale value3="0.465 1.0 1.0" />
-                <rotate value3="0.0 0.0 90.0" />
+                <rotate value3="0.0 0.0 1.5708" />
             </transforms>   
 
             <children>             
@@ -1776,7 +1831,7 @@
         <node id="newspaper">
             <transforms>
                 <translate value3="0.0 0.98 -4.7" />
-                <rotate value3="0.0 18.0 0.0" />
+                <rotate value3="0.0 0.31416 0.0" />
             </transforms>   
 
             <materialref id="newspaperApp" />
@@ -1796,7 +1851,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="0.4" top="0.01" height="0.2" slices="25" stacks="25" thetastart="0" thetalength="360" />
+                    <cylinder base="0.4" top="0.01" height="0.2" slices="25" stacks="25" thetastart="0" thetalength="6.2832" />
                 </primitive> 
             </children>
         </node>
@@ -1808,7 +1863,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="0.04" top="0.04" height="2.8" slices="40" stacks="40" thetastart="0" thetalength="360"/>
+                    <cylinder base="0.04" top="0.04" height="2.8" slices="40" stacks="40" thetastart="0" thetalength="6.2832"/>
                 </primitive> 
             </children>
         </node>
@@ -1816,12 +1871,12 @@
         <node id="floorLampArm2">
             <transforms>
                 <translate value3="0.0 2.7 0.3" />
-                <rotate value3="60.0 0.0 0.0" />
+                <rotate value3="1.0472 0.0 0.0" />
             </transforms>   
 
             <children>
                 <primitive>
-                    <cylinder base="0.04" top="0.04" height="2.33" slices="40" stacks="40" thetastart="0" thetalength="360"/>
+                    <cylinder base="0.04" top="0.04" height="2.33" slices="40" stacks="40" thetastart="0" thetalength="6.2832"/>
                 </primitive> 
             </children>
         </node>
@@ -1829,12 +1884,12 @@
         <node id="floorLampArm3">
             <transforms>
                 <translate value3="0.0 3.22 1.41" />
-                <rotate value3="115.71 0.0 0.0" />
+                <rotate value3="2.0195252 0.0 0.0" />
             </transforms>   
 
             <children>
                 <primitive>
-                    <cylinder base="0.04" top="0.04" height="0.28" slices="40" stacks="40" thetastart="0" thetalength="360"/>
+                    <cylinder base="0.04" top="0.04" height="0.28" slices="40" stacks="40" thetastart="0" thetalength="6.2832"/>
                 </primitive> 
             </children>
         </node>
@@ -1842,13 +1897,13 @@
         <node id="floorLampHead">
             <transforms>
                 <translate value3="0.0 2.89 1.86" />
-                <rotate value3="-51.43 0.0 0.0" />
+                <rotate value3="-0.89762493 0.0 0.0" />
                 <scale value3="1.0 1.5 1.0" />
             </transforms>   
 
             <children>
                 <primitive>
-                    <sphere radius="0.3" slices="40" stacks="40" phistart="0" philength="360.0" thetastart="0" thetalength="90.0"/>
+                    <sphere radius="0.3" slices="40" stacks="40" phistart="0" philength="6.2832" thetastart="0" thetalength="1.5708"/>
                 </primitive> 
             </children>
         </node>
@@ -1856,14 +1911,14 @@
         <node id="floorLampBulb">
             <transforms>
                 <translate value3="0.0 2.94 1.79" />
-                <rotate value3="-51.43 0.0 0.0" />
+                <rotate value3="-0.89762493 0.0 0.0" />
             </transforms>   
 
             <materialref id="bulbApp" />
 
             <children>             
                 <primitive>
-                    <sphere radius="0.2" slices="25" stacks="25" thetastart="90.0" thetalength="90.0" phistart="0.0" philength="360.0"/>
+                    <sphere radius="0.2" slices="25" stacks="25" thetastart="1.5708" thetalength="1.5708" phistart="0.0" philength="6.2832"/>
                 </primitive>
             </children> 
         </node>
@@ -1871,7 +1926,7 @@
         <node id="floorLamp">
             <transforms>
                 <translate value3="4.7 0.0 -6" />
-                <rotate value3="0.0 -45.0 0" />
+                <rotate value3="0.0 -0.7854 0" />
             </transforms>   
 
             <materialref id="floorLampApp" />
@@ -1886,18 +1941,20 @@
 
                 <spotlight id="floorLampSpotLight"
                     enabled="true" 
-                    color="0.99 0.97 0.86 1.0" 
-                    intensity="10.0"
+                    color="0.988 0.933 0.655 1.0" 
+                    intensity="5"
                     distance="10"
-                    angle="30.0"
+                    angle="0.5236"
                     penumbra="1.0"
-                    decay="0.8"
+                    decay="0.6"
                     castshadow="true"
                     position="0 2.94 1.998" 
-                    target="0.0 0.0 0.0"
+                    target="0.0 0.0 3.5"
                     shadowfar="27.0"
                     shadowmapsize="1024"
                 />
+
+
             </children>
         </node>
 
@@ -1935,7 +1992,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="0.52" top="0.52" height="0.05" slices="50" stacks="50" thetastart="0" thetalength="360" capsclose="true" />
+                    <cylinder base="0.52" top="0.52" height="0.05" slices="50" stacks="50" thetastart="0" thetalength="6.2832" capsclose="true" />
                 </primitive>
             </children>
         </node>
@@ -1949,7 +2006,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="0.12" top="0.32" height="0.11" slices="50" stacks="50" thetastart="0" thetalength="360" capsclose="true"/>
+                    <cylinder base="0.12" top="0.32" height="0.11" slices="50" stacks="50" thetastart="0" thetalength="6.2832" capsclose="true"/>
                 </primitive>
             </children>
         </node>
@@ -1965,7 +2022,7 @@
 
         <node id="fork2">
             <transforms>
-                <rotate value3="0 245 -17"/>
+                <rotate value3="0 4.2760667 -0.29670667"/>
                 <translate value3="-1 1.28 3.7"/>
             </transforms>
             <children>
@@ -2037,27 +2094,27 @@
         <node id="tine">
             <transforms>
                 <scale value3="1 1 1" />
-                <rotate value3="0 0 90"/>
+                <rotate value3="0 0 1.5708"/>
                 <translate value3="-0.7 -0.01 1.1"/>
             </transforms>
 
             <children>
                 <primitive>
-                    <cylinder base="0.1" top="0.01" height="1.2" slices="50" stacks="50" thetastart="0" thetalength="360"/>
+                    <cylinder base="0.1" top="0.01" height="1.2" slices="50" stacks="50" thetastart="0" thetalength="6.2832"/>
                 </primitive>
             </children>
         </node>
 
         <node id="neck">
             <transforms>
-                <rotate value3="0 0 90"/>
+                <rotate value3="0 0 1.5708"/>
                 <scale value3="0.18 2 1" />
                 <translate value3="-0.2 0 0.15" />
             </transforms>
 
             <children>
                 <primitive>
-                    <sphere radius="0.8" slices="50" stacks="50" thetastart="90" thetalength="180" phistart="0.0" philength="360.0"/>
+                    <sphere radius="0.8" slices="50" stacks="50" thetastart="1.5708" thetalength="3.1416" phistart="0.0" philength="6.2832"/>
                 </primitive>
             </children>
         </node>
@@ -2119,7 +2176,7 @@
         <node id="photographyFrame1">
             <transforms>
                 <translate value3="1 2.7 -7.5" />
-                <rotate value3="0 -90 0" />
+                <rotate value3="0 -1.5708 0" />
             </transforms>
             <children>
                 <noderef id="frame1" />
@@ -2139,7 +2196,7 @@
         <node id="photography1">
             <transforms>
                 <translate value3="0 0.3 1.8" />
-                <rotate value3="0 90 0" />
+                <rotate value3="0 1.5708 0" />
             </transforms>
             <materialref id="photography1App" />
 
@@ -2153,7 +2210,7 @@
         <node id="photographyFrame2">
             <transforms>
                 <translate value3="3.7 3.4 -7.5" />
-                <rotate value3="0 -90 0" />
+                <rotate value3="0 -1.5708 0" />
             </transforms>
             <children>
                 <noderef id="frame2" />
@@ -2173,7 +2230,7 @@
         <node id="photography2">
             <transforms>
                 <translate value3="0 0.3 1.35" />
-                <rotate value3="0 90 0" />
+                <rotate value3="0 1.5708 0" />
             </transforms>
             <materialref id="photography2App" />
 
@@ -2187,7 +2244,7 @@
         <node id="photographyFrame3">
             <transforms>
                 <translate value3="-2.3 3.4 -7.5" />
-                <rotate value3="0 -90 0" />
+                <rotate value3="0 -1.5708 0" />
             </transforms>
             <children>
                 <noderef id="frame3" />
@@ -2207,7 +2264,7 @@
         <node id="photography3">
             <transforms>
                 <translate value3="0 0.3 1.8" />
-                <rotate value3="0 90 0" />
+                <rotate value3="0 1.5708 0" />
             </transforms>
             <materialref id="photography3App" />
 
@@ -2221,7 +2278,7 @@
         <node id="paintingFrame1">
             <transforms>
                 <translate value3="-3.1 2.7 7.5" />
-                <rotate value3="0 90 0" />
+                <rotate value3="0 1.5708 0" />
             </transforms>
             <children>
                 <noderef id="pFrame1" />
@@ -2241,7 +2298,7 @@
         <node id="painting1">
             <transforms>
                 <translate value3="0 0.3 1.35" />
-                <rotate value3="0 90 0" />
+                <rotate value3="0 1.5708 0" />
             </transforms>
             <materialref id="painting1App" />
 
@@ -2256,7 +2313,7 @@
             <transforms>
                 <translate value3="2 2.3 7.5" />
                 <scale value3="1.3 1.3 1.3" />
-                <rotate value3="0 90 0" />
+                <rotate value3="0 1.5708 0" />
             </transforms>
             <children>
                 <noderef id="pFrame2" />
@@ -2276,7 +2333,7 @@
         <node id="painting2">
             <transforms>
                 <translate value3="0 0.3 1.35" />
-                <rotate value3="0 90 0" />
+                <rotate value3="0 1.5708 0" />
             </transforms>
             <materialref id="painting2App" />
 
@@ -2288,6 +2345,9 @@
         </node>
 
         <node id="vinylPlayerHolder">
+            <transforms>
+                <translate value3="-6.7 -0.1 -5.5"/>
+            </transforms>
             <materialref id="lampApp" />
 
             <children>
@@ -2300,6 +2360,9 @@
         </node>
 
         <node id="vinylPlayerHolderBox">
+            <transforms>
+                <translate value3="0.25 0 0"/>
+            </transforms>
             <children>
                 <noderef id="vinylPlayerHolderBoxSide1" />
                 <noderef id="vinylPlayerHolderBoxSide2" />
@@ -2311,15 +2374,55 @@
         <node id="vinylPlayerHolderBoxSide">
             <children>
                 <primitive>
-                    <box xyz1="0.0 0.0 0.0" xyz2="1.0 1.0 1.0" /> 
+                    <box xyz1="0.0 0.0 0.0" xyz2="1.3 0.13 1.8" /> 
                 </primitive>
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderBoxSide1">
+            <transforms>
+                <translate value3="-0.9 0.9 -0.9"/>
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerHolderBoxSide" />
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderBoxSide2">
+            <transforms>
+                <translate value3="-0.9 1.8 -0.9"/>
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerHolderBoxSide" />
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderBoxSide3">
+            <transforms>
+                <scale value3="1 1 0.5" />
+                <rotate value3="1.5708 0 0" />
+                <translate value3="-0.9 1.8 -0.9"/>
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerHolderBoxSide" />
+            </children>
+        </node>
+
+        <node id="vinylPlayerHolderBoxSide4">
+            <transforms>
+                <scale value3="1 1 0.5" />
+                <rotate value3="1.5708 0 0" />
+                <translate value3="-0.9 1.8 0.77"/>
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerHolderBoxSide" />
             </children>
         </node>
 
         <node id="vinylPlayerHolderLeg">
             <children>
                 <primitive>
-                    <cylinder base="0.065" top="0.065" height="1" slices="32" stacks="1" thetastart="0" thetalength="360" />
+                    <cylinder base="0.065" top="0.065" height="1" slices="32" stacks="1" thetastart="0" thetalength="6.2832" />
                 </primitive>
             </children>
         </node>
@@ -2327,7 +2430,7 @@
         <node id="vinylPlayerHolderLeg1">
             <transforms>
                 <translate value3="0.325 0.45 0.6" />
-                <rotate value3="-30 0 0" />
+                <rotate value3="-0.5236 0 0" />
             </transforms>
 
             <children>
@@ -2338,7 +2441,7 @@
         <node id="vinylPlayerHolderLeg2">
             <transforms>
                 <translate value3="-0.325 0.45 0.6" />
-                <rotate value3="-30 0 0" />
+                <rotate value3="-0.5236 0 0" />
             </transforms>
 
             <children>
@@ -2349,7 +2452,7 @@
         <node id="vinylPlayerHolderLeg3">
             <transforms>
                 <translate value3="0.325 0.45 -0.6" />
-                <rotate value3="30 0 0" />
+                <rotate value3="0.5236 0 0" />
             </transforms>
 
             <children>
@@ -2360,11 +2463,177 @@
         <node id="vinylPlayerHolderLeg4">
             <transforms>
                 <translate value3="-0.325 0.45 -0.6" />
-                <rotate value3="30 0 0" />
+                <rotate value3="0.5236 0 0" />
             </transforms>
 
             <children>
                 <noderef id="vinylPlayerHolderLeg"/>
+            </children>
+        </node>
+
+        <node id="vinylPlayer">
+            <transforms>
+                <translate value3= "-7.25 1.8125 -6.25" />
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerBox" />
+                <noderef id="vinylPlayerLeg1" />
+                <noderef id="vinylPlayerLeg2" />
+                <noderef id="vinylPlayerLeg3" />
+                <noderef id="vinylPlayerLeg4" />
+                <noderef id="vinylVolumeButton" />
+                <noderef id="vinylNeedleHolder" />
+                <noderef id="vinylNeedle" />
+                <noderef id="vinylCenter" />
+                <noderef id="vinyl"/>
+            </children>
+        </node>
+       
+
+        <node id="vinylPlayerBox">
+            <transforms>
+                <translate value3="0 0.055 0" />
+            </transforms>
+            <materialref id="vinylPlayerBoxApp"/>
+            <children>
+                <primitive>
+                    <box xyz1="0.0 0.0 0.0" xyz2="1.12 0.225 1.5" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylPlayerLeg">
+            <transforms>
+                <translate value3="0.1 0.09 0.1"/>
+            </transforms>
+            <materialref id="blackApp" />
+            <children>
+                <primitive>
+                    <sphere radius="0.09" slices="10" stacks="10" thetastart="0" thetalength="6.2832" phistart="0" philength="6.2832"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylPlayerLeg1">
+            <children>
+                <noderef id="vinylPlayerLeg"/>
+            </children>
+        </node>
+
+        <node id="vinylPlayerLeg2">
+            <transforms>
+                <translate value3="0 0 1.3"/>
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerLeg"/>
+            </children>
+        </node>
+
+        <node id="vinylPlayerLeg3">
+            <transforms>
+                <translate value3="0.92 0 0"/>
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerLeg"/>
+            </children>
+        </node>
+
+        <node id="vinylPlayerLeg4">
+            <transforms>
+                <translate value3="0.92 0 1.3"/>
+            </transforms>
+            <children>
+                <noderef id="vinylPlayerLeg"/>
+            </children>
+        </node>
+
+        <node id="vinylVolumeButton">
+            <materialref id="blackApp"/>
+            <transforms>
+                <translate value3="0.9 0.35 0.16"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <cylinder base="0.07" top="0.07" height="0.075" slices="25" stacks="1" capsclose="true" thetastart="0" thetalength="6.2832" />
+                </primitive>
+            </children>     
+        </node>
+
+        <node id="vinylNeedleHolder">
+            <materialref id="blackApp"/>
+            <transforms>
+                <translate value3="0.2 0.35 0.16"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <cylinder base="0.05" top="0.05" height="0.15" slices="25" stacks="1" capsclose="true" thetastart="0" thetalength="6.2832" />
+                </primitive>
+            </children>     
+        </node>
+
+        <node id="vinylNeedle">
+            <materialref id="blackApp"/>
+            <transforms>
+                <rotate value3="1.5708 0 -0.95"/>
+                <translate value3="0.48 0.42 0.35"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <cylinder base="0.01" top="0.01" height="1.03" slices="25" stacks="1" capsclose="true" thetastart="0" thetalength="6.2832" />
+                </primitive>
+            </children>     
+        </node>
+
+        <node id="vinylCenter">
+            <materialref id="lightBlueApp"/>
+            <transforms>
+                <translate value3="0.7 0.35 0.92"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <cylinder base="0.08" top="0.08" height="0.11" slices="25" stacks="1" capsclose="true" thetastart="0" thetalength="6.2832" />
+                </primitive>
+            </children>     
+        </node>
+
+        <node id="vinyl">
+            <materialref id="vinylApp"/>
+            <transforms>
+                <translate value3="0.7 0.363 0.92"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <cylinder base="0.67" top="0.67" height="0.001" capsclose="true" slices="25" stacks="1"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylShelf">
+            <transforms>
+                <translate value3="-7.5 3 -5.9"/>
+            </transforms>
+            <materialref id="whiteApp"/>
+
+            <children>
+                <noderef id="vinylCover"/>
+                <primitive>
+                    <box xyz1="0.0 0.0 0.0" xyz2="0.3 0.03 0.9" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylCover">
+            <materialref id="vinylCoverApp"/>
+
+            <transforms>
+                <translate value3="0.22 0 0"/>
+                <rotate value3="0 0 0.24166" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.05 1 1"/>
+                </primitive>
             </children>
         </node>
 

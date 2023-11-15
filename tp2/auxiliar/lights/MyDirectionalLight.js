@@ -19,10 +19,14 @@ class MyDirectionalLight {
 		]
     */
     constructor(node) {
+        console.log("DIRECTIONAL LIGHT")
+        console.log("nó", node)
         let color = new THREE.Color(node.color.r, node.color.g, node.color.b);
+
         this.light = new THREE.DirectionalLight(color, node.intensity);
         this.light.position.set(node.position[0], node.position[1], node.position[2]);
-        if(node.castShadow){
+
+        if(node.castshadow){
             this.light.castShadow = true;
             this.light.shadow.mapSize.width = node.shadowmapsize;
             this.light.shadow.mapSize.height = node.shadowmapsize;
@@ -34,6 +38,8 @@ class MyDirectionalLight {
         }
         if(!node.enabled)
             this.light.intensity = 0;
+
+        console.log("luz", this.light)
     }
 }
 
