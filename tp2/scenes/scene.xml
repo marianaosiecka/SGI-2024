@@ -107,7 +107,8 @@
             emissive="0.0 0.0 0.0 1"
             color="1.0 0.98 0.93 1.0"
             specular="0 0 0 0"
-            shininess="0" />
+            shininess="0"
+             />
 
         <material id="floorApp"
             emissive="0.0 0.0 0.0 1"
@@ -116,7 +117,8 @@
             shininess="0"
             textureref="floorTex"
             texlength_s="15"
-            texlength_t="15" />
+            texlength_t="15"
+            twosided="true" />
 
         <material id="tableApp"
             emissive="0.0 0.0 0.0 1"
@@ -391,18 +393,23 @@
 				<noderef id="backWall" /> 
 				<noderef id="floor" /> 
                 <noderef id="ceiling" /> 
+                <noderef id="stairsLeftWall" /> 
+				<noderef id="stairsFrontWall" /> 
+                <noderef id="stairsRightWall" /> 
+				<noderef id="stairsBackWall" /> 
+                <noderef id="stairsFloor" /> 
+				<noderef id="stairsCeiling" /> 
+                <noderef id="stairs" /> 
 				<noderef id="table" /> 
 				<noderef id="carpet" /> 
-				<noderef id="chair1" /> 
-                <noderef id="chair2" />
-                <noderef id="chair3" />
-                <noderef id="chair4" />  
+				<noderef id="chairs" /> 
 				<noderef id="cake" />
 				<noderef id="lampTable" />
                 <noderef id="lampSofas" />
                 <noderef id="sofa1" />
                 <noderef id="sofa2" />
-                <noderef id="vaseAndFlower" />
+                <noderef id="vase1AndFlower" />
+                <noderef id="vase2AndFlower" />
                 <noderef id="coffeeTable" />
                 <noderef id="newspaper" />
                 <noderef id="floorLamp" />
@@ -416,6 +423,7 @@
                 <noderef id="paintingFrame1" />
                 <noderef id="paintingFrame2" />
                 <noderef id="vinylPlayerHolder" />
+                <noderef id="porch" />
 
                 <pointlight id="light1" enabled="true" 
                     color="1.0 1.0 1.0 1" 
@@ -505,7 +513,7 @@
 			
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="15 16" />
+                    <rectangle xy1="0 0" xy2="20 16" />
                 </primitive>
             </children> 
         </node>
@@ -520,9 +528,404 @@
 			
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="15 16" />
+                    <rectangle xy1="0 0" xy2="20 16" />
                 </primitive>
             </children> 
+        </node>
+
+        <node id="stairsLeftWall">
+            <transforms>
+				<translate value3="12.5 0.0 16.0" />
+				<rotate value3="0.0 180.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="10 6" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="stairsFrontWall">
+            <transforms>
+				<translate value3="12.5 0.0 -8.0" />
+				<rotate value3="0.0 -90.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="24 6" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="stairsRightWall">
+            <transforms>
+				<translate value3="7.5 0 -8.0" />
+				<rotate value3="0.0 0.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="5 6" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="stairsBackWall">
+            <transforms>
+				<translate value3="2.5 0.0 16.0" />
+				<rotate value3="0.0 90.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="8 6" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="stairsFloor">
+            <transforms>
+				<translate value3="2.5 0.0 16.0" />
+				<rotate value3="-90.0 0.0 0.0" />
+            </transforms> 
+
+			<materialref id="floorApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="10 8" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="stairsCeiling">
+            <transforms>
+				<translate value3="2.5 6.0 8.0" />
+				<rotate value3="90.0 0.0 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="10 8" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="stair1" >
+            <transforms>
+                <translate value3="0 1.2 0" />
+                <scale value3="2 1 0.5" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="stair2" >
+            <transforms>
+                <translate value3="0 0.6 0" />
+                <scale value3="2.5 1 0.5" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="stair3" >
+            <transforms>
+                <translate value3="0 0 0" />
+                <scale value3="3 1 0.5" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="stair4" >
+            <transforms>
+                <translate value3="0 1.8 0" />
+                <scale value3="1.5 1 0.5" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="stair5" >
+            <transforms>
+                <translate value3="0 2.4 0" />
+                <scale value3="1 1 0.5" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="stair6" >
+            <transforms>
+                <translate value3="0 3 0" />
+                <scale value3="0.5 1 0.5" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="stairsFront" >
+            <transforms>
+                <translate value3="0 0 0" />
+            </transforms> 
+                
+            <children>    
+                <noderef id="stair4"/>         
+                <noderef id="stair3"/>
+                <noderef id="stair2"/>
+                <noderef id="stair1"/>
+            </children> 
+        </node>
+
+        <node id="stairsSide" >
+            <transforms>
+                <translate value3="1.5 2.4 -2.98" />
+                <rotate value3="0 -90 0" />
+                <scale value3="1 0.75 0.75" />
+            </transforms> 
+                
+            <children>   
+                <noderef id="stair6"/>
+                <noderef id="stair5"/>
+                <noderef id="stair4"/>         
+                <noderef id="stair3"/>
+                <noderef id="stair2"/>
+                <noderef id="stair1"/>
+            </children> 
+        </node>
+
+        <node id="stairsBlock" >
+            <transforms>
+                <translate value3="0 0 -2.98" />
+            </transforms> 
+                
+            <children>   
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="1.5 2.5 3" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="stairs" >
+            <transforms>
+                <translate value3="2.5 0 11" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>    
+                <noderef id="stairsFront"/>
+                <noderef id="stairsSide"/> 
+                <noderef id="stairsBlock"/>          
+            </children> 
+        </node>
+
+        <node id="vase1AndFlower">
+            <transforms>
+                <translate value3="3.8 0.0 15.0" />
+                <rotate value3="0 -45.0 0" />
+                <scale value3="0.8 1.2 0.8" />
+            </transforms>   
+
+            <materialref id="vaseApp" />
+
+            <children>             
+                <noderef id="vase" />
+				<noderef id="flower1" />
+                <noderef id="flower2" />
+            </children> 
+        </node>
+
+        <node id="porch" >
+            <transforms>
+                <translate value3="12.5 -1.8 -8.0" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="6 1.8 24"/>
+                </primitive>
+                <noderef id="porchStairs" />
+                <noderef id="porchColumnLeft" />
+                <noderef id="porchColumnRight" />
+                <noderef id="connectPorchColumnLeft" />
+                <noderef id="connectPorchColumnRight" />
+                <noderef id="smallPorchColumnLeft" />
+                <noderef id="smallPorchColumnRight" />
+            </children> 
+        </node>
+
+        <node id="stair" >
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="1 0.6 4" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="topStair" >
+            <transforms>
+                <translate value3="0 1.2 0" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="middleStair" >
+            <transforms>
+                <translate value3="0 0.6 0" />
+                <scale value3="1.5 1 1" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="floorStair" >
+            <transforms>
+                <translate value3="0 0 0" />
+                <scale value3="2 1 1" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <noderef id="stair"/>
+            </children> 
+        </node>
+
+        <node id="porchStairs" >
+            <transforms>
+                <translate value3="6 0 10" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <noderef id="topStair"/>
+                <noderef id="middleStair"/>
+                <noderef id="floorStair"/>
+            </children> 
+        </node>
+
+        <node id="porchColumnLeft" >
+            <transforms>
+                <translate value3="5.7 1.8 23.7" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 6 0.3" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="porchColumnRight" >
+            <transforms>
+                <translate value3="5.7 1.8 0" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 6 0.3" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="connectPorchColumnLeft" >
+            <transforms>
+                <rotate value3="0 0 90" />
+                <translate value3="6 7.5 23.7" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 6 0.3" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="connectPorchColumnRight" >
+            <transforms>
+                <rotate value3="0 0 90" />
+                <translate value3="6 7.5 0" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 6 0.3" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="smallPorchColumnLeft" >
+            <transforms>
+                <translate value3="5.7 1.8 14" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 2 0.3" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="smallPorchColumnRight" >
+            <transforms>
+                <translate value3="5.7 1.8 9.7" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 2 0.3" />
+                </primitive>
+            </children>
         </node>
 
         <node id="table">
@@ -773,6 +1176,19 @@
 				<noderef id="chairLeg4" />
                 <noderef id="chairSeat" />
                 <noderef id="chairBack" />
+            </children>  
+        </node>
+
+        <node id="chairs">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>   
+			
+            <children>             
+				<noderef id="chair1" />
+				<noderef id="chair2" />
+				<noderef id="chair3" />
+				<noderef id="chair4" />
             </children>  
         </node>
 
@@ -1051,7 +1467,7 @@
             </children> 
         </node>
 
-        <node id="vaseAndFlower">
+        <node id="vase2AndFlower">
             <transforms>
                 <translate value3="-6.0 0.0 7.0" />
             </transforms>   

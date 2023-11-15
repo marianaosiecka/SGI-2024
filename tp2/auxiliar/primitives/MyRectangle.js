@@ -20,6 +20,7 @@ class MyRectangle {
         let rectHeight = Math.abs(rectangleData.xy1[1] - rectangleData.xy2[1]);
 
         this.rectangle = new THREE.PlaneGeometry(rectWidth, rectHeight, rectangleData.parts_x, rectangleData.parts_y);
+
     }
 }
 
