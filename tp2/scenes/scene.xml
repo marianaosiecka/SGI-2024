@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <yaf>
 
-    <globals background="0 0 0 1" ambient="0.467 0.467 0.467 1" />
-    <fog color="1.0 1.0 1.0 1.0" near="0.0" far="100.0" />
+    <globals background="0 0 0 1" ambient="0 0 0 0.5" />
+
+    <fog color="1.0 1.0 1.0 1.0" near="30.0" far="250.0" />
+
+    <skybox size="100 100 100" center="0 -10 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.bmp" down="./scenes/textures/down.bmp" left="./scenes/textures/left.bmp" right="./scenes/textures/right.bmp" front="./scenes/textures/front.bmp" back="./scenes/textures/back.bmp"/>
 
     <cameras initial="perpective1">
         <perspective id="perpective1"
