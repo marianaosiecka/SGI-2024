@@ -6,38 +6,50 @@ class MyMaterial {
      * 
      * @param {MyApp} app the application object
      */
-    constructor(materialData, myTexture, bumpTexture) {
+    constructor(materialData, myTexture, bumpTexture, specularTexture) {
         this.id = materialData.id;
-        this.color = new THREE.Color(materialData.color.r, materialData.color.g, materialData.color.b)
-        this.specular = new THREE.Color(materialData.specular.r, materialData.specular.g, materialData.specular.b);
-        this.shininess = materialData.shininess;
-        this.emissive = new THREE.Color(materialData.emissive.r, materialData.emissive.g, materialData.emissive.b);
+        this.textureref = materialData.textureref;
+        this.bumpref = materialData.bumpref;
         this.wireframe = materialData.wireframe;
-        this.shading = materialData.shading;
+        this.texlength_t = materialData.texlength_t;
+        this.texlength_s = materialData.texlength_s;
         this.myTexture = myTexture;
         this.bumpTexture = bumpTexture;
+        this.specularTexture = specularTexture;
         
-        this.flatShading = false;
-        if (this.shading == "flat") this.flatShading = true;
+        let flatShading = false;
+        if (materialData.shading == "flat") flatShading = true;
  
-        this.material = new THREE.MeshPhongMaterial({ color:this.color, flatShading: this.flatShading, specular: this.specular, shininess: this.shininess, emissive: this.emissive, wireframe: this.wireframe});
+        this.material = new THREE.MeshPhongMaterial({ color: materialData.color, flatShading: flatShading, specular: materialData.specular, shininess: materialData.shininess, emissive: materialData.emissive, wireframe: this.wireframe});
 
-        if(materialData.textureref != null) {
-            this.myTexture.wrapS = materialData.texlength_s;
-            this.myTexture.wrapT = materialData.texlength_t;
-            this.material.map = this.myTexture;
+        if(this.textureref != null) {
+           this.material.map = this.myTexture;
         }
 
         if(materialData.twosided)
             this.material.side = THREE.DoubleSide;
 
             
-        if(materialData.bump_ref != null) {
+        if(this.bumpref != null) {
             this.material.bumpMap = this.bumpTexture;
-            this.material.bumpScale = materialData.bump_scale;
+            this.material.bumpScale = materialData.bumpscale;
         }
 
-    
+        if(this.specularref != null) {
+            this.material.specularMap = this.specularTexture;
+        }
+    }
+
+    setRepeat(width, height) {
+        if(this.textureref != null) {
+            this.material.map.repeat.set(width/this.texlength_s, height/this.texlength_t);
+        }
+        if(this.bumpref != null) {
+            this.material.bumpMap.repeat.set(width/this.texlength_s, height/this.texlength_t)
+        }
+        if(this.specularref != null) {
+            this.material.specularMap.repeat.set(width/this.texlength_s, height/this.texlength_t)
+        }
     }
 }
 

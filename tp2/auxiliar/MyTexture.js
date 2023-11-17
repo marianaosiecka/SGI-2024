@@ -15,8 +15,10 @@ class MyTexture {
         this.mipmaps = textureData.mipmaps;
         this.anisotropy = textureData.anisotropy;
         
-        if(textureData.isVideo) 
-            this.texture = new THREE.VideoTexture(this.filepath); //supostamente é com um elemento HTML e nao com um filepath por isso ?idk?
+        if(textureData.isVideo){
+            //let video = HTML.get
+            //this.texture = new THREE.VideoTexture(video.src); //supostamente é com um elemento HTML e nao com um filepath por isso ?idk?
+        }
         else
             this.texture = new THREE.TextureLoader().load(this.filepath);
 
@@ -24,6 +26,8 @@ class MyTexture {
         this.texture.minFilter = textureData.minFilter;
         this.texture.mipmaps = textureData.mipmaps;
         this.texture.anisotropy = textureData.anisotropy;
+        this.texture.wrapS = THREE.RepeatWrapping;
+        this.texture.wrapT = THREE.RepeatWrapping;
     }
 }
 

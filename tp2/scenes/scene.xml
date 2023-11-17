@@ -5,7 +5,7 @@
 
     <fog color="1.0 1.0 1.0 1.0" near="30.0" far="250.0" />
 
-    <skybox size="100 100 100" center="0 -10 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.bmp" down="./scenes/textures/down.bmp" left="./scenes/textures/left.bmp" right="./scenes/textures/right.bmp" front="./scenes/textures/front.bmp" back="./scenes/textures/back.bmp"/>
+    <skybox size="100 100 100" center="2 0 5" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.bmp" down="./scenes/textures/down.bmp" left="./scenes/textures/left.bmp" right="./scenes/textures/right.bmp" front="./scenes/textures/front.bmp" back="./scenes/textures/back.bmp"/>
 
     <cameras initial="perpective1">
         <perspective id="perpective1"
@@ -72,7 +72,6 @@
             bottom="-10"
             top="10" />
 
-
     </cameras>
 
     <textures>
@@ -98,6 +97,12 @@
         <texture id="newspaperTex" filepath="scenes/textures/newspaper_texture.png" />
         <texture id="carpetTex" filepath="scenes/textures/carpet_texture.png" />
 
+        <texture id="grassTex" filepath="scenes/textures/grass.jpg" />
+        <texture id="grassBumpTex" filepath="scenes/textures/grass_bump_texture.png" />
+
+        <texture id="dirtTex" filepath="scenes/textures/dirt.jpg" />
+        <texture id="dirtBumpTex" filepath="scenes/textures/dirt_bump_texture.png" />
+
     </textures>
 
     <materials>
@@ -108,6 +113,14 @@
             color="1.0 0.98 0.93 1.0"
             specular="0 0 0 0"
             shininess="0"
+             />
+
+        <material id="wallApp1"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 0.98 0.93 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            twosided="true"
              />
 
         <material id="floorApp"
@@ -289,7 +302,9 @@
             specular="0 0 0 1.0"
             shininess="1"
             textureref="carpetTex"
-            twosided="true" />
+            twosided="true"
+            texlength_s="7.5"
+            texlength_t="5" />
 
         <material id="sofaApp"
             emissive="0.0 0.0 0.0 1"
@@ -418,6 +433,28 @@
             textureref="vinylCoverTex"
             />
 
+        <material id="grassApp"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="grassTex"
+            bumpref="grassBumpTex"
+            texlength_s="30"
+            texlength_t="30"
+            />
+
+        <material id="dirtApp"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="dirtTex"
+            bumpref="dirtBumpTex"
+            texlength_s="20"
+            texlength_t="20"
+            />
+
         <material id="wallLampApp"
             emissive="0.0 0.0 0.0 1"
             color="0.369 0.431 0.278 1.0"
@@ -454,19 +491,9 @@
         <!--     material (optional) -->
         <!--     descendant (required) -->
         <node id="scene">
-            <children> 
-                <noderef id="leftWall" /> 
-				<noderef id="rightWall" /> 
-                <noderef id="frontWall" /> 
-				<noderef id="backWall" /> 
-				<noderef id="floor" /> 
-                <noderef id="ceiling" />
-                <noderef id="stairsLeftWall" /> 
-				<noderef id="stairsFrontWall" /> 
-                <noderef id="stairsRightWall" /> 
-				<noderef id="stairsBackWall" /> 
-                <noderef id="stairsFloor" /> 
-				<noderef id="stairsCeiling" /> 
+            <children>  
+                <noderef id="firstFloorWalls" />  
+                <noderef id="secondFloorWalls" /> 
                 <noderef id="stairs" /> 
 				<noderef id="table" /> 
 				<noderef id="carpet" /> 
@@ -494,6 +521,10 @@
                 <noderef id="vinylPlayer" />
                 <noderef id="vinylShelf" />
                 <noderef id="porch" />
+                <noderef id="grass" />
+                <noderef id="bed" />
+                <noderef id="bedSideTable" />
+                <noderef id="bedSideLamp" />
                 <noderef id="wallLampFLeft"/>
                 <noderef id="wallLampFRight"/>
                 <noderef id="wallLampBLeft"/>
@@ -512,6 +543,15 @@
                     castshadow="false"
                     position="0 10.0 0" 
                 />
+
+                <pointlight id="light2" enabled="true" 
+                    color="0.969 1.0 0.88 1" 
+                    intensity="10.0"
+                    distance="0"
+                    decay="1.0"
+                    castshadow="false"
+                    position="0 -40.0 0" 
+                />
 			            
                 <!--<directionallight id="light2" enabled="true" 
                     color="1.0 1 1 1" 
@@ -519,7 +559,7 @@
                     castshadow="false"
                     position="0 1 0" 
                 />-->
-                 <directionallight id="light2" enabled="true" 
+                 <directionallight id="light3" enabled="true" 
                     color="1 1 1 1" 
                     intensity="0.5" 
                     position="0 1 0" />
@@ -602,6 +642,43 @@
             </children> 
         </node>
 
+        <node id="floorSupportRoom">
+			<transforms>
+				<translate value3="-7.5 -1.8 -8.0" />
+            </transforms> 
+			
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="20 1.8 16" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="floorSupportStairs">
+			<transforms>
+				<translate value3="2.5 -1.8 8" />
+            </transforms> 
+			
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="10 1.8 8" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="floorSupport">
+			<transforms>
+				<translate value3="0 0 0" />
+            </transforms> 
+
+			<materialref id="floorApp" />
+			
+            <children>             
+                <noderef id="floorSupportRoom" />
+                <noderef id="floorSupportStairs" />
+            </children> 
+        </node>
+
          <node id="ceiling">
             <transforms>
 				<translate value3="-7.5 6.0 -8.0" />
@@ -614,6 +691,26 @@
                 <primitive>
                     <rectangle xy1="0 0" xy2="20 16" />
                 </primitive>
+            </children> 
+        </node>
+
+        <node id="firstFloorWalls">
+			<materialref id="wallApp" />
+			
+            <children>             
+                <noderef id="leftWall" />
+                <noderef id="rightWall" />
+                <noderef id="frontWall" />
+                <noderef id="backWall" />
+                <noderef id="ceiling" />
+                <noderef id="floor" />
+                <noderef id="stairsLeftWall" />
+                <noderef id="stairsFrontWall" />
+                <noderef id="stairsRightWall" />
+                <noderef id="stairsBackWall" />
+                <noderef id="stairsFloor" />
+                <noderef id="stairsCeiling" />
+                <noderef id="floorSupport" /> 
             </children> 
         </node>
 
@@ -698,13 +795,55 @@
 				<rotate value3="1.5708 0.0 0.0" />
             </transforms> 
 
-			<materialref id="wallApp" />
+			<materialref id="wallApp1" />
 			
             <children>             
                 <primitive>
                     <rectangle xy1="0 0" xy2="10 8" />
                 </primitive>
             </children>
+        </node>
+ 
+        <node id="secondFloorFrontWall">
+            <transforms>
+				<translate value3="12.5 0.0 8.0" />
+				<rotate value3="0.0 -1.5708 0.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="8 6" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="secondFloorRightWall">
+            <transforms>
+				<translate value3="0 0.0 -8.0" />
+            </transforms> 
+
+			<materialref id="wallApp" />
+			
+            <children>             
+                <noderef id="stairsLeftWall" />
+            </children>
+        </node>
+
+        <node id="secondFloorWalls">
+            <transforms>
+                <scale value3="1 0.7 1" />
+				<translate value3="0 6 0" />
+            </transforms> 
+			
+            <children>             
+                <noderef id="stairsBackWall" />
+                <noderef id="secondFloorFrontWall" />
+                <noderef id="stairsLeftWall" />
+                <noderef id="secondFloorRightWall" />
+                <noderef id="stairsCeiling" />
+            </children> 
         </node>
 
         <node id="stair1" >
@@ -817,7 +956,7 @@
 
         <node id="stairs" >
             <transforms>
-                <translate value3="2.5 0 11" />
+                <translate value3="2.55 0 11" />
             </transforms> 
 
             <materialref id="floorApp" />
@@ -863,6 +1002,8 @@
                 <noderef id="connectPorchColumnRight" />
                 <noderef id="smallPorchColumnLeft" />
                 <noderef id="smallPorchColumnRight" />
+                <noderef id="connectFenceLeft" />
+                <noderef id="connectFenceRight" />
             </children> 
         </node>
 
@@ -993,7 +1134,7 @@
                 
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0.3 2 0.3" />
+                    <box xyz1="0 0 0" xyz2="0.3 1.7 0.3" />
                 </primitive>
             </children>
         </node>
@@ -1007,7 +1148,35 @@
                 
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0.3 2 0.3" />
+                    <box xyz1="0 0 0" xyz2="0.3 1.7 0.3" />
+                </primitive>
+            </children>
+        </node>
+        
+        <node id="connectFenceLeft" >
+            <transforms>
+                <translate value3="5.7 3.5 14" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.3 10" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="connectFenceRight" >
+            <transforms>
+                <translate value3="5.7 3.5 0" />
+            </transforms> 
+
+            <materialref id="floorApp" />
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.3 10" />
                 </primitive>
             </children>
         </node>
@@ -1984,8 +2153,6 @@
                     shadowfar="27.0"
                     shadowmapsize="1024"
                 />
-
-
             </children>
         </node>
 
@@ -2664,7 +2831,169 @@
             </children>
         </node>
 
-        <node id="wallLampFLeft">
+        <node id="grass">
+            <transforms>
+                <rotate value3="-1.5708 0 0" />
+                <translate value3="-48 -1.8 55" />
+            </transforms>
+
+            <materialref id="grassApp"/>
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="100 100"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bedSeat">
+            <transforms>
+                <rotate value3="0.0 1.5708 0.0" />
+                <translate value3="0.0 0 0.0"/>
+            </transforms>
+
+            <children>
+                <primitive>
+                    <box xyz1="0.0 0.0 0.0" xyz2="3.5 1 2.2" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bedBack">
+            <transforms>
+                <translate value3="0.0 0 0.0"/>
+            </transforms>
+
+            <children>
+                <primitive>
+                    <box xyz1="0.0 0.0 0.0" xyz2="2.2 2 0.4" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bed">
+            <transforms>
+                <rotate value3="0 3.1416 0" />
+                <translate value3="10 6.05 8.45" />
+            </transforms>
+
+            <materialref id="sofaApp"/>
+                
+            <children>             
+                <noderef id="bedSeat" />
+                <noderef id="bedBack" />
+            </children>  
+        </node>
+
+        <node id="bedSideTable">
+            <transforms>
+                <scale value3="0.4 1.1 1" />
+                <translate value3="10.8 6.05 12.8" />
+            </transforms>
+                
+            <children>             
+                <noderef id="coffeeTable" />
+            </children>  
+        </node>
+
+        <node id="bedSideLampFoot">
+            <transforms>
+                <scale value3="0.7 1 0.7" />
+            </transforms>   
+
+            <children>
+                <noderef id="floorLampFoot" />
+            </children>
+        </node>
+
+        <node id="bedSideLampArm1">
+            <transforms>
+                <scale value3="1 0.4 1" />
+            </transforms>   
+
+            <children>
+                <noderef id="floorLampArm1" />
+            </children>
+        </node>
+
+        <node id="bedSideLampArm2">
+            <transforms>
+                <translate value3="0 -1.35 -1.4" />
+                <rotate value3="0.5 0 0" />
+                <scale value3="1 1 0.4" />
+            </transforms>   
+
+            <children>
+                <noderef id="floorLampArm2" />
+            </children>
+        </node>
+
+        <node id="bedSideLampArm3">
+            <transforms>
+                <translate value3="0 -1.34 -0.39" />
+                <scale value3="0.8 0.8 0.8" />
+            </transforms>   
+
+            <children>  
+                <noderef id="floorLampArm3"/>
+            </children> 
+        </node>
+
+        <node id="bedSideLampHead">
+            <transforms>
+                <translate value3="0 -1.34 -0.39" />
+                <scale value3="0.8 0.8 0.8" />
+            </transforms>   
+
+            <children>             
+                <noderef id="floorLampHead"/>
+            </children> 
+        </node>
+
+        <node id="bedSideLampBulb">
+            <transforms>
+                <translate value3="0 -1.34 -0.39" />
+                <scale value3="0.8 0.8 0.8" />
+            </transforms>   
+
+            <children>             
+                <noderef id="floorLampBulb"/>
+            </children> 
+        </node>
+
+        <node id="bedSideLamp">
+            <transforms>
+                <scale value3="0.5 0.5 0.5" />
+                <translate value3="10.7 7.12 8.8" />
+                <rotate value3="0.0 -1.2 0" />
+            </transforms>   
+
+            <materialref id="lampApp" />
+
+            <children>
+                <noderef id="bedSideLampFoot" />
+                <noderef id="bedSideLampArm1" />
+                <noderef id="bedSideLampArm2" />
+                <noderef id="bedSideLampArm3" />
+                <noderef id="bedSideLampHead" />
+                <noderef id="bedSideLampBulb" />
+
+                <spotlight id="floorLampSpotLight"
+                    enabled="true" 
+                    color="0.988 0.933 0.655 1.0" 
+                    intensity="3"
+                    distance="10"
+                    angle="0.5236"
+                    penumbra="1.0"
+                    decay="0.6"
+                    castshadow="true"
+                    position="0 2.94 1.998" 
+                    target="0.0 0.0 3.5"
+                    shadowfar="27.0"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>        <node id="wallLampFLeft">
             <transforms>
                 <translate value3="-7.47 3.6 4"/>
             </transforms>

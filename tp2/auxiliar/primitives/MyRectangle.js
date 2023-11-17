@@ -16,10 +16,10 @@ class MyRectangle {
      * 
      */
     constructor(rectangleData) {
-        let rectWidth = Math.abs(rectangleData.xy1[0] - rectangleData.xy2[0]);
-        let rectHeight = Math.abs(rectangleData.xy1[1] - rectangleData.xy2[1]);
+        this.rectWidth = Math.abs(rectangleData.xy1[0] - rectangleData.xy2[0]);
+        this.rectHeight = Math.abs(rectangleData.xy1[1] - rectangleData.xy2[1]);
 
-        this.rectangle = new THREE.PlaneGeometry(rectWidth, rectHeight, rectangleData.parts_x, rectangleData.parts_y);
+        this.rectangle = new THREE.PlaneGeometry(this.rectWidth, this.rectHeight, rectangleData.parts_x, rectangleData.parts_y);
 
     }
 }
