@@ -10,10 +10,6 @@ class MyTexture {
         this.id = textureData.id;
         this.filepath = textureData.filepath;
         this.isVideo = textureData.isVideo;
-        this.magFilter = textureData.magFilter;
-        this.minFilter = textureData.minFilter;
-        this.mipmaps = textureData.mipmaps;
-        this.anisotropy = textureData.anisotropy;
         
         if(textureData.isVideo){
             //let video = HTML.get
