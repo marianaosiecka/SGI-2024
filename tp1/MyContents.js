@@ -460,7 +460,7 @@ class MyContents {
      */
     buildCeilingLights() {
         const ceilingLightX = 5;
-        const ceilingLightY = this.wallHeight - 0.04;
+        const ceilingLightY = this.wallHeight - 0.04; // 5.96
         const ceilingLightZ = 4;
 
         //LIGHT IN THE LEFT BACK CORNER

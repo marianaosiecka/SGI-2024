@@ -152,7 +152,7 @@
 
         <!-- color: this.offWhite -->
         <material id="plateApp"
-            emissive="0.0 0.0 0.0 1"
+            emissive="0 0 0 1"
             color="0.85 0.85 0.8 1.0"
             specular="1.0 1.0 1.0 1.0"
             shininess="3" />
@@ -284,10 +284,10 @@
         <!-- falta opacidade? -->
         <!-- color: this.lightBlue -->
         <material id="carpetApp"
-            emissive="0.0 0.0 0.0 1"
+            emissive="0 0 0 1"
             color="0.65 0.76 0.82 1.0"
-            specular="0.65 0.76 0.82 1.0"
-            shininess="5"
+            specular="0 0 0 1.0"
+            shininess="1"
             textureref="carpetTex"
             twosided="true" />
 
@@ -424,13 +424,21 @@
             specular="0.369 0.431 0.278 1.0"
             shininess="5"
             twosided="true" />
-        
+
         <material id="ceilingLampApp"
             emissive="0.0 0.0 0.0 1"
             color="0.69 0.69 0.69 1.0"
-            specular="0.369 0.431 0.278 1.0"
+            specular="0.69 0.69 0.69 1.0"
             shininess="5"
             twosided="true" />
+
+        <!-- lightBlue -->
+        <material id="lightBulbApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.655 0.765 0.820 1.0"
+            specular="1 1 1 1.0"
+            shininess="5"
+            twosided="true" /> 
 
     </materials>
 
@@ -494,7 +502,6 @@
                 <noderef id="ceilingLampFRight"/>
                 <noderef id="ceilingLampBLeft"/>
                 <noderef id="ceilingLampBRight"/>
-
 
 
                 <pointlight id="light1" enabled="true" 
@@ -2774,21 +2781,13 @@
                 <noderef id="wallLampSide" />
             </children>
         </node>
+        
 
 
         <!-- CEILING LAMPS -->
-        <node id="ceilingLampFLeft">
+        <node id="ceilingLampBLeft">
             <transforms>
-                <translate value3="-7.47 3.6 4"/>
-            </transforms>
-            <children>
-                <noderef id="ceilingLamp"/>
-            </children>
-        </node>
-
-        <node id="ceilingLampFRight">
-            <transforms>
-                <translate value3="-7.47 3.6 -4"/>
+                <translate value3="-5 6 4"/>
             </transforms>
             <children>
                 <noderef id="ceilingLamp"/>
@@ -2797,46 +2796,60 @@
 
         <node id="ceilingLampBRight">
             <transforms>
-                <translate value3="7.47 3.6 4"/>
-                <rotate value3="0 3.1416 0"/>
+                <translate value3="-5 6 -4"/>
             </transforms>
             <children>
                 <noderef id="ceilingLamp"/>
             </children>
         </node>
 
-        <node id="ceilingLampBLeft">
+        <node id="ceilingLampFLeft">
             <transforms>
-                <translate value3="7.47 3.6 -4"/>
-                <rotate value3="0 3.1416 0"/>
+                <translate value3="5 6 4"/>
             </transforms>
             <children>
                 <noderef id="ceilingLamp"/>
             </children>
         </node>
+
+        <node id="ceilingLampFRight">
+            <transforms>
+                <translate value3="5 6 -4"/>
+            </transforms>
+            <children>
+                <noderef id="ceilingLamp"/>
+            </children>
+        </node>
+
+
+        
 
         <node id="ceilingLamp">
+            <transforms>
+                <rotate value3="0 0 -1.5708"/>
+            </transforms>
             <materialref id="ceilingLampApp"/>
 
             <children>
                 <noderef id="ceilingLampTop"/>
+                <noderef id="ceilingLampFront"/>
+                <noderef id="ceilingLampBack"/>
+                <noderef id="ceilingLampBottom"/>
                 <noderef id="ceilingLampLeft"/>
                 <noderef id="ceilingLampRight"/>
-                <noderef id="ceilingLampBack"/>
-                <noderef id="ceilingLampFront"/>
                 <noderef id="ceilingLampLightBulb"/>
 
                 <spotlight id="ceilingLampSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="15"
+                    intensity="12"
                     distance="10"
                     angle="1.0472"
                     penumbra="1.0"
                     decay="0.8"
                     castshadow="true"
                     position="0 0 0" 
-                    target="0 -6 0"
+                    target="20 0 0"
                     shadowfar="27"
                     shadowmapsize="1024"
                 />
@@ -2854,6 +2867,82 @@
             </children>
         </node>
 
+        <node id="ceilingLampLeft">
+            <transforms>
+                <translate value3="0 0 0.57"/>
+            </transforms>
+
+            <children>
+                <noderef id="ceilingLampSide" />
+            </children>
+        </node>
+
+        <node id="ceilingLampRight">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="ceilingLampSide" />
+            </children>
+        </node>
+
+        <node id="ceilingLampSide">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.4 0.033"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="ceilingLampBack">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="ceilingLampBackFront" />
+            </children>
+        </node>
+
+        <node id="ceilingLampFront">
+            <transforms>
+                <translate value3="0 0.37 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="ceilingLampBackFront" />
+            </children>
+        </node>
+
+        <node id="ceilingLampBackFront">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.08 0.6"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="ceilingLampLightBulb">
+            <materialref id="lightBulbApp"/>
+            <transforms>
+                <translate value3="0.05 0 0.05"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.15 0.4 0.48"/>
+                </primitive>
+            </children>
+        </node>
+
+        
+        
 
 
     </graph>
