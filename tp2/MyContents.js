@@ -136,7 +136,7 @@ class MyContents  {
 
         // VISIT SCENE NODE CHILDREN
         let sceneNode = data.nodes.scene;
-        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations, this.app);
+        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations);
         myScene.visitChildren(sceneNode.children, this.materials);
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);

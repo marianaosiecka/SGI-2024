@@ -5,19 +5,13 @@ import { MyPointLight } from "./lights/MyPointLight.js";
 import { MySpotLight } from "./lights/MySpotLight.js";
 
 class MyNode {
-
-    /**
-     * 
-     * @param {MyApp} app the application object
-     */
-    constructor(id, material, transformations, app) {
-        console.log(id)
+    constructor(id, material, transformations, nodesMap = new Map()) {
+        console.log("IDDDDD", id, nodesMap)
         this.id = id;
         this.material = material;
         this.transformations = transformations;
 
-
-        this.app = app;
+        this.nodesMap = nodesMap;
         this.group = new THREE.Group();
     }
 
@@ -35,8 +29,15 @@ class MyNode {
               
             
             if(child.type === "node"){
-                childNode = new MyNode(child.id, childMaterial, child.transformations, this.app)
-                childNode.visitChildren(child.children, materials)
+                childNode = new MyNode(child.id, childMaterial, child.transformations, this.nodesMap)
+                
+                if(!this.nodesMap.has(child.id)){
+                    childNode.visitChildren(child.children, materials)
+                    this.nodesMap.set(childNode.id, childNode.group)
+                }
+                else {
+                    childNode.group = this.nodesMap.get(child.id).clone();
+                }
                 this.group.add(childNode.group)
             }
             else if(child.type === "primitive"){
@@ -88,7 +89,6 @@ class MyNode {
                                     this.group.scale.z * transformation.scale[2])
             }
         }
-
     }    
 }
 
