@@ -411,9 +411,9 @@ class MyContents {
      * initializes the wall lights
      */
     buildWallLights() {
-        const wallLampX = 0.15 - this.wallXPos;
-        const wallLampY = this.wallHeight - this.wallHeight / 2.5;
-        const wallLampZ = this.wallZPos / 2;
+        const wallLampX = 0.15 - this.wallXPos; // -7.35
+        const wallLampY = this.wallHeight - this.wallHeight / 2.5; // 3.6
+        const wallLampZ = this.wallZPos / 2; // 4
         const wallLightY = - 0.15;
 
         //WALL LIGHTS
@@ -460,7 +460,7 @@ class MyContents {
      */
     buildCeilingLights() {
         const ceilingLightX = 5;
-        const ceilingLightY = this.wallHeight - 0.04;
+        const ceilingLightY = this.wallHeight - 0.04; // 5.96
         const ceilingLightZ = 4;
 
         //LIGHT IN THE LEFT BACK CORNER

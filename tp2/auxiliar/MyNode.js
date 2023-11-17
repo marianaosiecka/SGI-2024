@@ -11,6 +11,7 @@ class MyNode {
      * @param {MyApp} app the application object
      */
     constructor(id, material, transformations, app) {
+        console.log(id)
         this.id = id;
         this.material = material;
         this.transformations = transformations;
@@ -51,11 +52,11 @@ class MyNode {
                 let spotlightTarget = spotlight.target
                 this.group.add(spotlightTarget)
 
-                let spotlightHelper = new THREE.SpotLightHelper(spotlight.light)
+                /*let spotlightHelper = new THREE.SpotLightHelper(spotlight.light)
                 console.log(spotlightHelper)
                 childNode.updateMatrixWorld();
                 spotlightHelper.update();
-                this.group.add(spotlightHelper)
+                this.group.add(spotlightHelper)*/
             }
             else if(child.type === "directionallight"){
                 let directionallight = new MyDirectionalLight(child)

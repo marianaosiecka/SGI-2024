@@ -14,11 +14,12 @@ class MyCeilingLamp extends THREE.Object3D {
     * @param {Light} light - The light source for the lamp.
     */
     constructor(app, width, height, depth, color, lightColor, highlight, light) {
+        // 0.1, 0.4, 0.6,
         super();
         this.app = app;
         this.type = 'Group';
-        this.sideWidth = depth / 2;
-        this.sideDepth = width / 3;
+        this.sideWidth = depth / 2; // 0.3
+        this.sideDepth = width / 3; // 0.033
 
         this.lampMaterial = new THREE.MeshPhongMaterial({ color: color, specular: color, shininess: 5 });
         
@@ -40,13 +41,13 @@ class MyCeilingLamp extends THREE.Object3D {
         this.rightMesh.position.z = -depth / 2 + this.sideDepth / 2;
         this.add(this.rightMesh);
 
-        this.backWidth = width + this.sideWidth;
-        this.backHeight = height / 5;
+        this.backWidth = width + this.sideWidth; //0.4
+        this.backHeight = height / 5; // 0.08
         
         //back of the lamp box
         this.back = new THREE.BoxGeometry(this.backWidth, this.backHeight, depth);
         this.backMesh = new THREE.Mesh(this.back, this.lampMaterial);
-        this.backMesh.position.x = -this.backWidth / 2 + width / 2;
+        this.backMesh.position.x = -this.backWidth / 2 + width / 2; // -0.4
         this.backMesh.position.y = -height / 2 - this.backHeight / 2;
         this.add(this.backMesh);
 
