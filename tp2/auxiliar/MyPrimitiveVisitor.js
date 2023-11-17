@@ -20,11 +20,13 @@ class MyPrimitiveVisitor {
             case "box": {
                 let boxGeometry = new MyBox(this.data);
                 geometry = boxGeometry.box;
+                material.setRepeat(boxGeometry.boxWidth, boxGeometry.boxDepth)
                 break;
             }
             case "cylinder": {
                 let cylinderGeometry = new MyCylinder(this.data);
                 geometry = cylinderGeometry.cylinder;
+                material.setRepeat(cylinderGeometry.top, cylinderGeometry.top)
                 break;
             }
             case "nurbs": {
@@ -35,11 +37,13 @@ class MyPrimitiveVisitor {
             case "rectangle": {
                 let rectangleGeometry = new MyRectangle(this.data);
                 geometry = rectangleGeometry.rectangle;
+                material.setRepeat(rectangleGeometry.rectWidth, rectangleGeometry.rectHeight)
                 break;
             }
             case "sphere": {
                 let sphereGeometry = new MySphere(this.data);
                 geometry = sphereGeometry.sphere;
+                material.setRepeat(sphereGeometry.radius, sphereGeometry.radius)
                 break;
             }
             /*case "triangle": {
@@ -49,7 +53,7 @@ class MyPrimitiveVisitor {
             }*/
         }
 
-        this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh = new THREE.Mesh(geometry, material.material);
 
         if(node.subtype === "rectangle"){
             this.mesh.position.x = (node.representations[0].xy1[0] + node.representations[0].xy2[0])/2;

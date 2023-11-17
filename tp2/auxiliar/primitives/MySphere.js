@@ -19,7 +19,8 @@ class MySphere{
      * 
      */
     constructor(sphereData) {
-       this.sphere = new THREE.SphereGeometry(sphereData.radius, sphereData.slices, sphereData.stacks, sphereData.phistart, 
+        this.radius = sphereData.radius
+        this.sphere = new THREE.SphereGeometry(this.radius, sphereData.slices, sphereData.stacks, sphereData.phistart, 
                         sphereData.philength, sphereData.thetastart, sphereData.thetalength);
     }
 }
