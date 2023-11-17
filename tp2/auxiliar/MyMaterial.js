@@ -9,6 +9,7 @@ class MyMaterial {
     constructor(materialData, myTexture, bumpTexture) {
         this.id = materialData.id;
         this.color = new THREE.Color(materialData.color.r, materialData.color.g, materialData.color.b)
+        this.transparent = materialData.color.a != 1;
         this.specular = new THREE.Color(materialData.specular.r, materialData.specular.g, materialData.specular.b);
         this.shininess = materialData.shininess;
         this.emissive = new THREE.Color(materialData.emissive.r, materialData.emissive.g, materialData.emissive.b);
@@ -35,6 +36,11 @@ class MyMaterial {
         if(materialData.bump_ref != null) {
             this.material.bumpMap = this.bumpTexture;
             this.material.bumpScale = materialData.bump_scale;
+        }
+
+        if(this.transparent){
+            this.material.transparent = true;
+            this.material.opacity = materialData.color.a;
         }
 
     

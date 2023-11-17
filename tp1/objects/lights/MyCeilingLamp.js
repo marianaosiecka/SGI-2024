@@ -14,6 +14,7 @@ class MyCeilingLamp extends THREE.Object3D {
     * @param {Light} light - The light source for the lamp.
     */
     constructor(app, width, height, depth, color, lightColor, highlight, light) {
+        // 0.1, 0.4, 0.6,
         super();
         this.app = app;
         this.type = 'Group';

@@ -11,12 +11,12 @@ class MyWallLamp extends THREE.Object3D  {
      * @param {number} color - The color of the lamp material.
      * @param {Light} light - The light source for the wall lamp.
      */ 
-    constructor(app, width, height, depth, color, light) {
+    constructor(app, width, height, depth, color, light) { // 0.1, 0.3, 0.3
         super();
         this.app = app;
         this.type = 'Group';
-        this.sideWidth = depth/2;
-        this.sideDepth = width/3;
+        this.sideWidth = depth/2; // 0.15
+        this.sideDepth = width/3; // 0.033
 
         this.lampMaterial = new THREE.MeshPhongMaterial({color: color, specular:color, shininess:5});
         
@@ -41,8 +41,8 @@ class MyWallLamp extends THREE.Object3D  {
         this.add(this.rightMesh);
 
         //bottom of the lamp box
-        this.bottomWidth = width + this.sideWidth;
-        this.bottomHeight = height/5;
+        this.bottomWidth = width + this.sideWidth; // 0.1 + 0.15 = 0.25
+        this.bottomHeight = height/5; // 0.06
         this.bottom = new THREE.BoxGeometry(this.bottomWidth, this.bottomHeight, depth);
         this.bottomMesh = new THREE.Mesh(this.bottom, this.lampMaterial);
         this.bottomMesh.position.x = -this.bottomWidth/2 + width/2;
