@@ -25,8 +25,7 @@ class MyMaterial {
         this.material = new THREE.MeshPhongMaterial({ color: materialData.color, flatShading: flatShading, specular: materialData.specular, shininess: materialData.shininess, emissive: materialData.emissive, wireframe: this.wireframe});
 
         if(this.textureref != null) {
-            if(this.myTexture instanceof THREE.VideoTexture)
-                this.material.needsUpdate = true;  
+            this.material.needsUpdate = true;  
             this.material.map = this.myTexture;
         }
 
