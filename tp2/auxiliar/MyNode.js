@@ -6,7 +6,6 @@ import { MySpotLight } from "./lights/MySpotLight.js";
 
 class MyNode {
     constructor(id, material, transformations, nodesMap = new Map()) {
-        console.log(id)
         this.id = id;
         this.material = material;
         this.transformations = transformations;
@@ -20,7 +19,6 @@ class MyNode {
             let childNode;
             
             // MATERIAL
-            //console.log(this.material)
             let materialIds = child.materialIds;
             let childMaterial;
             if(materialIds != undefined)
@@ -54,7 +52,6 @@ class MyNode {
                 this.group.add(spotlightTarget)
 
                 /*let spotlightHelper = new THREE.SpotLightHelper(spotlight.light)
-                console.log(spotlightHelper)
                 childNode.updateMatrixWorld();
                 spotlightHelper.update();
                 this.group.add(spotlightHelper)*/

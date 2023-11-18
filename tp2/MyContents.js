@@ -86,12 +86,11 @@ class MyContents  {
         }
 
         // CAMERAS
+        this.activeCameraId = data.activeCameraId;
         for (var key in data.cameras) {
             let cameraData = data.cameras[key]
             let camera = null;
-            let isActive = false;
-            if(data.activeCameraId == cameraData.id)
-                isActive = true;
+            const isActive = (cameraData.id == this.activeCameraId)
             if(cameraData.type == "orthogonal")
                 camera = new MyOrthographicCamera(cameraData, isActive);
             else
@@ -120,11 +119,11 @@ class MyContents  {
         myScene.visitChildren(sceneNode.children, this.materials);
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
-        console.log(myScene.group)
+        //console.log(myScene.group)
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
-        console.log(data)
+        //console.log(data)
         // refer to descriptors in class MySceneData.js
         // to see the data structure for each item
 
@@ -169,7 +168,7 @@ class MyContents  {
     }
 
     update() {
-        
+
     }
 }
 
