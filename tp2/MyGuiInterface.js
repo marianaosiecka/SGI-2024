@@ -29,6 +29,14 @@ class MyGuiInterface  {
      * Initialize the gui interface
      */
     init() {
+        // CAMERAS
+        const cameraFolder = this.datgui.addFolder('Cameras')
+        const cameraNames = Array.from(this.contents.cameras.keys());
+        cameraFolder.add(this.app, 'activeCameraName', cameraNames ).name("active camera");
+        cameraFolder.add(this.app.activeCamera.position, 'x', 0, 10).name("x coord")
+        cameraFolder.open()
+
+        // LIGHTS
     }
 }
 

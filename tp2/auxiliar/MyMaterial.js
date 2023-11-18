@@ -21,7 +21,6 @@ class MyMaterial {
         if (materialData.shading == "flat") flatShading = true;
 
         this.transparent = (materialData.color.a != 1);
-        //console.log(this.transparent)
  
         this.material = new THREE.MeshPhongMaterial({ color: materialData.color, flatShading: flatShading, specular: materialData.specular, shininess: materialData.shininess, emissive: materialData.emissive, wireframe: this.wireframe});
 

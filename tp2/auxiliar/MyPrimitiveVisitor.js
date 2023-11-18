@@ -13,9 +13,6 @@ class MyPrimitiveVisitor {
         this.data = node.representations[0];
         this.tranformations = tranformations;
         this.material = material
-        console.log(node)
-
-        
         
         let geometry = null;
         switch (node.subtype) {

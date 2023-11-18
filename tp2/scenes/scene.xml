@@ -7,19 +7,19 @@
 
     <skybox size="100 100 100" center="0 10 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.bmp" down="./scenes/textures/down.bmp" left="./scenes/textures/left.bmp" right="./scenes/textures/right.bmp" front="./scenes/textures/front.bmp" back="./scenes/textures/back.bmp"/>
 
-    <cameras initial="perpective1">
-        <perspective id="perpective1"
+    <cameras initial="perspective1">
+        <perspective id="perspective1"
             angle="75"
             near="0.1"
             far="1000"
-            location="10 10 3"
-            target="0 0.0 0" />
+            location="7 4.5 6.5"
+            target="0 0 0" />
 
-        <perspective id="perpective2"
+        <perspective id="perspective2"
             angle="75"
             near="0.1"
             far="1000"
-            location="0 8 3"
+            location="-7 4.5 -6.5"
             target="0 0.0 0" />
 
         <orthogonal id="orthoLeft"
