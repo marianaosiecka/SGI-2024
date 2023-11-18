@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <yaf>
 
-    <globals background="0 0 0 1" ambient="0 0 0 0.5" />
+    <globals background="0 0 0 1" ambient="1 1 1 0.5" />
 
     <fog color="1.0 1.0 1.0 1.0" near="30.0" far="250.0" />
 
@@ -139,17 +139,9 @@
             texlength_t="6"
              />
 
-        <material id="wallApp1"
+        <material id="ceilingApp"
             emissive="0.0 0.0 0.0 1"
             color="1.0 0.98 0.93 1.0"
-            specular="0 0 0 0"
-            shininess="0"
-            twosided="true"
-             />
-        
-        <material id="wallApp2"
-            emissive="0.0 0.0 0.0 1"
-            color="0.7 0.4 0.3 1.0"
             specular="0 0 0 0"
             shininess="0"
             twosided="true"
@@ -260,7 +252,7 @@
 
         <material id="vaseApp"
             emissive="0.2 0.2 0.2 1.0"
-            color="0.95 0.94 0.9 1.0"
+            color="0.95 0.94 0.9 0.3"
             specular="0.95 0.94 0.9 1.0"
             shininess="10"
             twosided="true" />
@@ -638,7 +630,7 @@
                     distance="0"
                     decay="1.0"
                     castshadow="false"
-                    position="0 10.0 0" 
+                    position="0 40.0 0" 
                 />
 
                 <pointlight id="lightFront" enabled="true" 
@@ -766,19 +758,6 @@
             </children> 
         </node>
 
-<!--
-        <node id="floorSupportStairs">
-			<transforms>
-				<translate value3="2.5 -1.8 8" />
-            </transforms> 
-			
-            <children>             
-                <primitive>
-                    <box xyz1="0 0 0" xyz2="10 1.8 8" />
-                </primitive>
-            </children> 
-        </node>
--->
         <node id="floorSupport">
             <transforms>
 				<translate value3="-7.5 -1.8 -8.0" />
@@ -796,10 +775,10 @@
          <node id="ceiling">
             <transforms>
 				<translate value3="-7.5 6.0 -8.0" />
-				<rotate value3="1.5708 0.0 0.0" />
+                <rotate value3="1.5708 0 0" />
             </transforms> 
 
-			<materialref id="wallApp" />
+			<materialref id="ceilingApp" />
 			
             <children>             
                 <primitive>
@@ -887,8 +866,8 @@
 
         <node id="deck" >
             <transforms>
-                <rotate value3="1.5708 0 0" /> 
                 <translate value3="0 1.81 0" /> 
+                <rotate value3="1.5708 0 0" /> 
             </transforms> 
 
             <children>             
@@ -1013,8 +992,8 @@
 
         <node id="connectPorchColumnLeft" >
             <transforms>
-                <rotate value3="0 0 1.5708" />
                 <translate value3="6 7.5 15.7" />
+                <rotate value3="0 0 1.5708" />
             </transforms> 
 
             <children>             
@@ -1026,8 +1005,8 @@
 
         <node id="connectPorchColumnRight" >
             <transforms>
-                <rotate value3="0 0 1.5708" />
                 <translate value3="6 7.5 0" />
+                <rotate value3="0 0 1.5708" />
             </transforms> 
 
             <children>             
@@ -1198,8 +1177,8 @@
 
         <node id="tableTop">
             <transforms>
-                <rotate value3="0.0 1.5708 0.0" />
                 <translate value3="0.0 0.94 0.0"/>
+                <rotate value3="0.0 1.5708 0.0" />
             </transforms>
 
             <children>
@@ -1295,8 +1274,8 @@
         <node id="chairBack">
             <transforms>
                 <translate value3="0.065 0.70 -0.45"/>
-                <scale value3="1.0 0.08 1.0"/>
                 <rotate value3="0.0 0.0 1.5708" />
+                <scale value3="1.0 0.08 1.0"/>
             </transforms>
 
             <children>
@@ -1308,8 +1287,8 @@
 
         <node id="chair1">
             <transforms>
-                <rotate value3="0 -3.8798 0" />
                 <translate value3="3.1 0.0 6"/>
+                <rotate value3="0 -3.8798 0" />
             </transforms>   
 
             <materialref id="candleFlameApp" />
@@ -1326,8 +1305,8 @@
 
         <node id="chair2">
             <transforms>
-                <rotate value3="0 3.1416 0" />
                 <translate value3="2.3 0.0 3.5"/>
+                <rotate value3="0 3.1416 0" />
             </transforms>   
 
             <materialref id="candleFlameApp" />
@@ -1663,8 +1642,8 @@
 
         <node id="flower2">
             <transforms>
-                <rotate value3="0 1.0472 0" />
                 <translate value3="-0.1 1.4 0.0"/>
+                <rotate value3="0 1.0472 0" />
             </transforms>
 
             <children>             
@@ -1696,8 +1675,8 @@
         
         <node id="sofa1">
             <transforms>
-                <rotate value3="0.0 -1.0472 0.0" />
                 <translate value3="-3 0.0 -5.7" />
+                <rotate value3="0.0 -1.0472 0.0" />
             </transforms>   
 
             <materialref id="sofaApp" />
@@ -1715,8 +1694,8 @@
             
         <node id="upperBackSofa">
             <transforms>
-                <rotate value3="0.0 0.0 1.5708" />
                 <translate value3="0.0 1.0 0.0"/>
+                <rotate value3="0.0 0.0 1.5708" />
             </transforms>
 
             <children>
@@ -1788,8 +1767,8 @@
 
         <node id="leftArmSofa">
             <transforms>
-                <rotate value3="0.0 1.5708 0.0"/>
                 <translate value3="0.2 0.78 -0.8"/>
+                <rotate value3="0.0 1.5708 0.0"/>
             </transforms>
 
             <children>
@@ -1799,8 +1778,8 @@
 
         <node id="rightArmSofa">
             <transforms>
-                <rotate value3="0.0 1.5708 0.0"/>
                 <translate value3="0.2 0.78 1.0"/>
+                <rotate value3="0.0 1.5708 0.0"/>
             </transforms>
 
             <children>
@@ -1810,8 +1789,8 @@
 
         <node id="sofa2">
             <transforms>
-                <rotate value3="0.0 3.927 0.0" />
                 <translate value3="3 0.0 -5.7" />
+                <rotate value3="0.0 3.927 0.0" />
             </transforms>   
 
             <materialref id="sofaApp" />
@@ -1896,8 +1875,8 @@
 
         <node id="leftSideCoffeeTable">
             <transforms>
-                <scale value3="0.465 1.0 1.0" />
                 <rotate value3="0.0 0.0 1.5708" />
+                <scale value3="0.465 1.0 1.0" />
             </transforms>   
 
             <children>             
@@ -1908,8 +1887,8 @@
         <node id="rightSideCoffeeTable">
             <transforms>
                 <translate value3="2.0 0.0 0.0" />
-                <scale value3="0.465 1.0 1.0" />
                 <rotate value3="0.0 0.0 1.5708" />
+                <scale value3="0.465 1.0 1.0" />
             </transforms>   
 
             <children>             
@@ -2195,8 +2174,8 @@
 
         <node id="fork2">
             <transforms>
-                <rotate value3="0 4.2760667 -0.29670667"/>
                 <translate value3="-1 1.28 3.7"/>
+                <rotate value3="0 4.2760667 -0.29670667"/>
             </transforms>
             <children>
                 <noderef id="fork"/>
@@ -2266,9 +2245,9 @@
 
         <node id="tine">
             <transforms>
-                <scale value3="1 1 1" />
-                <rotate value3="0 0 1.5708"/>
                 <translate value3="-0.7 -0.01 1.1"/>
+                <rotate value3="0 0 1.5708"/>
+                <scale value3="1 1 1" />
             </transforms>
 
             <children>
@@ -2280,9 +2259,9 @@
 
         <node id="neck">
             <transforms>
+                <translate value3="-0.2 0 0.15" />
                 <rotate value3="0 0 1.5708"/>
                 <scale value3="0.18 2 1" />
-                <translate value3="-0.2 0 0.15" />
             </transforms>
 
             <children>
@@ -2480,8 +2459,8 @@
         <node id="paintingFrame2">
             <transforms>
                 <translate value3="2 2.3 7.5" />
-                <scale value3="1.3 1.3 1.3" />
                 <rotate value3="0 1.5708 0" />
+                <scale value3="1.3 1.3 1.3" />
             </transforms>
             <children>
                 <noderef id="pFrame2" />
@@ -2567,9 +2546,9 @@
 
         <node id="vinylPlayerHolderBoxSide3">
             <transforms>
-                <scale value3="1 1 0.5" />
-                <rotate value3="1.5708 0 0" />
                 <translate value3="-0.9 1.8 -0.9"/>
+                <rotate value3="1.5708 0 0" />
+                <scale value3="1 1 0.5" />
             </transforms>
             <children>
                 <noderef id="vinylPlayerHolderBoxSide" />
@@ -2578,9 +2557,9 @@
 
         <node id="vinylPlayerHolderBoxSide4">
             <transforms>
-                <scale value3="1 1 0.5" />
-                <rotate value3="1.5708 0 0" />
                 <translate value3="-0.9 1.8 0.77"/>
+                <rotate value3="1.5708 0 0" />
+                <scale value3="1 1 0.5" />
             </transforms>
             <children>
                 <noderef id="vinylPlayerHolderBoxSide" />
@@ -2742,8 +2721,8 @@
         <node id="vinylNeedle">
             <materialref id="blackApp"/>
             <transforms>
-                <rotate value3="1.5708 0 -0.95"/>
                 <translate value3="0.48 0.42 0.35"/>
+                <rotate value3="1.5708 0 -0.95"/>
             </transforms>
             <children>
                 <primitive>
@@ -2808,8 +2787,8 @@
 
         <node id="grass">
             <transforms>
-                <rotate value3="-1.5708 0 0" />
                 <translate value3="-50 -1.8 50" />
+                <rotate value3="-1.5708 0 0" />
             </transforms>
 
             <materialref id="grassApp"/>
@@ -2824,8 +2803,8 @@
 <!--
         <node id="bedSeat">
             <transforms>
-                <rotate value3="0.0 1.5708 0.0" />
                 <translate value3="0.0 0 0.0"/>
+                <rotate value3="0.0 1.5708 0.0" />
             </transforms>
 
             <children>
@@ -2849,8 +2828,8 @@
 
         <node id="bed">
             <transforms>
-                <rotate value3="0 3.1416 0" />
                 <translate value3="10 6.05 8.45" />
+                <rotate value3="0 3.1416 0" />
             </transforms>
 
             <materialref id="sofaApp"/>
@@ -2863,8 +2842,8 @@
 
         <node id="bedSideTable">
             <transforms>
-                <scale value3="0.4 1.1 1" />
                 <translate value3="10.8 6.05 12.8" />
+                <scale value3="0.4 1.1 1" />
             </transforms>
                 
             <children>             
@@ -2939,9 +2918,9 @@
 
         <node id="bedSideLamp">
             <transforms>
-                <scale value3="0.5 0.5 0.5" />
                 <translate value3="10.7 7.12 8.8" />
                 <rotate value3="0.0 -1.2 0" />
+                <scale value3="0.5 0.5 0.5" />
             </transforms>   
 
             <materialref id="lampApp" />

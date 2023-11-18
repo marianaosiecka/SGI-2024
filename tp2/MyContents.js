@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { MyAxis } from './MyAxis.js';
 import { MyFileReader } from './parser/MyFileReader.js';
-import { MyGlobals } from './auxiliar/MyGlobals.js';
 import { MyTexture } from './auxiliar/MyTexture.js';
 import { MyMaterial } from './auxiliar/MyMaterial.js';
 import { MyNode } from './auxiliar/MyNode.js';
@@ -111,13 +110,13 @@ class MyContents  {
         // SCENE GLOBALS
         let dataOptions = data.options;
         let fogData = data.fog;
-        this.app.scene.add(new THREE.AmbientLight(dataOptions.ambient));
+        this.app.scene.add(new THREE.AmbientLight(dataOptions.ambient, 0.05));
         this.app.scene.background = dataOptions.background;
         this.app.scene.fog = new THREE.Fog(fogData.color, fogData.near, fogData.far);
 
         // VISIT SCENE NODE CHILDREN
         let sceneNode = data.nodes.scene;
-        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations, this.app);
+        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations);
         myScene.visitChildren(sceneNode.children, this.materials);
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);

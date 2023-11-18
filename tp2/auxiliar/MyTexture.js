@@ -7,6 +7,7 @@ class MyTexture {
      * @param {MyApp} app the application object
      */
     constructor(textureData) {
+        console.log(textureData)
         this.id = textureData.id;
         this.filepath = textureData.filepath;
         this.isVideo = textureData.isVideo;
