@@ -20,6 +20,7 @@ class MySpotLight {
         
         if(!node.enabled)
             this.light.intensity = 0;
+        this.enabled = node.enabled
     }
 }
 

@@ -5,11 +5,12 @@ import { MyPointLight } from "./lights/MyPointLight.js";
 import { MySpotLight } from "./lights/MySpotLight.js";
 
 class MyNode {
-    constructor(id, material, transformations, nodesMap = new Map()) {
+    constructor(id, material, transformations, lights, nodesMap = new Map()) {
         this.id = id;
         this.material = material;
         this.transformations = transformations;
         this.getTransformationMatrix();
+        this.lights = lights;
         this.nodesMap = nodesMap;
         this.group = new THREE.Group();
     }
@@ -27,7 +28,7 @@ class MyNode {
               
             
             if(child.type === "node"){
-                childNode = new MyNode(child.id, childMaterial, child.transformations, this.nodesMap)
+                childNode = new MyNode(child.id, childMaterial, child.transformations, this.lights, this.nodesMap)
 
                 if(!this.nodesMap.has(child.id)){
                     childNode.visitChildren(child.children, materials)
@@ -55,16 +56,19 @@ class MyNode {
                 childNode.updateMatrixWorld();
                 spotlightHelper.update();
                 this.group.add(spotlightHelper)*/
+                this.lights.set(child.id, spotlight)
             }
             else if(child.type === "directionallight"){
                 let directionallight = new MyDirectionalLight(child)
                 childNode = directionallight.light
                 this.group.add(childNode)
+                this.lights.set(child.id, directionallight)
             }
             else if(child.type === "pointlight"){
                 let pointlight = new MyPointLight(child)
                 childNode = pointlight.light
                 this.group.add(childNode)
+                this.lights.set(child.id, pointlight)
             }
 
         }

@@ -36,6 +36,7 @@ class MyDirectionalLight {
         }
         if(!node.enabled)
             this.light.intensity = 0;
+        this.enabled = node.enabled;
 
         //console.log("luz", this.light)
     }

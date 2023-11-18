@@ -37,6 +37,14 @@ class MyGuiInterface  {
         cameraFolder.open()
 
         // LIGHTS
+        const lightsFolder = this.datgui.addFolder('Lights');
+        console.log(this.contents.lights)
+        for (let [lightName, light] of this.contents.lights.entries()) {
+            const defaultValue = light.enabled;
+            lightsFolder.add(light, 'enabled').name(lightName).setValue(defaultValue);
+        };
+
+
     }
 }
 

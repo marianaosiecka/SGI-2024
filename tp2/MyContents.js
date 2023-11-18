@@ -27,6 +27,7 @@ class MyContents  {
         this.textures = new Map();
         this.cameras = new Map();
         this.skyboxes = new Map();
+        this.lights = new Map();
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/scene.xml");	
@@ -115,7 +116,7 @@ class MyContents  {
 
         // VISIT SCENE NODE CHILDREN
         let sceneNode = data.nodes.scene;
-        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations);
+        let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations, this.lights);
         myScene.visitChildren(sceneNode.children, this.materials);
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
