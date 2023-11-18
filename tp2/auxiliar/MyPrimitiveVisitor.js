@@ -20,7 +20,7 @@ class MyPrimitiveVisitor {
             case "box": {
                 let boxGeometry = new MyBox(this.data);
                 geometry = boxGeometry.box;
-                material.setRepeat(boxGeometry.boxWidth, boxGeometry.boxDepth)
+                material.setRepeat(boxGeometry.boxDepth, boxGeometry.boxWidth)
                 break;
             }
             case "cylinder": {
