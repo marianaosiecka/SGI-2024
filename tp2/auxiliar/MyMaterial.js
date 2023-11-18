@@ -19,6 +19,9 @@ class MyMaterial {
         
         let flatShading = false;
         if (materialData.shading == "flat") flatShading = true;
+
+        this.transparent = (materialData.color.a != 1);
+        //console.log(this.transparent)
  
         this.material = new THREE.MeshPhongMaterial({ color: materialData.color, flatShading: flatShading, specular: materialData.specular, shininess: materialData.shininess, emissive: materialData.emissive, wireframe: this.wireframe});
 
@@ -37,6 +40,11 @@ class MyMaterial {
 
         if(this.specularref != null) {
             this.material.specularMap = this.specularTexture;
+        }
+
+        if(this.transparent){
+            this.material.transparent = true;
+            this.material.opacity = materialData.color.a;
         }
     }
 

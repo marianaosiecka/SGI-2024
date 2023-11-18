@@ -6,11 +6,11 @@ import { MySpotLight } from "./lights/MySpotLight.js";
 
 class MyNode {
     constructor(id, material, transformations, nodesMap = new Map()) {
-        console.log("IDDDDD", id, nodesMap)
+        console.log(id)
         this.id = id;
         this.material = material;
         this.transformations = transformations;
-
+        this.getTransformationMatrix();
         this.nodesMap = nodesMap;
         this.group = new THREE.Group();
     }
@@ -30,12 +30,12 @@ class MyNode {
             
             if(child.type === "node"){
                 childNode = new MyNode(child.id, childMaterial, child.transformations, this.nodesMap)
-                
+
                 if(!this.nodesMap.has(child.id)){
                     childNode.visitChildren(child.children, materials)
                     this.nodesMap.set(childNode.id, childNode.group)
                 }
-                else {
+               else {
                     childNode.group = this.nodesMap.get(child.id).clone();
                 }
                 this.group.add(childNode.group)
@@ -69,27 +69,38 @@ class MyNode {
                 childNode = pointlight.light
                 this.group.add(childNode)
             }
+
         }
 
-        for(let key in this.transformations){
-            let transformation = this.transformations[key]
+        this.group.applyMatrix4(this.transformationMatrix);
+    }
+
+
+    getTransformationMatrix(){
+        this.transformationMatrix = new THREE.Matrix4();
+        this.transformationMatrix.identity();
+
+        for (let key in this.transformations){
+            let transformation = this.transformations[key];
             if(transformation.type == "T"){
-                this.group.position.set(this.group.position.x + transformation.translate[0],
-                                        this.group.position.y + transformation.translate[1],
-                                        this.group.position.z + transformation.translate[2])
+                let translationMatrix = new THREE.Matrix4();
+                translationMatrix.makeTranslation(transformation.translate[0], transformation.translate[1], transformation.translate[2]);
+                this.transformationMatrix.multiply(translationMatrix);
             }
-            else if (transformation.type == "R"){
-                this.group.rotation.set(this.group.rotation.x + transformation.rotation[0], 
-                                        this.group.rotation.y + transformation.rotation[1],
-                                        this.group.rotation.z + transformation.rotation[2])
-            }
+    
             else if(transformation.type == "S"){
-                this.group.scale.set(this.group.scale.x * transformation.scale[0],
-                                    this.group.scale.y * transformation.scale[1],
-                                    this.group.scale.z * transformation.scale[2])
+                let scaleMatrix = new THREE.Matrix4();
+                scaleMatrix.makeScale(transformation.scale[0], transformation.scale[1], transformation.scale[2]);
+                this.transformationMatrix.multiply(scaleMatrix);
             }
-        }
-    }    
+    
+            else if(transformation.type == "R"){
+                let rotationMatrix = new THREE.Matrix4();
+                rotationMatrix.makeRotationFromEuler(new THREE.Euler(transformation.rotation[0], transformation.rotation[1], transformation.rotation[2]));
+                this.transformationMatrix.multiply(rotationMatrix);
+            }
+        }        
+    }
 }
 
 export { MyNode };
