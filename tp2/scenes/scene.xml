@@ -97,14 +97,8 @@
         <texture id="newspaperTex" filepath="scenes/textures/newspaper_texture.png" />
         <texture id="carpetTex" filepath="scenes/textures/carpet_texture.png" />
 
-        <texture id="rugTex" filepath="scenes/textures/rug.jpg" />
-        <texture id="rugBumpTex" filepath="scenes/textures/rug_bump_texture.png" />
-
         <texture id="grassTex" filepath="scenes/textures/grass.jpg" />
         <texture id="grassBumpTex" filepath="scenes/textures/grass_bump_texture.png" />
-
-        <texture id="dirtTex" filepath="scenes/textures/dirt.jpg" />
-        <texture id="dirtBumpTex" filepath="scenes/textures/dirt_bump_texture.png" />
 
         <texture id="porchTex" filepath="scenes/textures/porch.jpg" />
         <texture id="deckTex" filepath="scenes/textures/deck.jpg" />
@@ -115,7 +109,7 @@
         <texture id="extWallTex" filepath="scenes/textures/ext_wall.jpg" />
         <texture id="extWallBumpTex" filepath="scenes/textures/ext_wall_bump_texture.png" />
 
-
+        <texture id="fireVideoTex" filepath="scenes/textures/videos/fire.mp4" isVideo="true" />
 
     </textures>
 
@@ -144,7 +138,6 @@
             color="1.0 0.98 0.93 1.0"
             specular="0 0 0 0"
             shininess="0"
-            twosided="true"
              />
 
         <material id="floorApp"
@@ -558,6 +551,23 @@
             texlength_t="0.3"
             twosided="true" />
 
+        <material id="fireplaceApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0 0 1.0"
+            specular="1 1 1 0"
+            shininess="12"
+            twosided="true" />
+        
+        <material id="fireVideoApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1 1 1 1"
+            specular="1 1 1 0"
+            shininess="10"
+            twosided="true"
+            textureref="fireVideoTex"
+            texlength_s="1.8"
+            texlength_t="1.2" />
+
     </materials>
 
 
@@ -615,13 +625,10 @@
                 <noderef id="extWallLampFRight"/>
                 <noderef id="extWallLampBLeft"/>
                 <noderef id="extWallLampBRight"/>
-                <noderef id="ceilingLampFLeft"/>
-                <noderef id="ceilingLampFRight"/>
-                <noderef id="ceilingLampBLeft"/>
-                <noderef id="ceilingLampBRight"/>
-                <noderef id="ceilingLampSecondFloor"/>
+                <noderef id="ceilingLampCenter"/>
                 <noderef id="roofFront" />
                 <noderef id="roofBack" />
+                <noderef id="fireplace" />
 
 
                 <pointlight id="lightTop" enabled="true" 
@@ -670,16 +677,12 @@
                     position="0 10.0 -40" 
                 />
 			            
-                <!--<directionallight id="light2" enabled="true" 
+                <directionallight id="light1" enabled="true" 
                     color="1.0 1 1 1" 
-                    intensity=".5"
+                    intensity="0.5"
                     castshadow="false"
                     position="0 1 0" 
-                />-->
-                 <directionallight id="light3" enabled="true" 
-                    color="1 1 1 1" 
-                    intensity="0.5" 
-                    position="0 1 0" />
+                />
                 
             </children> 
         </node>
@@ -1436,9 +1439,9 @@
                 <spotlight id="lampTableSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="4"
+                    intensity="5"
                     distance="7"
-                    angle="0.7854"
+                    angle="0.854"
                     penumbra="1.0"
                     decay="0.5"
                     castshadow="true"
@@ -1821,10 +1824,10 @@
                 <spotlight id="lampSofaSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="3"
+                    intensity="4.8"
                     distance="6"
-                    angle="0.7854"
-                    penumbra="1.0"
+                    angle="0.6854"
+                    penumbra="1.8"
                     decay="0.2"
                     castshadow="true"
                     position="0 -0.5 0" 
@@ -2096,14 +2099,14 @@
                 <spotlight id="floorLampSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="0"
+                    intensity="6"
                     distance="6"
-                    angle="0.07854"
-                    penumbra="2"
+                    angle="0.7854"
+                    penumbra="1.8"
                     decay="0.2"
                     castshadow="true"
                     position="0 2.94 1.998" 
-                    target="0.0 0.0 3.5"
+                    target="0.0 0.0 3"
                     shadowfar="27.0"
                     shadowmapsize="1024"
                 />
@@ -2322,7 +2325,7 @@
 
         <node id="photographyFrame1">
             <transforms>
-                <translate value3="3.8 2.8 -7.5" />
+                <translate value3="3.8 2.8 -7.9" />
                 <rotate value3="0 -1.5708 0" />
             </transforms>
             <children>
@@ -2356,7 +2359,7 @@
 
         <node id="photographyFrame2">
             <transforms>
-                <translate value3="5.8 3.4 -7.5" />
+                <translate value3="5.8 3.4 -7.9" />
                 <rotate value3="0 -1.5708 0" />
             </transforms>
             <children>
@@ -2390,7 +2393,7 @@
 
         <node id="photographyFrame3">
             <transforms>
-                <translate value3="-3.7 3.2 -7.5" />
+                <translate value3="-3.7 3.2 -7.9" />
                 <rotate value3="0 -1.5708 0" />
             </transforms>
             <children>
@@ -2424,7 +2427,7 @@
 
         <node id="paintingFrame1">
             <transforms>
-                <translate value3="-3.1 2.7 7.5" />
+                <translate value3="-3.1 2.7 7.9" />
                 <rotate value3="0 1.5708 0" />
             </transforms>
             <children>
@@ -2458,7 +2461,7 @@
 
         <node id="paintingFrame2">
             <transforms>
-                <translate value3="2 2.3 7.5" />
+                <translate value3="2 2.3 7.9" />
                 <rotate value3="0 1.5708 0" />
                 <scale value3="1.3 1.3 1.3" />
             </transforms>
@@ -2800,243 +2803,12 @@
             </children>
         </node>
 
-<!--
-        <node id="bedSeat">
-            <transforms>
-                <translate value3="0.0 0 0.0"/>
-                <rotate value3="0.0 1.5708 0.0" />
-            </transforms>
-
-            <children>
-                <primitive>
-                    <box xyz1="0.0 0.0 0.0" xyz2="3.5 1 2.2" />
-                </primitive>
-            </children>
-        </node>
-
-        <node id="bedBack">
-            <transforms>
-                <translate value3="0.0 0 0.0"/>
-            </transforms>
-
-            <children>
-                <primitive>
-                    <box xyz1="0.0 0.0 0.0" xyz2="2.2 2 0.4" />
-                </primitive>
-            </children>
-        </node>
-
-        <node id="bed">
-            <transforms>
-                <translate value3="10 6.05 8.45" />
-                <rotate value3="0 3.1416 0" />
-            </transforms>
-
-            <materialref id="sofaApp"/>
-                
-            <children>             
-                <noderef id="bedSeat" />
-                <noderef id="bedBack" />
-            </children>  
-        </node>
-
-        <node id="bedSideTable">
-            <transforms>
-                <translate value3="10.8 6.05 12.8" />
-                <scale value3="0.4 1.1 1" />
-            </transforms>
-                
-            <children>             
-                <noderef id="coffeeTable" />
-            </children>  
-        </node>
-
-        <node id="bedSideLampFoot">
-            <transforms>
-                <scale value3="0.7 1 0.7" />
-            </transforms>   
-
-            <children>
-                <noderef id="floorLampFoot" />
-            </children>
-        </node>
-
-        <node id="bedSideLampArm1">
-            <transforms>
-                <scale value3="1 0.4 1" />
-            </transforms>   
-
-            <children>
-                <noderef id="floorLampArm1" />
-            </children>
-        </node>
-
-        <node id="bedSideLampArm2">
-            <transforms>
-                <translate value3="0 -1.35 -1.4" />
-                <rotate value3="0.5 0 0" />
-                <scale value3="1 1 0.4" />
-            </transforms>   
-
-            <children>
-                <noderef id="floorLampArm2" />
-            </children>
-        </node>
-
-        <node id="bedSideLampArm3">
-            <transforms>
-                <translate value3="0 -1.34 -0.39" />
-                <scale value3="0.8 0.8 0.8" />
-            </transforms>   
-
-            <children>  
-                <noderef id="floorLampArm3"/>
-            </children> 
-        </node>
-
-        <node id="bedSideLampHead">
-            <transforms>
-                <translate value3="0 -1.34 -0.39" />
-                <scale value3="0.8 0.8 0.8" />
-            </transforms>   
-
-            <children>             
-                <noderef id="floorLampHead"/>
-            </children> 
-        </node>
-
-        <node id="bedSideLampBulb">
-            <transforms>
-                <translate value3="0 -1.34 -0.39" />
-                <scale value3="0.8 0.8 0.8" />
-            </transforms>   
-
-            <children>             
-                <noderef id="floorLampBulb"/>
-            </children> 
-        </node>
-
-        <node id="bedSideLamp">
-            <transforms>
-                <translate value3="10.7 7.12 8.8" />
-                <rotate value3="0.0 -1.2 0" />
-                <scale value3="0.5 0.5 0.5" />
-            </transforms>   
-
-            <materialref id="lampApp" />
-
-            <children>
-                <noderef id="bedSideLampFoot" />
-                <noderef id="bedSideLampArm1" />
-                <noderef id="bedSideLampArm2" />
-                <noderef id="bedSideLampArm3" />
-                <noderef id="bedSideLampHead" />
-                <noderef id="bedSideLampBulb" />
-
-                <spotlight id="floorLampSpotLight"
-                    enabled="true" 
-                    color="0.988 0.933 0.655 1.0" 
-                    intensity="3"
-                    distance="3"
-                    angle="0.5236"
-                    penumbra="1.0"
-                    decay="0.6"
-                    castshadow="true"
-                    position="0 2.94 1.998" 
-                    target="0.0 0.0 3.5"
-                    shadowfar="27.0"
-                    shadowmapsize="1024"
-                />
-            </children>
-        </node>        
-        -->
         <node id="wallLampFLeft">
             <transforms>
                 <translate value3="-7.47 3.6 4"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-            </children>
-        </node>
-
-        <node id="wallLampFRight">
-            <transforms>
-                <translate value3="-7.47 3.6 -4"/>
-            </transforms>
-            <children>
-                <noderef id="wallLamp"/>
-            </children>
-        </node>
-
-        <node id="wallLampBRight">
-            <transforms>
-                <translate value3="7.47 3.6 4"/>
-                <rotate value3="0 3.1416 0"/>
-            </transforms>
-            <children>
-                <noderef id="wallLamp"/>
-            </children>
-        </node>
-
-        <node id="wallLampBLeft">
-            <transforms>
-                <translate value3="7.47 3.6 -4"/>
-                <rotate value3="0 3.1416 0"/>
-            </transforms>
-            <children>
-                <noderef id="wallLamp"/>
-            </children>
-        </node>
-       
-        <node id="extWallLampBRight">
-            <transforms>
-                <translate value3="-7.52 3.6 4"/>
-                <rotate value3="0 3.1416 0"/>
-            </transforms>
-            <children>
-                <noderef id="wallLamp"/>
-            </children>
-        </node>
-
-        <node id="extWallLampBLeft">
-            <transforms>
-                <translate value3="-7.52 3.6 -4"/>
-                <rotate value3="0 3.1416 0"/>
-            </transforms>
-            <children>
-                <noderef id="wallLamp"/>
-            </children>
-        </node>
-
-        <node id="extWallLampFLeft">
-            <transforms>
-                <translate value3="7.52 3.6 4"/>
-                <rotate value3="0 0 0"/>
-            </transforms>
-            <children>
-                <noderef id="wallLamp"/>
-            </children>
-        </node>
-
-        <node id="extWallLampFRight">
-            <transforms>
-                <translate value3="7.52 3.6 -4"/>
-                <rotate value3="0 0 0"/>
-            </transforms>
-            <children>
-                <noderef id="wallLamp"/>
-            </children>
-        </node>
-
-        <node id="wallLamp">
-            <materialref id="wallLampApp"/>
-
-            <children>
-                <noderef id="wallLampFront"/>
-                <noderef id="wallLampBottom"/>
-                <noderef id="wallLampLeft"/>
-                <noderef id="wallLampRight"/>
-
                 <spotlight id="wallLampSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
@@ -3051,6 +2823,184 @@
                     shadowfar="27"
                     shadowmapsize="1024"
                 />
+            </children>
+        </node>
+
+        <node id="wallLampFRight">
+            <transforms>
+                <translate value3="-7.47 3.6 -4"/>
+            </transforms>
+            <children>
+                <noderef id="wallLamp"/>
+                <spotlight id="wallLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="6"
+                    distance="3"
+                    angle="0.7854"
+                    penumbra="1.0"
+                    decay="0.8"
+                    castshadow="true"
+                    position="0 0.1 0" 
+                    target="0 5 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>
+
+        <node id="wallLampBRight">
+            <transforms>
+                <translate value3="7.47 3.6 4"/>
+                <rotate value3="0 3.1416 0"/>
+            </transforms>
+            <children>
+                <noderef id="wallLamp"/>
+                <spotlight id="wallLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="6"
+                    distance="3"
+                    angle="0.7854"
+                    penumbra="1.0"
+                    decay="0.8"
+                    castshadow="true"
+                    position="0 0.1 0" 
+                    target="0 5 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>
+
+        <node id="wallLampBLeft">
+            <transforms>
+                <translate value3="7.47 3.6 -4"/>
+                <rotate value3="0 3.1416 0"/>
+            </transforms>
+            <children>
+                <noderef id="wallLamp"/>
+                <spotlight id="wallLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="6"
+                    distance="3"
+                    angle="0.7854"
+                    penumbra="1.0"
+                    decay="0.8"
+                    castshadow="true"
+                    position="0 0.1 0" 
+                    target="0 5 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>
+       
+        <node id="extWallLampBRight">
+            <transforms>
+                <translate value3="-7.52 3.6 4"/>
+                <rotate value3="0 3.1416 0"/>
+            </transforms>
+            <children>
+                <noderef id="wallLamp"/>
+                <spotlight id="wallLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="6"
+                    distance="3"
+                    angle="0.7854"
+                    penumbra="1.0"
+                    decay="0.8"
+                    castshadow="true"
+                    position="0 0.1 0" 
+                    target="0 5 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>
+
+        <node id="extWallLampBLeft">
+            <transforms>
+                <translate value3="-7.52 3.6 -4"/>
+                <rotate value3="0 3.1416 0"/>
+            </transforms>
+            <children>
+                <noderef id="wallLamp"/>
+                <spotlight id="wallLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="6"
+                    distance="3"
+                    angle="0.7854"
+                    penumbra="1.0"
+                    decay="0.8"
+                    castshadow="true"
+                    position="0 0.1 0" 
+                    target="0 5 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>
+
+        <node id="extWallLampFLeft">
+            <transforms>
+                <translate value3="7.52 3.6 4"/>
+                <rotate value3="0 0 0"/>
+            </transforms>
+            <children>
+                <noderef id="wallLamp"/>
+                <spotlight id="wallLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="6"
+                    distance="3"
+                    angle="0.7854"
+                    penumbra="1.0"
+                    decay="0.8"
+                    castshadow="true"
+                    position="0 0.1 0" 
+                    target="0 5 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>
+
+        <node id="extWallLampFRight">
+            <transforms>
+                <translate value3="7.52 3.6 -4"/>
+                <rotate value3="0 0 0"/>
+            </transforms>
+            <children>
+                <noderef id="wallLamp"/>
+                <spotlight id="wallLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="6"
+                    distance="3"
+                    angle="0.7854"
+                    penumbra="1.0"
+                    decay="0.8"
+                    castshadow="true"
+                    position="0 0.1 0" 
+                    target="0 5 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+            </children>
+        </node>
+
+        <node id="wallLamp">
+            <materialref id="wallLampApp"/>
+
+            <children>
+                <noderef id="wallLampFront"/>
+                <noderef id="wallLampBottom"/>
+                <noderef id="wallLampLeft"/>
+                <noderef id="wallLampRight"/>
             </children>
         </node>
 
@@ -3110,48 +3060,55 @@
         
 
 
-        <!-- CEILING LAMPS -->
-        <node id="ceilingLampBLeft">
+        <!-- CEILING LAMP -->
+
+        <node id="ceilingLampCenter">
             <transforms>
-                <translate value3="-5 6 4"/>
+                <translate value3="-0.3 5.7 -0.3" />
             </transforms>
+
             <children>
                 <noderef id="ceilingLamp"/>
+
+                <spotlight id="ceilingLampSpotLight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="12"
+                    distance="6"
+                    angle="0.8"
+                    penumbra="1.0"
+                    decay="0.2"
+                    castshadow="true"
+                    position="0 -1 0" 
+                    target="0 -6 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+
+                <spotlight id="ceilingLampHighlight"
+                    enabled="true" 
+                    color="0.972 0.929 0.714 1.0" 
+                    intensity="10"
+                    distance="6.5"
+                    angle="0.2"
+                    penumbra="1.0"
+                    decay="0.05"
+                    castshadow="true"
+                    position="0 -6 0" 
+                    target="0 0 0"
+                    shadowfar="27"
+                    shadowmapsize="1024"
+                />
+
             </children>
         </node>
-
-        <node id="ceilingLampBRight">
-            <transforms>
-                <translate value3="-5 6 -4"/>
-            </transforms>
-            <children>
-                <noderef id="ceilingLamp"/>
-            </children>
-        </node>
-
-        <node id="ceilingLampFLeft">
-            <transforms>
-                <translate value3="5 6 4"/>
-            </transforms>
-            <children>
-                <noderef id="ceilingLamp"/>
-            </children>
-        </node>
-
-        <node id="ceilingLampFRight">
-            <transforms>
-                <translate value3="5 6 -4"/>
-            </transforms>
-            <children>
-                <noderef id="ceilingLamp"/>
-            </children>
-        </node>        
 
         <node id="ceilingLamp">
             <transforms>
-                <scale value3="1.1 1 1.1" />
                 <rotate value3="0 0 -1.5708"/>
+                <scale value3="0.8 1.4 1.2" />
             </transforms>
+
             <materialref id="ceilingLampApp"/>
 
             <children>
@@ -3162,21 +3119,6 @@
                 <noderef id="ceilingLampLeft"/>
                 <noderef id="ceilingLampRight"/>
                 <noderef id="ceilingLampLightBulb"/>
-
-                <spotlight id="ceilingLampSpotLight"
-                    enabled="true" 
-                    color="0.972 0.929 0.714 1.0" 
-                    intensity="12"
-                    distance="8"
-                    angle="0.8"
-                    penumbra="1.0"
-                    decay="0.8"
-                    castshadow="true"
-                    position="0 0 0" 
-                    target="20 0 0"
-                    shadowfar="27"
-                    shadowmapsize="1024"
-                />
             </children>
         </node>
 
@@ -3254,10 +3196,13 @@
         </node>
 
         <node id="ceilingLampLightBulb">
-            <materialref id="lightBulbApp"/>
             <transforms>
-                <translate value3="0.05 0 0.05"/>
+                <translate value3="0.1 0 0.05"/>
+                <scale value3="1 0.8 0.8" />
             </transforms>
+
+            <materialref id="bulbApp"/>
+
             <children>
                 <primitive>
                     <box xyz1="0 0 0" xyz2="0.15 0.4 0.48"/>
@@ -3265,84 +3210,104 @@
             </children>
         </node>
 
-        <!--
-        <node id="rug">
-             <transforms>
-                <translate value3="6 6.05 8.05"/>
-            </transforms>   
-
-            <materialref id="rugApp" />
-
-            <children>             
-                <primitive>
-                    <box xyz1="0.0 0.0 0.0" xyz2="6 0.06 4.0" />
-                </primitive>
-            </children> 
-        </node>
-
-        <node id="ceilingLampSecondFloor">
-            <transforms>
-                <rotate value3="0 0 -1.5708" />
-                <translate value3="8 10.2 12"/>
-            </transforms>
-
-            <materialref id="ceilingLampApp"/>
-
+        <node id="fireplaceLeftSide">
             <children>
-                <noderef id="ceilingLampTop"/>
-                <noderef id="ceilingLampFront"/>
-                <noderef id="ceilingLampBack"/>
-                <noderef id="ceilingLampBottom"/>
-                <noderef id="ceilingLampLeft"/>
-                <noderef id="ceilingLampRight"/>
-                <noderef id="ceilingLampLightBulb"/>
-
-                <spotlight id="ceilingLampSpotLight"
-                    enabled="true" 
-                    color="0.972 0.929 0.714 1.0" 
-                    intensity="10"
-                    distance="6"
-                    angle="1.0472"
-                    penumbra="1.0"
-                    decay="0.8"
-                    castshadow="true"
-                    position="0 0 0" 
-                    target="20 0 0"
-                    shadowfar="27"
-                    shadowmapsize="1024"
-                />
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 1.5 1.3"/>
+                </primitive>
             </children>
         </node>
 
-        <node id="roofFront">
+        <node id="fireplaceRightSide">
             <transforms>
-                <translate value3="2.5 11.5 -8"/>
-                <rotate value3="0 0 -0.5236" />
-            </transforms>   
+                <translate value3="1.8 0 0"/>
+            </transforms>
 
-            <materialref id="rugApp" />
-
-            <children>             
+            <children>
                 <primitive>
-                    <box xyz1="0.0 0.0 0.0" xyz2="11.5 0.2 16" />
+                    <box xyz1="0 0 0" xyz2="0.3 1.5 1.3"/>
                 </primitive>
-            </children> 
+            </children>
         </node>
 
-        <node id="roofBack">
+        <node id="fireplaceTop">
             <transforms>
-                <translate value3="-7.5 6 -8"/>
-                <rotate value3="0 0 0.5236" />
-            </transforms>   
+                <translate value3="0 1.5 0"/>
+            </transforms>
 
-            <materialref id="rugApp" />
-
-            <children>             
+            <children>
                 <primitive>
-                    <box xyz1="0.0 0.0 0.0" xyz2="11.5 0.2 16" />
+                    <box xyz1="0 0 0" xyz2="2.1 0.1 1.3"/>
                 </primitive>
-            </children> 
+            </children>
         </node>
-        -->
+
+        <node id="fireplaceBottom">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="2.1 0.1 1.3"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="fireplaceBack">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="2.1 1.5 0.1"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="fireplaceChimney">
+            <transforms>
+                <translate value3="0.3 4.5 0.4"/>
+            </transforms>
+
+            <children>
+                <primitive>
+                    <cylinder top="0.18" base="0.18" height="6" slices="40" stacks="1" capsclose="true"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="fireplaceFirePlane">
+            <transforms>
+                <translate value3="0 0 6"/>
+            </transforms>
+            
+            <materialref id="fireVideoApp" />
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="1.8 1.2"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="fireplace">
+            <transforms>
+                <translate value3="-1 0.1 -8"/>
+            </transforms>
+
+            <materialref id="fireplaceApp"/>
+
+            <children>
+                <noderef id="fireplaceLeftSide" />
+                <noderef id="fireplaceRightSide" />
+                <noderef id="fireplaceTop" />
+                <noderef id="fireplaceBottom" />
+                <noderef id="fireplaceBack" />
+                <noderef id="fireplaceChimney" />
+                <noderef id="fireplaceFirePlane" />
+            </children>
+        </node>
     </graph>
 </yaf> 

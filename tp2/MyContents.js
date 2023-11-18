@@ -44,6 +44,7 @@ class MyContents  {
             this.axis = new MyAxis(this)
             this.app.scene.add(this.axis)
         }
+
     }
 
     /**
@@ -61,7 +62,6 @@ class MyContents  {
     }
 
     visitData(data) {
-
         // TEXTURES
         for (var key in data.textures) {
             let textureData = data.textures[key]  
@@ -81,7 +81,7 @@ class MyContents  {
 
             let specularTex = this.textures.get(materialData.specularref);
             if (specularTex == undefined) specularTex = null;
-            
+
             let myMaterial = new MyMaterial(materialData, tex, bumpTex, specularTex);
             this.materials.set(materialData.id, myMaterial)
         }
@@ -110,7 +110,7 @@ class MyContents  {
         // SCENE GLOBALS
         let dataOptions = data.options;
         let fogData = data.fog;
-        this.app.scene.add(new THREE.AmbientLight(dataOptions.ambient, 0.05));
+        this.app.scene.add(new THREE.AmbientLight(dataOptions.ambient, 0.3));
         this.app.scene.background = dataOptions.background;
         this.app.scene.fog = new THREE.Fog(fogData.color, fogData.near, fogData.far);
 

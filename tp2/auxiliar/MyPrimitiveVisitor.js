@@ -52,6 +52,7 @@ class MyPrimitiveVisitor {
             }*/
         }
 
+        console.log(material.material)
         this.mesh = new THREE.Mesh(geometry, material.material);
 
         if(node.subtype === "rectangle"){
