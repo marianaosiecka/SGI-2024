@@ -12,10 +12,7 @@ class MyPrimitiveVisitor {
     constructor(node, tranformations, material) {
         this.data = node.representations[0];
         this.tranformations = tranformations;
-        this.material = material
-        console.log(node)
-
-        
+        this.material = material        
         
         let geometry = null;
         switch (node.subtype) {
@@ -55,6 +52,7 @@ class MyPrimitiveVisitor {
             }*/
         }
 
+        console.log(material.material)
         this.mesh = new THREE.Mesh(geometry, material.material);
 
         if(node.subtype === "rectangle"){
