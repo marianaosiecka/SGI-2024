@@ -3,11 +3,11 @@
 
     <globals background="0 0 0 1" ambient="1 1 1 0.5" />
 
-    <fog color="1.0 1.0 1.0 1.0" near="30.0" far="400.0" />
+    <fog color="0 0 0 1.0" near="30.0" far="350.0" />
 
-    <skybox size="300 300 300" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
+    <skybox size="200 200 200" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="vase">
+    <cameras initial="perspective1">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -99,7 +99,13 @@
         <texture id="pillow3Tex" filepath="scenes/textures/pillow3_print.jpg" />
         <texture id="pillow4Tex" filepath="scenes/textures/pillow4_print.jpg" />
 
-        <texture id="vinylCoverTex" filepath="scenes/textures/vinyl_cover.jpg" />
+        <texture id="vinylCoverTex" filepath="scenes/textures/vinyl_cover.jpg" mipmaps="false"
+            mipmap0="scenes/textures/cover1.jpg"
+            mipmap1="scenes/textures/cover2.jpg"
+            mipmap2="scenes/textures/cover3.jpg"
+            mipmap3="scenes/textures/cover5.jpg"
+            mipmap4="scenes/textures/cover4.jpg"
+            />
         <texture id="windowViewTex" filepath="scenes/textures/window_texture.jpg" />
         <texture id="newspaperTex" filepath="scenes/textures/newspaper_texture.png" />
         <texture id="carpetTex" filepath="scenes/textures/carpet_texture.png" />
@@ -203,7 +209,7 @@
             twosided="true"/>
 
         <!-- color: this.yellow -->
-        <material id="candleFlameApp"
+        <material id="chairApp"
             emissive="0.0 0.0 0.0 1"
             color="0.85 0.78 0.44 1.0"
             specular="0.0 0.0 0.0 0.0"
@@ -351,14 +357,28 @@
 
         <material id="floorLampApp"
             emissive="0.0 0.0 0.0 1.0"
-            color="0.106 0.29 0.518 1.0"
+            color="0.3451 0.5176 0.5216 1.0"
             specular="0.46 0.46 0.46 1.0"
             shininess="5.0"
             twosided="true" />
-        
-        <material id="frameApp"
+
+        <material id="paintingFrameApp"
             emissive="0.0 0.0 0.0 1"
-            color="0.878 0.867 0.827 1.0"
+            color="0.4902 0.1059 0.0549 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="2.0"
+            twosided="true" />
+
+        <material id="photographyFrameApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.439 0.4275 0.4275 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="2.0"
+            twosided="true" />
+
+        <material id="vinylHolderApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.3098 0.2980 0.2980 1.0"
             specular="0.46 0.46 0.46 1.0"
             shininess="2.0"
             twosided="true" />
@@ -413,12 +433,6 @@
             texlength_t="1.1"
             />
         
-        <material id="vinylPlayerHolderApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.878 0.867 0.827 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="2.0"
-            twosided="true" />
         
         <!--this.green-->
         <material id="vinylPlayerBoxApp"
@@ -550,18 +564,19 @@
             emissive="0.0 0.0 0.0 1"
             color="0 0 0 1.0"
             specular="1 1 1 0"
-            shininess="12"
-            twosided="true" />
+            shininess="8"
+            twosided="true"
+        />
         
         <material id="fireVideoApp"
             emissive="0.0 0.0 0.0 1"
             color="1 1 1 1"
-            specular="1 1 1 0"
-            shininess="10"
+            specular="0 0 0 0"
+            shininess="0"
             twosided="true"
             textureref="fireVideoTex"
-            texlength_s="1.8"
-            texlength_t="1.2" />
+            texlength_s="2.1"
+            texlength_t="1.5" />
 
     </materials>
 
@@ -1245,7 +1260,7 @@
 
         <node id="chairBack">
             <transforms>
-                <translate value3="0.065 0.70 -0.45"/>
+                <translate value3="0.065 0.73 -0.45"/>
                 <rotate value3="0.0 0.0 1.5708" />
                 <scale value3="1.0 0.08 1.0"/>
             </transforms>
@@ -1262,8 +1277,6 @@
                 <translate value3="3.1 0.0 6"/>
                 <rotate value3="0 -3.8798 0" />
             </transforms>   
-
-            <materialref id="candleFlameApp" />
 			
             <children>             
 				<noderef id="chairLeg1" />
@@ -1280,8 +1293,6 @@
                 <translate value3="2.3 0.0 3.5"/>
                 <rotate value3="0 3.1416 0" />
             </transforms>   
-
-            <materialref id="candleFlameApp" />
 			
             <children>             
 				<noderef id="chairLeg1" />
@@ -1297,8 +1308,6 @@
             <transforms>
                 <translate value3="-2.3 0.0 6.0"/>
             </transforms>   
-
-            <materialref id="candleFlameApp" />
 			
             <children>             
 				<noderef id="chairLeg1" />
@@ -1314,8 +1323,6 @@
             <transforms>
                 <translate value3="-2.3 0.0 3.5"/>
             </transforms>   
-
-            <materialref id="candleFlameApp" />
 			
             <children>             
 				<noderef id="chairLeg1" />
@@ -1327,11 +1334,11 @@
             </children>  
         </node>
 
-        <node id="chairs">
+        <node id="chairs" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="0 0 0"/>
             </transforms>   
-			
+			<materialref id="chairApp" />
             <children>             
 				<noderef id="chair1" />
 				<noderef id="chair2" />
@@ -1417,7 +1424,7 @@
                     position="0 -0.5 0" 
                     target="0 -10 0"
                     shadowfar="27"
-                    shadowmapsize="1024"
+                    shadowmapsize="2048"
                 />
 
                 <spotlight id="lampTableHighlight"
@@ -1883,7 +1890,7 @@
             </children> 
         </node>
 
-        <node id="coffeeTable" receiveshadows="true" castshadows="true">
+        <node id="coffeeTable" castshadows="true">
             <transforms>
                 <translate value3="-1.0 0.05 -3" />
                 <scale value3="1.2 1 1.2" />
@@ -2064,7 +2071,7 @@
                 <rotate value3="0.0 -0.7854 0" />
             </transforms>   
 
-            <materialref id="floorLampApp" />
+            <materialref id="paintingFrameApp" />
 
             <children>
                 <noderef id="floorLampFoot" />
@@ -2263,9 +2270,25 @@
             </children>
         </node>
 
+        <node id="framePhotography">
+            <children>
+                <primitive>
+                    <box xyz1="0.0 0.0 0.0" xyz2="0.1 0.2 2" />
+                </primitive>
+                <primitive>
+                    <box xyz1="0 2.0 0" xyz2="0.1 2.2 2" />
+                </primitive>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.1 2 0.2" />
+                </primitive>
+                <primitive>
+                    <box xyz1="0 0 1.8" xyz2="0.1 2 2" />
+                </primitive>
+                <noderef id="innerFrame"/>
+            </children>
+        </node>
 
-        <node id="frame">
-            <materialref id="frameApp" />
+        <node id="framePainting">
             <children>
                 <primitive>
                     <box xyz1="0.0 0.0 0.0" xyz2="0.1 0.2 2" />
@@ -2316,8 +2339,9 @@
             <transforms>
                 <scale value3="1 0.7 1.1"/>
             </transforms>
+            <materialref id="photographyFrameApp" />
             <children>
-                <noderef id="frame"/>
+                <noderef id="framePhotography"/>
             </children>
         </node>
 
@@ -2326,6 +2350,7 @@
                 <translate value3="0 0.3 1.8" />
                 <rotate value3="0 1.5708 0" />
             </transforms>
+        
             <materialref id="photography1App" />
 
             <children>
@@ -2350,8 +2375,9 @@
             <transforms>
                 <scale value3="1 0.8 0.85"/>
             </transforms>
+            <materialref id="photographyFrameApp" />
             <children>
-                <noderef id="frame"/>
+                <noderef id="framePhotography"/>
             </children>
         </node>
 
@@ -2384,8 +2410,9 @@
             <transforms>
                 <scale value3="1 0.7 1.1"/>
             </transforms>
+            <materialref id="photographyFrameApp" />
             <children>
-                <noderef id="frame"/>
+                <noderef id="framePhotography"/>
             </children>
         </node>
 
@@ -2405,7 +2432,7 @@
 
         <node id="paintingFrame1">
             <transforms>
-                <translate value3="-3.1 2.7 7.9" />
+                <translate value3="-3.3 2.5 7.9" />
                 <rotate value3="0 1.5708 0" />
             </transforms>
             <children>
@@ -2418,8 +2445,9 @@
             <transforms>
                 <scale value3="0.8 0.8 0.85"/>
             </transforms>
+            <materialref id="paintingFrameApp" />
             <children>
-                <noderef id="frame"/>
+                <noderef id="framePainting"/>
             </children>
         </node>
 
@@ -2453,8 +2481,9 @@
             <transforms>
                 <scale value3="0.8 0.8 0.85"/>
             </transforms>
+            <materialref id="paintingFrameApp" />
             <children>
-                <noderef id="frame"/>
+                <noderef id="framePainting"/>
             </children>
         </node>
 
@@ -2622,7 +2651,7 @@
             <transforms>
                 <translate value3="0 0.055 0" />
             </transforms>
-            <materialref id="vinylPlayerBoxApp"/>
+            <materialref id="coffeeTableApp"/>
             <children>
                 <primitive>
                     <box xyz1="0.0 0.0 0.0" xyz2="1.12 0.225 1.5" />
@@ -2731,7 +2760,7 @@
             </transforms>
             <children>
                 <primitive>
-                    <cylinder base="0.67" top="0.67" height="0.001" capsclose="true" slices="25" stacks="1"/>
+                    <cylinder base="0.67" top="0.67" height="0.001" capsclose="true" slices="40" stacks="1"/>
                 </primitive>
             </children>
         </node>
@@ -2753,7 +2782,7 @@
 
         <node id="vinylCover">
             <transforms>
-                <translate value3="0.28 0 0.95"/>
+                <translate value3="0.28 0.05 0.95"/>
                 <rotate value3="-1.5708 -0.23 1.5708" />
             </transforms>
 
@@ -2768,7 +2797,7 @@
 
         <node id="grass">
             <transforms>
-                <translate value3="-150 -1.8 150" />
+                <translate value3="-100 -1.8 100" />
                 <rotate value3="-1.5708 0 0" />
             </transforms>
 
@@ -2776,7 +2805,7 @@
 
             <children>
                 <primitive>
-                    <rectangle xy1="0 0" xy2="300 300"/>
+                    <rectangle xy1="0 0" xy2="200 200"/>
                 </primitive>
             </children>
         </node>
@@ -3060,7 +3089,7 @@
                     position="0 -1 0" 
                     target="0 -6 0"
                     shadowfar="27"
-                    shadowmapsize="1024"
+                    shadowmapsize="2048"
                 />
 
                 <spotlight id="ceilingLampHighlight"
@@ -3068,11 +3097,11 @@
                     color="0.972 0.929 0.714 1.0" 
                     intensity="12"
                     distance="6.3"
-                    angle="0.08"
+                    angle="0.06"
                     penumbra="1.0"
                     decay="0.05"
                     position="0 -6 0" 
-                    target="0.3 0 0.3"
+                    target="0.35 0 0.4"
                 />
 
             </children>
@@ -3255,14 +3284,14 @@
 
         <node id="fireplaceFirePlane">
             <transforms>
-                <translate value3="0 0 6"/>
+                <translate value3="0 0 0.8"/>
             </transforms>
             
             <materialref id="fireVideoApp" />
 
             <children>
                 <primitive>
-                    <rectangle xy1="0 0" xy2="1.8 1.2"/>
+                    <rectangle xy1="0 0" xy2="2.1 1.5"/>
                 </primitive>
             </children>
         </node>
