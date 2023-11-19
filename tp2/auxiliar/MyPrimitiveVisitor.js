@@ -9,11 +9,11 @@ import { MyNurbs } from "./primitives/MyNurbs.js";
 
 class MyPrimitiveVisitor {
 
-    constructor(node, tranformations, material, castShadows, receiveShadow) {
+    constructor(node, tranformations, material, castShadow, receiveShadow) {
         this.data = node.representations[0];
         this.tranformations = tranformations;
         this.material = material
-        this.castShadows = castShadows;
+        this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
         
         let geometry = null;
@@ -54,7 +54,7 @@ class MyPrimitiveVisitor {
             }
         }
         this.mesh = new THREE.Mesh(geometry, material.material);
-        this.mesh.castShadows = this.castShadows
+        this.mesh.castShadow = this.castShadow
         this.mesh.receiveShadow = this.receiveShadow
 
         if(node.subtype === "rectangle"){
