@@ -7,10 +7,9 @@ class MyLod {
      * 
      * @param {MyApp} app the application object
      */
-    constructor(lodData, parentMaterial, materials, lights, nodesMap) {
+    constructor(lodData, parentMaterial, materials, lights, nodesMap, castShadows, receiveShadows) {
         this.lod = new THREE.LOD();
         for(let lodRef of lodData.children){
-            console.log("lodRef ", lodRef)
             const lodNode = lodRef.node;
         
             // MATERIAL
@@ -19,17 +18,19 @@ class MyLod {
                 lodMaterial = lodNode.materialIds.length == 0 ? parentMaterial : materials.get(lodNode.materialIds[0]);
             else lodMaterial = parentMaterial
 
+            // SHADOWS
+            const lodReceiveShadow = (receiveShadows || lodNode.castshadow)
+            const lodCastShadow = (castShadows || lodNode.receiveshadow)
+
             // NODE 
             let myLodNode = null;
             if(!nodesMap.has(lodNode.id)){
-                console.log("a")
-                myLodNode = new MyNode(lodNode.id, lodMaterial, lodNode.transformations, lights, nodesMap, lodNode.castshadow, lodNode.receiveshadow)
+                myLodNode = new MyNode(lodNode.id, lodMaterial, lodNode.transformations, lights, nodesMap, lodCastShadow, lodReceiveShadow)
                 myLodNode.visitChildren(lodNode.children, materials)
             }
             else {
-                myLodNode = nodesMap.get(lodNode.id).clone()
+                myLodNode.group = nodesMap.get(lodNode.id).clone()
             }
-            console.log(myLodNode)
             this.lod.addLevel(myLodNode.group, lodRef.mindist);
         }
     }

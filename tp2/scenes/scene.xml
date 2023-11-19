@@ -28,6 +28,14 @@
             far="1000"
             location="-3 4 5"
             target="-6 1 6.5" />
+        
+        <perspective id="vinyl"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="-3.2 3.5 -2.2"
+            target="-6 2 -5" />
+        
 
         <orthogonal id="orthoLeft"
             near="-10"
@@ -1509,22 +1517,28 @@
             <materialref id="vaseApp"/>
 
             <children>
+                <lodref id="vaseLod" />
+            </children>
+        </node>
+
+        <node id="vaseSides">
+            <children>
                 <noderef id ="vaseSide1" />
                 <noderef id ="vaseSide2" />
-                <lodref id="vaseLod" />
             </children>
         </node>
 
     
         <lod id="vaseLod">
-            <noderef id="vaseLod1"  mindist="3"/>
+            <noderef id="vaseSides" mindist="0"/>
+            <noderef id="vaseLod1" mindist="15"/>
         </lod>
         
         <node id="vaseLod1">
             <materialref id="whiteApp"/>
             <children>
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0 1.7 0.75" />
+                    <box xyz1="0 0 0" xyz2="0.75 1.7 0.75" />
                 </primitive>
             </children>
         </node>
