@@ -7,7 +7,7 @@
 
     <skybox size="300 300 300" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="perspective1">
+    <cameras initial="vase">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -21,6 +21,13 @@
             far="1000"
             location="-7 4.5 -6.5"
             target="0 0.0 0" />
+        
+        <perspective id="vase"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="-3 4 5"
+            target="-6 1 6.5" />
 
         <orthogonal id="orthoLeft"
             near="-10"
@@ -1492,6 +1499,21 @@
             <children>
                 <noderef id ="vaseSide1" />
                 <noderef id ="vaseSide2" />
+                <lodref id="vaseLod" />
+            </children>
+        </node>
+
+    
+        <lod id="vaseLod">
+            <noderef id="vaseLod1"  mindist="3"/>
+        </lod>
+        
+        <node id="vaseLod1">
+            <materialref id="whiteApp"/>
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0 1.7 0.75" />
+                </primitive>
             </children>
         </node>
     

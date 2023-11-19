@@ -3,6 +3,8 @@ import { MyPrimitiveVisitor } from './MyPrimitiveVisitor.js';
 import { MyDirectionalLight } from "./lights/MyDirectionalLight.js";
 import { MyPointLight } from "./lights/MyPointLight.js";
 import { MySpotLight } from "./lights/MySpotLight.js";
+import { MyLod } from "./MyLod.js";
+
 
 class MyNode {
     constructor(id, material, transformations, lights, nodesMap = new Map(), castShadows = false, receiveShadows = false) {
@@ -18,6 +20,7 @@ class MyNode {
     }
 
     visitChildren(children, materials){
+        if(this.id=="vase") console.log("vase children ", children)
         for(let child of children){
             let childNode;
             
@@ -42,6 +45,13 @@ class MyNode {
                     childNode.group = this.nodesMap.get(child.id).clone();
                 }
                 this.group.add(childNode.group)
+            }
+
+            else if(child.type === "lod"){
+                let lod = new MyLod(child, this.material, materials, this.lights, this.nodesMap);
+                childNode = lod.lod;
+                console.log(childNode)
+                this.group.add(childNode);
             }
 
 

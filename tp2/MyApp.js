@@ -43,9 +43,6 @@ class MyApp  {
         this.stats.showPanel(1) // 0: fps, 1: ms, 2: mb, 3+: custom
         document.body.appendChild(this.stats.dom)
 
-      //  this.initCameras();
-    //    this.setActiveCamera('Perspective')
-
         // Create a renderer with Antialiasing
         this.renderer = new THREE.WebGLRenderer({antialias:true});
         this.renderer.setPixelRatio( window.devicePixelRatio );
