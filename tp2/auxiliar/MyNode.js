@@ -48,9 +48,8 @@ class MyNode {
             }
 
             else if(child.type === "lod"){
-                let lod = new MyLod(child, this.material, materials, this.lights, this.nodesMap);
+                let lod = new MyLod(child, this.material, materials, this.lights, this.nodesMap, this.castShadows, this.receiveShadows);
                 childNode = lod.lod;
-                console.log(childNode)
                 this.group.add(childNode);
             }
 
@@ -96,6 +95,7 @@ class MyNode {
 
         // TRANSFORMATIONS
         this.group.applyMatrix4(this.transformationMatrix);
+        if(this.id=="vase") console.log("vase group ", this.group)
     }
 
 
