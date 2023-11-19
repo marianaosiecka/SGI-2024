@@ -122,7 +122,7 @@ class MyContents  {
         myScene.visitChildren(sceneNode.children, this.materials);
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
-        this.group = myScene.group
+        this.group = myScene.group;
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
