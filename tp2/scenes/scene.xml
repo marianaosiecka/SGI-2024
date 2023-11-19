@@ -3,9 +3,9 @@
 
     <globals background="0 0 0 1" ambient="1 1 1 0.5" />
 
-    <fog color="1.0 1.0 1.0 1.0" near="30.0" far="250.0" />
+    <fog color="1.0 1.0 1.0 1.0" near="30.0" far="400.0" />
 
-    <skybox size="100 100 100" center="0 10 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.bmp" down="./scenes/textures/down.bmp" left="./scenes/textures/left.bmp" right="./scenes/textures/right.bmp" front="./scenes/textures/front.bmp" back="./scenes/textures/back.bmp"/>
+    <skybox size="300 300 300" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
     <cameras initial="perspective1">
         <perspective id="perspective1"
@@ -250,21 +250,9 @@
             shininess="10"
             twosided="true" />
 
-        <!-- falta o material do balão (é physical?)-->
-
-        <material id="balloonStringApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.88 0.87 0.83 1.0"
-            specular="1.0 1.0 1.0 1.0"
-            shininess="0"
-            twosided="true" />
-
-        <!-- falta o material do car -->
-
-
         <material id="newspaperApp"
-            emissive="0.0 0.0 0.0 1"
-            color="1.0 1.0 1.0 1.0"
+            emissive="0 0 0 1"
+            color="1.0 0.98 0.93 1"
             specular="0 0 0 0"
             shininess="0"
             textureref="newspaperTex"
@@ -337,7 +325,7 @@
         <material id="sofaApp"
             emissive="0.0 0.0 0.0 1"
             color="0.44 0.22 0.114 1.0"
-            specular="0.46 0.46 0.46 1.0"
+            specular="0.44 0.22 0.114 1.0"
             shininess="2.0"
             twosided="true" />
 
@@ -636,7 +624,7 @@
                 <pointlight id="lightTop" enabled="true" 
                     color="0.969 1.0 0.88 1" 
                     intensity="10.0"
-                    distance="0"
+                    distance="34"
                     decay="1.0"
                     castshadow="false"
                     position="0 40.0 0" 
@@ -653,7 +641,7 @@
    
                 <directionallight id="light1" enabled="true" 
                     color="1.0 1 1 1" 
-                    intensity="0.5"
+                    intensity="0.2"
                     castshadow="false"
                     position="0 1 0" 
                 />
@@ -722,8 +710,8 @@
 
        <node id="floor" receiveshadows="true">
 			<transforms>
-				<translate value3="-7.5 0.02 8.0" />
-				<rotate value3="-1.5708 .0 0.0" />
+				<translate value3="-7.5 0.0 8.0" />
+				<rotate value3="-1.5708 0.0 0.0" />
             </transforms> 
 
 			<materialref id="floorApp" />
@@ -737,7 +725,7 @@
 
         <node id="floorSupport">
             <transforms>
-				<translate value3="-7.5 -1.8 -8.0" />
+				<translate value3="-7.5 -1.82 -8.0" />
             </transforms> 
     
             <materialref id="stoneApp" />
@@ -1166,7 +1154,7 @@
         </node>
 
        
-       <node id="carpet">
+       <node id="carpet" receiveshadows="true">
              <transforms>
                 <translate value3="-4.75 0.0 -7"/>
             </transforms>   
@@ -1761,7 +1749,7 @@
             </children>
         </node>
 
-        <node id="sofa2">
+        <node id="sofa2" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="3 0.0 -5.7" />
                 <rotate value3="0.0 3.927 0.0" />
@@ -1795,7 +1783,7 @@
                 <spotlight id="lampSofaSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="4.8"
+                    intensity="2"
                     distance="6"
                     angle="0.6854"
                     penumbra="1.8"
@@ -1873,7 +1861,7 @@
             </children> 
         </node>
 
-        <node id="coffeeTable">
+        <node id="coffeeTable" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="-1.0 0.05 -3" />
                 <scale value3="1.2 1 1.2" />
@@ -2758,7 +2746,7 @@
 
         <node id="grass">
             <transforms>
-                <translate value3="-50 -1.8 50" />
+                <translate value3="-150 -1.8 150" />
                 <rotate value3="-1.5708 0 0" />
             </transforms>
 
@@ -2766,7 +2754,7 @@
 
             <children>
                 <primitive>
-                    <rectangle xy1="0 0" xy2="100 100"/>
+                    <rectangle xy1="0 0" xy2="300 300"/>
                 </primitive>
             </children>
         </node>
@@ -3041,9 +3029,9 @@
                 <spotlight id="ceilingLampSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="12"
-                    distance="6"
-                    angle="0.8"
+                    intensity="6"
+                    distance="10"
+                    angle="2"
                     penumbra="1.0"
                     decay="0.2"
                     castshadow="true"
@@ -3056,8 +3044,8 @@
                 <spotlight id="ceilingLampHighlight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="10"
-                    distance="6.5"
+                    intensity="12"
+                    distance="6.3"
                     angle="0.08"
                     penumbra="1.0"
                     decay="0.05"
@@ -3162,7 +3150,7 @@
 
         <node id="ceilingLampLightBulb">
             <transforms>
-                <translate value3="0.1 0 0.05"/>
+                <translate value3="0.1 0.1 0.1"/>
                 <scale value3="1 0.8 0.8" />
             </transforms>
 
