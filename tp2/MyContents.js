@@ -123,15 +123,12 @@ class MyContents  {
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
         this.group = myScene.group
-        //console.log(myScene.group)
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
         //console.log(data)
         // refer to descriptors in class MySceneData.js
         // to see the data structure for each item
-
-        //console.log(new THREE.Color('#FFFFFF'));
         
        this.output(data.options)
         console.log("textures:")

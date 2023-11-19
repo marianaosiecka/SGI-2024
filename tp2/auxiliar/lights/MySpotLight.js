@@ -18,7 +18,7 @@ import * as THREE from 'three';
 
 */
 class MySpotLight {
-    constructor(node) {
+    constructor(node, castShadow) {
         let color = new THREE.Color(node.color.r, node.color.g, node.color.b);
         this.light = new THREE.SpotLight(color, node.intensity, node.distance, node.angle, node.penumbra, node.decay);
         this.light.position.set(node.position[0], node.position[1], node.position[2]);
@@ -27,7 +27,7 @@ class MySpotLight {
         this.target.position.set(node.target[0], node.target[1], node.target[2])
         this.light.target = this.target
         
-        if(node.castshadow){
+        if(castShadow){
             this.light.castShadow = true;
             this.light.shadow.mapSize.width = node.shadowmapsize;
             this.light.shadow.mapSize.height = node.shadowmapsize;

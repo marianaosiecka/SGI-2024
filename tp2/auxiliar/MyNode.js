@@ -5,13 +5,15 @@ import { MyPointLight } from "./lights/MyPointLight.js";
 import { MySpotLight } from "./lights/MySpotLight.js";
 
 class MyNode {
-    constructor(id, material, transformations, lights, nodesMap = new Map()) {
+    constructor(id, material, transformations, lights, nodesMap = new Map(), castShadows = false, receiveShadows = false) {
         this.id = id;
         this.material = material;
         this.transformations = transformations;
         this.getTransformationMatrix();
         this.lights = lights;
         this.nodesMap = nodesMap;
+        this.castShadows = castShadows;
+        this.receiveShadows = receiveShadows;
         this.group = new THREE.Group();
     }
 
@@ -25,10 +27,12 @@ class MyNode {
             if(materialIds != undefined)
                 childMaterial = materialIds.length == 0 ? this.material : materials.get(materialIds[0]);
             else childMaterial = this.material
-              
             
             if(child.type === "node"){
-                childNode = new MyNode(child.id, childMaterial, child.transformations, this.lights, this.nodesMap)
+                const childReceiveShadow = (this.receiveShadows || child.receiveShadows)
+                const childCastShadow = (this.castShadows || child.castShadows)
+
+                childNode = new MyNode(child.id, childMaterial, child.transformations, this.lights, this.nodesMap, childCastShadow, childReceiveShadow)
 
                 if(!this.nodesMap.has(child.id)){
                     childNode.visitChildren(child.children, materials)
@@ -39,13 +43,17 @@ class MyNode {
                 }
                 this.group.add(childNode.group)
             }
+
+
             else if(child.type === "primitive"){
-                let primitive = new MyPrimitiveVisitor(child, child.transformations, childMaterial)
+                let primitive = new MyPrimitiveVisitor(child, child.transformations, childMaterial, this.castShadows, this.receiveShadows)
                 childNode = primitive.mesh;
                 this.group.add(childNode)
             }
+
             else if(child.type === "spotlight"){
-                let spotlight = new MySpotLight(child)
+                const childCastShadow = (this.castShadows || child.castshadow)
+                let spotlight = new MySpotLight(child, childCastShadow)
                 childNode = spotlight.light
                 this.group.add(childNode)
 
@@ -56,16 +64,19 @@ class MyNode {
                 childNode.updateMatrixWorld();
                 spotlightHelper.update();
                 this.group.add(spotlightHelper)*/
+
                 this.lights.set(child.id, spotlight)
             }
             else if(child.type === "directionallight"){
-                let directionallight = new MyDirectionalLight(child)
+                const childCastShadow = (this.castShadows || child.castshadow)
+                let directionallight = new MyDirectionalLight(child, childCastShadow)
                 childNode = directionallight.light
                 this.group.add(childNode)
                 this.lights.set(child.id, directionallight)
             }
             else if(child.type === "pointlight"){
-                let pointlight = new MyPointLight(child)
+                const childCastShadow = (this.castShadows || child.castshadow)
+                let pointlight = new MyPointLight(child, childCastShadow)
                 childNode = pointlight.light
                 this.group.add(childNode)
                 this.lights.set(child.id, pointlight)
@@ -73,6 +84,7 @@ class MyNode {
 
         }
 
+        // TRANSFORMATIONS
         this.group.applyMatrix4(this.transformationMatrix);
     }
 

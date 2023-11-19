@@ -18,13 +18,13 @@ class MyDirectionalLight {
             {name: "shadowmapsize", type: "integer", required: false, default: 512},
 		]
     */
-    constructor(node) {
+    constructor(node, castShadow) {
         let color = new THREE.Color(node.color.r, node.color.g, node.color.b);
 
         this.light = new THREE.DirectionalLight(color, node.intensity);
         this.light.position.set(node.position[0], node.position[1], node.position[2]);
 
-        if(node.castshadow){
+        if(castShadow){
             this.light.castShadow = true;
             this.light.shadow.mapSize.width = node.shadowmapsize;
             this.light.shadow.mapSize.height = node.shadowmapsize;

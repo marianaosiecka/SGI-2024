@@ -9,10 +9,12 @@ import { MyNurbs } from "./primitives/MyNurbs.js";
 
 class MyPrimitiveVisitor {
 
-    constructor(node, tranformations, material) {
+    constructor(node, tranformations, material, castShadows, receiveShadow) {
         this.data = node.representations[0];
         this.tranformations = tranformations;
         this.material = material
+        this.castShadows = castShadows;
+        this.receiveShadow = receiveShadow;
         
         let geometry = null;
         switch (node.subtype) {
@@ -46,14 +48,14 @@ class MyPrimitiveVisitor {
                 break;
             }
             case "triangle": {
-                console.log("aaaaa")
                 let triangleGeometry = new MyTriangle(this.data);
                 geometry = triangleGeometry;
                 break;
             }
         }
- //       console.log(geometry, material.material)
         this.mesh = new THREE.Mesh(geometry, material.material);
+        this.mesh.castShadows = this.castShadows
+        this.mesh.receiveShadow = this.receiveShadow
 
         if(node.subtype === "rectangle"){
             this.mesh.position.x = (node.representations[0].xy1[0] + node.representations[0].xy2[0])/2;
