@@ -624,6 +624,7 @@
                 <noderef id="bed" />
                 <noderef id="bedSideTable" />
                 <noderef id="bedSideLamp" />
+                <!--
                 <noderef id="wallLampFLeft"/>
                 <noderef id="wallLampFRight"/>
                 <noderef id="wallLampBLeft"/>
@@ -632,6 +633,7 @@
                 <noderef id="extWallLampFRight"/>
                 <noderef id="extWallLampBLeft"/>
                 <noderef id="extWallLampBRight"/>
+                -->
                 <noderef id="ceilingLampCenter"/>
                 <noderef id="roofFront" />
                 <noderef id="roofBack" />
@@ -655,35 +657,7 @@
                     castshadow="false"
                     position="30 10.0 0" 
                 />
-
-                <pointlight id="lightBack" enabled="true" 
-                    color="0.969 1.0 0.88 1" 
-                    intensity="5.0"
-                    distance="0"
-                    decay="1.0"
-                    castshadow="false"
-                    position="-50 10.0 0" 
-                />
-
-                <pointlight id="lightLeft" enabled="true" 
-                    color="0.969 1.0 0.88 1" 
-                    intensity="5.0"
-                    distance="0"
-                    decay="1.0"
-                    castshadow="false"
-                    position="0 10.0 40" 
-                />
-
-
-                <pointlight id="lightRight" enabled="true" 
-                    color="0.969 1.0 0.88 1" 
-                    intensity="5.0"
-                    distance="0"
-                    decay="1.0"
-                    castshadow="false"
-                    position="0 10.0 -40" 
-                />
-			            
+   
                 <directionallight id="light1" enabled="true" 
                     color="1.0 1 1 1" 
                     intensity="0.5"
@@ -753,7 +727,7 @@
             </children> 
         </node>
 
-       <node id="floor">
+       <node id="floor" receiveshadows="true">
 			<transforms>
 				<translate value3="-7.5 0.02 8.0" />
 				<rotate value3="-1.5708 .0 0.0" />
@@ -1114,7 +1088,7 @@
             </children>
         </node>
 
-        <node id="table">
+        <node id="table" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-1.9 0.0 7.7"/>
             </transforms>   
@@ -1466,11 +1440,8 @@
                     angle="0.2"
                     penumbra="1.0"
                     decay="0.2"
-                    castshadow="true"
                     position="0.0 -5.5 0" 
                     target="0.0 6 0"
-                    shadowfar="27"
-                    shadowmapsize="1024"
                 />
             </children> 
         </node> 
@@ -1866,11 +1837,8 @@
                     angle="0.2"
                     penumbra="1.0"
                     decay="0.2"
-                    castshadow="true"
                     position="0.0 -5.5 0" 
                     target="0.0 6 0"
-                    shadowfar="27"
-                    shadowmapsize="1024"
                 />
 
             </children> 
@@ -2121,13 +2089,13 @@
                 <spotlight id="floorLampSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="6"
+                    intensity="4"
                     distance="6"
                     angle="0.7854"
                     penumbra="1.8"
                     decay="0.2"
                     castshadow="true"
-                    position="0 2.94 1.998" 
+                    position="0 2.94 1.98" 
                     target="0.0 0.0 3"
                     shadowfar="27.0"
                     shadowmapsize="1024"
@@ -3112,14 +3080,11 @@
                     color="0.972 0.929 0.714 1.0" 
                     intensity="10"
                     distance="6.5"
-                    angle="0.2"
+                    angle="0.08"
                     penumbra="1.0"
                     decay="0.05"
-                    castshadow="true"
                     position="0 -6 0" 
-                    target="0 0 0"
-                    shadowfar="27"
-                    shadowmapsize="1024"
+                    target="0.3 0 0.3"
                 />
 
             </children>
