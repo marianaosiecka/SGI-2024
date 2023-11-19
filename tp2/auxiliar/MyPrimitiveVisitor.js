@@ -45,14 +45,14 @@ class MyPrimitiveVisitor {
                 material.setRepeat(sphereGeometry.radius, sphereGeometry.radius)
                 break;
             }
-            /*case "triangle": {
+            case "triangle": {
+                console.log("aaaaa")
                 let triangleGeometry = new MyTriangle(this.data);
-                geometry = triangleGeometry.triangle;
+                geometry = triangleGeometry;
                 break;
-            }*/
+            }
         }
-
-        console.log(material.material)
+ //       console.log(geometry, material.material)
         this.mesh = new THREE.Mesh(geometry, material.material);
 
         if(node.subtype === "rectangle"){

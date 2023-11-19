@@ -29,6 +29,8 @@ class MyContents  {
         this.skyboxes = new Map();
         this.lights = new Map();
 
+        this.group = null;
+
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/scene.xml");	
 
@@ -120,6 +122,7 @@ class MyContents  {
         myScene.visitChildren(sceneNode.children, this.materials);
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
+        this.group = myScene.group
         //console.log(myScene.group)
     }
 

@@ -244,9 +244,9 @@
             twosided="true" />
 
         <material id="vaseApp"
-            emissive="0.2 0.2 0.2 1.0"
-            color="0.95 0.94 0.9 0.3"
-            specular="0.95 0.94 0.9 1.0"
+            emissive="0.7 0.7 0.7 1.0"
+            color="0.95 0.94 0.9 0.8"
+            specular="1 1 1 1.0"
             shininess="10"
             twosided="true" />
 
@@ -1528,7 +1528,7 @@
         </node> 
         
         <node id="vase">
-            <materialref id="lightBlueApp"/>
+            <materialref id="vaseApp"/>
 
             <children>
                 <noderef id ="vaseSide1" />
@@ -3064,7 +3064,7 @@
 
         <node id="ceilingLampCenter">
             <transforms>
-                <translate value3="-0.3 5.7 -0.3" />
+                <translate value3="-0.3 6 -0.3" />
             </transforms>
 
             <children>

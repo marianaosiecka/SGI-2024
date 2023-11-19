@@ -29,6 +29,7 @@ class MyPointLight {
         if(!node.enabled)
             this.light.intensity = 0;
         this.enabled = node.enabled;
+        this.intensity = node.intensity
     }
 }
 

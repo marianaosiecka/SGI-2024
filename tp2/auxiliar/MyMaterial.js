@@ -43,8 +43,10 @@ class MyMaterial {
         }
 
         if(this.transparent){
+            console.log(this.id, materialData.color)
             this.material.transparent = true;
-            this.material.opacity = materialData.color.a;
+            this.material.opacity = 0.3
+            console.log(this.material)
         }
     }
 
