@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <yaf>
 
-    <globals background="0 0 0 1" ambient="1 1 1 0.5" />
+    <globals background="0 0 0 1" ambient="0.467 0.467 0.467 1" />
 
     <fog color="0 0 0 1.0" near="30.0" far="350.0" />
 
@@ -284,9 +284,9 @@
 
         <material id="vaseApp"
             emissive="0.7 0.7 0.7 1.0"
-            color="0.95 0.94 0.9 0.8"
-            specular="1 1 1 1.0"
-            shininess="10"
+            color="0.95 0.94 0.9 0.1"
+            specular="0.95 0.94 0.9 1.0"
+            shininess="50"
             twosided="true" />
 
         <material id="newspaperApp"
@@ -367,7 +367,7 @@
             emissive="0.0 0.0 0.0 1"
             color="0.44 0.22 0.114 1.0"
             specular="0.44 0.22 0.114 1.0"
-            shininess="2.0"
+            shininess="1"
             twosided="true" />
 
         <material id="coffeeTableApp"
@@ -680,7 +680,9 @@
                 <noderef id="roofFront" />
                 <noderef id="roofBack" />
                 <noderef id="fireplace" />
-                <noderef id="door"/>
+                <noderef id="door"/>                
+                <noderef id="window1" />
+                <noderef id="window2" />
 
                 <pointlight id="lightTop" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -793,7 +795,19 @@
 			
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="16 6" />
+                    <rectangle xy1="0 0" xy2="5.6 6" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="5.6 0" xy2="10.5 2" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="10.5 0" xy2="16 6" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="5.6 5.1" xy2="10.5 6" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="7.5 2" xy2="8.5 5.1" />
                 </primitive>
             </children> 
         </node>
@@ -850,7 +864,7 @@
                 <noderef id="leftWall" />
                 <noderef id="rightWall" />
                 <noderef id="frontWall" />
-                <noderef id="backWall" />
+                -<noderef id="backWall" />
                 <noderef id="ceiling" />
                 <noderef id="floor" />
                 <noderef id="floorSupport" /> 
@@ -934,7 +948,19 @@
 
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="16.04 6" />
+                    <rectangle xy1="0 0" xy2="5.6 6" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="5.6 0" xy2="10.5 2" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="10.5 0" xy2="16 6" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="5.6 5.1" xy2="10.5 6" />
+                </primitive>
+                <primitive>
+                    <rectangle xy1="7.5 2" xy2="8.5 5.1" />
                 </primitive>
             </children> 
         </node>
@@ -3651,5 +3677,213 @@
                 <noderef id="doorOutside" />
             </children>
         </node>
+
+
+        <!-- WINDOW -->
+        <node id="window1">
+            <transforms>
+                <translate value3="-7.66 3.4 -0.3"/>
+            </transforms>
+            <children>
+                <noderef id="window"/>
+            </children>
+        </node>
+
+        <node id="window2">
+            <transforms>
+                <translate value3="-7.66 3.4 2.5"/>
+            </transforms>
+            <children>
+                <noderef id="window"/>
+            </children>
+        </node>
+        <node id="window">
+            <transforms>
+                <rotate value3="0 1.5708 0"/>
+                <scale value3="1 1 1"/>
+            </transforms>
+            <materialref id="photographyFrameApp" />
+            <children>
+                <noderef id="windowFrame"/>
+                <noderef id="windowUp"/>
+                <noderef id="windowDown"/>
+            </children>
+        </node>
+
+        <node id="windowUpGlass">
+            <transforms>
+                <translate value3="0.4 0 0.05"/>
+            </transforms>
+            <children>
+                <noderef id="windowGlass"/>
+            </children>
+        </node>
+
+        <node id="windowDownGlass">
+            <transforms>
+                <translate value3="0.2 -1.3 0.15"/>
+                <scale value3="1.3 2 1"/>
+            </transforms>
+            <children>
+                <noderef id="windowGlass"/>
+            </children>
+        </node>
+
+        <node id="windowGlass">
+            <materialref id="vaseApp"/>
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="1.4 1.4"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="windowDown">
+            <transforms>
+                <translate value3="0.22 -0.6 0.15"/>
+                <scale value3="0.8 0.46 0.55"/>
+            </transforms>
+
+            <children>
+                <noderef id="windowFrame"/>
+                <noderef id="windowDownGlass"/>
+            </children>
+        </node>
+
+        <node id="windowUp">
+            <transforms>
+                <translate value3="0 0.2 0.01"/>
+                <scale value3="1 0.88 1"/>
+            </transforms>
+            <children>
+                <noderef id="windowUpFrame"/>
+                <noderef id="windowHorizontalLine"/>
+                <noderef id="windowVerticalLine1"/>
+                <noderef id="windowVerticalLine2"/>
+                <noderef id="windowVerticalLine3"/>
+                <noderef id="windowUpGlass"/>
+            </children>
+        </node>
+
+        <node id="windowUpFrame">
+            <transforms>
+                <translate value3="0.22 0.64 0"/>
+                <scale value3="0.8 0.5 0.4"/>
+            </transforms>
+                
+            <children>
+                <noderef id="windowFrame"/>
+            </children>
+        </node>
+
+        <node id="windowHorizontalLine">
+            <transforms>
+                <translate value3="0 0.65 0"/>
+            </transforms>
+            <children>
+                <noderef id="windowLine"/>
+            </children>
+        </node>
+
+        <node id="windowVerticalLine1">
+            <transforms>
+                <translate value3="1.15 0 0"/>
+                <rotate value3="0 0 1.5708"/>
+                <scale value3="0.7 1 1"/>
+            </transforms>
+            <children>
+                <noderef id="windowLine"/>
+            </children>
+        </node>
+
+        <node id="windowVerticalLine2">
+            <transforms>
+                <translate value3="0.7 0 0"/>
+                <rotate value3="0 0 1.5708"/>
+                <scale value3="0.7 1 1"/>
+            </transforms>
+            <children>
+                <noderef id="windowLine"/>
+            </children>
+        </node>
+
+        <node id="windowVerticalLine3">
+            <transforms>
+                <translate value3="1.55 0 0"/>
+                <rotate value3="0 0 1.5708"/>
+                <scale value3="0.7 1 1"/>
+            </transforms>
+            <children>
+                <noderef id="windowLine"/>
+            </children>
+        </node>
+
+        <node id="windowLine">
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="2 0.022 0.1"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="windowFrame">
+            <children>
+                <noderef id="windowFrameTop"/>
+                <noderef id="windowFrameBottom"/>
+                <noderef id="windowFrameRight"/>
+                <noderef id="windowFrameLeft"/>
+            </children>
+        </node>
+
+        <node id="windowFrameTop">
+            <transforms>
+                <translate value3="0 1.5 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="windowFrameSide"/>
+            </children>
+        </node>
+
+        <node id="windowFrameBottom">
+            <transforms>
+                <translate value3="0 -1.5 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="windowFrameSide"/>
+            </children>
+        </node>
+
+        <node id="windowFrameLeft">
+            <transforms>
+                <translate value3="0.22 -1.5 0" />
+                <rotate value3="0 0 1.5708"/>
+                <scale value3="1.45 1 1"/>
+            </transforms>
+            <children>
+                <noderef id="windowFrameSide"/>
+            </children>
+        </node>
+
+        <node id="windowFrameRight">
+            <transforms>
+                <translate value3="2.2 -1.5 0" />
+                <rotate value3="0 0 1.5708"/>
+                <scale value3="1.45 1 1"/>
+            </transforms>
+            <children>
+                <noderef id="windowFrameSide"/>
+            </children>
+        </node>
+
+        <node id="windowFrameSide">
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="2.2 0.22 0.3"/>
+                </primitive>
+            </children>
+        </node>
+
     </graph>
 </yaf> 

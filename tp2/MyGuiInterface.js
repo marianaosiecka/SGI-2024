@@ -53,6 +53,14 @@ class MyGuiInterface  {
                     }
                 });
             });
+        
+        // WINDOWS
+
+        console.log(this.contents.group)
+        this.contents.group.children.forEach((group, index) => {
+            const windowMesh =  group.children.find(group => group.name === "windowDown");
+            console.log(windowMesh)
+        });
 
         //DOOR 
         this.datgui.add(this.contents.nodes.get('door').rotation, 'y', 0, 2.2).name("Open door");

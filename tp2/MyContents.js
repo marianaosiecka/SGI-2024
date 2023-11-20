@@ -113,7 +113,8 @@ class MyContents  {
         // SCENE GLOBALS
         let dataOptions = data.options;
         let fogData = data.fog;
-        this.app.scene.add(new THREE.AmbientLight(dataOptions.ambient, 0.3));
+        const ambientLight = new THREE.AmbientLight(dataOptions.ambient, 0.5);
+        this.app.scene.add(ambientLight);
         this.app.scene.background = dataOptions.background;
         this.app.scene.fog = new THREE.Fog(fogData.color, fogData.near, fogData.far);
 
