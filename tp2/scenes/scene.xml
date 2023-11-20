@@ -33,7 +33,7 @@
             angle="75"
             near="0.1"
             far="1000"
-            location="-3.2 3.5 -2.2"
+            location="-4 3 -3.5"
             target="-6 2 -5" />
 
         <perspective id="pillow"
@@ -168,6 +168,8 @@
 
         <texture id="fireVideoTex" filepath="scenes/textures/videos/fire.mp4" isVideo="true" />
 
+        <texture id="musicVideoTex" filepath="scenes/textures/videos/music.mp4" isVideo="true" />
+
     </textures>
 
     <materials>
@@ -225,7 +227,7 @@
             textureref="floorTex"
             texlength_s="16"
             texlength_t="15"
-            twosided="true" />
+            twosided="false" />
 
         <material id="tableApp"
             emissive="0.0 0.0 0.0 1"
@@ -270,7 +272,7 @@
             color="0.8 0.47 0.13 1.0"
             specular="0.0 0.0 0.0 0.0"
             shininess="0" 
-            twosided="true"/>
+            twosided="false"/>
 
         <!-- color: this.yellow -->
         <material id="chairApp"
@@ -302,8 +304,8 @@
         <material id="flowerPetalsPurpleApp"
             emissive="0.0 0.0 0.0 1"
             color="0.32 0.22 0.36 1.0"
-            specular="0.0 0.0 0.0 1"
-            shininess="4"
+            specular="0.32 0.22 0.36 1"
+            shininess="10"
             twosided="true" />
 
         <material id="flowerPetalsOrangeApp"
@@ -416,25 +418,21 @@
             color="0.44 0.22 0.114 1.0"
             specular="0.44 0.22 0.114 1.0"
             shininess="1"
-            twosided="true" />
+            twosided="false" />
 
         <material id="coffeeTableApp"
             emissive="0.0 0.0 0.0 1"
             color="0.368 0.43 0.278 1.0"
             specular="0.368 0.43 0.278 1.0"
             shininess="5.0"
-            twosided="true"
-            texlength_s="2"
-            texlength_t="1" />
+            twosided="false" />
 
         <material id="vinylBoxApp"
             emissive="0.0 0.0 0.0 1"
             color="1 1 1 1.0"
             specular="0.368 0.43 0.278 1.0"
             shininess="5.0"
-            twosided="true"
-            texlength_s="2"
-            texlength_t="1" />
+            twosided="true"/>
 
         <material id="bulbApp"
             emissive="0.0 0.0 0.0 1.0"
@@ -527,7 +525,7 @@
             color="0.369 0.431 0.278 1.0"
             specular="0 0 0 1.0"
             shininess="0"
-            twosided="true" />
+            twosided="false" />
 
         
         <material id="blackApp"
@@ -543,14 +541,14 @@
             color="0.655 0.765 0.820 1.0"
             specular="0 0 0 1.0"
             shininess="0"
-            twosided="true" /> 
+            twosided="false" /> 
         
         <material id="vinylApp"
             emissive="0.0 0.0 0.0 1"
             color="0 0 0 1.0"
-            specular="0.251 0.251 0.251 1.0"
+            specular="0.5 0.5 0.5 1.0"
             shininess="15"
-            twosided="true" /> 
+            twosided="false" /> 
         
         <material id="whiteApp"
             emissive="0.0 0.0 0.0 1"
@@ -652,25 +650,35 @@
             color="0 0 0 1.0"
             specular="1 1 1 0"
             shininess="5"
-            twosided="true"
+            twosided="false"
         />
         
         <material id="fireVideoApp"
-            emissive="0.0 0.0 0.0 1"
+            emissive="0 0 0 1"
             color="1 1 1 1"
-            specular="0 0 0 0"
-            shininess="0"
-            twosided="true"
+            specular="0.1 0.1 0.1 1"
+            shininess="3"
+            twosided="false"
             textureref="fireVideoTex"
             texlength_s="2.1"
             texlength_t="1.5" />
+
+        <material id="musicVideoApp"
+            emissive="0 0 0 1"
+            color="1 1 1 1"
+            specular="0.1 0.1 0.1 1"
+            shininess="3"
+            twosided="false"
+            textureref="musicVideoTex"
+            texlength_s="0"
+            texlength_t="0" />
 
         <material id="doorApp"
             emissive="0.0 0.0 0.0 1"
             color="0.44314 0.21961 0.113725 1"
             specular="0.46667 0.46667 0.46667 0"
             shininess="1"
-            twosided="true" />
+            twosided="false" />
 
         <material id="doorKnobApp"
             emissive="0.0 0.0 0.0 1"
@@ -706,8 +714,7 @@
                 <noderef id="lampSofas" />
                 <noderef id="sofa1" />
                 <noderef id="sofa2" />
-                <noderef id="vase1AndFlower" />
-                <noderef id="vase2AndFlower" />
+                <noderef id="vaseAndFlower" />
                 <noderef id="coffeeTable" />
                 <noderef id="newspaper" />
                 <noderef id="floorLamp" />
@@ -725,11 +732,12 @@
                 <noderef id="vinylShelf" />
                 <noderef id="porch" />
                 <noderef id="grass" />
-                <!--
+                
                 <noderef id="wallLampFLeft"/>
                 <noderef id="wallLampFRight"/>
                 <noderef id="wallLampBLeft"/>
                 <noderef id="wallLampBRight"/>
+                <!--
                 <noderef id="extWallLampFLeft"/>
                 <noderef id="extWallLampFRight"/>
                 <noderef id="extWallLampBLeft"/>
@@ -756,19 +764,19 @@
 
                 <pointlight id="lightFront" enabled="true" 
                     color="0.969 1.0 0.88 1" 
-                    intensity="5.0"
+                    intensity="1"
                     distance="0"
                     decay="1.0"
                     castshadow="false"
                     position="30 10.0 0" 
                 />
    
-                <directionallight id="light1" enabled="true" 
+                <!--<directionallight id="light1" enabled="true" 
                     color="1.0 1 1 1" 
                     intensity="0.2"
                     castshadow="false"
                     position="0 1 0" 
-                />
+                />-->
                 
             </children> 
         </node>
@@ -917,7 +925,7 @@
         </node>
 
 
-        <node id="firstFloorWalls">
+        <node id="firstFloorWalls" castshadows="true" receiveshadows="true">
 			<materialref id="wallApp" />
 			
             <children>             
@@ -1704,6 +1712,10 @@
         </node> 
         
         <node id="vase">
+            <transforms>
+                <scale value3="1.15 1 1"/>
+            </transforms>
+
             <materialref id="vaseApp"/>
 
             <children>
@@ -1918,9 +1930,11 @@
             </children> 
         </node>
 
-        <node id="vase2AndFlower">
+        <node id="vaseAndFlower" castshadows="true">
             <transforms>
-                <translate value3="-6.0 0.0 7.0" />
+                <translate value3="-6 0.0 6.2" />
+                <rotate value3="0 0.1 0"/>
+                <scale value3="1 1.2 1"/>
             </transforms>   
 
             <children>             
@@ -1931,7 +1945,7 @@
         </node>
         
          <!-- SOFAS -->
-        <node id="sofa1" castshadows="true">
+        <node id="sofa1" castshadows="true" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="-3 0.0 -5.7" />
                 <rotate value3="0.0 -1.0472 0.0" />
@@ -2159,7 +2173,7 @@
             </children> 
         </node>
 
-        <node id="coffeeTable" receiveshadows="true" castshadows="true">
+        <node id="coffeeTable" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-1.0 0.05 -3" />
                 <scale value3="1.2 1 1.2" />
@@ -2224,7 +2238,7 @@
             </children>
         </node>
 
-        <node id="newspaperPage4">
+        <node id="newspaperPage4"  receiveshadows="true">
             <children>
                 <primitive>             
                     <nurbs degree_u="1" degree_v="2" parts_u="12" parts_v="12">
@@ -2388,7 +2402,7 @@
             </children>
         </node>
 
-        <node id="plate">
+        <node id="plate" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="0 1.15 3" />
             </transforms>
@@ -2426,7 +2440,7 @@
         <!-- FORKS -->
         <node id="fork1" castshadows="true">
             <transforms>
-                <translate value3="0.6 1.05 5.15"/>
+                <translate value3="0.6 1.035 5.15"/>
             </transforms>
             <children>
                 <noderef id="fork"/>
@@ -2443,7 +2457,7 @@
             </children>
         </node>
 
-        <node id="fork">
+        <node id="fork" castshadows="true">
             <transforms>
                 <scale value3="0.17 0.17 0.17" />
             </transforms>
@@ -2462,7 +2476,7 @@
 
         <node id="tine1">
             <transforms>
-                <translate value3="0 0 -0.3" />
+                <translate value3="0 0 -0.34" />
             </transforms>
 
             <children>
@@ -2508,7 +2522,7 @@
             <transforms>
                 <translate value3="-0.7 -0.01 1.1"/>
                 <rotate value3="0 0 1.5708"/>
-                <scale value3="1 1 1" />
+                <scale value3="0.9 1 1" />
             </transforms>
 
             <children>
@@ -2522,7 +2536,7 @@
             <transforms>
                 <translate value3="-0.2 0 0.15" />
                 <rotate value3="0 0 1.5708"/>
-                <scale value3="0.18 2 1" />
+                <scale value3="0.18 2 0.92" />
             </transforms>
 
             <children>
@@ -2534,7 +2548,7 @@
 
         <node id="handle">
             <transforms>
-                <translate value3="1.37 0 0" />
+                <translate value3="1.37 -0.02 0" />
             </transforms>
             <children>
                 <primitive>
@@ -2545,7 +2559,7 @@
 
         
         <!-- FRAMES PHOTOS AND PAINTINGS -->
-        <node id="framePhotography">
+        <node id="framePhotography" castshadows="true" receiveshadows="true">
             <children>
                 <primitive>
                     <box xyz1="0.0 0.0 0.0" xyz2="0.1 0.2 2" />
@@ -2779,7 +2793,7 @@
         </node>
 
         <!-- VINYL -->
-        <node id="vinylPlayerHolder">
+        <node id="vinylPlayerHolder" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-6.7 -0.1 -5.5"/>
             </transforms>
@@ -2932,7 +2946,7 @@
             </children>
         </node>
 
-        <node id="vinylPlayer">
+        <node id="vinylPlayer" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3= "-7.25 1.8125 -6.25" />
             </transforms>
@@ -3064,12 +3078,12 @@
             </transforms>
             <children>
                 <primitive>
-                    <cylinder base="0.67" top="0.67" height="0.001" capsclose="true" slices="40" stacks="1"/>
+                    <cylinder base="0.67" top="0.67" height="0.001" capsclose="true" slices="80" stacks="10"/>
                 </primitive>
             </children>
         </node>
 
-        <node id="vinylShelf">
+        <node id="vinylShelf" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-7.5 3 -5.9"/>
             </transforms>
@@ -3093,8 +3107,19 @@
             <materialref id="vinylCoverApp"/>
 
             <children>
+                <noderef id="vinylMusicVideo"/>
                 <primitive>
                     <box xyz1="0 0 0" xyz2="1 0.05 1"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylMusicVideo">
+            <materialref id="musicVideoApp"/>
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="0 0"/>
                 </primitive>
             </children>
         </node>
@@ -3118,21 +3143,22 @@
         <!-- WALL LAMPS -->
         <node id="wallLampFLeft">
             <transforms>
-                <translate value3="-7.47 3.6 4"/>
+                <translate value3="-7.47 4.8 4"/>
+                <rotate value3="3.1416 0 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallLampSpotLight"
-                    enabled="true" 
+                <spotlight id="wallFrontLeftLampSpotLight"
+                    enabled="false" 
                     color="0.972 0.929 0.714 1.0" 
                     intensity="6"
-                    distance="3"
-                    angle="0.7854"
+                    distance="10"
+                    angle="1"
                     penumbra="1.0"
                     decay="0.8"
                     castshadow="true"
                     position="0 0.1 0" 
-                    target="0 5 0"
+                    target="0.05 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
                 />
@@ -3141,20 +3167,21 @@
 
         <node id="wallLampFRight">
             <transforms>
-                <translate value3="-7.47 3.6 -4"/>
+                <translate value3="-7.47 4.8 -4"/>
+                <rotate value3="3.1416 0 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallLampSpotLight"
+                <spotlight id="wallFrontRightLampSpotLight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="6"
-                    distance="3"
-                    angle="0.7854"
+                    intensity="5"
+                    distance="10"
+                    angle="1"
                     penumbra="1.0"
                     decay="0.8"
                     castshadow="true"
-                    position="0 0.1 0" 
+                    position="0.05 0.1 0" 
                     target="0 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
@@ -3164,21 +3191,21 @@
 
         <node id="wallLampBRight">
             <transforms>
-                <translate value3="7.47 3.6 4"/>
-                <rotate value3="0 3.1416 0"/>
+                <translate value3="7.47 4.8 4"/>
+                <rotate value3="3.1416 3.1416 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallLampSpotLight"
-                    enabled="true" 
+                <spotlight id="wallBackRightLampSpotLight"
+                    enabled="false" 
                     color="0.972 0.929 0.714 1.0" 
                     intensity="6"
-                    distance="3"
-                    angle="0.7854"
+                    distance="10"
+                    angle="1"
                     penumbra="1.0"
                     decay="0.8"
                     castshadow="true"
-                    position="0 0.1 0" 
+                    position="0.05 0.1 0" 
                     target="0 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
@@ -3188,21 +3215,21 @@
 
         <node id="wallLampBLeft">
             <transforms>
-                <translate value3="7.47 3.6 -4"/>
-                <rotate value3="0 3.1416 0"/>
+                <translate value3="7.47 4.8 -4"/>
+                <rotate value3="3.1416 3.1416 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallLampSpotLight"
-                    enabled="true" 
+                <spotlight id="wallBackLeftLampSpotLight"
+                    enabled="false" 
                     color="0.972 0.929 0.714 1.0" 
                     intensity="6"
-                    distance="3"
-                    angle="0.7854"
+                    distance="10"
+                    angle="1"
                     penumbra="1.0"
                     decay="0.8"
                     castshadow="true"
-                    position="0 0.1 0" 
+                    position="0.05 0.1 0" 
                     target="0 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
@@ -3600,7 +3627,7 @@
             </children>
         </node>
 
-        <node id="fireplace">
+        <node id="fireplace" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-1 0.1 -8"/>
             </transforms>
@@ -3795,7 +3822,7 @@
             </children>
         </node>
 
-        <node id="doorKnob" >
+        <node id="doorKnob" castshadows="true">
             <transforms>
                 <translate value3="-0.025 2.3 1.65"/>
                 <scale value3="1 1 -1" />
@@ -3823,7 +3850,7 @@
             </children>
         </node>
 
-        <node id="doorInside" >
+        <node id="doorInside">
             <materialref id="doorApp" />
 
             <children>
@@ -3850,7 +3877,7 @@
             </children>
         </node>
 
-        <node id="door" >
+        <node id="door" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="7.4 0 -0.9"/>
                 <scale value3="0.5 1 1" />
@@ -4095,7 +4122,7 @@
                 </primitive>
             </children>
         </node>
-
+        
         <!-- PILLOW -->
         <node id="pillow1" castshadows="true">
             <transforms>

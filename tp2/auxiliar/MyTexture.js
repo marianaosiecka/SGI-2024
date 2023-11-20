@@ -6,16 +6,19 @@ class MyTexture {
      * 
      * @param {MyApp} app the application object
      */
-    constructor(textureData) {
+    constructor(textureData, videoNum) {
         this.id = textureData.id;
         this.filepath = textureData.filepath;
         this.isVideo = textureData.isVideo;
+        this.videoNum = videoNum
         
         if(textureData.isVideo){
-            let video = document.getElementById('video');
+            let video = document.getElementsByClassName('video')[this.videoNum];
             this.texture = new THREE.VideoTexture(video);  
             this.texture.needsUpdate = true; 
+            this.videoNum++;
         }
+        
         else{
             this.texture = new THREE.TextureLoader().load(this.filepath);
             if(!textureData.mipmaps){
