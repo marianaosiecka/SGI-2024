@@ -142,8 +142,8 @@
             mipmap3="scenes/textures/newspaper_texture.png"
             />
 
-        <texture id="carpetTex" filepath="scenes/textures/carpet_texture1.png"
-            />
+        <texture id="carpetTex" filepath="scenes/textures/carpet_texture1.png"/>
+        <texture id="carpetBumpTex" filepath="scenes/textures/carpet_bump_texture.png"/>
         
         <texture id="grassTex" filepath="scenes/textures/grass.jpg" />
         <texture id="grassBumpTex" filepath="scenes/textures/grass_bump_texture.png" />
@@ -387,6 +387,8 @@
             specular="0 0 0 1.0"
             shininess="1"
             textureref="carpetTex"
+            bumpref="carpetBumpTex"
+            bumpscale = "0.4"
             twosided="true"
             texlength_s="5.5"
             texlength_t="9.5" />
@@ -414,7 +416,9 @@
             color="0.368 0.43 0.278 1.0"
             specular="0.368 0.43 0.278 1.0"
             shininess="5.0"
-            twosided="true" />
+            twosided="true"
+            texlength_s="2"
+            texlength_t="1" />
 
         <material id="bulbApp"
             emissive="0.0 0.0 0.0 1.0"
@@ -825,7 +829,7 @@
             </children> 
         </node>
 
-        <node id="backWall">
+        <node id="backWall" receiveshadows="true">
             <transforms>
 				<translate value3="-7.5 0.0 8.0" />
 				<rotate value3="0.0 1.5708 0.0" />
@@ -1291,7 +1295,7 @@
         </node>
 
         <!-- TABLE -->
-        <node id="table" castshadows="true" receiveshadows="true">
+        <node id="table" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="-1.9 0.0 7.7"/>
             </transforms>   
@@ -1870,7 +1874,7 @@
         </node>
         
         <!-- SOFAS -->
-        <node id="sofa1">
+        <node id="sofa1" castshadows="true">
             <transforms>
                 <translate value3="-3 0.0 -5.7" />
                 <rotate value3="0.0 -1.0472 0.0" />
@@ -1984,7 +1988,7 @@
             </children>
         </node>
 
-        <node id="sofa2" receiveshadows="true" castshadows="true">
+        <node id="sofa2" castshadows="true">
             <transforms>
                 <translate value3="3 0.0 -5.7" />
                 <rotate value3="0.0 3.927 0.0" />
@@ -2098,7 +2102,7 @@
             </children> 
         </node>
 
-        <node id="coffeeTable" castshadows="true">
+        <node id="coffeeTable" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="-1.0 0.05 -3" />
                 <scale value3="1.2 1 1.2" />
@@ -2179,7 +2183,7 @@
             </children>
         </node>
 
-        <node id="newspaper">
+        <node id="newspaper" castshadows="true">
             <transforms>
                 <translate value3="0.0 0.98 -4.4" />
                 <rotate value3="0.0 0.31416 0.0" />
@@ -2338,7 +2342,7 @@
             </children>
         </node>
 
-        <node id="plateTop">
+        <node id="plateTop" castshadows="true">
             <materialref id="plateApp" />
 
             <children>
@@ -2363,9 +2367,9 @@
         </node>
 
         <!-- FORKS -->
-        <node id="fork1">
+        <node id="fork1" castshadows="true">
             <transforms>
-                <translate value3="0.6 1.1 5.15"/>
+                <translate value3="0.6 1.05 5.15"/>
             </transforms>
             <children>
                 <noderef id="fork"/>
@@ -2997,7 +3001,7 @@
             </children>
         </node>
 
-        <node id="vinylCover">
+        <node id="vinylCover" castshadows="true">
             <transforms>
                 <translate value3="0.28 0.05 0.95"/>
                 <rotate value3="-1.5708 -0.23 1.5708" />
@@ -3311,7 +3315,7 @@
                 <spotlight id="ceilingLampHighlight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="12"
+                    intensity="18"
                     distance="6.3"
                     angle="0.06"
                     penumbra="1.0"
