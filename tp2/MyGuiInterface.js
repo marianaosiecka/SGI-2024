@@ -54,10 +54,10 @@ class MyGuiInterface  {
                 });
             });
         
-        // WINDOWS
-        this.datgui.add(this.contents.nodes.get('windowDown').position, 'y', -0.6, 0.74).name("Open window");
-        
 
+        // WINDOW
+        this.datgui.add(this.contents.nodes.get('windowDown').position, 'y', 0, 1.3).name("Open window");
+        
         //DOOR 
         this.datgui.add(this.contents.nodes.get('door').rotation, 'y', 0, 1.8).name("Open door");
     }

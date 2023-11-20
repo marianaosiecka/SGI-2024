@@ -7,7 +7,7 @@
 
     <skybox size="200 200 200" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="vase">
+    <cameras initial="perspective1">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -701,8 +701,7 @@
                 <noderef id="fireplace" />
                 <noderef id="door"/>     
                 <noderef id="doorFrame"/>            
-                <noderef id="window1" />
-                <noderef id="window2" />
+                <noderef id="window" />
 
                 <pointlight id="lightTop" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -3780,16 +3779,22 @@
             </children>
         </node>
 
-
-
         <!-- WINDOW -->
+        <node id="window">
+            <children>
+                <noderef id="window1"/>
+                <noderef id="window2" />
+                <noderef id="windowDown"/>
+            </children>
+        </node>
+
         <node id="window1">
             <transforms>
                 <translate value3="-7.66 3.4 -1.7"/>
                 <scale value3="1 1 -1" />
             </transforms>
             <children>
-                <noderef id="window"/>
+                <noderef id="windowGeom"/>
             </children>
         </node>
 
@@ -3798,19 +3803,18 @@
                 <translate value3="-7.66 3.4 1.8"/>
             </transforms>
             <children>
-                <noderef id="window"/>
+                <noderef id="windowGeom"/>
             </children>
         </node>
-        <node id="window">
+
+        <node id="windowGeom">
             <transforms>
                 <rotate value3="0 1.5708 0"/>
-                <scale value3="1 1 1"/>
             </transforms>
             <materialref id="photographyFrameApp" />
             <children>
                 <noderef id="windowFrame"/>
                 <noderef id="windowUp"/>
-                <noderef id="windowDown"/>
             </children>
         </node>
 
@@ -3844,7 +3848,29 @@
 
         <node id="windowDown">
             <transforms>
-                <translate value3="0.22 -0.6 0.15"/>
+                <rotate value3="0 1.5708 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="windowDownGeomLeft"/>
+                <noderef id="windowDownGeomRight"/>
+            </children>
+        </node>
+
+        <node id="windowDownGeomRight">
+            <transforms>
+                <translate value3="-0.099 0 0"/>
+                <scale value3="-1 1 1"/>
+            </transforms>
+
+            <children>
+                <noderef id="windowDownGeomLeft"/>
+            </children>
+        </node>
+
+        <node id="windowDownGeomLeft">
+            <transforms>
+                <translate value3="-1.58 2.8 -7.48"/>
                 <scale value3="0.8 0.46 0.55"/>
             </transforms>
 
