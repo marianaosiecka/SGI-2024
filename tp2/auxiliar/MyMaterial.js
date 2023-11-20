@@ -16,17 +16,19 @@ class MyMaterial {
         this.myTexture = myTexture;
         this.bumpTexture = bumpTexture;
         this.specularTexture = specularTexture;
-        
+        let color = new THREE.Color();
+        color.setRGB(materialData.color.r, materialData.color.g, materialData.color.b)
+
         let flatShading = false;
         if (materialData.shading == "flat") flatShading = true;
 
         this.transparent = (materialData.color.a != 1);
- 
-        this.material = new THREE.MeshPhongMaterial({ color: materialData.color, flatShading: flatShading, specular: materialData.specular, shininess: materialData.shininess, emissive: materialData.emissive, wireframe: this.wireframe});
+
+        this.material = new THREE.MeshPhongMaterial({ color: color, flatShading: flatShading, specular: materialData.specular, shininess: materialData.shininess, emissive: materialData.emissive, wireframe: this.wireframe});
 
         if(this.textureref != null) {
-            this.material.needsUpdate = true;  
             this.material.map = this.myTexture;
+            this.material.needsUpdate = true;
         }
 
         if(materialData.twosided)

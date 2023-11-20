@@ -39,8 +39,38 @@ class MyTexture {
                 this.texture.needsUpdate = true;
            }
             else {
-                this.texture.magFilter = textureData.magFilter;
-                this.texture.minFilter = textureData.minFilter;
+                let magFilter = null;
+                let minFilter = null;
+                switch (textureData.magFilter) {
+                    case "LinearFilter":
+                        magFilter = THREE.LinearFilter;
+                        break;
+                    case "NearestFilter":
+                        magFilter = THREE.NearestFilter ;
+                        break;
+                }
+                switch (textureData.minFilter) {
+                    case "NearestFilter":
+                        minFilter = THREE.NearestFilter ;
+                        break;
+                    case "NearestMipmapNearestFilter":
+                        minFilter = THREE.NearestMipmapNearestFilter ;
+                        break;
+                    case "NearestMipmapLinearFilter":
+                        minFilter = THREE.NearestMipmapLinearFilter ;
+                        break;
+                    case "LinearFilter":
+                        minFilter = THREE.LinearFilter ;
+                        break;
+                    case "LinearMipmapNearestFilter":
+                        minFilter = THREE.LinearMipmapNearestFilter ;
+                        break;
+                    case "LinearMipmapLinearFilter":
+                        minFilter = THREE.LinearMipmapLinearFilter ;
+                        break;
+                }
+                this.texture.magFilter = magFilter;
+                this.texture.minFilter = minFilter;
             }
         }
 

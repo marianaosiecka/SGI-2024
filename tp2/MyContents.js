@@ -28,6 +28,7 @@ class MyContents  {
         this.cameras = new Map();
         this.skyboxes = new Map();
         this.lights = new Map();
+        this.nodes = new Map();
 
         this.group = null;
 
@@ -56,7 +57,7 @@ class MyContents  {
     onSceneLoaded(data) {
         this.visitData(data);
         //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
-        //this.onAfterSceneLoadedAndBeforeRender(data);
+        this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
     output(obj, indent = 0) {
@@ -123,6 +124,9 @@ class MyContents  {
         myScene.group.visible = sceneNode.loaded;
         this.app.scene.add(myScene.group);
         this.group = myScene.group;
+
+        this.nodes = myScene.nodesMap;
+
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
