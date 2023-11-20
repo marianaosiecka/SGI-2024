@@ -7,7 +7,7 @@
 
     <skybox size="200 200 200" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="vase">
+    <cameras initial="perspective1">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -1838,6 +1838,45 @@
                 <rotate value3="0.0 0.0 4.01326667" />
             </transforms>
 
+            <children>
+                <lodref id="flowerHeadLod"/>
+            </children>
+        </node>
+
+        <lod id="flowerHeadLod">
+            <noderef id="flowerHeadLod1" mindist="0"/>
+            <noderef id="flowerHeadLod2" mindist="10"/>
+            <noderef id="flowerHeadLod3" mindist="15"/>
+        </lod>
+
+        <node id="flowerHeadLod3">
+            <children>             
+                <noderef id="flowerAllPetals" />
+            </children>
+        </node>
+
+        <node id="flowerHeadLod2">
+            <children>             
+                <noderef id="flowerCenter" />
+                <noderef id="flowerAllPetals" />
+            </children>
+        </node>
+
+        <node id="flowerAllPetals">
+            <transforms>
+                <scale value3="0.3 2.5 2.5"/>
+            </transforms>
+
+            <materialref id="flowerPetalsPurpleApp"/> 
+
+            <children>             
+                <primitive>
+                    <sphere radius="0.115" slices="10" stacks="10"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="flowerHeadLod1">
             <children>             
                 <noderef id="flowerCenter" />
                 <noderef id="flowerPetals1" />
