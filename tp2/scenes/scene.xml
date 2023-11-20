@@ -427,6 +427,15 @@
             texlength_s="2"
             texlength_t="1" />
 
+        <material id="vinylBoxApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1 1 1 1.0"
+            specular="0.368 0.43 0.278 1.0"
+            shininess="5.0"
+            twosided="true"
+            texlength_s="2"
+            texlength_t="1" />
+
         <material id="bulbApp"
             emissive="0.0 0.0 0.0 1.0"
             color="0.97 0.92 0.71 1.0"
@@ -733,6 +742,8 @@
                 <noderef id="door"/>     
                 <noderef id="doorFrame"/>            
                 <noderef id="window" />
+                <noderef id="buf" />
+                <noderef id="buf2" />
 
                 <pointlight id="lightTop" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -2792,6 +2803,32 @@
                 <noderef id="vinylPlayerHolderBoxSide2" />
                 <noderef id="vinylPlayerHolderBoxSide3" />
                 <noderef id="vinylPlayerHolderBoxSide4" />
+            </children>
+        </node>
+
+        <node id="buf">
+            <transforms>
+                <translate value3="0 2 0"/>
+                <rotate value3="0.7854 0 1.5708"/>
+                <scale value3="0.7 1 0.7" />
+            </transforms>
+            <materialref id="vinylBoxApp" />
+            <children>
+                <primitive>
+                    <polygon radius="1" stacks="2" slices="2" color_c="0 0.2823 1 1.0" color_p="1 0.968627 0 1.0" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="buf2">
+            <transforms>
+                <translate value3="1 1 1"/>
+            </transforms>
+            <materialref id="vinylBoxApp" />
+            <children>
+                <primitive>
+                    <polygon radius="1" stacks="2" slices="4" color_c="0 0.2823 1 1.0" color_p="1 0.968627 0 1.0" />
+                </primitive>
             </children>
         </node>
 

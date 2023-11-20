@@ -118,6 +118,7 @@ class MyContents  {
         this.app.scene.background = dataOptions.background;
         this.app.scene.fog = new THREE.Fog(fogData.color, fogData.near, fogData.far);
 
+        
         // VISIT SCENE NODE CHILDREN
         let sceneNode = data.nodes.scene;
         let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations, this.lights);

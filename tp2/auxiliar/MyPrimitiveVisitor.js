@@ -5,6 +5,7 @@ import { MyCylinder } from "./primitives/MyCylinder.js";
 import { MySphere } from "./primitives/MySphere.js";
 import { MyTriangle } from "./primitives/MyTriangle.js";
 import { MyNurbs } from "./primitives/MyNurbs.js";
+import { MyPolygon } from './primitives/MyPolygon.js';
 
 
 class MyPrimitiveVisitor {
@@ -50,6 +51,12 @@ class MyPrimitiveVisitor {
             case "triangle": {
                 let triangleGeometry = new MyTriangle(this.data);
                 geometry = triangleGeometry;
+                break;
+            }
+            case "polygon": {
+                let polygonGeometry = new MyPolygon(this.data);
+                geometry = polygonGeometry;
+                material.material.vertexColors = true;
                 break;
             }
         }
