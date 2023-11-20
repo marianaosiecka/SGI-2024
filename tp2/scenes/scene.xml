@@ -43,6 +43,26 @@
             location="-1 3 -3"
             target="-2.8 1.3 -5.3/>" />
         
+        <perspective id="window"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="0 4 0"
+            target="-8 3.5 0" />
+
+        <perspective id="doorInside"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="0 3.5 0"
+            target="8 3.5 0" />
+
+        <perspective id="doorOutside"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="15 3.5 0"
+            target="6 3.5 0" />
 
         <orthogonal id="orthoLeft"
             near="-10"
@@ -710,7 +730,6 @@
                 <noderef id="doorFrame"/>            
                 <noderef id="window1" />
                 <noderef id="window2" />
-                <noderef id="pillow1"/>
 
                 <pointlight id="lightTop" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -740,6 +759,7 @@
             </children> 
         </node>
 
+        <!-- INSIDE WALLS -->
         <node id="leftWall">
             <transforms>
 				<translate value3="7.5 0.0 8.0" />
@@ -837,6 +857,7 @@
             </children> 
         </node>
 
+        <!-- FLOOR -->
        <node id="floor" receiveshadows="true">
 			<transforms>
 				<translate value3="-7.5 0.0 8.0" />
@@ -896,6 +917,7 @@
             </children> 
         </node>
 
+        <!-- EXTERIOR WALLS -->
         <node id="extLeftWall">
             <transforms>
 				<translate value3="-7.5 0.0 8.01" />
@@ -1023,32 +1045,7 @@
                 <noderef id="extFrontWallTop" />
             </children> 
         </node>
-<!--
-        <node id="extBackWall">
-            <transforms>
-				<translate value3="-7.51 0.0 -8.02" />
-				<rotate value3="0.0 -1.5708 0.0" />
-            </transforms> 
 
-            <children>             
-                <primitive>
-                    <rectangle xy1="0 0" xy2="5.6 6" />
-                </primitive>
-                <primitive>
-                    <rectangle xy1="5.6 0" xy2="10.5 2" />
-                </primitive>
-                <primitive>
-                    <rectangle xy1="10.5 0" xy2="16.05 6" />
-                </primitive>
-                <primitive>
-                    <rectangle xy1="5.6 5.1" xy2="10.5 6" />
-                </primitive>
-                <primitive>
-                    <rectangle xy1="7.5 2" xy2="8.5 5.1" />
-                </primitive>
-            </children> 
-        </node>
--->
         <node id="exteriorWalls">
 			<materialref id="extWallApp" />
 			
@@ -1060,6 +1057,7 @@
             </children> 
         </node>
 
+        <!-- DECK -->
         <node id="deck" >
             <transforms>
                 <translate value3="0 1.81 0" /> 
@@ -1300,6 +1298,7 @@
             </children>
         </node>
 
+        <!-- TABLE -->
         <node id="table" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-1.9 0.0 7.7"/>
@@ -1316,8 +1315,6 @@
             </children>  
         </node>
 
-
-        <!--formato da perna da mesa; as outras "legs" só mudam a posição-->
         <node id="tableLeg">
 			<transforms>
 				<scale value3="0.2 1 0.2" />
@@ -1400,8 +1397,7 @@
         </node>
 
         
-        <!-- CADEIRAS -->
-
+        <!-- CHAIRS -->
         <node id="chairLeg">
             <children>             
                 <primitive>
@@ -1409,7 +1405,6 @@
                 </primitive>
             </children> 
         </node>
-	
         
         <node id="chairLeg1">
 			<transforms>
@@ -1419,10 +1414,7 @@
             <children>             
                 <noderef id="chairLeg" />
             </children> 
-        </node>
-        
-        <!-- formato da perna da cadeira; as outras "legs" só mudam a posição-->
-        
+        </node>        
          
 		<node id="chairLeg2">
 			<transforms>
@@ -1556,20 +1548,7 @@
             </children>  
         </node>
 
-      <!-- <node id="cake">
-            <transforms>
-                <translate value3="0.0 1.9 4.0" />
-            </transforms>   
-
-            <materialref id="cakeApp" />
-                
-            <children>             
-                <primitive>
-                    <cylinder base="0.6" top="0.6" height="0.4" slices="25" stacks="1" capsclose="true" thetastart="0" thetalength="302.70" />
-                </primitive>
-            </children> 
-        </node> -->
-
+        <!-- LAMP -->
         <node id="lampCable">
             <transforms>
                 <translate value3="0.0 0.0 0.0" />
@@ -1650,6 +1629,7 @@
             </children> 
         </node> 
 
+        <!-- VASE -->
         <node id="vaseSide">
             <children>
                 <primitive>             
@@ -1755,7 +1735,8 @@
                 </primitive>
             </children>
         </node>
-    
+
+        <!-- FLOWERS -->
         <node id="flowerStem">
             <materialref id="flowerStemApp"/>
 
@@ -1935,7 +1916,7 @@
             </children> 
         </node>
         
-        <node id="sofa1" castshadows="true">
+        <node id="sofa1">
             <transforms>
                 <translate value3="-3 0.0 -5.7" />
                 <rotate value3="0.0 -1.0472 0.0" />
@@ -2068,6 +2049,7 @@
             </children> 
         </node>
 
+        <!-- LAMP ON TOP SOFAS -->
         <node id="lampSofas">
             <transforms>
                 <translate value3="0.0 5.5 -4.5" />
@@ -2110,6 +2092,7 @@
             </children> 
         </node>
 
+        <!-- COFFEE TABLE -->
         <node id="coffeeTableSide">
             <transforms>
                 <rotate value3="0.0 1.5708 0.0" />
@@ -2177,6 +2160,7 @@
             </children> 
         </node>
 
+        <!-- NEWSPAPER -->
         <node id="newspaperPage1">
             <children>
                 <primitive>             
@@ -2257,6 +2241,7 @@
             </children>
         </node>
 
+        <!-- FLOOR LAMP -->
          <node id="floorLampFoot">
             <transforms>
                 <translate value3="0.0 0.1 0.0" />
@@ -2369,6 +2354,7 @@
             </children>
         </node>
 
+        <!-- PLATES -->
         <node id="plate1">
             <transforms>
                 <translate value3="1 0 3" />
@@ -2422,6 +2408,7 @@
             </children>
         </node>
 
+        <!-- FORKS -->
         <node id="fork1">
             <transforms>
                 <translate value3="0.6 1.1 5.15"/>
@@ -2541,6 +2528,8 @@
             </children>
         </node>
 
+        
+        <!-- FRAMES PHOTOS AND PAINTINGS -->
         <node id="framePhotography">
             <children>
                 <primitive>
@@ -2595,6 +2584,7 @@
             </children>
         </node>
 
+        <!-- PHOTOS -->
         <node id="photographyFrame1">
             <transforms>
                 <translate value3="3.8 2.8 -7.9" />
@@ -2701,6 +2691,7 @@
             </children>
         </node>
 
+        <!-- PAINTINGS -->
         <node id="paintingFrame1">
             <transforms>
                 <translate value3="-3.3 2.5 7.9" />
@@ -2772,6 +2763,7 @@
             </children>
         </node>
 
+        <!-- VINYL -->
         <node id="vinylPlayerHolder">
             <transforms>
                 <translate value3="-6.7 -0.1 -5.5"/>
@@ -3066,6 +3058,7 @@
             </children>
         </node>
 
+        <!-- GRASS -->
         <node id="grass">
             <transforms>
                 <translate value3="-100 -1.8 100" />
@@ -3081,6 +3074,7 @@
             </children>
         </node>
 
+        <!-- WALL LAMPS -->
         <node id="wallLampFLeft">
             <transforms>
                 <translate value3="-7.47 3.6 4"/>
@@ -3334,12 +3328,9 @@
             <children>
                 <noderef id="wallLampSide" />
             </children>
-        </node>
-        
-
+        </node>    
 
         <!-- CEILING LAMP -->
-
         <node id="ceilingLampCenter">
             <transforms>
                 <translate value3="-0.3 6 -0.3" />
@@ -3485,6 +3476,7 @@
             </children>
         </node>
 
+        <!-- FIREPLACE -->
         <node id="fireplaceLeftSide">
             <children>
                 <primitive>
@@ -3585,6 +3577,7 @@
             </children>
         </node>
 
+        <!-- DOOR -->
         <node id="doorLeftFrame" >
             <transforms>
                 <translate value3="-0.1335 0 -0.35"/>
@@ -3827,16 +3820,22 @@
             </children>
         </node>
 
-
-
         <!-- WINDOW -->
+        <node id="window">
+            <children>
+                <noderef id="window1"/>
+                <noderef id="window2" />
+                <noderef id="windowDown"/>
+            </children>
+        </node>
+
         <node id="window1">
             <transforms>
                 <translate value3="-7.66 3.4 -1.7"/>
                 <scale value3="1 1 -1" />
             </transforms>
             <children>
-                <noderef id="window"/>
+                <noderef id="windowGeom"/>
             </children>
         </node>
 
@@ -3845,19 +3844,18 @@
                 <translate value3="-7.66 3.4 1.8"/>
             </transforms>
             <children>
-                <noderef id="window"/>
+                <noderef id="windowGeom"/>
             </children>
         </node>
-        <node id="window">
+
+        <node id="windowGeom">
             <transforms>
                 <rotate value3="0 1.5708 0"/>
-                <scale value3="1 1 1"/>
             </transforms>
             <materialref id="photographyFrameApp" />
             <children>
                 <noderef id="windowFrame"/>
                 <noderef id="windowUp"/>
-                <noderef id="windowDown"/>
             </children>
         </node>
 
@@ -3891,7 +3889,29 @@
 
         <node id="windowDown">
             <transforms>
-                <translate value3="0.22 -0.6 0.15"/>
+                <rotate value3="0 1.5708 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="windowDownGeomLeft"/>
+                <noderef id="windowDownGeomRight"/>
+            </children>
+        </node>
+
+        <node id="windowDownGeomRight">
+            <transforms>
+                <translate value3="-0.099 0 0"/>
+                <scale value3="-1 1 1"/>
+            </transforms>
+
+            <children>
+                <noderef id="windowDownGeomLeft"/>
+            </children>
+        </node>
+
+        <node id="windowDownGeomLeft">
+            <transforms>
+                <translate value3="-1.58 2.8 -7.48"/>
                 <scale value3="0.8 0.46 0.55"/>
             </transforms>
 
