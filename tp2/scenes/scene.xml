@@ -36,6 +36,26 @@
             location="-3.2 3.5 -2.2"
             target="-6 2 -5" />
         
+        <perspective id="window"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="0 4 0"
+            target="-8 3.5 0" />
+
+        <perspective id="doorInside"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="0 3.5 0"
+            target="8 3.5 0" />
+
+        <perspective id="doorOutside"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="15 3.5 0"
+            target="6 3.5 0" />
 
         <orthogonal id="orthoLeft"
             near="-10"
