@@ -135,7 +135,8 @@
         <texture id="stoneBumpTex" filepath="scenes/textures/stone_bump_texture.png" />
 
         <texture id="extWallTex" filepath="scenes/textures/ext_wall.jpg" />
-        <texture id="extWallFrontTex" filepath="scenes/textures/ext_wall_front.jpg" />
+        <texture id="extWallTopTex" filepath="scenes/textures/ext_wall_front.jpg" />
+        <texture id="extWallDownTex" filepath="scenes/textures/ext_wall_back_down.jpg" />
         <texture id="extWallBumpTex" filepath="scenes/textures/ext_wall_bump_texture.png" />
 
         <texture id="fireVideoTex" filepath="scenes/textures/videos/fire.mp4" isVideo="true" />
@@ -162,14 +163,24 @@
             texlength_t="6"
              />
 
-        <material id="extWallFrontApp"
+        <material id="extWallTopApp"
             emissive="0.0 0.0 0.0 1"
             color="1 1 1 1"
             specular="0 0 0 0"
             shininess="0"
-            textureref="extWallFrontTex"
+            textureref="extWallTopTex"
             texlength_s="2.5"
             texlength_t="3.75"
+             />
+
+        <material id="extWallDownApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1 1 1 1"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="extWallDownTex"
+            texlength_s="16"
+            texlength_t="2.968"
              />
 
         <material id="ceilingApp"
@@ -688,7 +699,8 @@
                 <noderef id="roofFront" />
                 <noderef id="roofBack" />
                 <noderef id="fireplace" />
-                <noderef id="door"/>                
+                <noderef id="door"/>     
+                <noderef id="doorFrame"/>            
                 <noderef id="window1" />
                 <noderef id="window2" />
 
@@ -803,19 +815,16 @@
 			
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="5.6 6" />
+                    <rectangle xy1="0 0" xy2="6.43 6" />
                 </primitive>
                 <primitive>
-                    <rectangle xy1="5.6 0" xy2="10.5 2" />
+                    <rectangle xy1="6.43 5" xy2="9.8 6" />
                 </primitive>
                 <primitive>
-                    <rectangle xy1="10.5 0" xy2="16 6" />
+                    <rectangle xy1="6.43 0" xy2="9.8 2" />
                 </primitive>
                 <primitive>
-                    <rectangle xy1="5.6 5.1" xy2="10.5 6" />
-                </primitive>
-                <primitive>
-                    <rectangle xy1="7.5 2" xy2="8.5 5.1" />
+                    <rectangle xy1="9.6 0" xy2="16 6" />
                 </primitive>
             </children> 
         </node>
@@ -904,6 +913,65 @@
             </children> 
         </node>
 
+        <node id="extBackWallLeft">		
+            <transforms>
+                <translate value3="9.42 0 0" />
+            </transforms>
+            <children>             
+                <noderef id="extBackWallRight" />
+            </children> 
+        </node>
+
+        <node id="extBackWallRight">
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="6.6 6" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="extBackWallTop">
+            <transforms>
+				<translate value3="0 4.5 0" />
+            </transforms> 
+			
+            <materialref id="extWallTopApp" />
+
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="16 1.5" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="extBackWallDown">
+            <transforms>
+				<translate value3="6.6 0 0" />
+            </transforms> 
+			
+            <materialref id="extWallDownApp" />
+
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="2.85 2" />
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="extBackWall">
+            <transforms>
+				<translate value3="-7.5 0.0 -8" />
+				<rotate value3="0.0 -1.5708 0.0" />
+            </transforms> 
+			
+            <children>             
+                <noderef id="extBackWallLeft" />
+                <noderef id="extBackWallRight" />
+                <noderef id="extBackWallTop" />
+                <noderef id="extBackWallDown" />
+            </children> 
+        </node>
+        
         <node id="extFrontWallLeft">		
             <transforms>
                 <translate value3="9.25 0 0" />
@@ -926,7 +994,7 @@
 				<translate value3="0 4.5 0" />
             </transforms> 
 			
-            <materialref id="extWallFrontApp" />
+            <materialref id="extWallTopApp" />
 
             <children>             
                 <primitive>
@@ -947,7 +1015,7 @@
                 <noderef id="extFrontWallTop" />
             </children> 
         </node>
-
+<!--
         <node id="extBackWall">
             <transforms>
 				<translate value3="-7.51 0.0 -8.02" />
@@ -972,7 +1040,7 @@
                 </primitive>
             </children> 
         </node>
-
+-->
         <node id="exteriorWalls">
 			<materialref id="extWallApp" />
 			
@@ -3662,6 +3730,18 @@
             </children>
         </node>
 
+        <node id="doorFrame" >
+            <transforms>
+                <translate value3="7.4 0 -0.9"/>
+            </transforms>
+            <materialref id="doorApp" />
+            <children>
+                <noderef id="doorTopFrame"/>
+                <noderef id="doorLeftFrame"/>
+                <noderef id="doorRightFrame"/>
+            </children>
+        </node>
+
         <node id="doorInside" >
             <materialref id="doorApp" />
 
@@ -3669,9 +3749,6 @@
                 <primitive>
                     <box xyz1="0 0 0" xyz2="0.267 4.185 1.8" />
                 </primitive>
-                <noderef id="doorTopFrame" />
-                <noderef id="doorLeftFrame" />
-                <noderef id="doorRightFrame" />
                 <noderef id="doorTopRectangle" />
                 <noderef id="doorDownRectangle" />
                 <noderef id="doorKnob" />
@@ -3704,10 +3781,12 @@
         </node>
 
 
+
         <!-- WINDOW -->
         <node id="window1">
             <transforms>
-                <translate value3="-7.66 3.4 -0.3"/>
+                <translate value3="-7.66 3.4 -1.7"/>
+                <scale value3="1 1 -1" />
             </transforms>
             <children>
                 <noderef id="window"/>
@@ -3716,7 +3795,7 @@
 
         <node id="window2">
             <transforms>
-                <translate value3="-7.66 3.4 2.5"/>
+                <translate value3="-7.66 3.4 1.8"/>
             </transforms>
             <children>
                 <noderef id="window"/>
@@ -3747,7 +3826,7 @@
         <node id="windowDownGlass">
             <transforms>
                 <translate value3="0.2 -1.3 0.15"/>
-                <scale value3="1.3 2 1"/>
+                <scale value3="1.269 2 1"/>
             </transforms>
             <children>
                 <noderef id="windowGlass"/>
@@ -3758,7 +3837,7 @@
             <materialref id="glassApp"/>
             <children>
                 <primitive>
-                    <rectangle xy1="0 0" xy2="1.4 1.4"/>
+                    <rectangle xy1="0 0" xy2="1.35 1.4"/>
                 </primitive>
             </children>
         </node>
@@ -3855,7 +3934,6 @@
             <children>
                 <noderef id="windowFrameTop"/>
                 <noderef id="windowFrameBottom"/>
-                <noderef id="windowFrameRight"/>
                 <noderef id="windowFrameLeft"/>
             </children>
         </node>

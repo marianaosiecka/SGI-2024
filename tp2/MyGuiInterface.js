@@ -59,7 +59,7 @@ class MyGuiInterface  {
         
 
         //DOOR 
-        this.datgui.add(this.contents.nodes.get('door').rotation, 'y', 0, 2.2).name("Open door");
+        this.datgui.add(this.contents.nodes.get('door').rotation, 'y', 0, 1.8).name("Open door");
     }
 
     createLightsFolder(){
