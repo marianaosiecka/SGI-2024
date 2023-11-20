@@ -149,8 +149,8 @@
             mipmap3="scenes/textures/newspaper_texture.png"
             />
 
-        <texture id="carpetTex" filepath="scenes/textures/carpet_texture1.png"
-            />
+        <texture id="carpetTex" filepath="scenes/textures/carpet_texture1.png"/>
+        <texture id="carpetBumpTex" filepath="scenes/textures/carpet_bump_texture.png"/>
         
         <texture id="grassTex" filepath="scenes/textures/grass.jpg" />
         <texture id="grassBumpTex" filepath="scenes/textures/grass_bump_texture.png" />
@@ -396,6 +396,8 @@
             specular="0 0 0 1.0"
             shininess="1"
             textureref="carpetTex"
+            bumpref="carpetBumpTex"
+            bumpscale = "0.4"
             twosided="true"
             texlength_s="5.5"
             texlength_t="9.5" />
@@ -740,8 +742,8 @@
                 <noderef id="fireplace" />
                 <noderef id="door"/>     
                 <noderef id="doorFrame"/>            
-                <noderef id="window" />
-                <noderef id="pillow1"/>
+                <noderef id="window1" />
+                <noderef id="window2" />
 
                 <pointlight id="lightTop" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -845,7 +847,7 @@
             </children> 
         </node>
 
-        <node id="backWall">
+        <node id="backWall" receiveshadows="true">
             <transforms>
 				<translate value3="-7.5 0.0 8.0" />
 				<rotate value3="0.0 1.5708 0.0" />
@@ -1311,7 +1313,7 @@
         </node>
 
         <!-- TABLE -->
-        <node id="table" castshadows="true" receiveshadows="true">
+        <node id="table" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="-1.9 0.0 7.7"/>
             </transforms>   
@@ -1934,7 +1936,8 @@
             </children> 
         </node>
         
-        <node id="sofa1" castshadows="true" receiveshadows="true">
+         <!-- SOFAS -->
+        <node id="sofa1" castshadows="true" receiveshadows="true" castshadows="true">
             <transforms>
                 <translate value3="-3 0.0 -5.7" />
                 <rotate value3="0.0 -1.0472 0.0" />
@@ -2048,7 +2051,7 @@
             </children>
         </node>
 
-        <node id="sofa2" receiveshadows="true" castshadows="true">
+        <node id="sofa2" castshadows="true">
             <transforms>
                 <translate value3="3 0.0 -5.7" />
                 <rotate value3="0.0 3.927 0.0" />
@@ -2402,7 +2405,7 @@
             </children>
         </node>
 
-        <node id="plateTop">
+        <node id="plateTop" castshadows="true">
             <materialref id="plateApp" />
 
             <children>
@@ -2427,7 +2430,7 @@
         </node>
 
         <!-- FORKS -->
-        <node id="fork1">
+        <node id="fork1" castshadows="true">
             <transforms>
                 <translate value3="0.6 1.035 5.15"/>
             </transforms>
@@ -3061,7 +3064,7 @@
             </children>
         </node>
 
-        <node id="vinylCover">
+        <node id="vinylCover" castshadows="true">
             <transforms>
                 <translate value3="0.28 0.05 0.95"/>
                 <rotate value3="-1.5708 -0.23 1.5708" />
@@ -3388,7 +3391,7 @@
                 <spotlight id="ceilingLampHighlight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
-                    intensity="12"
+                    intensity="18"
                     distance="6.3"
                     angle="0.06"
                     penumbra="1.0"
