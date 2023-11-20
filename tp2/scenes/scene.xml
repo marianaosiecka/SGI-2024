@@ -864,7 +864,7 @@
                 <noderef id="leftWall" />
                 <noderef id="rightWall" />
                 <noderef id="frontWall" />
-                -<noderef id="backWall" />
+                <noderef id="backWall" />
                 <noderef id="ceiling" />
                 <noderef id="floor" />
                 <noderef id="floorSupport" /> 
@@ -954,7 +954,7 @@
                     <rectangle xy1="5.6 0" xy2="10.5 2" />
                 </primitive>
                 <primitive>
-                    <rectangle xy1="10.5 0" xy2="16 6" />
+                    <rectangle xy1="10.5 0" xy2="16.05 6" />
                 </primitive>
                 <primitive>
                     <rectangle xy1="5.6 5.1" xy2="10.5 6" />
