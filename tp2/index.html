@@ -22,9 +22,14 @@
 <body>
     <div id="canvas"></div>
     <div id="camera"></div>
-    <video id="video" style="display:none" autoplay muted="true" preload="auto" width="640" height="264" loop>
+    <video class="video" style="display:none" autoplay muted="true" preload="auto" width="640" height="264" loop>
       <source src="scenes/textures/videos/fire.mp4" type="video/mp4">
     </video>
+
+    <video class="video" id="music" style="display:none" muted="true" preload="auto" width="640" height="264" loop>
+      <source src="scenes/textures/videos/music.mp4" type="video/mp4">
+    </video>
+
     <script type="module" src="main.js"></script>
 </body>
 

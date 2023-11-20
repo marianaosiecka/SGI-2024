@@ -66,11 +66,14 @@ class MyContents  {
 
     visitData(data) {
         // TEXTURES
+        let videoNum = 0;
         for (var key in data.textures) {
             let textureData = data.textures[key]  
-            let myTexture = new MyTexture(textureData)
+            let myTexture = new MyTexture(textureData, videoNum)
             this.textures.set(textureData.id, myTexture.texture)
+            videoNum = myTexture.videoNum;
         }
+        console.log(this.textures)
 
         // MATERIALS
         for (var key in data.materials) {
