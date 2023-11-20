@@ -20,7 +20,6 @@ class MyNode {
     }
 
     visitChildren(children, materials){
-        if(this.id=="vase") console.log("vase children ", children)
         for(let child of children){
             let childNode;
             
@@ -95,7 +94,6 @@ class MyNode {
 
         // TRANSFORMATIONS
         this.group.applyMatrix4(this.transformationMatrix);
-        if(this.id=="vase") console.log("vase group ", this.group)
         this.group.name = this.id;
     }
 
