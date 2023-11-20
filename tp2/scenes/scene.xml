@@ -742,8 +742,9 @@
                 <noderef id="fireplace" />
                 <noderef id="door"/>     
                 <noderef id="doorFrame"/>            
-                <noderef id="window1" />
-                <noderef id="window2" />
+                <noderef id="window" />
+                <noderef id="pillow1" />
+
 
                 <pointlight id="lightTop" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -1937,7 +1938,7 @@
         </node>
         
          <!-- SOFAS -->
-        <node id="sofa1" castshadows="true" receiveshadows="true" castshadows="true">
+        <node id="sofa1" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-3 0.0 -5.7" />
                 <rotate value3="0.0 -1.0472 0.0" />
@@ -2432,7 +2433,7 @@
         <!-- FORKS -->
         <node id="fork1" castshadows="true">
             <transforms>
-                <translate value3="0.6 1.035 5.15"/>
+                <translate value3="0.6 1.1 5.15"/>
             </transforms>
             <children>
                 <noderef id="fork"/>
