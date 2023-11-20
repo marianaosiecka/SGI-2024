@@ -691,7 +691,8 @@
                 <noderef id="roofFront" />
                 <noderef id="roofBack" />
                 <noderef id="fireplace" />
-                <noderef id="door"/>                
+                <noderef id="door"/>     
+                <noderef id="doorFrame"/>            
                 <noderef id="window1" />
                 <noderef id="window2" />
 
@@ -3704,6 +3705,18 @@
             </children>
         </node>
 
+        <node id="doorFrame" >
+            <transforms>
+                <translate value3="7.4 0 -0.9"/>
+            </transforms>
+            <materialref id="doorApp" />
+            <children>
+                <noderef id="doorTopFrame"/>
+                <noderef id="doorLeftFrame"/>
+                <noderef id="doorRightFrame"/>
+            </children>
+        </node>
+
         <node id="doorInside" >
             <materialref id="doorApp" />
 
@@ -3711,9 +3724,6 @@
                 <primitive>
                     <box xyz1="0 0 0" xyz2="0.267 4.185 1.8" />
                 </primitive>
-                <noderef id="doorTopFrame" />
-                <noderef id="doorLeftFrame" />
-                <noderef id="doorRightFrame" />
                 <noderef id="doorTopRectangle" />
                 <noderef id="doorDownRectangle" />
                 <noderef id="doorKnob" />
@@ -3744,6 +3754,7 @@
                 <noderef id="doorOutside" />
             </children>
         </node>
+
 
 
         <!-- WINDOW -->
