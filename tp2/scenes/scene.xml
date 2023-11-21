@@ -7,7 +7,7 @@
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="outsidePerspective1">
+    <cameras initial="perspective1">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -28,6 +28,13 @@
             far="1000"
             location="50 50 50"
             target="0 0 0" />
+
+        <perspective id="outsidePerspective2"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="35 10 0"
+            target="0 8 0" />
         
         <perspective id="vase"
             angle="75"
@@ -739,8 +746,7 @@
             emissive="0.0 0.0 0.0 1"
             color="0.83137 0.68627 0.215686 1"
             specular="0.46667 0.46667 0.46667 0"
-            shininess="10"
-            twosided="true" />
+            shininess="10"/>
 
 
         <material id="vinylCoverColor1App"
@@ -938,7 +944,6 @@
                 <noderef id="vinylShelf" />
                 <noderef id="porch" />
                 <noderef id="grass" />
-                
                 <noderef id="wallLampFLeft"/>
                 <noderef id="wallLampFRight"/>
                 <noderef id="wallLampBLeft"/>
@@ -962,6 +967,7 @@
                 <noderef id="roof" />
                 <noderef id="vinylCoversColor"/>
                 <noderef id="bookCovers"/>
+                <noderef id="chimney"/>
 
                 <pointlight id="outsideTopLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -4206,6 +4212,85 @@
                 <noderef id="fireplaceBack" />
                 <noderef id="fireplaceChimney" />
                 <noderef id="fireplaceFirePlane" />
+            </children>
+        </node>
+
+         <node id="chimneyRight">
+            <transforms>
+                <translate value3="0 0 -1.3"/>
+            </transforms>
+
+            <children>
+                <noderef id="chimneyLeft" />
+            </children>
+        </node>
+
+        <node id="chimneyLeft">
+            <transforms>
+                <translate value3="-1.5 0 1.3"/>
+            </transforms>
+
+            <materialref id="stoneApp"/>
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="1.5 3 0.2"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="chimneyBack">
+            <transforms>
+                <translate value3="-1.7 0 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="chimneyFront" />
+            </children>
+        </node>
+
+        <node id="chimneyFront">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+
+            <materialref id="stoneApp"/>
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.2 3 1.5"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="chimneyBottom">
+            <transforms>
+                <translate value3="-1.5 0.85 1.5"/>
+                <rotate value3="-1.5708 0 0"/>
+            </transforms>
+
+            <materialref id="fireplaceApp"/>
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="1.5 1.5"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="chimney">
+            <transforms>
+                <translate value3="0 7 -6.3"/>
+            </transforms>
+
+            <materialref id="stoneApp"/>
+
+            <children>
+                <noderef id="chimneyFront" />
+                <noderef id="chimneyBack" />
+                <noderef id="chimneyLeft" />
+                <noderef id="chimneyRight" />
+                <noderef id="chimneyBottom" />
             </children>
         </node>
 
