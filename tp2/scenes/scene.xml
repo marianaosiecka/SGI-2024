@@ -134,6 +134,8 @@
         <texture id="pillow3Tex" filepath="scenes/textures/pillow3_print.jpg" />
         <texture id="pillow4Tex" filepath="scenes/textures/pillow4_print.jpg" />
 
+        <texture id="sofaTex" filepath="scenes/textures/sofa.jpg" />
+
         <texture id="vinylCoverTex" filepath="scenes/textures/vinyl_cover.jpg" mipmaps="false"
             mipmap0="scenes/textures/cover1.jpg"
             mipmap1="scenes/textures/cover2.jpg"
@@ -418,7 +420,7 @@
             color="0.44 0.22 0.114 1.0"
             specular="0.44 0.22 0.114 1.0"
             shininess="1"
-            twosided="false" />
+            twosided="false"/>
 
         <material id="coffeeTableApp"
             emissive="0.0 0.0 0.0 1"
@@ -2433,7 +2435,7 @@
         <!-- FORKS -->
         <node id="fork1" castshadows="true">
             <transforms>
-                <translate value3="0.6 1.1 5.15"/>
+                <translate value3="0.6 1.045 5.15"/>
             </transforms>
             <children>
                 <noderef id="fork"/>
@@ -4093,7 +4095,7 @@
         <!-- PILLOW -->
         <node id="pillow1" castshadows="true">
             <transforms>
-                <translate value3="-2.8 1.3 -5.3"/>
+                <translate value3="-2.8 1.27 -5.3"/>
                 <rotate value3="-0.4 3.8 -0.3"/>
                 <scale value3="0.5 0.5 0.5"/>
             </transforms>
