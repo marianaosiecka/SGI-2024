@@ -5,9 +5,9 @@
 
     <fog color="0 0 0 1.0" near="30.0" far="350.0" />
 
-    <skybox size="200 200 200" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
+    <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="vinyl">
+    <cameras initial="outsidePerspective1">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -21,6 +21,13 @@
             far="1000"
             location="-7 4.5 -6.5"
             target="0 0.0 0" />
+
+        <perspective id="outsidePerspective1"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="50 50 50"
+            target="0 0 0" />
         
         <perspective id="vase"
             angle="75"
@@ -587,13 +594,13 @@
 
         <material id="grassApp"
             emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
+            color="0.251 0.302 0.247 1.0"
+            specular="0 0 0 0.0"
             shininess="0"
             textureref="grassTex"
             bumpref="grassBumpTex"
-            texlength_s="20"
-            texlength_t="20"
+            texlength_s="4"
+            texlength_t="4"
             />
 
         <!--texlenght_s=10 fica bem
@@ -1804,7 +1811,7 @@
                     position="0 -0.5 0" 
                     target="0 -10 0"
                     shadowfar="27"
-                    shadowmapsize="2048"
+                    shadowmapsize="1024"
                 />
 
                 <spotlight id="tableLampHighlight"
@@ -3584,7 +3591,7 @@
         <!-- GRASS -->
         <node id="grass">
             <transforms>
-                <translate value3="-100 -1.8 100" />
+                <translate value3="-60 -1.8 60" />
                 <rotate value3="-1.5708 0 0" />
             </transforms>
 
@@ -3592,7 +3599,7 @@
 
             <children>
                 <primitive>
-                    <rectangle xy1="0 0" xy2="200 200"/>
+                    <rectangle xy1="0 0" xy2="120 120"/>
                 </primitive>
             </children>
         </node>
@@ -3876,7 +3883,7 @@
                     position="0 -1 0" 
                     target="0 -6 0"
                     shadowfar="27"
-                    shadowmapsize="2048"
+                    shadowmapsize="1024"
                 />
 
                 <spotlight id="ceilingLampCenterHighlight"

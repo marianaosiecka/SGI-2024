@@ -62,42 +62,20 @@ class MyGuiInterface  {
         this.datgui.add(this.contents.nodes.get('door').group.rotation, 'y', 0, 1.8).name("Open door");
 
         // VINYL
-        const vinylNode = this.contents.nodes.get('vinyl').group;
-        let isPlayingVinyl = false;
-        let rotationCounter = 0;
-        let zRotateUp = false;
+        this.createVinylPlayButton();
 
-        const videoElement = document.getElementById("music")
+        // SHADOWS
+        const shadowSlider = this.datgui.add({ shadowMapSize: 1024 }, 'shadowMapSize', 0, 4096).name('Shadow Map Size');
 
-        this.datgui.add({ playVinyl: () => playVinyl() }, 'playVinyl').name('Play Vinyl');
-
-        function playVinyl() {
-            isPlayingVinyl = !isPlayingVinyl;
-
-            if (isPlayingVinyl) {
-                rotateVinyl();
-                videoElement.style.display = 'block';
-                videoElement.muted = false;
-                videoElement.play();
-            } else {
-                videoElement.pause();
-                videoElement.style.display = 'none';
+        shadowSlider.onChange((value) => {
+            for (let light of this.contents.lights.values()) {
+                if (light.light.castShadow) {
+                    light.light.shadow.mapSize.width = value;
+                    light.light.shadow.mapSize.height = value;
+                }
             }
-        }
-
-        function rotateVinyl() {
-            if (isPlayingVinyl) {
-                vinylNode.rotation.y += 0.005;
-                if (zRotateUp) {
-                    vinylNode.rotation.z += 0.0004; 
-                } else vinylNode.rotation.z -= 0.0004; 
-
-                rotationCounter++;
-                if(rotationCounter % 150 == 0) zRotateUp = !zRotateUp
-
-                requestAnimationFrame(rotateVinyl);
-            }
-        }
+        });
+        
     }
 
     createLightsFolder(){
@@ -160,6 +138,45 @@ class MyGuiInterface  {
             }
         }
         lightsFolder.close()
+    }
+
+    createVinylPlayButton(){
+        const vinylNode = this.contents.nodes.get('vinyl').group;
+        let isPlayingVinyl = false;
+        let rotationCounter = 0;
+        let zRotateUp = false;
+
+        const videoElement = document.getElementById("music")
+
+        this.datgui.add({ playVinyl: () => playVinyl() }, 'playVinyl').name('Play Vinyl');
+
+        function playVinyl() {
+            isPlayingVinyl = !isPlayingVinyl;
+
+            if (isPlayingVinyl) {
+                rotateVinyl();
+                videoElement.style.display = 'block';
+                videoElement.muted = false;
+                videoElement.play();
+            } else {
+                videoElement.pause();
+                videoElement.style.display = 'none';
+            }
+        }
+
+        function rotateVinyl() {
+            if (isPlayingVinyl) {
+                vinylNode.rotation.y += 0.005;
+                if (zRotateUp) {
+                    vinylNode.rotation.z += 0.0004; 
+                } else vinylNode.rotation.z -= 0.0004; 
+
+                rotationCounter++;
+                if(rotationCounter % 150 == 0) zRotateUp = !zRotateUp
+
+                requestAnimationFrame(rotateVinyl);
+            }
+        }
     }
 }
 
