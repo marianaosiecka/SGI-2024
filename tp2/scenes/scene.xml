@@ -750,6 +750,7 @@
                 <noderef id="door"/>     
                 <noderef id="doorFrame"/>            
                 <noderef id="window" />
+                <noderef id="pillow1" />
                 <noderef id="buf" />
                 <noderef id="buf2" />
 
@@ -1945,7 +1946,7 @@
         </node>
         
          <!-- SOFAS -->
-        <node id="sofa1" castshadows="true" receiveshadows="true" castshadows="true">
+        <node id="sofa1" castshadows="true" receiveshadows="true" >
             <transforms>
                 <translate value3="-3 0.0 -5.7" />
                 <rotate value3="0.0 -1.0472 0.0" />
@@ -4248,6 +4249,6 @@
             </children>
         </node>
 
-
+-->
     </graph>
 </yaf> 
