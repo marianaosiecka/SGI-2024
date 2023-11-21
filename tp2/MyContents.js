@@ -21,7 +21,7 @@ class MyContents  {
         this.app = app
         this.axis = null
 
-        this.defaultMaterial = new THREE.MeshBasicMaterial();
+        this.defaultMaterial = new MyMaterial(new THREE.MeshBasicMaterial(), null, null, null, true);
 
         this.materials = new Map();
         this.textures = new Map();

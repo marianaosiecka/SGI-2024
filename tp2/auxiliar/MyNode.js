@@ -29,19 +29,22 @@ class MyNode {
             if(materialIds != undefined)
                 childMaterial = materialIds.length == 0 ? this.material : materials.get(materialIds[0]);
             else childMaterial = this.material
-            
+            console.log(this.material)
             if(child.type === "node"){
                 const childReceiveShadow = (this.receiveShadows || child.receiveShadows)
                 const childCastShadow = (this.castShadows || child.castShadows)
 
                 childNode = new MyNode(child.id, childMaterial, child.transformations, this.lights, this.nodesMap, childCastShadow, childReceiveShadow)
-
+    
                 if(!this.nodesMap.has(child.id)){
                     childNode.visitChildren(child.children, materials)
-                    this.nodesMap.set(childNode.id, childNode.group)
+                    this.nodesMap.set(childNode.id, childNode)
                 }
                else {
-                    childNode.group = this.nodesMap.get(child.id).clone();
+                    childNode.group = this.nodesMap.get(child.id).group.clone();
+                    if(childNode.material.material != this.nodesMap.get(child.id).material.material){
+                        this.changeGroupMaterial(childNode.group, childNode.material.material)
+                    }
                 }
                 this.group.add(childNode.group)
             }
@@ -96,6 +99,15 @@ class MyNode {
         this.group.applyMatrix4(this.transformationMatrix);
         this.group.name = this.id;
     }
+
+    changeGroupMaterial(group, newMaterial) {
+        group.traverse(function (child) {
+            if (child instanceof THREE.Mesh) {
+                child.material = newMaterial;
+            }
+        });
+    }
+    
 
 
     getTransformationMatrix(){

@@ -6,7 +6,12 @@ class MyMaterial {
      * 
      * @param {MyApp} app the application object
      */
-    constructor(materialData, myTexture, bumpTexture, specularTexture) {
+    constructor(materialData, myTexture, bumpTexture, specularTexture, defaultMaterial = false) {
+        if(defaultMaterial){
+            this.id = "defaultMaterial"
+            this.material = materialData
+            return
+        }
         this.id = materialData.id;
         this.textureref = materialData.textureref;
         this.bumpref = materialData.bumpref;

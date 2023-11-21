@@ -36,6 +36,13 @@
             location="-4 3 -3.5"
             target="-6 2 -5" />
 
+        <perspective id="coffeeTable"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="1.2 1.2 -1.4"
+            target="0 1 -4" />
+
         <perspective id="pillow"
             angle="75"
             near="0.1"
@@ -726,8 +733,159 @@
             color="0.83137 0.68627 0.215686 1"
             specular="0.46667 0.46667 0.46667 0"
             shininess="10"
-        />
+            twosided="true" />
 
+
+        <material id="vinylCoverColor1App"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0.1255 0.2902 1"
+            specular="0 0.1255 0.2902 0"
+            shininess="2"
+            twosided="false" />
+        
+        <material id="vinylCoverColor2App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.6431 0.1019 0.1019 1"
+            specular="0.6431 0.1019 0.1019 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor3App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.4196 0.1059 0.4980 1"
+            specular="0.4196 0.1059 0.4980 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor4App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.5451 0.4588 0.3569 1"
+            specular="0.5451 0.4588 0.3569 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor5App"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0 0 1"
+            specular="0 0 0 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor6App"
+            emissive="0.0 0.0 0.0 1"
+            color="1 0.4196 0.2078 1"
+            specular="1 0.4196 0.2078 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor7App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.5 0 0 1"
+            specular="0.5 0 0 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor8App"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0.4784 0.4863 1"
+            specular="0 0.4784 0.4863 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor9App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.8549 0.6471 0.1255 1"
+            specular="0.8549 0.6471 0.1255 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor10App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.5882 0.4824 0.7137 1"
+            specular="0.5882 0.4824 0.7137 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor11App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.1333 0.5451 0.1333 1"
+            specular="0.1333 0.5451 0.1333 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor12App"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0.1255 0.2902 1"
+            specular="0 0.1255 0.2902 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor13App"
+            emissive="0.0 0.0 0.0 1"
+            color="1 0.4196 0.2078 1"
+            specular="1 0.4196 0.2078 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor14App"
+            emissive="0.0 0.0 0.0 1"
+            color="0.6431 0.1019 0.1019 1"
+            specular="0.6431 0.1019 0.1019 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="vinylCoverColor15App"
+            emissive="0.0 0.0 0.0 1"
+            color="1 0.8431 0 1"
+            specular="1 0.8431 0 0"
+            shininess="2"
+            twosided="false" />
+        
+            <material id="bookCover1App"
+                emissive="0 0 0 1"
+                color="0.898 0.451 0.451 1"
+                specular="0.898 0.451 0.451 0"
+                shininess="2"
+                twosided="false" />
+  
+            <material id="bookCover2App"
+                emissive="0 0 0 1"
+                color="1 0.843 0 1"
+                specular="1 0.843 0 0"
+                shininess="2"
+                twosided="false" />
+            
+            <material id="bookCover3App"
+                emissive="0 0 0 1"
+                color="1 0.627 0.478 1"
+                specular="1 0.627 0.478 0"
+                shininess="2"
+                twosided="false" />
+            
+            <material id="bookCover4App"
+                emissive="0 0 0 1"
+                color="0.522 0.631 0.8 1"
+                specular="0.522 0.631 0.8 0"
+                shininess="2"
+                twosided="false" />
+            
+            <material id="bookCover5App"
+                emissive="0 0 0 1"
+                color="0.682 0.851 0.878 1"
+                specular="0.682 0.851 0.878 0"
+                shininess="2"
+                twosided="false" />
+            
+            <material id="bookCover6App"
+                emissive="0 0 0 1"
+                color="1 0.718 0.301 1"
+                specular="1 0.718 0.301 0"
+                shininess="2"
+                twosided="false" />
+
+
+
+        
     </materials>
 
 
@@ -795,6 +953,8 @@
                 <noderef id="kite1" />
                 <noderef id="outsideDoorLamp" />
                 <noderef id="roof" />
+                <noderef id="vinylCoversColor"/>
+                <noderef id="bookCovers"/>
 
                 <pointlight id="outsideTopLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -2299,6 +2459,103 @@
             </children> 
         </node>
 
+        <!-- BOOKS -->
+
+        <node id="bookCovers" castshadows="true" receiveshadows="true">
+            <transforms>
+                <translate value3="-0.99 0.231 -3.85"/>
+                <rotate value3="0 0 0"/>
+            </transforms>
+            <children>
+                <noderef id="bookCover1"/>
+                <noderef id="bookCover2"/>
+                <noderef id="bookCover3"/>
+                <noderef id="bookCover4"/>
+                <noderef id="bookCover5"/>
+                <noderef id="bookCover6"/>
+                <noderef id="bookCover7"/>
+            </children>
+        </node>
+
+        <node id="bookCover1">
+            <materialref id="bookCover1App"/>
+            <children>
+                <noderef id="bookCover"/>
+            </children>
+        </node>
+
+        <node id="bookCover2">
+            <transforms>
+                <translate value3="0.11 0 0"/>
+            </transforms>
+            <materialref id="bookCover5App"/>
+            <children>
+                <noderef id="bookCover"/>
+            </children>
+        </node>
+
+        <node id="bookCover3">
+            <transforms>
+                <translate value3="0.22 0 0"/>
+            </transforms>
+            <materialref id="bookCover4App"/>
+            <children>
+                <noderef id="bookCover"/>
+            </children>
+        </node>
+
+        <node id="bookCover4">
+            <transforms>
+                <translate value3="0.33 0 0"/>
+            </transforms>
+            <materialref id="bookCover6App"/>
+            <children>
+                <noderef id="bookCover"/>
+            </children>
+        </node>
+
+        <node id="bookCover5">
+            <transforms>
+                <translate value3="0.67 0 0"/>
+                <rotate value3="0 0 0.5"/>
+            </transforms>
+            <materialref id="bookCover4App"/>
+            <children>
+                <noderef id="bookCover"/>
+            </children>
+        </node>
+
+        <node id="bookCover6">
+            <transforms>
+                <translate value3="1.5 0 0"/>
+                <rotate value3="0 -0.2 1.5708"/>
+            </transforms>
+            <materialref id="bookCover2App"/>
+            <children>
+                <noderef id="bookCover"/>
+            </children>
+        </node>
+
+        <node id="bookCover7">
+            <transforms>
+                <translate value3="1.65 0 0"/>
+                <rotate value3="0 0.2 1.3"/>
+            </transforms>
+            <materialref id="bookCover3App"/>
+            <children>
+                <noderef id="bookCover"/>
+            </children>
+        </node>
+
+        <node id="bookCover">
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.1 0.5 0.7"/>
+                </primitive>
+            </children>
+        </node>
+
+
         <!-- NEWSPAPER -->
         <node id="newspaperPage1">
             <children>
@@ -3086,12 +3343,12 @@
 
         <node id="vinylPlayerLeg">
             <transforms>
-                <translate value3="0.1 0.09 0.1"/>
+                <translate value3="0.1 0.11 0.1"/>
             </transforms>
             <materialref id="blackApp" />
             <children>
                 <primitive>
-                    <sphere radius="0.09" slices="10" stacks="10" thetastart="0" thetalength="6.2832" phistart="0" philength="6.2832"/>
+                    <sphere radius="0.09" slices="10" stacks="10"/>
                 </primitive>
             </children>
         </node>
@@ -3132,7 +3389,7 @@
         <node id="vinylVolumeButton">
             <materialref id="blackApp"/>
             <transforms>
-                <translate value3="0.9 0.35 0.16"/>
+                <translate value3="0.9 0.3 0.16"/>
             </transforms>
             <children>
                 <primitive>
@@ -3227,6 +3484,199 @@
             <children>
                 <primitive>
                     <rectangle xy1="0 0" xy2="0 0"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="vinylCoversColor" castshadows="true" receiveshadows="true">
+            <transforms>
+                <translate value3="-6.85 0.93 -4.74"/>
+                <rotate value3="0 1.5708 0"/>
+            </transforms>
+            <children>
+                <noderef id="vinylCoverColor1"/>
+                <noderef id="vinylCoverColor2"/>
+                <noderef id="vinylCoverColor3"/>
+                <noderef id="vinylCoverColor4"/>
+                <noderef id="vinylCoverColor5"/>
+                <noderef id="vinylCoverColor6"/>
+                <noderef id="vinylCoverColor7"/>
+                <noderef id="vinylCoverColor8"/>
+                <noderef id="vinylCoverColor9"/>
+                <noderef id="vinylCoverColor10"/>
+                <noderef id="vinylCoverColor11"/>
+                <noderef id="vinylCoverColor12"/>
+                <noderef id="vinylCoverColor13"/>
+                <noderef id="vinylCoverColor14"/>
+                <noderef id="vinylCoverColor15"/>
+                <noderef id="vinylCoverColor16"/>
+            </children>
+        </node>
+
+        <node id="vinylCoverColor1">
+            <materialref id="vinylCoverColor1App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+
+        <node id="vinylCoverColor2">
+            <transforms>
+                <translate value3="0.06 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor2App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+
+        <node id="vinylCoverColor3">
+            <transforms>
+                <translate value3="0.12 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor3App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+
+        <node id="vinylCoverColor4">
+            <transforms>
+                <translate value3="0.18 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor4App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor5">
+            <transforms>
+                <translate value3="0.24 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor5App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor6">
+            <transforms>
+                <translate value3="0.30 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor6App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor7">
+            <transforms>
+                <translate value3="0.36 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor7App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor8">
+            <transforms>
+                <translate value3="0.42 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor8App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor9">
+            <transforms>
+                <translate value3="0.48 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor9App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor10">
+            <transforms>
+                <translate value3="0.54 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor10App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor11">
+            <transforms>
+                <translate value3="0.60 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor11App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor12">
+            <transforms>
+                <translate value3="0.66 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor12App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor13">
+            <transforms>
+                <translate value3="0.72 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor13App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor14">
+            <transforms>
+                <translate value3="0.78 0 0"/>
+            </transforms>
+            <materialref id="vinylCoverColor14App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>
+        
+        <node id="vinylCoverColor15">
+            <transforms>
+                <translate value3="1.16 0 0"/>
+                <rotate value3="0 0 0.45"/>
+            </transforms>
+            <materialref id="vinylCoverColor15App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>    
+
+        <node id="vinylCoverColor16">
+            <transforms>
+                <translate value3="1.48 0 0"/>
+                <rotate value3="0 0 0.775"/>
+            </transforms>
+            <materialref id="vinylCoverColor10App"/>
+            <children>
+                <noderef id="vinylCoverColor"/>
+            </children>
+        </node>    
+
+        <node id="vinylCoverColor">
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.05 0.75 0.75"/>
                 </primitive>
             </children>
         </node>
@@ -4066,6 +4516,8 @@
             <transforms>
                 <rotate value3="0 1.5708 0"/>
             </transforms>
+
+            <materialref id="photographyFrameApp" />
 
             <children>
                 <noderef id="windowDownGeomLeft"/>
