@@ -7,7 +7,7 @@
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="perspective1">
+    <cameras initial="outsideDoor">
         <perspective id="perspective1"
             angle="1.309"
             near="0.1"
@@ -1423,12 +1423,16 @@
                 <noderef id="smallPorchColumnLeft2" />
                 <noderef id="smallPorchColumnLeft3" />
                 <noderef id="smallPorchColumnLeft4" />
+                <noderef id="smallPorchColumnLeft5" />
                 <noderef id="smallPorchColumnRight1" />
                 <noderef id="smallPorchColumnRight2" />
                 <noderef id="smallPorchColumnRight3" />
                 <noderef id="smallPorchColumnRight4" />
-                <noderef id="connectFenceLeft" />
-                <noderef id="connectFenceRight" />
+                <noderef id="smallPorchColumnRight5" />
+                <noderef id="connectFenceLeft1" />
+                <noderef id="connectFenceLeft2" />
+                <noderef id="connectFenceRight1" />
+                <noderef id="connectFenceRight2" />
             </children> 
         </node>
             
@@ -1568,6 +1572,26 @@
             </children>
         </node>
 
+        <node id="smallPorchColumnLeft4">
+            <transforms>
+                <translate value3="-1.2 0 5.7" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnLeft1"/>
+            </children>
+        </node>
+
+        <node id="smallPorchColumnLeft5">
+            <transforms>
+                <translate value3="-1.4 0 0" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnLeft4"/>
+            </children>
+        </node>
+
         <node id="smallPorchColumnRight1" castshadows="true">
             <transforms>
                 <translate value3="3.7 1.8 5.7" />
@@ -1599,8 +1623,28 @@
                 <noderef id="smallPorchColumnRight1"/>
             </children>
         </node>
+
+        <node id="smallPorchColumnRight4">
+            <transforms>
+                <translate value3="-1.2 0 -1.85" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnRight3"/>
+            </children>
+        </node>
+
+        <node id="smallPorchColumnRight5">
+            <transforms>
+                <translate value3="-1.4 0 0" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnRight4"/>
+            </children>
+        </node>
         
-        <node id="connectFenceLeft" >
+        <node id="connectFenceLeft1" >
             <transforms>
                 <translate value3="3.7 3.5 10" />
             </transforms> 
@@ -1612,7 +1656,20 @@
             </children>
         </node>
 
-        <node id="connectFenceRight" >
+        <node id="connectFenceLeft2" >
+            <transforms>
+                <translate value3="0 3.5 16" />
+                <rotate value3="0 1.5708 0" />
+            </transforms> 
+
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.3 4" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="connectFenceRight1" >
             <transforms>
                 <translate value3="3.7 3.5 0" />
             </transforms> 
@@ -1620,6 +1677,19 @@
             <children>             
                 <primitive>
                     <box xyz1="0 0 0" xyz2="0.3 0.3 6" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="connectFenceRight2" >
+            <transforms>
+                <translate value3="0 3.5 0.3" />
+                <rotate value3="0 1.5708 0" />
+            </transforms> 
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.3 4" />
                 </primitive>
             </children>
         </node>
