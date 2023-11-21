@@ -177,8 +177,8 @@
         <!-- color: this.bege -->
         <material id="wallApp"
             emissive="0.0 0.0 0.0 1"
-            color="1.0 0.98 0.93 1.0"
-            specular="0 0 0 0"
+            color="0.94118 0.92157 0.81961 1.0"
+            specular="0.94118 0.92157 0.81961 1.0"
             shininess="0"
              />
 
@@ -214,8 +214,8 @@
 
         <material id="ceilingApp"
             emissive="0.0 0.0 0.0 1"
-            color="1.0 0.98 0.93 1.0"
-            specular="0 0 0 0"
+            color="0.94118 0.92157 0.81961 1.0"
+            specular="0.94118 0.92157 0.81961 1.0"
             shininess="0"
              />
 
@@ -761,7 +761,7 @@
                 <noderef id="pillow1" />
                 <noderef id="kite1" />
 
-                <pointlight id="lightTop" enabled="true" 
+                <pointlight id="outsideTopLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
                     intensity="10.0"
                     distance="34"
@@ -770,7 +770,7 @@
                     position="0 40.0 0" 
                 />
 
-                <pointlight id="lightFront" enabled="true" 
+                <pointlight id="outsideFrontLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
                     intensity="1"
                     distance="0"
@@ -1630,7 +1630,7 @@
 				<noderef id="lampBulb" />
 
 
-                <spotlight id="lampTableSpotLight"
+                <spotlight id="tableLampSpotLight"
                     enabled="true" 
                     color="0.988 0.87451 0.227451 1.0" 
                     intensity="5"
@@ -1645,7 +1645,7 @@
                     shadowmapsize="2048"
                 />
 
-                <spotlight id="lampTableHighlight"
+                <spotlight id="tableLampHighlight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
                     intensity="8"
@@ -2099,7 +2099,7 @@
 				<noderef id="lampHead" />
 				<noderef id="lampBulb" />
 
-                <spotlight id="lampSofaSpotLight"
+                <spotlight id="sofasLampSpotLight"
                     enabled="true" 
                     color="0.988 0.87451 0.227451 1.0" 
                     intensity="5"
@@ -2114,7 +2114,7 @@
                     shadowmapsize="1024"
                 />
 
-                <spotlight id="lampSofaHighlight"
+                <spotlight id="sofasLampHighlight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
                     intensity="8"
@@ -3153,9 +3153,9 @@
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallFrontLeftLampSpotLight"
+                <spotlight id="leftFrontWallLampSpotLight"
                     enabled="false" 
-                    color="0.988 0.87451 0.227451 1.0" 
+                    color="1 0.929 0.5294 1.0" 
                     intensity="6"
                     distance="10"
                     angle="1"
@@ -3177,9 +3177,9 @@
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallFrontRightLampSpotLight"
+                <spotlight id="rightFrontWallLampSpotLight"
                     enabled="true" 
-                    color="0.988 0.87451 0.227451 1.0" 
+                    color="1 0.929 0.5294 1.0" 
                     intensity="5"
                     distance="10"
                     angle="1"
@@ -3201,9 +3201,9 @@
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallBackRightLampSpotLight"
+                <spotlight id="rightBackWallLampSpotLight"
                     enabled="false" 
-                    color="0.988 0.87451 0.227451 1.0" 
+                    color="1 0.929 0.5294 1.0" 
                     intensity="6"
                     distance="10"
                     angle="1"
@@ -3225,9 +3225,9 @@
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="wallBackLeftLampSpotLight"
+                <spotlight id="leftBackWallLampSpotLight"
                     enabled="false" 
-                    color="0.988 0.87451 0.227451 1.0" 
+                    color="1 0.929 0.5294 1.0" 
                     intensity="6"
                     distance="10"
                     angle="1"
@@ -3412,7 +3412,7 @@
             <children>
                 <noderef id="ceilingLamp"/>
 
-                <spotlight id="ceilingLampSpotLight"
+                <spotlight id="ceilingLampCenterSpotLight"
                     enabled="true" 
                     color="1 0.929 0.5294 1.0" 
                     intensity="6"
@@ -3427,7 +3427,7 @@
                     shadowmapsize="2048"
                 />
 
-                <spotlight id="ceilingLampHighlight"
+                <spotlight id="ceilingLampCenterHighlight"
                     enabled="true" 
                     color="0.972 0.929 0.714 1.0" 
                     intensity="18"
