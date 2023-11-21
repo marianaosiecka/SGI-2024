@@ -56,13 +56,13 @@ class MyGuiInterface  {
         
 
         // WINDOW
-        this.datgui.add(this.contents.nodes.get('windowDown').position, 'y', 0, 1.3).name("Open window");
+        this.datgui.add(this.contents.nodes.get('windowDown').group.position, 'y', 0, 1.3).name("Open window");
         
         //DOOR 
-        this.datgui.add(this.contents.nodes.get('door').rotation, 'y', 0, 1.8).name("Open door");
+        this.datgui.add(this.contents.nodes.get('door').group.rotation, 'y', 0, 1.8).name("Open door");
 
         // VINYL
-        const vinylNode = this.contents.nodes.get('vinyl');
+        const vinylNode = this.contents.nodes.get('vinyl').group;
         let isPlayingVinyl = false;
         let rotationCounter = 0;
         let zRotateUp = false;
