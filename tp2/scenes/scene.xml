@@ -7,7 +7,7 @@
 
     <skybox size="200 200 200" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="perspective1">
+    <cameras initial="outsideDoor">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -50,18 +50,18 @@
             location="0 4 0"
             target="-8 3.5 0" />
 
-        <perspective id="doorInside"
+        <perspective id="insideDoor"
             angle="75"
             near="0.1"
             far="1000"
             location="0 3.5 0"
             target="8 3.5 0" />
 
-        <perspective id="doorOutside"
+        <perspective id="outsideDoor"
             angle="75"
             near="0.1"
             far="1000"
-            location="15 3.5 0"
+            location="21 3.5 0"
             target="6 3.5 0" />
 
         <orthogonal id="orthoLeft"
@@ -168,6 +168,10 @@
         <texture id="extWallDownTex" filepath="scenes/textures/ext_wall_back_down.jpg" />
         <texture id="extWallBumpTex" filepath="scenes/textures/ext_wall_bump_texture.png" />
 
+        <texture id="roofTileTex" filepath="scenes/textures/roof_tiles_texture.jpg" />
+        <texture id="roofTileBumpTex" filepath="scenes/textures/roof_tiles_bump_texture.png" />
+        <texture id="roofTileSpecularTex" filepath="scenes/textures/roof_tiles_specular_texture.jpg" />
+
         <texture id="fireVideoTex" filepath="scenes/textures/videos/fire.mp4" isVideo="true" />
 
         <texture id="musicVideoTex" filepath="scenes/textures/videos/music.mp4" isVideo="true" />
@@ -219,6 +223,7 @@
             color="0.94118 0.92157 0.81961 1.0"
             specular="0.94118 0.92157 0.81961 1.0"
             shininess="0"
+            twosided="true"
              />
 
         <material id="floorApp"
@@ -230,6 +235,32 @@
             texlength_s="16"
             texlength_t="15"
             twosided="false" />
+
+        <material id="frontRoofTileApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.470588 0.129412 0.0313725 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="roofTileTex"
+            bumpref="roofTileBumpTex"
+            specularref="roofTileSpecularTex"
+            texlength_s="1"
+            texlength_t="1"
+            twosided="true"
+         />
+
+         <material id="sideRoofTileApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.470588 0.129412 0.0313725 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="roofTileTex"
+            bumpref="roofTileBumpTex"
+            specularref="roofTileSpecularTex"
+            texlength_s="4"
+            texlength_t="5"
+            twosided="true"
+         />
 
         <material id="tableApp"
             emissive="0.0 0.0 0.0 1"
@@ -695,7 +726,7 @@
             color="0.83137 0.68627 0.215686 1"
             specular="0.46667 0.46667 0.46667 0"
             shininess="10"
-            twosided="true" />
+        />
 
     </materials>
 
@@ -762,6 +793,8 @@
                 <noderef id="window" />
                 <noderef id="pillow1" />
                 <noderef id="kite1" />
+                <noderef id="outsideDoorLamp" />
+                <noderef id="roof" />
 
                 <pointlight id="outsideTopLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -914,7 +947,7 @@
 	
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="21 1.8 16" />
+                    <box xyz1="0 0 0" xyz2="19 1.8 16" />
                 </primitive>
             </children> 
         </node>
@@ -929,7 +962,7 @@
 			
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="18 16" />
+                    <rectangle xy1="0 0" xy2="19 16" />
                 </primitive>
             </children> 
         </node>
@@ -1089,8 +1122,75 @@
             </children> 
         </node>
 
+        <node id="leftRoof">
+            <materialref id="sideRoofTileApp" />
+            <children>             
+                <primitive>
+                    <triangle xyz1="4.5 0 8.5" xyz2="-2 4.52 0" xyz3="-2 0 8.5"/>
+                </primitive>
+                <primitive>
+                    <triangle xyz1="-9 0 8.5" xyz2="-9 4.52 0" xyz3="-15.5 0 8.5"/>
+                </primitive>
+                <noderef id="rectangleLeftSideRoof" />
+            </children> 
+        </node>
+
+        <node id="rectangleRightSideRoof">
+            <transforms>
+                <translate value3="-9.06 -0.012 -8.49" />
+                <rotate value3="1.081 0 0" />
+            </transforms>			
+            <children>             
+                <primitive>
+                    <rectangle xy1="0 0" xy2="7.1 9.63"/>
+                </primitive>
+            </children> 
+        </node>
+
+        <node id="rectangleLeftSideRoof">
+            <transforms>
+                <translate value3="0 0 0" />
+                <scale value3="1 1 -1" />
+            </transforms>			
+            <children>             
+                <noderef id="rectangleRightSideRoof" />
+            </children> 
+        </node>
+
+        <node id="rightRoof">		
+            <materialref id="sideRoofTileApp" />	
+            <children>             
+                <primitive>
+                    <triangle xyz1="4.5 0 -8.5" xyz2="-2 4.52 0" xyz3="-2 0 -8.5"/>
+                </primitive>
+                <primitive>
+                    <triangle xyz1="-9 0 -8.5" xyz2="-9 4.52 0" xyz3="-15.5 0 -8.5"/>
+                </primitive>
+                <noderef id="rectangleRightSideRoof" />
+            </children> 
+        </node>
+
+        <node id="roof">
+            <transforms>
+                <translate value3="7.5 6 0" />
+            </transforms>
+
+			<materialref id="frontRoofTileApp" />
+			
+            <children>             
+                <primitive>
+                    <triangle xyz1="4.5 0 -8.5" xyz2="-2 4.52 0" xyz3="4.5 0 8.5"/>
+                </primitive>
+                <primitive>
+                    <triangle xyz1="-15.5 0 -8.5" xyz2="-9 4.52 0" xyz3="-15.5 0 8.5"/>
+                </primitive>
+                <noderef id="leftRoof" />
+                <noderef id="rightRoof" />
+            </children> 
+        </node>
+
         <!-- DECK -->
-        <node id="deck" >
+        <node id="deck" receiveshadows="true">
             <transforms>
                 <translate value3="0 1.81 0" /> 
                 <rotate value3="1.5708 0 0" /> 
@@ -1098,12 +1198,12 @@
 
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="6 16"/>
+                    <rectangle xy1="0 0" xy2="4 16"/>
                 </primitive>
             </children> 
         </node>
 
-        <node id="porch" >
+        <node id="porch">
             <transforms>
                 <translate value3="7.5 -1.8 -8.0" />
             </transforms> 
@@ -1180,7 +1280,7 @@
 
         <node id="porchStairs" >
             <transforms>
-                <translate value3="6 0 6" />
+                <translate value3="4 0 6" />
             </transforms> 
             
             <materialref id="stoneApp" />
@@ -1194,7 +1294,7 @@
 
         <node id="porchColumnLeft" >
             <transforms>
-                <translate value3="5.7 1.8 15.7" />
+                <translate value3="3.7 1.8 15.7" />
             </transforms> 
             
             <children>             
@@ -1206,7 +1306,7 @@
 
         <node id="porchColumnRight" >
             <transforms>
-                <translate value3="5.7 1.8 0" />
+                <translate value3="3.7 1.8 0" />
             </transforms> 
                 
             <children>             
@@ -1218,7 +1318,7 @@
 
         <node id="connectPorchColumnLeft" >
             <transforms>
-                <translate value3="6 7.5 15.7" />
+                <translate value3="4 7.5 15.7" />
                 <rotate value3="0 0 1.5708" />
             </transforms> 
 
@@ -1231,7 +1331,7 @@
 
         <node id="connectPorchColumnRight" >
             <transforms>
-                <translate value3="6 7.5 0" />
+                <translate value3="4 7.5 0" />
                 <rotate value3="0 0 1.5708" />
             </transforms> 
 
@@ -1242,9 +1342,9 @@
             </children>
         </node>
 
-        <node id="smallPorchColumnLeft1" >
+        <node id="smallPorchColumnLeft1" castshadows="true" >
             <transforms>
-                <translate value3="5.7 1.8 10" />
+                <translate value3="3.7 1.8 10" />
             </transforms> 
                 
             <children>             
@@ -1254,7 +1354,7 @@
             </children>
         </node>
 
-        <node id="smallPorchColumnLeft2" >
+        <node id="smallPorchColumnLeft2">
             <transforms>
                 <translate value3="0 0 1.9" />
             </transforms> 
@@ -1264,7 +1364,7 @@
             </children>
         </node>
 
-        <node id="smallPorchColumnLeft3" >
+        <node id="smallPorchColumnLeft3">
             <transforms>
                 <translate value3="0 0 3.8" />
             </transforms> 
@@ -1274,9 +1374,9 @@
             </children>
         </node>
 
-        <node id="smallPorchColumnRight1" >
+        <node id="smallPorchColumnRight1" castshadows="true">
             <transforms>
-                <translate value3="5.7 1.8 5.7" />
+                <translate value3="3.7 1.8 5.7" />
             </transforms> 
                 
             <children>             
@@ -1286,7 +1386,7 @@
             </children>
         </node>
 
-        <node id="smallPorchColumnRight2" >
+        <node id="smallPorchColumnRight2">
             <transforms>
                 <translate value3="0 0 -1.9" />
             </transforms> 
@@ -1296,7 +1396,7 @@
             </children>
         </node>
 
-        <node id="smallPorchColumnRight3" >
+        <node id="smallPorchColumnRight3">
             <transforms>
                 <translate value3="0 0 -3.8" />
             </transforms> 
@@ -1308,7 +1408,7 @@
         
         <node id="connectFenceLeft" >
             <transforms>
-                <translate value3="5.7 3.5 10" />
+                <translate value3="3.7 3.5 10" />
             </transforms> 
 
             <children>             
@@ -1320,7 +1420,7 @@
 
         <node id="connectFenceRight" >
             <transforms>
-                <translate value3="5.7 3.5 0" />
+                <translate value3="3.7 3.5 0" />
             </transforms> 
                 
             <children>             
@@ -2841,7 +2941,7 @@
             </children>
         </node>
 
-        <node id="kite">
+        <node id="kite" castshadows="true">
             <transforms>
                 <scale value3="0.8 1.4 0.2" />
             </transforms>
@@ -3132,7 +3232,7 @@
         </node>
 
         <!-- GRASS -->
-        <node id="grass">
+        <node id="grass" receiveshadows="true"> 
             <transforms>
                 <translate value3="-100 -1.8 100" />
                 <rotate value3="-1.5708 0 0" />
@@ -3164,8 +3264,8 @@
                     penumbra="1.0"
                     decay="0.8"
                     castshadow="true"
-                    position="0 0.1 0" 
-                    target="0.05 5 0"
+                    position="0.05 0.1 0" 
+                    target="2 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
                 />
@@ -3189,7 +3289,7 @@
                     decay="0.8"
                     castshadow="true"
                     position="0.05 0.1 0" 
-                    target="0 5 0"
+                    target="2 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
                 />
@@ -3213,7 +3313,7 @@
                     decay="0.8"
                     castshadow="true"
                     position="0.05 0.1 0" 
-                    target="0 5 0"
+                    target="2 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
                 />
@@ -3237,7 +3337,7 @@
                     decay="0.8"
                     castshadow="true"
                     position="0.05 0.1 0" 
-                    target="0 5 0"
+                    target="2 5 0"
                     shadowfar="27"
                     shadowmapsize="1024"
                 />
@@ -3610,12 +3710,12 @@
 
         <node id="fireplaceChimney">
             <transforms>
-                <translate value3="0.3 4.5 0.4"/>
+                <translate value3="0.3 3.5 0.4"/>
             </transforms>
 
             <children>
                 <primitive>
-                    <cylinder top="0.18" base="0.18" height="6" slices="40" stacks="1" capsclose="true"/>
+                    <cylinder top="0.18" base="0.18" height="4.8" slices="40" stacks="1" capsclose="true"/>
                 </primitive>
             </children>
         </node>
@@ -3845,7 +3945,7 @@
             </children>
         </node>
 
-        <node id="doorFrame" >
+        <node id="doorFrame" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="7.4 0 -0.9"/>
             </transforms>
@@ -3870,7 +3970,7 @@
             </children>
         </node>
 
-        <node id="doorOutside" >
+        <node id="doorOutside">
             <transforms>
                 <translate value3="0.4 0 0"/>
                 <rotate value3="0 3.1416 0" />
@@ -4261,6 +4361,66 @@
             </children>
         </node>
 
--->
+        <node id="outsideDoorLamp">
+            <transforms>
+                <translate value3="8.8 5 0" />
+            </transforms>
+
+            <children>
+                <noderef id="outsideDoorLight" />
+                <noderef id="outsideDoorString" />  
+
+                <spotlight id="outsideDoorLampSpotLight"
+                    enabled="true" 
+                    color="0.988 0.87451 0.227451 1.0" 
+                    intensity="5"
+                    distance="10"
+                    angle="1.2"
+                    penumbra="1.0"
+                    decay="0.5"
+                    castshadow="true"
+                    position="2 0.5 0" 
+                    target="0 -10 0"
+                    shadowfar="27"
+                    shadowmapsize="2048"
+                />
+                <pointlight id="outsideDoorLampHighlight" enabled="true" 
+                    color="0.988 0.87451 0.227451 1.0" 
+                    intensity="0.9"
+                    distance="0.5"
+                    decay="1.0"
+                    castshadow="false"
+                    position="0 0 0" 
+                />
+            </children>
+        </node>
+
+        <node id="outsideDoorLight" castshadows="true">
+            <transforms>
+                <rotate value3="0 3.1416 1.5708"/>
+                <scale value3="0.28 0.25 0.25" />
+            </transforms>
+
+            <materialref id="polygonApp" />
+            <children>
+                <primitive>
+                    <polygon radius="1" stacks="2" slices="4" color_c="0.9294 0.8784 0.4941 1.0" color_p="0.98039 0.9294 0.55686 1.0" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="outsideDoorString">
+            <transforms>
+                <translate value3="0 0.61 0" />
+            </transforms>
+
+            <materialref id="photographyFrameApp" />
+            <children>
+                <primitive>
+                    <cylinder base="0.02" top="0.02" height="0.7" stacks="30" slices="30" thetastart="0" thetalength="3.1416" />
+                </primitive>
+            </children>
+        </node>
+
     </graph>
 </yaf> 
