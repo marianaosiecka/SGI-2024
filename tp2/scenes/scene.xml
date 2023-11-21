@@ -2299,7 +2299,7 @@
             </children>
         </node>
 
-        <node id="seatSofaPillow">
+        <node id="seatSofaPillow" receiveshadows="true">
             <transforms>
                 <translate value3="0.75 0.5 1"/>
                 <rotate value3="-1.5708 0 0" />
