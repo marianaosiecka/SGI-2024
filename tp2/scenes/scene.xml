@@ -7,83 +7,83 @@
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="outsideWindow">
+    <cameras initial="outsideDoor">
         <perspective id="perspective1"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="7 4.5 6.5"
             target="0 0 0" />
 
         <perspective id="perspective2"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="-7 4.5 -6.5"
             target="0 0.0 0" />
 
         <perspective id="outsidePerspective1"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="50 50 50"
             target="0 0 0" />
+
+        <perspective id="outsidePerspective2"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="35 10 0"
+            target="0 8 0" />
         
         <perspective id="vase"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="-3 4 5"
             target="-6 1 6.5" />
         
         <perspective id="vinyl"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="-4 3 -3.5"
             target="-6 2 -5" />
 
         <perspective id="coffeeTable"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="1.2 1.2 -1.4"
             target="0 1 -4" />
 
         <perspective id="pillow"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="-1 3 -3"
             target="-2.8 1.3 -5.3/>" />
         
         <perspective id="window"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="0 4 0"
             target="-8 3.5 0" />
 
         <perspective id="insideDoor"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="0 3.5 0"
             target="8 3.5 0" />
 
         <perspective id="outsideDoor"
-            angle="75"
+            angle="1.309"
             near="0.1"
             far="1000"
             location="21 3.5 0"
             target="6 3.5 0" />
-
-        <perspective id="outsideWindow"
-            angle="75"
-            near="0.1"
-            far="1000"
-            location="-12 3.5 0"
-            target="-8 3.5 0" />
 
         <orthogonal id="orthoLeft"
             near="-10"
@@ -181,7 +181,8 @@
         <texture id="porchTex" filepath="scenes/textures/porch.jpg" />
         <texture id="deckTex" filepath="scenes/textures/deck.jpg" />
 
-        <texture id="stoneTex" filepath="scenes/textures/stone.jpg" />
+        <texture id="stone1Tex" filepath="scenes/textures/stone.jpg" />
+        <texture id="stone2Tex" filepath="scenes/textures/stone.jpg" />
         <texture id="stoneBumpTex" filepath="scenes/textures/stone_bump_texture.png" />
 
         <texture id="extWallTex" filepath="scenes/textures/ext_wall.jpg" />
@@ -196,6 +197,8 @@
         <texture id="fireVideoTex" filepath="scenes/textures/videos/fire.mp4" isVideo="true" />
 
         <texture id="musicVideoTex" filepath="scenes/textures/videos/music.mp4" isVideo="true" />
+
+        <texture id="smokeTex" filepath="scenes/textures/smoke.png"/>
 
     </textures>
 
@@ -654,15 +657,26 @@
             <box xyz1="0 0 0" xyz2="24 1.8 16" />
             />
 -->
-        <material id="stoneApp"
+        <material id="stone1App"
             emissive="0.0 0.0 0.0 0.0"
             color="1.0 1.0 1.0 1.0"
             specular="0.0 0.0 0.0 0.0"
             shininess="0"
-            textureref="stoneTex"
+            textureref="stone1Tex"
             bumpref="stoneBumpTex"
             texlength_s="1"
             texlength_t="2"
+        />
+
+        <material id="stone2App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="stone2Tex"
+            bumpref="stoneBumpTex"
+            texlength_s="1.9"
+            texlength_t="16"
         />
 
         <material id="wallLampApp"
@@ -756,8 +770,7 @@
             emissive="0.0 0.0 0.0 1"
             color="0.83137 0.68627 0.215686 1"
             specular="0.46667 0.46667 0.46667 0"
-            shininess="10"
-            twosided="false" />
+            shininess="10"/>
 
 
         <material id="vinylCoverColor1App"
@@ -955,7 +968,6 @@
                 <noderef id="vinylShelf" />
                 <noderef id="porch" />
                 <noderef id="grass" />
-                
                 <noderef id="wallLampFLeft"/>
                 <noderef id="wallLampFRight"/>
                 <noderef id="wallLampBLeft"/>
@@ -979,6 +991,7 @@
                 <noderef id="roof" />
                 <noderef id="vinylCoversColor"/>
                 <noderef id="bookCovers"/>
+                <noderef id="chimney"/>
 
                 <pointlight id="outsideTopLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -1124,10 +1137,10 @@
 
         <node id="floorSupport">
             <transforms>
-				<translate value3="-7.5 -1.82 -8.0" />
+				<translate value3="-7.5 -1.81 -8.0" />
             </transforms> 
     
-            <materialref id="stoneApp" />
+            <materialref id="stone2App" />
 	
             <children>             
                 <primitive>
@@ -1413,12 +1426,16 @@
                 <noderef id="smallPorchColumnLeft2" />
                 <noderef id="smallPorchColumnLeft3" />
                 <noderef id="smallPorchColumnLeft4" />
+                <noderef id="smallPorchColumnLeft5" />
                 <noderef id="smallPorchColumnRight1" />
                 <noderef id="smallPorchColumnRight2" />
                 <noderef id="smallPorchColumnRight3" />
                 <noderef id="smallPorchColumnRight4" />
-                <noderef id="connectFenceLeft" />
-                <noderef id="connectFenceRight" />
+                <noderef id="smallPorchColumnRight5" />
+                <noderef id="connectFenceLeft1" />
+                <noderef id="connectFenceLeft2" />
+                <noderef id="connectFenceRight1" />
+                <noderef id="connectFenceRight2" />
             </children> 
         </node>
             
@@ -1467,7 +1484,7 @@
                 <translate value3="4 0 6" />
             </transforms> 
             
-            <materialref id="stoneApp" />
+            <materialref id="stone1App" />
 
             <children>             
                 <noderef id="topStair"/>
@@ -1508,7 +1525,7 @@
 
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0.3 5.995 0.3" />
+                    <box xyz1="0 0 0" xyz2="0.3 3.995 0.3" />
                 </primitive>
             </children>
         </node>
@@ -1521,7 +1538,7 @@
 
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0.3 5.995 0.3" />
+                    <box xyz1="0 0 0" xyz2="0.3 3.995 0.3" />
                 </primitive>
             </children>
         </node>
@@ -1558,6 +1575,26 @@
             </children>
         </node>
 
+        <node id="smallPorchColumnLeft4">
+            <transforms>
+                <translate value3="-1.2 0 5.7" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnLeft1"/>
+            </children>
+        </node>
+
+        <node id="smallPorchColumnLeft5">
+            <transforms>
+                <translate value3="-1.4 0 0" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnLeft4"/>
+            </children>
+        </node>
+
         <node id="smallPorchColumnRight1" castshadows="true">
             <transforms>
                 <translate value3="3.7 1.8 5.7" />
@@ -1589,8 +1626,28 @@
                 <noderef id="smallPorchColumnRight1"/>
             </children>
         </node>
+
+        <node id="smallPorchColumnRight4">
+            <transforms>
+                <translate value3="-1.2 0 -1.85" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnRight3"/>
+            </children>
+        </node>
+
+        <node id="smallPorchColumnRight5">
+            <transforms>
+                <translate value3="-1.4 0 0" />
+            </transforms> 
+                
+            <children>             
+                <noderef id="smallPorchColumnRight4"/>
+            </children>
+        </node>
         
-        <node id="connectFenceLeft" >
+        <node id="connectFenceLeft1" >
             <transforms>
                 <translate value3="3.7 3.5 10" />
             </transforms> 
@@ -1602,7 +1659,20 @@
             </children>
         </node>
 
-        <node id="connectFenceRight" >
+        <node id="connectFenceLeft2" >
+            <transforms>
+                <translate value3="0 3.5 16" />
+                <rotate value3="0 1.5708 0" />
+            </transforms> 
+
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.3 3.995" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="connectFenceRight1" >
             <transforms>
                 <translate value3="3.7 3.5 0" />
             </transforms> 
@@ -1610,6 +1680,19 @@
             <children>             
                 <primitive>
                     <box xyz1="0 0 0" xyz2="0.3 0.3 6" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="connectFenceRight2" >
+            <transforms>
+                <translate value3="0 3.5 0.3" />
+                <rotate value3="0 1.5708 0" />
+            </transforms> 
+                
+            <children>             
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.3 0.3 4" />
                 </primitive>
             </children>
         </node>
@@ -2239,6 +2322,18 @@
         </node>
         
          <!-- SOFAS -->
+        <node id="sofa">
+            <children>             
+                <noderef id="upperBackSofa" />
+				<noderef id="lowerBackSofa" />
+				<noderef id="seatSofa" />
+                <noderef id="leftLegSofa" />
+                <noderef id="rightLegSofa" />
+                <noderef id="leftArmSofa" />
+                <noderef id="rightArmSofa" />
+            </children> 
+        </node>
+
         <node id="sofa1" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-3 0.0 -5.7" />
@@ -2248,13 +2343,7 @@
             <materialref id="sofaApp" />
 
             <children>             
-                <noderef id="upperBackSofa" />
-				<noderef id="lowerBackSofa" />
-				<noderef id="seatSofa" />
-                <noderef id="leftLegSofa" />
-                <noderef id="rightLegSofa" />
-                <noderef id="leftArmSofa" />
-                <noderef id="rightArmSofa" />
+                <noderef id="sofa" />
             </children> 
         </node>
             
@@ -2283,6 +2372,21 @@
             </children>
         </node>
 
+        <node id="seatSofaPillow" receiveshadows="true">
+            <transforms>
+                <translate value3="0.75 0.5 1"/>
+                <rotate value3="-1.5708 0 0" />
+                <scale value3="0.6 0.8 0.45" />
+            </transforms>
+
+            <children>
+                <noderef id="pillowSide1" />
+                <noderef id="pillowSide2" />
+                <noderef id="pillowSide3" />
+                <noderef id="pillowSide4" />
+            </children>
+        </node>
+
         <node id="seatSofa">
             <transforms>
                 <translate value3="0 0.33 -1.0"/>
@@ -2292,6 +2396,7 @@
                 <primitive>
                     <box xyz1="0.0 0.0 0.0" xyz2="1.35 0.45 2.0" />
                 </primitive>
+                <noderef id="seatSofaPillow" />
             </children>
         </node>
 
@@ -2362,13 +2467,7 @@
             <materialref id="sofaApp" />
 
             <children>             
-                <noderef id="upperBackSofa" />
-				<noderef id="lowerBackSofa" />
-				<noderef id="seatSofa" />
-                <noderef id="leftLegSofa" />
-                <noderef id="rightLegSofa" />
-                <noderef id="leftArmSofa" />
-                <noderef id="rightArmSofa" />
+                <noderef id="sofa" />
             </children> 
         </node>
 
@@ -2932,7 +3031,7 @@
 
             <children>
                 <primitive>
-                    <sphere radius="0.8" slices="50" stacks="50" thetastart="1.5708" thetalength="3.1416" phistart="0.0" philength="6.2832"/>
+                    <sphere radius="0.8" slices="50" stacks="50" thetastart="1.5708" thetalength="6.2832" phistart="0.0" philength="6.2832"/>
                 </primitive>
             </children>
         </node>
@@ -3213,12 +3312,67 @@
 
         <node id="kite1">
             <transforms>
-                <translate value3="-10 10 -18"/>
-                <rotate value3="-1.3 0.4 0.5" />
+                <translate value3="-7.8 12 -18"/>
+                <rotate value3="-1.5 0.4 0.5" />
                 <scale value3="2 2 2" />
             </transforms>
             <children>
                 <noderef id="kite" />
+                <noderef id="kiteString" />
+            </children>
+        </node>
+
+        <node id="kiteString1">
+            <transforms>
+                <translate value3="0.2 1.6 0.75" />
+                <rotate value3="1.5708 0 0" />
+            </transforms>
+            <materialref id="whiteApp" />
+            <children>
+                <primitive>
+                    <cylinder base="0.02" top="0.02" height="1.5" slices="10" stacks="1" thetastart="0" thetalength="6.2832" capsclose="true"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="kiteString2" >
+            <transforms>
+                <translate value3="-1.95 0 0" />
+            </transforms>
+            <children>
+                <noderef id="kiteString1" />
+            </children>
+        </node>
+
+        <node id="kiteString3" >
+            <transforms>
+                <translate value3="-1.7 0 0.2" />
+                <rotate value3="0 1.5708 0" />
+                <scale value3="1 1 1.28" />
+            </transforms>
+            <children>
+                <noderef id="kiteString1" />
+            </children>
+        </node>
+
+        <node id="kiteString4" >
+            <transforms>
+                <translate value3="0 0 1.52" />
+            </transforms>
+            <children>
+                <noderef id="kiteString3" />
+            </children>
+        </node>
+
+        <node id="kiteString" >
+            <transforms>
+                <translate value3="0 -3 0" />
+            </transforms>
+            <materialref id="whiteApp" />
+            <children>
+                <primitive>
+                    <cylinder base="0.02" top="0.02" height="8" slices="10" stacks="1" thetastart="0" thetalength="3.1416" capsclose="true"/>
+                </primitive>
             </children>
         </node>
 
@@ -3229,7 +3383,7 @@
             <materialref id="polygonApp" />
             <children>
                 <primitive>
-                    <polygon radius="1" stacks="2" slices="4" color_c="0.788 0.40784 0.070588 1.0" color_p="0.094117 0.349 0.1490 1.0" />
+                    <polygon radius="1" stacks="2" slices="4" color_c="0.05098 0.01569 0.321569 1.0" color_p="0.32549 0.188235 0.541176 1.0" />
                 </primitive>
             </children>
         </node>
@@ -4226,6 +4380,102 @@
             </children>
         </node>
 
+         <node id="chimneyRight">
+            <transforms>
+                <translate value3="0 0 -1.3"/>
+            </transforms>
+
+            <children>
+                <noderef id="chimneyLeft" />
+            </children>
+        </node>
+
+        <node id="chimneyLeft">
+            <transforms>
+                <translate value3="-1.5 0 1.3"/>
+            </transforms>
+
+            <materialref id="stone1App"/>
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="1.5 3 0.2"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="chimneyBack">
+            <transforms>
+                <translate value3="-1.7 0 0"/>
+            </transforms>
+
+            <children>
+                <noderef id="chimneyFront" />
+            </children>
+        </node>
+
+        <node id="chimneyFront">
+            <transforms>
+                <translate value3="0 0 0"/>
+            </transforms>
+
+            <materialref id="stone1App"/>
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.2 3 1.5"/>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="chimneyBottom">
+            <transforms>
+                <translate value3="-1.5 0.85 1.5"/>
+                <rotate value3="-1.5708 0 0"/>
+            </transforms>
+
+            <materialref id="fireplaceApp"/>
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="1.5 1.5"/>
+                </primitive>
+            </children>
+        </node>
+
+<!--
+        <node id="chimneySmoke">
+            <transforms>
+                <translate value3="0 3 0"/>
+            </transforms>
+
+            <children>
+                <primitive>
+                    <cylinder base="0.2" top="0.05" height="4" slices="20" stacks="20" thetastart="0" thetalength="3.1416"/>
+                </primitive>
+            </children>
+        </node>
+-->
+        <node id="chimney">
+            <transforms>
+                <translate value3="0 7 -6.3"/>
+            </transforms>
+
+            <materialref id="stone1App"/>
+
+            <children>
+                <noderef id="chimneyFront" />
+                <noderef id="chimneyBack" />
+                <noderef id="chimneyLeft" />
+                <noderef id="chimneyRight" />
+                <noderef id="chimneyBottom" />
+                <noderef id="kiteString1" />
+                <noderef id="kiteString2" />
+                <noderef id="kiteString3" />
+                <noderef id="kiteString4" />
+            </children>
+        </node>
+
         <!-- DOOR -->
         <node id="doorLeftFrame" >
             <transforms>
@@ -4716,7 +4966,7 @@
         <!-- PILLOW -->
         <node id="pillow1" castshadows="true">
             <transforms>
-                <translate value3="-2.8 1.27 -5.3"/>
+                <translate value3="-2.8 1.4 -5.3"/>
                 <rotate value3="-0.4 3.8 -0.3"/>
                 <scale value3="0.5 0.5 0.5"/>
             </transforms>
@@ -4906,7 +5156,7 @@
             <materialref id="photographyFrameApp" />
             <children>
                 <primitive>
-                    <cylinder base="0.02" top="0.02" height="0.7" stacks="30" slices="30" thetastart="0" thetalength="3.1416" />
+                    <cylinder base="0.02" top="0.02" height="0.7" stacks="30" slices="30" thetastart="0" thetalength="6.2832" />
                 </primitive>
             </children>
         </node>
