@@ -8,20 +8,6 @@
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
     <cameras initial="insidePerspective1">
-        <perspective id="insidePerspective1"
-            angle="1.309"
-            near="0.1"
-            far="1000"
-            location="7 4.5 6.5"
-            target="0 0 0" />
-
-        <perspective id="insidePerspective2"
-            angle="1.309"
-            near="0.1"
-            far="1000"
-            location="-7 4.5 -6.5"
-            target="0 0.0 0" />
-
         <perspective id="outsidePerspective1"
             angle="1.309"
             near="0.1"
@@ -35,34 +21,76 @@
             far="1000"
             location="35 10 0"
             target="0 8 0" />
+
+        <perspective id="kiteAndChimney"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="21 20 -15"
+            target="0 14 -15" />
+
+        <perspective id="outsideDoor"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="21 3.5 0"
+            target="6 3.5 0" />
+
+        <perspective id="insidePerspective1"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="7 4.5 6.5"
+            target="0 0 0" />
+
+        <perspective id="insidePerspective2"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="-7 4.5 -6.5"
+            target="0 0.0 0" />
         
         <perspective id="vase"
             angle="1.309"
             near="0.1"
             far="1000"
-            location="-3 4 5"
-            target="-6 1 6.5" />
-        
+            location="-3 2.5 2"
+            target="-6 2 6.5" />
+            
+        <perspective id="diningTable"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="0 3 -1.8"
+            target="0 1 4" />
+
         <perspective id="vinyl"
             angle="1.309"
             near="0.1"
             far="1000"
             location="-4 3 -3.5"
             target="-6 2 -5" />
+        
+        <perspective id="vinylCover"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="-6.5 3.5 -5.5"
+            target="-9 3.5 -5.5" />
 
         <perspective id="coffeeTable"
             angle="1.309"
             near="0.1"
             far="1000"
-            location="1.2 1.2 -1.4"
+            location="0 3 1.8"
             target="0 1 -4" />
 
         <perspective id="pillow"
             angle="1.309"
             near="0.1"
             far="1000"
-            location="-1 3 -3"
-            target="-2.8 1.3 -5.3/>" />
+            location="-1 2 -3"
+            target="-2.8 1.3 -5.3" />
         
         <perspective id="window"
             angle="1.309"
@@ -77,20 +105,6 @@
             far="1000"
             location="0 3.5 0"
             target="8 3.5 0" />
-
-        <perspective id="outsideDoor"
-            angle="1.309"
-            near="0.1"
-            far="1000"
-            location="21 3.5 0"
-            target="6 3.5 0" />
-
-        <perspective id="kiteAndChimney"
-            angle="1.309"
-            near="0.1"
-            far="1000"
-            location="21 20 -15"
-            target="0 14 -15" />
 
         <orthogonal id="orthoBack"
             near="-10"
@@ -148,6 +162,7 @@
 
         <texture id="floorTex" filepath="scenes/textures/floor_texture.jpg" />
         <texture id="tableTex" filepath="scenes/textures/wood_texture.jpg" />
+        <texture id="doorTex" filepath="scenes/textures/wood_texture.jpg" />
         <texture id="cakeFillingTex" filepath="scenes/textures/cake_slice_texture.png" />
 
         <texture id="painting1Tex" filepath="scenes/textures/painting1.jpg" />
@@ -627,7 +642,7 @@
             color="1 1 1 1.0"
             specular="1.0 1.0 1.0 1.0"
             shininess="1"
-            twosided="true" /> 
+            /> 
 
         <material id="chimneySmokeApp"
             emissive="0.0 0.0 0.0 1"
@@ -776,9 +791,9 @@
             specular="0.46667 0.46667 0.46667 0"
             shininess="1"
             twosided="false"
-            textureref="tableTex"
-            texlength_s="1.8"
-            texlength_t="4.185" />
+            textureref="doorTex"
+            texlength_s="0.6"
+            texlength_t="2.2" />
 
         <material id="doorKnobApp"
             emissive="0.0 0.0 0.0 1"
