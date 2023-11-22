@@ -2384,10 +2384,7 @@
             </transforms>
 
             <children>
-                <noderef id="pillowSide1" />
-                <noderef id="pillowSide2" />
-                <noderef id="pillowSide3" />
-                <noderef id="pillowSide4" />
+                <lodref id="seatSofaPillowLod" />
             </children>
         </node>
 
@@ -2401,6 +2398,31 @@
                     <box xyz1="0.0 0.0 0.0" xyz2="1.35 0.45 2.0" />
                 </primitive>
                 <noderef id="seatSofaPillow" />
+            </children>
+        </node>
+
+        <lod id="seatSofaPillowLod">
+            <noderef id="seatSofaPillowLod1" mindist="0"/>
+            <noderef id="seatSofaPillowLod2" mindist="10"/>
+        </lod>
+
+        <node id="seatSofaPillowLod1">
+            <children>
+                <noderef id="pillowSide1" />
+                <noderef id="pillowSide2" />
+                <noderef id="pillowSide3" />
+                <noderef id="pillowSide4" />
+            </children>
+        </node>
+
+        <node id="seatSofaPillowLod2">
+            <transforms>
+                <translate value3="-1 -1 -0.15"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="2 2.0"/>
+                </primitive>
             </children>
         </node>
 
