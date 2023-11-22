@@ -7,15 +7,15 @@
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="perspective1">
-        <perspective id="perspective1"
+    <cameras initial="insidePerspective1">
+        <perspective id="insidePerspective1"
             angle="1.309"
             near="0.1"
             far="1000"
             location="7 4.5 6.5"
             target="0 0 0" />
 
-        <perspective id="perspective2"
+        <perspective id="insidePerspective2"
             angle="1.309"
             near="0.1"
             far="1000"
@@ -92,53 +92,60 @@
             location="21 3.5 0"
             target="6 3.5 0" />
 
-        <orthogonal id="orthoLeft"
+        <perspective id="kiteAndChimney"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="21 20 -15"
+            target="0 14 -15" />
+
+        <orthogonal id="orthoBack"
             near="-10"
             far="20"
             location="-5 0 0"
             target="0.0 0.0 0.0"
-            left="-10"
-            right="10"
+            left="-20"
+            right="20"
+            bottom="-10"
+            top="15" />
+
+        <orthogonal id="orthoFront"
+            near="-10"
+            far="20"
+            location="5 0 0"
+            target="0.0 0.0 0.0"
+            left="-20"
+            right="20"
+            bottom="-10"
+            top="15" />
+
+        <orthogonal id="orthoTop"
+            near="-10"
+            far="20"
+            location="0 20 0"
+            target="0.0 0.0 0.0"
+            left="-20"
+            right="20"
+            bottom="-10"
+            top="10" />
+
+        <orthogonal id="orthoLeft"
+            near="-10"
+            far="20"
+            location="0 4 20"
+            target="0.0 4.0 0.0"
+            left="-20"
+            right="20"
             bottom="-10"
             top="10" />
 
         <orthogonal id="orthoRight"
             near="-10"
             far="20"
-            location="5 0 0"
-            target="0.0 0.0 0.0"
-            left="-10"
-            right="10"
-            bottom="-10"
-            top="10" />
-
-        <orthogonal id="orthoTop"
-            near="-10"
-            far="20"
-            location="0 5 0"
-            target="0.0 0.0 0.0"
-            left="-10"
-            right="10"
-            bottom="-10"
-            top="10" />
-
-        <orthogonal id="orthoFront"
-            near="-10"
-            far="20"
-            location="0 0 5"
-            target="0.0 0.0 0.0"
-            left="-10"
-            right="10"
-            bottom="-10"
-            top="10" />
-
-        <orthogonal id="orthoBack"
-            near="-10"
-            far="20"
-            location="0 0 -5"
-            target="0.0 0.0 0.0"
-            left="-10"
-            right="10"
+            location="0 4 -20"
+            target="0.0 4.0 0.0"
+            left="-20"
+            right="20"
             bottom="-10"
             top="10" />
 
@@ -228,7 +235,7 @@
             shininess="0"
             textureref="extWallTex"
             texlength_s="16"
-            texlength_t="6"
+            texlength_t="6.2"
              />
 
         <material id="extWallTopApp"
@@ -406,7 +413,7 @@
 
         <material id="glassApp"
             emissive="0.7 0.7 0.7 1.0"
-            color="0.95 0.94 0.9 0.1"
+            color="0.95 0.94 0.9 0.3"
             specular="0.95 0.94 0.9 1.0"
             shininess="50"
             twosided="true" />
@@ -629,6 +636,13 @@
             color="1 1 1 1.0"
             specular="1.0 1.0 1.0 1.0"
             shininess="1"
+            twosided="true" /> 
+
+        <material id="chimneySmokeApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.90196 0.88235 0.88235 0.6"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="0"
             twosided="true" /> 
         
         <material id="vinylCoverApp"
@@ -988,12 +1002,6 @@
                 <noderef id="wallLampFRight"/>
                 <noderef id="wallLampBLeft"/>
                 <noderef id="wallLampBRight"/>
-                <!--
-                <noderef id="extWallLampFLeft"/>
-                <noderef id="extWallLampFRight"/>
-                <noderef id="extWallLampBLeft"/>
-                <noderef id="extWallLampBRight"/>
-                -->
                 <noderef id="ceilingLampCenter"/>
                 <noderef id="roofFront" />
                 <noderef id="roofBack" />
@@ -1048,13 +1056,6 @@
                     castshadow="false"
                     position="30 10.0 0" 
                 />
-   
-                <!--<directionallight id="light1" enabled="true" 
-                    color="1.0 1 1 1" 
-                    intensity="0.2"
-                    castshadow="false"
-                    position="0 1 0" 
-                />-->
                 
             </children> 
         </node>
@@ -1225,7 +1226,7 @@
 			
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="15.02 6" />
+                    <rectangle xy1="0 0" xy2="15.02 6.3" />
                 </primitive>
             </children> 
         </node>
@@ -1238,7 +1239,7 @@
 			
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="15.02 6" />
+                    <rectangle xy1="0 0" xy2="15.02 6.3" />
                 </primitive>
             </children> 
         </node>
@@ -1255,7 +1256,7 @@
         <node id="extBackWallRight">
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="6.4 6" />
+                    <rectangle xy1="0 0" xy2="6.4 6.2" />
                 </primitive>
             </children> 
         </node>
@@ -1269,7 +1270,7 @@
 
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="16 1.5" />
+                    <rectangle xy1="0 0" xy2="16 1.7" />
                 </primitive>
             </children> 
         </node>
@@ -1314,7 +1315,7 @@
         <node id="extFrontWallRight">
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="6.77 6" />
+                    <rectangle xy1="0 0" xy2="6.77 6.2" />
                 </primitive>
             </children> 
         </node>
@@ -1328,7 +1329,7 @@
 
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="16 1.5" />
+                    <rectangle xy1="0 0" xy2="16 1.6" />
                 </primitive>
             </children> 
         </node>
@@ -1538,7 +1539,7 @@
             
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0.3 6 0.3" />
+                    <box xyz1="0 0 0" xyz2="0.3 6.2 0.3" />
                 </primitive>
             </children>
         </node>
@@ -1550,14 +1551,14 @@
                 
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0.3 6 0.3" />
+                    <box xyz1="0 0 0" xyz2="0.3 6.2 0.3" />
                 </primitive>
             </children>
         </node>
 
         <node id="connectPorchColumnLeft" >
             <transforms>
-                <translate value3="4 7.5 15.7" />
+                <translate value3="4 7.7 15.7" />
                 <rotate value3="0 0 1.5708" />
             </transforms> 
 
@@ -1570,7 +1571,7 @@
 
         <node id="connectPorchColumnRight" >
             <transforms>
-                <translate value3="4 7.5 0" />
+                <translate value3="4 7.7 0" />
                 <rotate value3="0 0 1.5708" />
             </transforms> 
 
@@ -1699,7 +1700,7 @@
 
         <node id="connectFenceLeft2" >
             <transforms>
-                <translate value3="0 3.5 16" />
+                <translate value3="0.0025 3.5 16" />
                 <rotate value3="0 1.5708 0" />
             </transforms> 
 
@@ -1724,13 +1725,13 @@
 
         <node id="connectFenceRight2" >
             <transforms>
-                <translate value3="0 3.5 0.3" />
+                <translate value3="0.0025 3.5 0.3" />
                 <rotate value3="0 1.5708 0" />
             </transforms> 
                 
             <children>             
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="0.3 0.3 4" />
+                    <box xyz1="0 0 0" xyz2="0.3 0.3 3.995" />
                 </primitive>
             </children>
         </node>
@@ -2418,10 +2419,7 @@
             </transforms>
 
             <children>
-                <noderef id="pillowSide1" />
-                <noderef id="pillowSide2" />
-                <noderef id="pillowSide3" />
-                <noderef id="pillowSide4" />
+                <lodref id="seatSofaPillowLod" />
             </children>
         </node>
 
@@ -2435,6 +2433,31 @@
                     <box xyz1="0.0 0.0 0.0" xyz2="1.35 0.45 2.0" />
                 </primitive>
                 <noderef id="seatSofaPillow" />
+            </children>
+        </node>
+
+        <lod id="seatSofaPillowLod">
+            <noderef id="seatSofaPillowLod1" mindist="0"/>
+            <noderef id="seatSofaPillowLod2" mindist="10"/>
+        </lod>
+
+        <node id="seatSofaPillowLod1">
+            <children>
+                <noderef id="pillowSide1" />
+                <noderef id="pillowSide2" />
+                <noderef id="pillowSide3" />
+                <noderef id="pillowSide4" />
+            </children>
+        </node>
+
+        <node id="seatSofaPillowLod2">
+            <transforms>
+                <translate value3="-1 -1 -0.15"/>
+            </transforms>
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="2 2.0"/>
+                </primitive>
             </children>
         </node>
 
@@ -3375,7 +3398,7 @@
 
         <node id="kiteString2" >
             <transforms>
-                <translate value3="-1.95 0 0" />
+                <translate value3="-1.9 0 0" />
             </transforms>
             <children>
                 <noderef id="kiteString1" />
@@ -4481,19 +4504,40 @@
             </children>
         </node>
 
-<!--
         <node id="chimneySmoke">
             <transforms>
-                <translate value3="0 3 0"/>
+                <translate value3="-0.5 4 0.75" />
+                <rotate value3="0 3.1416 1.5708" />
+                <scale value3="1 0.05 1" />
             </transforms>
-
+            <materialref id="chimneySmokeApp" />
             <children>
                 <primitive>
-                    <cylinder base="0.2" top="0.05" height="4" slices="20" stacks="20" thetastart="0" thetalength="3.1416"/>
+                    <nurbs degree_u="3" degree_v="3" parts_u="24" parts_v="24">
+                        <controlpoint xx="-1" yy="0" zz="0" />
+                        <controlpoint xx="-1" yy="1" zz="0" />
+                        <controlpoint xx="-1" yy="2" zz="0" />
+                        <controlpoint xx="-1" yy="3" zz="0" />
+
+                        <controlpoint xx="0" yy="0" zz="0" />
+                        <controlpoint xx="0" yy="1" zz="2" />
+                        <controlpoint xx="0" yy="2" zz="2" />
+                        <controlpoint xx="0" yy="3" zz="0" />
+
+                        <controlpoint xx="1" yy="0" zz="0" />
+                        <controlpoint xx="1" yy="1" zz="-2" />
+                        <controlpoint xx="1" yy="2" zz="-2" />
+                        <controlpoint xx="1" yy="3" zz="0" />
+
+                        <controlpoint xx="3.5" yy="0" zz="0" />
+                        <controlpoint xx="3.5" yy="1" zz="0" />
+                        <controlpoint xx="3.5" yy="2" zz="0" />
+                        <controlpoint xx="3.5" yy="3" zz="0" />
+                    </nurbs>
                 </primitive>
             </children>
         </node>
--->
+
         <node id="chimney">
             <transforms>
                 <translate value3="0 7 -6.3"/>
@@ -4507,6 +4551,7 @@
                 <noderef id="chimneyLeft" />
                 <noderef id="chimneyRight" />
                 <noderef id="chimneyBottom" />
+                <noderef id="chimneySmoke" />
                 <noderef id="kiteString1" />
                 <noderef id="kiteString2" />
                 <noderef id="kiteString3" />
