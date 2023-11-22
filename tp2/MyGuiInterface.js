@@ -75,6 +75,10 @@ class MyGuiInterface  {
                 }
             }
         });
+
+        // AXIS
+        this.datgui.add({ toggleAxis: () => this.toggleAxis() }, 'toggleAxis').name('Show Axis');
+
         
     }
 
@@ -176,6 +180,15 @@ class MyGuiInterface  {
 
                 requestAnimationFrame(rotateVinyl);
             }
+        }
+    }
+
+    toggleAxis() {
+        if (!this.contents.axis) {
+            this.contents.createAxis()
+        } else {
+            this.app.scene.remove(this.contents.axis);
+            this.contents.axis = null;
         }
     }
 }
