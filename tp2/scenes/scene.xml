@@ -6,8 +6,10 @@
     <fog color="0.2196 0.196 0.271 1.0" near="40.0" far="160.0" />
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
-
+ 
+    <!-- CAMERAS -->
     <cameras initial="insidePerspective1">
+        <!-- OUTSIDE CAMERAS -->
         <perspective id="outsidePerspective1"
             angle="1.309"
             near="0.1"
@@ -36,6 +38,7 @@
             location="21 3.5 0"
             target="6 3.5 0" />
 
+        <!-- INSIDE CAMERAS -->
         <perspective id="insidePerspective1"
             angle="1.309"
             near="0.1"
@@ -50,6 +53,13 @@
             location="-7 4.5 -6.5"
             target="0 0.0 0" />
         
+        <perspective id="insideDoor"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="0 3.5 0"
+            target="8 3.5 0" />
+
         <perspective id="vase"
             angle="1.309"
             near="0.1"
@@ -85,7 +95,7 @@
             location="0 3 1.8"
             target="0 1 -4" />
 
-        <perspective id="pillow"
+        <perspective id="sofa1"
             angle="1.309"
             near="0.1"
             far="1000"
@@ -106,13 +116,7 @@
             location="0 4 0"
             target="-8 3.5 0" />
 
-        <perspective id="insideDoor"
-            angle="1.309"
-            near="0.1"
-            far="1000"
-            location="0 3.5 0"
-            target="8 3.5 0" />
-
+        <!-- ORTHO CAMERAS -->
         <orthogonal id="orthoBack"
             near="-10"
             far="20"
@@ -165,27 +169,20 @@
 
     </cameras>
 
+    <!-- TEXTURES -->
     <textures>
-
         <texture id="floorTex" filepath="scenes/textures/floor_texture.jpg" />
         <texture id="tableTex" filepath="scenes/textures/wood_texture.jpg" />
         <texture id="doorTex" filepath="scenes/textures/wood_texture.jpg" />
-        <texture id="cakeFillingTex" filepath="scenes/textures/cake_slice_texture.png" />
-
         <texture id="painting1Tex" filepath="scenes/textures/painting1.jpg" />
         <texture id="painting2Tex" filepath="scenes/textures/painting2.jpg" />
         <texture id="photography1Tex" filepath="scenes/textures/photography1.jpg" />
         <texture id="photography2Tex" filepath="scenes/textures/photography2.jpg" />
         <texture id="photography3Tex" filepath="scenes/textures/photography3.png" />
         <texture id="whiteTex" filepath="scenes/textures/white_texture.png" />
-
         <texture id="pillow1Tex" filepath="scenes/textures/pillow1_print.jpg" />
         <texture id="pillow2Tex" filepath="scenes/textures/pillow2_print.jpg" />
-        <texture id="pillow3Tex" filepath="scenes/textures/pillow3_print.jpg" />
-        <texture id="pillow4Tex" filepath="scenes/textures/pillow4_print.jpg" />
-
-        <texture id="sofaTex" filepath="scenes/textures/sofa.jpg" />
-
+        <texture id="pillow3Tex" filepath="scenes/textures/pillow4_print.jpg" />
         <texture id="vinylCoverTex" filepath="scenes/textures/vinyl_cover.jpg" mipmaps="false"
             mipmap0="scenes/textures/cover1.jpg"
             mipmap1="scenes/textures/cover2.jpg"
@@ -200,42 +197,33 @@
             mipmap2="scenes/textures/magazine2.jpg"
             mipmap3="scenes/textures/newspaper_texture.png"
             />
-
         <texture id="carpetTex" filepath="scenes/textures/carpet_texture1.png"/>
         <texture id="carpetBumpTex" filepath="scenes/textures/carpet_bump_texture.png"/>
-        
         <texture id="grassTex" filepath="scenes/textures/grass.jpg" />
         <texture id="grassBumpTex" filepath="scenes/textures/grass_bump_texture.png" />
-
         <texture id="porchTex" filepath="scenes/textures/porch.jpg" />
         <texture id="deckTex" filepath="scenes/textures/deck.jpg" />
-
         <texture id="stone1Tex" filepath="scenes/textures/stone.jpg" />
         <texture id="stone2Tex" filepath="scenes/textures/stone.jpg" />
         <texture id="stoneBumpTex" filepath="scenes/textures/stone_bump_texture.png" />
-
         <texture id="extWallTex" filepath="scenes/textures/ext_wall.jpg" />
         <texture id="extWallTopTex" filepath="scenes/textures/ext_wall_front.jpg" />
         <texture id="extWallDownTex" filepath="scenes/textures/ext_wall_back_down.jpg" />
         <texture id="extWallBumpTex" filepath="scenes/textures/ext_wall_bump_texture.png" />
-
         <texture id="roofTileTex" filepath="scenes/textures/roof_tiles_texture.jpg" />
         <texture id="roofTileBumpTex" filepath="scenes/textures/roof_tiles_bump_texture.png" />
         <texture id="roofTileSpecularTex" filepath="scenes/textures/roof_tiles_specular_texture.jpg" />
-
         <texture id="fireVideoTex" filepath="scenes/textures/videos/fire.mp4" isVideo="true" />
-
         <texture id="musicVideoTex" filepath="scenes/textures/videos/music.mp4" isVideo="true" />
-
         <texture id="smokeTex" filepath="scenes/textures/smoke.png"/>
-
-        <texture id="pineTex" filepath="scenes/textures/pine.png" />
+        <texture id="treeTex" filepath="scenes/textures/tree.png" />
 
     </textures>
 
+    <!-- MATERIALS -->
     <materials>
 
-        <!-- color: this.bege -->
+        <!-- WALL MATERIALS -->
         <material id="wallApp"
             emissive="0.0 0.0 0.0 1"
             color="0.94118 0.92157 0.81961 1.0"
@@ -281,6 +269,7 @@
             twosided="true"
              />
 
+        <!-- FLOOR MATERIAL -->
         <material id="floorApp"
             emissive="0.0 0.0 0.0 1"
             color="0.91 0.84 0.78 1.0"
@@ -291,6 +280,7 @@
             texlength_t="15"
             twosided="false" />
 
+        <!-- ROOF MATERIALS -->
         <material id="frontRoofTileApp"
             emissive="0.0 0.0 0.0 1"
             color="0.470588 0.129412 0.0313725 1.0"
@@ -317,6 +307,7 @@
             twosided="true"
          />
 
+        <!-- TABLE MATERIAL -->
         <material id="tableApp"
             emissive="0.0 0.0 0.0 1"
             color="1.0 1.0 1.0 1.0"
@@ -326,35 +317,20 @@
             texlength_s="6"
             texlength_t="3.8" />
 
-        <material id="cakeApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.88 0.65 0.57 1.0"
-            specular="0 0 0 0"
-            shininess="0" />
-
-        <material id="cakeFillingApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.91 0.84 0.78 1.0"
-            specular="0 0 0 0"
-            shininess="0"
-            textureref="cakeFillingTex" />
-
-        <!-- dá para a base do prato do bolo (que têm o "prato" só com material do plateApp) e a
-        base dos pratos normais -->
+        <!-- PLATE MATERIALS -->
         <material id="plateBaseApp"
             emissive="0 0 0 1"
             color="0.76 0.76 0.7 1.0"
             specular="1.0 1.0 1.0 1.0"
             shininess="1" />
 
-        <!-- color: this.offWhite -->
         <material id="plateApp"
             emissive="0 0 0 1"
             color="0.85 0.85 0.8 1.0"
             specular="1.0 1.0 1.0 1.0"
             shininess="1" />
 
-        <!-- color: this.orange -->
+        <!-- PENDANT LAMP MATERIAL -->
         <material id="lampApp"
             emissive="0.0 0.0 0.0 1"
             color="0.8 0.47 0.13 1.0"
@@ -362,6 +338,7 @@
             shininess="0" 
             twosided="true"/>
 
+        <!-- VINYL MATERIALS -->
         <material id="vinylPlayerHolderApp"
             emissive="0.0 0.0 0.0 1"
             color="0.8 0.47 0.13 1.0"
@@ -369,253 +346,6 @@
             shininess="0" 
             twosided="false"/>
 
-        <!-- color: this.yellow -->
-        <material id="chairApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.9294 0.8588 0.33333 1.0"
-            specular="0.9294 0.8588 0.33333 1.0"
-            shininess="0" />
-
-        <material id="forkApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.61 0.61 0.61 1.0"
-            specular="1.0 1.0 1.0 1.0"
-            shininess="50" />
-
-
-        <material id="flowerStemApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.25 0.53 0.29 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            twosided="true" />
-
-        <material id="flowerCenterApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.95 0.93 0.32 1.0"
-            specular="0.95 0.93 0.32 0.0"
-            shininess="3" />
-
-        <!-- cor das petulas 0.32 0.22 0.36-->
-        <material id="flowerPetalsPurpleApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.10588 0.28627 0.517647 1.0"
-            specular="0.10588 0.28627 0.517647 1"
-            shininess="10"
-            twosided="true" />
-
-        <material id="flowerPetalsOrangeApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.86 0.29 0.05 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            twosided="true" />
-
-        <material id="flowerPetalsBlueApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.51 0.73 0.8 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            twosided="true" />
-
-        <material id="vaseApp"
-            emissive="0 0 0 1.0"
-            color="0.721 0.259 0.129 1"
-            specular="0.721 0.259 0.129 1.0"
-            shininess="4"
-            twosided="true" />
-
-
-        <material id="glassApp"
-            emissive="0.7 0.7 0.7 1.0"
-            color="0.95 0.94 0.9 0.3"
-            specular="0.95 0.94 0.9 1.0"
-            shininess="50"
-            twosided="true" />
-
-        <material id="newspaperApp"
-            emissive="0 0 0 1"
-            color="1.0 0.98 0.93 1"
-            specular="0 0 0 0"
-            shininess="0"
-            textureref="newspaperTex"
-            twosided="true"
-            texlength_s="0.8"
-            texlength_t="0.5" />
-
-        <material id="pillow1App"
-            emissive="0.0 0.0 0.0 1"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="6"
-            textureref="pillow1Tex"
-            twosided="true" />
-
-        <material id="pillow2App"
-            emissive="0.0 0.0 0.0 1"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="6"
-            textureref="pillow2Tex"
-            twosided="true" />
-
-        <material id="pillow3App"
-            emissive="0.0 0.0 0.0 1"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="6"
-            textureref="pillow3Tex"
-            twosided="true" />
-
-        <material id="pillow4App"
-            emissive="0.0 0.0 0.0 1"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="6"
-            textureref="pillow4Tex"
-            twosided="true" />
-
-
-        <material id="spiralSpringApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.61 0.61 0.61 1.0"
-            specular="1.0 1.0 1.0 1.0"
-            shininess="8"
-            twosided="true" />
-
-        
-        <!-- falta opacidade? -->
-        <!-- color: this.lightBlue -->
-        <material id="carpetApp"
-            emissive="0 0 0 1"
-            color="0.65 0.76 0.82 1.0"
-            specular="0 0 0 1.0"
-            shininess="1"
-            textureref="carpetTex"
-            bumpref="carpetBumpTex"
-            bumpscale = "0.4"
-            twosided="true"
-            texlength_s="5.5"
-            texlength_t="9.5" />
-
-        <material id="rugApp"
-            emissive="0 0 0 1"
-            color="0.65 0.76 0.82 1.0"
-            specular="0 0 0 1.0"
-            shininess="1"
-            textureref="rugTex"
-            bumpref="rugBumpTex"
-            twosided="true"
-            texlength_s="6"
-            texlength_t="4" />
-
-        <material id="sofaApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.10196 0.07451 0.0588 1.0"
-            specular="0.44 0.22 0.114 1.0"
-            shininess="1"
-            twosided="false"/>
-
-        <material id="coffeeTableApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.470588 0.129412 0.0313725 1.0"
-            specular="0 0 0 1.0"
-            shininess="5.0"
-            twosided="false" />
-
-        <material id="polygonApp"
-            emissive="0.0 0.0 0.0 1"
-            color="1 1 1 1.0"
-            specular="0.4667 0.4667 0.4667 1.0"
-            shininess="2.0"
-            twosided="true"/>
-
-        <material id="bulbApp"
-            emissive="0.0 0.0 0.0 1.0"
-            color="0.97 0.92 0.71 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="5.0" />
-
-        <material id="floorLampApp"
-            emissive="0.0 0.0 0.0 1.0"
-            color="0.10588 0.28627 0.517647 1.0"
-            specular="0.10588 0.28627 0.517647 1.0"
-            shininess="5.0"
-            twosided="true" />
-
-        <material id="paintingFrameApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.470588 0.129412 0.0313725 1.0"
-            specular="0.470588 0.129412 0.0313725 1.0"
-            shininess="2.0"
-            twosided="true" />
-
-        <material id="photographyFrameApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.439 0.4275 0.4275 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="2.0"
-            twosided="true" />
-
-        <material id="vinylHolderApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.3098 0.2980 0.2980 1.0"
-            specular="0.46 0.46 0.46 1.0"
-            shininess="2.0"
-            twosided="true" />
-
-        <material id="photography1App"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="photography1Tex"
-            texlength_s="1.3"
-            texlength_t="1"
-            />
-        
-        <material id="photography2App"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="photography2Tex"
-            texlength_s="1.1"
-            texlength_t="1.1"
-            />
-
-        <material id="photography3App"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="photography3Tex"
-            texlength_s="1.3"
-            texlength_t="1"
-            />
-
-        <material id="painting1App"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="painting1Tex"
-            texlength_s="1.1"
-            texlength_t="1.1"
-            />
-        
-        <material id="painting2App"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="painting2Tex"
-            texlength_s="1.1"
-            texlength_t="1.1"
-            />
-        
-        
-        <!--this.green-->
         <material id="vinylPlayerBoxApp"
             emissive="0.0 0.0 0.0 1"
             color="0.2 0.321569 0.172549 1.0"
@@ -623,43 +353,13 @@
             shininess="0"
             twosided="false" />
 
-        
-        <material id="blackApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0 0 0 1.0"
-            specular="0 0 0 1.0"
-            shininess="0"
-            twosided="true" />  
-        
-        <!--this.lightBlue-->
-        <material id="lightBlueApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.655 0.765 0.820 1.0"
-            specular="0 0 0 1.0"
-            shininess="0"
-            twosided="false" /> 
-        
         <material id="vinylApp"
             emissive="0.0 0.0 0.0 1"
             color="0 0 0 1.0"
             specular="0.5 0.5 0.5 1.0"
             shininess="15"
             twosided="false" /> 
-        
-        <material id="whiteApp"
-            emissive="0.0 0.0 0.0 1"
-            color="1 1 1 1.0"
-            specular="1.0 1.0 1.0 1.0"
-            shininess="1"
-            /> 
 
-        <material id="chimneySmokeApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.90196 0.88235 0.88235 0.6"
-            specular="1.0 1.0 1.0 1.0"
-            shininess="0"
-            twosided="true" /> 
-        
         <material id="vinylCoverApp"
             emissive="0.0 0.0 0.0 0.0"
             color="1.0 1.0 1.0 1.0"
@@ -668,149 +368,9 @@
             textureref="vinylCoverTex"
             texlength_s="1"
             texlength_t="1"
-     
             />
 
-        <material id="grassApp"
-            emissive="0.0 0.0 0.0 0.0"
-            color="0.3255 0.369 0.333 1.0"
-            specular="0 0 0 0.0"
-            shininess="0"
-            textureref="grassTex"
-            bumpref="grassBumpTex"
-            texlength_s="4"
-            texlength_t="4"
-            />
-
-        <!--texlenght_s=10 fica bem
-        <material id="stairsStoneApp"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="stoneTex"
-            texlength_s="1" 
-            texlength_t="4"
-
-            <box xyz1="0 0 0" xyz2="24 1.8 16" />
-            />
--->
-        <material id="stone1App"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="stone1Tex"
-            bumpref="stoneBumpTex"
-            texlength_s="1"
-            texlength_t="2"
-        />
-
-        <material id="stone2App"
-            emissive="0.0 0.0 0.0 0.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="0.0 0.0 0.0 0.0"
-            shininess="0"
-            textureref="stone2Tex"
-            bumpref="stoneBumpTex"
-            texlength_s="1.9"
-            texlength_t="16"
-        />
-
-        <material id="wallLampApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.2 0.321569 0.172549 1.0"
-            specular="0.2 0.321569 0.172549 1.0"
-            shininess="5"
-            twosided="true" />
-
-        <material id="ceilingLampApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.69 0.69 0.69 1.0"
-            specular="0.69 0.69 0.69 1.0"
-            shininess="5"
-            twosided="true" />
-
-        <!-- lightBlue -->
-        <material id="lightBulbApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.655 0.765 0.820 1.0"
-            specular="1 1 1 1.0"
-            shininess="5"
-            twosided="true" /> 
-
-        <material id="porchApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.91 0.84 0.78 1.0"
-            specular="0 0 0 0"
-            shininess="0"
-            textureref="porchTex"
-            texlength_s="6"
-            texlength_t="16"
-            twosided="true" />
-
-        <material id="deckApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.91 0.84 0.78 1.0"
-            specular="0 0 0 0"
-            shininess="0"
-            textureref="deckTex"
-            texlength_s="0.3"
-            texlength_t="0.3"
-            twosided="true" />
-
-        <material id="fireplaceApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0 0 0 1.0"
-            specular="0.467 0.467 0.467 0"
-            shininess="5"
-            twosided="false"
-        />
-        
-        <material id="fireVideoApp"
-            emissive="0 0 0 1"
-            color="1 1 1 1"
-            specular="0.1 0.1 0.1 1"
-            shininess="3"
-            twosided="false"
-            textureref="fireVideoTex"
-            texlength_s="2.1"
-            texlength_t="1.5" />
-
-        <material id="musicVideoApp"
-            emissive="0 0 0 1"
-            color="1 1 1 1"
-            specular="0.1 0.1 0.1 1"
-            shininess="3"
-            twosided="false"
-            textureref="musicVideoTex"
-            texlength_s="0"
-            texlength_t="0" />
-
-        <material id="doorApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.44314 0.21961 0.113725 1"
-            specular="0.46667 0.46667 0.46667 0"
-            shininess="1"
-            twosided="false" />
-            
-        <material id="doorTexApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.44314 0.21961 0.113725 1"
-            specular="0.46667 0.46667 0.46667 0"
-            shininess="1"
-            twosided="false"
-            textureref="doorTex"
-            texlength_s="0.6"
-            texlength_t="2.2" />
-
-        <material id="doorKnobApp"
-            emissive="0.0 0.0 0.0 1"
-            color="0.83137 0.68627 0.215686 1"
-            specular="0.46667 0.46667 0.46667 0"
-            shininess="10"/>
-
-
+        <!-- VINYL COVER MATERIALS -->
         <material id="vinylCoverColor1App"
             emissive="0.0 0.0 0.0 1"
             color="0 0.1255 0.2902 1"
@@ -915,7 +475,375 @@
             specular="1 0.8431 0 0"
             shininess="2"
             twosided="false" />
+
+        <!-- CHAIR MATERIAL -->
+        <material id="chairApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.9294 0.8588 0.33333 1.0"
+            specular="0.9294 0.8588 0.33333 1.0"
+            shininess="0" />
+
+        <!-- FORK MATERIAL -->
+        <material id="forkApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.61 0.61 0.61 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="50" />
+
+        <!-- FLOWER MATERIALS -->
+        <material id="flowerStemApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.25 0.53 0.29 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            twosided="true" />
+
+        <material id="flowerCenterApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.95 0.93 0.32 1.0"
+            specular="0.95 0.93 0.32 0.0"
+            shininess="3" />
+
+        <material id="flowerPetalsBlueApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.10588 0.28627 0.517647 1.0"
+            specular="0.10588 0.28627 0.517647 1"
+            shininess="10"
+            twosided="true" />
+
+        <!-- VASE MATERIAL -->
+        <material id="vaseApp"
+            emissive="0 0 0 1.0"
+            color="0.721 0.259 0.129 1"
+            specular="0.721 0.259 0.129 1.0"
+            shininess="4"
+            twosided="true" />
+
+        <!-- GLASS MATERIAL -->
+        <material id="glassApp"
+            emissive="0.7 0.7 0.7 1.0"
+            color="0.95 0.94 0.9 0.3"
+            specular="0.95 0.94 0.9 1.0"
+            shininess="50"
+            twosided="true" />
+
+        <!-- NEWSPAPER MATERIAL -->
+        <material id="newspaperApp"
+            emissive="0 0 0 1"
+            color="1.0 0.98 0.93 1"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="newspaperTex"
+            twosided="true"
+            texlength_s="0.8"
+            texlength_t="0.5" />
+
+        <!-- PILLOWS MATERIALS -->
+        <material id="pillow1App"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="2"
+            textureref="pillow1Tex"
+            twosided="true" />
+
+        <material id="pillow2App"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="2"
+            textureref="pillow2Tex"
+            twosided="true" />
+
+        <material id="pillow3App"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="2"
+            textureref="pillow3Tex"
+            twosided="true" />
+
+        <!-- CARPET MATERIAL -->
+        <material id="carpetApp"
+            emissive="0 0 0 1"
+            color="0.65 0.76 0.82 1.0"
+            specular="0 0 0 1.0"
+            shininess="1"
+            textureref="carpetTex"
+            bumpref="carpetBumpTex"
+            bumpscale = "0.4"
+            twosided="true"
+            texlength_s="5.5"
+            texlength_t="9.5" />
+
+        <!-- SOFA MATERIAL -->
+        <material id="sofaApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.10196 0.07451 0.0588 1.0"
+            specular="0.44 0.22 0.114 1.0"
+            shininess="1"
+            twosided="false"/>
+
+        <!-- COFFEE TABLE MATERIAL -->
+        <material id="coffeeTableApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.470588 0.129412 0.0313725 1.0"
+            specular="0 0 0 1.0"
+            shininess="5.0"
+            twosided="false" />
+
+        <!-- POLYGON MATERIAL -->
+        <material id="polygonApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1 1 1 1.0"
+            specular="0.4667 0.4667 0.4667 1.0"
+            shininess="2.0"
+            twosided="true"/>
+
+        <!-- LIGHT BULB MATERIAL -->
+        <material id="bulbApp"
+            emissive="0.0 0.0 0.0 1.0"
+            color="0.97 0.92 0.71 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="5.0" />
+
+        <!-- FLOOR LAMP MATERIAL -->
+        <material id="floorLampApp"
+            emissive="0.0 0.0 0.0 1.0"
+            color="0.10588 0.28627 0.517647 1.0"
+            specular="0.10588 0.28627 0.517647 1.0"
+            shininess="5.0"
+            twosided="true" />
+
+        <!-- PAINTING/PHOTOGRAPHY MATERIALS -->
+        <material id="paintingFrameApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.470588 0.129412 0.0313725 1.0"
+            specular="0.470588 0.129412 0.0313725 1.0"
+            shininess="2.0"
+            twosided="true" />
+
+        <material id="painting1App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="painting1Tex"
+            texlength_s="1.1"
+            texlength_t="1.1"
+            />
         
+        <material id="painting2App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="painting2Tex"
+            texlength_s="1.1"
+            texlength_t="1.1"
+            />
+
+        <material id="photographyFrameApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.439 0.4275 0.4275 1.0"
+            specular="0.46 0.46 0.46 1.0"
+            shininess="2.0"
+            twosided="true" />
+
+        <material id="photography1App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="photography1Tex"
+            texlength_s="1.3"
+            texlength_t="1"
+            />
+        
+        <material id="photography2App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="photography2Tex"
+            texlength_s="1.1"
+            texlength_t="1.1"
+            />
+
+        <material id="photography3App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="photography3Tex"
+            texlength_s="1.3"
+            texlength_t="1"
+            />
+
+        <!--BLACK MATERIAL -->
+        <material id="blackApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0 0 1.0"
+            specular="0 0 0 1.0"
+            shininess="0"
+            twosided="true" />  
+        
+        <!--LIGHT BLUE MATERIAL -->
+        <material id="lightBlueApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.655 0.765 0.820 1.0"
+            specular="0 0 0 1.0"
+            shininess="0"
+            twosided="false" /> 
+    
+        <!--WHITE MATERIAL -->
+        <material id="whiteApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1 1 1 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="1"
+            /> 
+
+        <!-- CHIMNEY SMOKE MATERIAL -->
+        <material id="chimneySmokeApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.90196 0.88235 0.88235 0.6"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="0"
+            twosided="true" /> 
+
+        <!-- GRASS MATERIAL -->
+        <material id="grassApp"
+            emissive="0.0 0.0 0.0 0.0"
+            color="0.3255 0.369 0.333 1.0"
+            specular="0 0 0 0.0"
+            shininess="0"
+            textureref="grassTex"
+            bumpref="grassBumpTex"
+            texlength_s="4"
+            texlength_t="4"
+            />
+
+        <!-- STAIRS STONE MATERIAL -->
+        <material id="stone1App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="stone1Tex"
+            bumpref="stoneBumpTex"
+            texlength_s="1"
+            texlength_t="2"
+        />
+
+        <!-- FLOOR SUPPORT STONE MATERIAL -->
+        <material id="stone2App"
+            emissive="0.0 0.0 0.0 0.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="0"
+            textureref="stone2Tex"
+            bumpref="stoneBumpTex"
+            texlength_s="1.9"
+            texlength_t="16"
+        />
+
+        <!-- WALL LAMP MATERIAL -->
+        <material id="wallLampApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.2 0.321569 0.172549 1.0"
+            specular="0.2 0.321569 0.172549 1.0"
+            shininess="5"
+            twosided="true" />
+
+        <!-- CEILING LAMP MATERIAL -->
+        <material id="ceilingLampApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.69 0.69 0.69 1.0"
+            specular="0.69 0.69 0.69 1.0"
+            shininess="5"
+            twosided="true" />
+
+        <!-- PORCH MATERIAL -->
+        <material id="porchApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.91 0.84 0.78 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="porchTex"
+            texlength_s="6"
+            texlength_t="16"
+            twosided="true" />
+
+        <!-- DECK MATERIAL -->
+        <material id="deckApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.91 0.84 0.78 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="deckTex"
+            texlength_s="0.3"
+            texlength_t="0.3"
+            twosided="true" />
+
+        <!-- FIREPLACE MATERIAL -->
+        <material id="fireplaceApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0 0 0 1.0"
+            specular="0.467 0.467 0.467 0"
+            shininess="5"
+            twosided="false"
+        />
+        
+        <!-- FIREPLACE FIRE VIDEO MATERIAL -->
+        <material id="fireVideoApp"
+            emissive="0 0 0 1"
+            color="1 1 1 1"
+            specular="0.1 0.1 0.1 1"
+            shininess="3"
+            twosided="false"
+            textureref="fireVideoTex"
+            texlength_s="2.1"
+            texlength_t="1.5" />
+
+        <!-- VINYL MUSIC VIDEO MATERIAL -->
+        <material id="musicVideoApp"
+            emissive="0 0 0 1"
+            color="1 1 1 1"
+            specular="0.1 0.1 0.1 1"
+            shininess="3"
+            twosided="false"
+            textureref="musicVideoTex"
+            texlength_s="0"
+            texlength_t="0" />
+
+        <!-- DOOR FRAME MATERIAL -->
+        <material id="doorApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.44314 0.21961 0.113725 1"
+            specular="0.46667 0.46667 0.46667 0"
+            shininess="1"
+            twosided="false" />
+            
+        <!-- DOOR MATERIAL -->
+        <material id="doorTexApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.44314 0.21961 0.113725 1"
+            specular="0.46667 0.46667 0.46667 0"
+            shininess="1"
+            twosided="false"
+            textureref="doorTex"
+            texlength_s="0.6"
+            texlength_t="2.2" />
+
+        <!-- DOOR KNOB MATERIAL -->
+        <material id="doorKnobApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.83137 0.68627 0.215686 1"
+            specular="0.46667 0.46667 0.46667 0"
+            shininess="10"/>
+        
+        <!-- BOOK COVER MATERIALS -->
         <material id="bookCover1App"
             emissive="0 0 0 1"
             color="0.898 0.451 0.451 1"
@@ -958,12 +886,13 @@
             shininess="2"
             twosided="false" />
 
-        <material id="pineApp" 
+        <!-- TREE MATERIAL -->
+        <material id="treeApp" 
             emissive="0.0 0.0 0.0 1" 
             color="0.4 0.4 0.4 1.0"  
             specular="0 0 0 0" 
             shininess="0" 
-            textureref="pineTex" 
+            textureref="treeTex" 
             texlength_s="1" 
             texlength_t="1"
             wireframe = "false" />
@@ -975,12 +904,6 @@
 
     <!-- "rootid" identifies the root node -->   
     <graph rootid="scene">
-        <!-- there must be one or more "node" blocks composed of: -->
-
-        <!--     node identification (required) -->
-        <!--     local geometric transformations (required) -->
-        <!--     material (optional) -->
-        <!--     descendant (required) -->
         <node id="scene">
             <children>  
                 <noderef id="firstFloorWalls" />  
@@ -988,9 +911,7 @@
                 <noderef id="stairs" /> 
 				<noderef id="table" /> 
 				<noderef id="carpet" /> 
-                <noderef id="rug" /> 
 				<noderef id="chairs" /> 
-				<noderef id="cake" />
 				<noderef id="lampTable" />
                 <noderef id="lampSofas" />
                 <noderef id="sofa1" />
@@ -2223,7 +2144,7 @@
                 <scale value3="0.3 2.5 0.8"/>
             </transforms>
 
-            <materialref id="flowerPetalsPurpleApp"/>
+            <materialref id="flowerPetalsBlueApp"/>
 
             <children>
                 <primitive>
@@ -2313,7 +2234,7 @@
                 <scale value3="0.3 2.5 2.5"/>
             </transforms>
 
-            <materialref id="flowerPetalsPurpleApp"/> 
+            <materialref id="flowerPetalsBlueApp"/> 
 
             <children>             
                 <primitive>
@@ -2659,7 +2580,6 @@
         </node>
 
         <!-- BOOKS -->
-
         <node id="bookCovers" castshadows="true" receiveshadows="true">
             <transforms>
                 <translate value3="-0.99 0.231 -3.85"/>
@@ -3386,6 +3306,7 @@
             </children>
         </node>
 
+        <!-- KITE -->
         <node id="kite1">
             <transforms>
                 <translate value3="-7.8 12 -18"/>
@@ -3464,6 +3385,7 @@
             </children>
         </node>
 
+        <!-- VINYL -->
         <node id="vinylPlayerHolderBoxSide">
             <children>
                 <primitive>
@@ -4456,7 +4378,8 @@
             </children>
         </node>
 
-         <node id="chimneyRight">
+        <!-- CHIMNEY -->
+        <node id="chimneyRight">
             <transforms>
                 <translate value3="0 0 -1.3"/>
             </transforms>
@@ -5094,7 +5017,7 @@
                 <rotate value3="-0.5 -0.6 -0.6"/>
                 <scale value3="0.4 0.4 0.4"/>
             </transforms>
-            <materialref id="pillow4App"/>
+            <materialref id="pillow3App"/>
 
             <children>
                 <noderef id="pillow"/>
@@ -5224,6 +5147,7 @@
             </children>
         </node>
 
+        <!-- OUTSIDE DOOR LAMP -->
         <node id="outsideDoorLamp">
             <transforms>
                 <translate value3="8.8 5 0" />
@@ -5287,13 +5211,12 @@
 
 
         <!-- TREES -->
-
         <node id="treeSeg1">
 			<transforms>
 				<translate value3="0 2.7 0" />
             </transforms> 
 			
-			<materialref id="pineApp" />
+			<materialref id="treeApp" />
 			
             <children>             
                 <primitive>
@@ -5307,7 +5230,7 @@
 				<translate value3="0 4.6 0" />
             </transforms> 
 			
-			<materialref id="pineApp" />
+			<materialref id="treeApp" />
 			
             <children>
                 <primitive >
@@ -5321,7 +5244,7 @@
 				<translate value3="0 6.6 0" />
             </transforms> 
 			
-			<materialref id="pineApp" />
+			<materialref id="treeApp" />
 			
             <children>             
                 <primitive>
@@ -5560,6 +5483,5 @@
             </children>
         </node>
         
-
     </graph>
 </yaf> 
