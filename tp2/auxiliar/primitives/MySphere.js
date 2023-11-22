@@ -20,10 +20,8 @@ class MySphere{
      */
     constructor(sphereData) {
         this.radius = sphereData.radius
-        console.log(sphereData)
         this.sphere = new THREE.SphereGeometry(this.radius, sphereData.slices, sphereData.stacks, sphereData.phistart, 
                         sphereData.philength, sphereData.thetastart, sphereData.thetalength);
-        console.log(this.sphere)
     }
 }
 
