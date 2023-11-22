@@ -6,13 +6,21 @@ import { MySphere } from "./primitives/MySphere.js";
 import { MyTriangle } from "./primitives/MyTriangle.js";
 import { MyNurbs } from "./primitives/MyNurbs.js";
 import { MyPolygon } from './primitives/MyPolygon.js';
+import { MyMaterial } from './MyMaterial.js';
 
 
 class MyPrimitiveVisitor {
 
-    constructor(node, tranformations, material, castShadow, receiveShadow) {
+    /**
+     * Constructor for MyPrimitiveVisitor class.
+     *
+     * @param {Object} node - The node containing information about the primitive.
+     * @param {MyMaterial} material - The material that needs to be added to the mesh.
+     * @param {boolean} castShadow - Indicates whether the primitive casts shadows.
+     * @param {boolean} receiveShadow - Indicates whether the primitive receives shadows.
+     */
+    constructor(node, material, castShadow, receiveShadow) {
         this.data = node.representations[0];
-        this.tranformations = tranformations;
         this.material = material
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
@@ -61,9 +69,10 @@ class MyPrimitiveVisitor {
             }
         }
         this.mesh = new THREE.Mesh(geometry, material.material);
-        this.mesh.castShadow = this.castShadow
-        this.mesh.receiveShadow = this.receiveShadow
+        this.mesh.castShadow = this.castShadow;
+        this.mesh.receiveShadow = this.receiveShadow;
 
+        // in these cases the mesh position needs to be corrected to the center, because before the position was of the first corner of the geometry
         if(node.subtype === "rectangle"){
             this.mesh.position.x = (node.representations[0].xy1[0] + node.representations[0].xy2[0])/2;
             this.mesh.position.y = (node.representations[0].xy1[1] + node.representations[0].xy2[1])/2;

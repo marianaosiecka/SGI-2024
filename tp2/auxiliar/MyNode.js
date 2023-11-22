@@ -56,7 +56,7 @@ class MyNode {
 
 
             else if(child.type === "primitive"){
-                let primitive = new MyPrimitiveVisitor(child, child.transformations, childMaterial, this.castShadows, this.receiveShadows)
+                let primitive = new MyPrimitiveVisitor(child, childMaterial, this.castShadows, this.receiveShadows)
                 childNode = primitive.mesh;
                 this.group.add(childNode)
             }

@@ -3,9 +3,10 @@ import * as THREE from 'three';
 class MyBox {
 
     /**
-     * 
-     * 
-     */
+     * Constructor for MyBox class.
+     *
+     * @param {Object} boxData - The box properties data.
+    */
     constructor(boxData) {
         this.boxWidth = Math.abs(boxData.xyz1[0] - boxData.xyz2[0]);
         this.boxHeight = Math.abs(boxData.xyz1[1] - boxData.xyz2[1]);
