@@ -51,7 +51,7 @@ class MyMaterial {
 
         if(this.transparent){
             this.material.transparent = true;
-            this.material.opacity = 0.3
+            this.material.opacity = materialData.color.a;
         }
     }
 

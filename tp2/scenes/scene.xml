@@ -7,7 +7,7 @@
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="outsideDoor">
+    <cameras initial="chimneyAndKite">
         <perspective id="perspective1"
             angle="1.309"
             near="0.1"
@@ -404,7 +404,7 @@
 
         <material id="glassApp"
             emissive="0.7 0.7 0.7 1.0"
-            color="0.95 0.94 0.9 0.1"
+            color="0.95 0.94 0.9 0.3"
             specular="0.95 0.94 0.9 1.0"
             shininess="50"
             twosided="true" />
@@ -627,6 +627,13 @@
             color="1 1 1 1.0"
             specular="1.0 1.0 1.0 1.0"
             shininess="1"
+            twosided="true" /> 
+
+        <material id="chimneySmokeApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.90196 0.88235 0.88235 0.6"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="0"
             twosided="true" /> 
         
         <material id="vinylCoverApp"
@@ -4440,19 +4447,40 @@
             </children>
         </node>
 
-<!--
         <node id="chimneySmoke">
             <transforms>
-                <translate value3="0 3 0"/>
+                <translate value3="-0.5 4 0.75" />
+                <rotate value3="0 3.1416 1.5708" />
+                <scale value3="1 0.05 1" />
             </transforms>
-
+            <materialref id="chimneySmokeApp" />
             <children>
                 <primitive>
-                    <cylinder base="0.2" top="0.05" height="4" slices="20" stacks="20" thetastart="0" thetalength="3.1416"/>
+                    <nurbs degree_u="3" degree_v="3" parts_u="24" parts_v="24">
+                        <controlpoint xx="-1" yy="0" zz="0" />
+                        <controlpoint xx="-1" yy="1" zz="0" />
+                        <controlpoint xx="-1" yy="2" zz="0" />
+                        <controlpoint xx="-1" yy="3" zz="0" />
+
+                        <controlpoint xx="0" yy="0" zz="0" />
+                        <controlpoint xx="0" yy="1" zz="2" />
+                        <controlpoint xx="0" yy="2" zz="2" />
+                        <controlpoint xx="0" yy="3" zz="0" />
+
+                        <controlpoint xx="1" yy="0" zz="0" />
+                        <controlpoint xx="1" yy="1" zz="-2" />
+                        <controlpoint xx="1" yy="2" zz="-2" />
+                        <controlpoint xx="1" yy="3" zz="0" />
+
+                        <controlpoint xx="3.5" yy="0" zz="0" />
+                        <controlpoint xx="3.5" yy="1" zz="0" />
+                        <controlpoint xx="3.5" yy="2" zz="0" />
+                        <controlpoint xx="3.5" yy="3" zz="0" />
+                    </nurbs>
                 </primitive>
             </children>
         </node>
--->
+
         <node id="chimney">
             <transforms>
                 <translate value3="0 7 -6.3"/>
@@ -4466,6 +4494,7 @@
                 <noderef id="chimneyLeft" />
                 <noderef id="chimneyRight" />
                 <noderef id="chimneyBottom" />
+                <noderef id="chimneySmoke" />
                 <noderef id="kiteString1" />
                 <noderef id="kiteString2" />
                 <noderef id="kiteString3" />

@@ -29,7 +29,7 @@ class MyNode {
             if(materialIds != undefined)
                 childMaterial = materialIds.length == 0 ? this.material : materials.get(materialIds[0]);
             else childMaterial = this.material
-            console.log(this.material)
+
             if(child.type === "node"){
                 const childReceiveShadow = (this.receiveShadows || child.receiveShadows)
                 const childCastShadow = (this.castShadows || child.castShadows)
