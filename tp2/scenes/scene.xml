@@ -3,11 +3,11 @@
 
     <globals background="0 0 0 1" ambient="0.467 0.467 0.467 1" />
 
-    <fog color="0 0 0 1.0" near="30.0" far="350.0" />
+    <fog color="0.1 0.1 0.1 1.0" near="40.0" far="200.0" />
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
-    <cameras initial="outsidePerspective1">
+    <cameras initial="outsideWindow">
         <perspective id="perspective1"
             angle="75"
             near="0.1"
@@ -77,6 +77,13 @@
             far="1000"
             location="21 3.5 0"
             target="6 3.5 0" />
+
+        <perspective id="outsideWindow"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="-12 3.5 0"
+            target="-8 3.5 0" />
 
         <orthogonal id="orthoLeft"
             near="-10"
@@ -625,7 +632,7 @@
 
         <material id="grassApp"
             emissive="0.0 0.0 0.0 0.0"
-            color="0.251 0.302 0.247 1.0"
+            color="0.3255 0.369 0.333 1.0"
             specular="0 0 0 0.0"
             shininess="0"
             textureref="grassTex"
@@ -734,13 +741,23 @@
             specular="0.46667 0.46667 0.46667 0"
             shininess="1"
             twosided="false" />
+            
+        <material id="doorTexApp"
+            emissive="0.0 0.0 0.0 1"
+            color="0.44314 0.21961 0.113725 1"
+            specular="0.46667 0.46667 0.46667 0"
+            shininess="1"
+            twosided="false"
+            textureref="tableTex"
+            texlength_s="1.8"
+            texlength_t="4.185" />
 
         <material id="doorKnobApp"
             emissive="0.0 0.0 0.0 1"
             color="0.83137 0.68627 0.215686 1"
             specular="0.46667 0.46667 0.46667 0"
             shininess="10"
-            twosided="true" />
+            twosided="false" />
 
 
         <material id="vinylCoverColor1App"
@@ -848,47 +865,47 @@
             shininess="2"
             twosided="false" />
         
-            <material id="bookCover1App"
-                emissive="0 0 0 1"
-                color="0.898 0.451 0.451 1"
-                specular="0.898 0.451 0.451 0"
-                shininess="2"
-                twosided="false" />
-  
-            <material id="bookCover2App"
-                emissive="0 0 0 1"
-                color="1 0.843 0 1"
-                specular="1 0.843 0 0"
-                shininess="2"
-                twosided="false" />
-            
-            <material id="bookCover3App"
-                emissive="0 0 0 1"
-                color="1 0.627 0.478 1"
-                specular="1 0.627 0.478 0"
-                shininess="2"
-                twosided="false" />
-            
-            <material id="bookCover4App"
-                emissive="0 0 0 1"
-                color="0.522 0.631 0.8 1"
-                specular="0.522 0.631 0.8 0"
-                shininess="2"
-                twosided="false" />
-            
-            <material id="bookCover5App"
-                emissive="0 0 0 1"
-                color="0.682 0.851 0.878 1"
-                specular="0.682 0.851 0.878 0"
-                shininess="2"
-                twosided="false" />
-            
-            <material id="bookCover6App"
-                emissive="0 0 0 1"
-                color="1 0.718 0.301 1"
-                specular="1 0.718 0.301 0"
-                shininess="2"
-                twosided="false" />
+        <material id="bookCover1App"
+            emissive="0 0 0 1"
+            color="0.898 0.451 0.451 1"
+            specular="0.898 0.451 0.451 0"
+            shininess="2"
+            twosided="false" />
+
+        <material id="bookCover2App"
+            emissive="0 0 0 1"
+            color="1 0.843 0 1"
+            specular="1 0.843 0 0"
+            shininess="2"
+            twosided="false" />
+        
+        <material id="bookCover3App"
+            emissive="0 0 0 1"
+            color="1 0.627 0.478 1"
+            specular="1 0.627 0.478 0"
+            shininess="2"
+            twosided="false" />
+        
+        <material id="bookCover4App"
+            emissive="0 0 0 1"
+            color="0.522 0.631 0.8 1"
+            specular="0.522 0.631 0.8 0"
+            shininess="2"
+            twosided="false" />
+        
+        <material id="bookCover5App"
+            emissive="0 0 0 1"
+            color="0.682 0.851 0.878 1"
+            specular="0.682 0.851 0.878 0"
+            shininess="2"
+            twosided="false" />
+        
+        <material id="bookCover6App"
+            emissive="0 0 0 1"
+            color="1 0.718 0.301 1"
+            specular="1 0.718 0.301 0"
+            shininess="2"
+            twosided="false" />
 
 
 
@@ -1152,7 +1169,7 @@
         <!-- EXTERIOR WALLS -->
         <node id="extLeftWall">
             <transforms>
-				<translate value3="-7.5 0.0 8.01" />
+				<translate value3="-7.5 -0.07 8.01" />
             </transforms> 
 			
             <children>             
@@ -1164,7 +1181,7 @@
         
         <node id="extRightWall">
             <transforms>
-				<translate value3="7.5 0 -8.01" />
+				<translate value3="7.5 -0.07 -8.01" />
 				<rotate value3="0.0 3.1416 0.0" />
             </transforms> 
 			
@@ -1177,7 +1194,7 @@
 
         <node id="extBackWallLeft">		
             <transforms>
-                <translate value3="9.42 0 0" />
+                <translate value3="9.61 0 0" />
             </transforms>
             <children>             
                 <noderef id="extBackWallRight" />
@@ -1187,7 +1204,7 @@
         <node id="extBackWallRight">
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="6.6 6" />
+                    <rectangle xy1="0 0" xy2="6.4 6" />
                 </primitive>
             </children> 
         </node>
@@ -1215,14 +1232,14 @@
 
             <children>             
                 <primitive>
-                    <rectangle xy1="0 0" xy2="2.85 2" />
+                    <rectangle xy1="-0.4 0" xy2="3.2 2" />
                 </primitive>
             </children> 
         </node>
 
         <node id="extBackWall">
             <transforms>
-				<translate value3="-7.5 0.0 -8" />
+				<translate value3="-7.5 -0.07 -8" />
 				<rotate value3="0.0 -1.5708 0.0" />
             </transforms> 
 			
@@ -4418,12 +4435,19 @@
             <materialref id="doorApp" />
 
             <children>
-                <primitive>
-                    <box xyz1="0 0 0" xyz2="0.267 4.185 1.8" />
-                </primitive>
+                <noderef id="doorBox"/>
                 <noderef id="doorTopRectangle" />
                 <noderef id="doorDownRectangle" />
                 <noderef id="doorKnob" />
+            </children>
+        </node>
+
+        <node id="doorBox">
+            <materialref id="doorTexApp"/>
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="0.267 4.185 1.8" />
+                </primitive>
             </children>
         </node>
 
@@ -4750,6 +4774,7 @@
         <node id="pillowSide1">
             <children>
                 <noderef id="pillowSide"/>
+                <noderef id="pillowBorder" />
             </children>
         </node>
 
@@ -4760,6 +4785,7 @@
 
             <children>
                 <noderef id="pillowSide" />
+                <noderef id="pillowBorder" />
             </children>
         </node>
 
@@ -4769,7 +4795,7 @@
             </transforms>
 
             <children>
-                <noderef id="pillowSide" />
+                <noderef id="pillowBorder" />
             </children>
         </node>
 
@@ -4779,14 +4805,14 @@
             </transforms>
 
             <children>
-                <noderef id="pillowSide" />
+                <noderef id="pillowBorder" />
             </children>
         </node>
 
 
         <node id="pillowSide">
             <children>
-                <primitive>             
+                <primitive>
                     <nurbs degree_u="2" degree_v="2" parts_u="16" parts_v="16">
                         <controlpoint xx="-1" yy="-1" zz="0" />
                         <controlpoint xx="-0.6" yy="0" zz="0.5" />
@@ -4801,7 +4827,11 @@
                         <controlpoint xx="1" yy="1" zz="0" />
                     </nurbs>
                 </primitive>
+            </children>
+        </node>
 
+        <node id="pillowBorder">
+            <children>
                 <primitive>             
                     <nurbs degree_u="2" degree_v="2" parts_u="16" parts_v="16">
                         <controlpoint xx="-1" yy="1" zz="0" />
