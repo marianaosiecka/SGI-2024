@@ -17,6 +17,8 @@ class MyGuiInterface  {
         this.datgui =  new GUI();
         this.contents = null
         this.enableWireframe = false;
+        this.enableExterior = true;
+        this.enableAxis = false;
     }
 
     /**
@@ -77,9 +79,31 @@ class MyGuiInterface  {
         });
 
         // AXIS
-        this.datgui.add({ toggleAxis: () => this.toggleAxis() }, 'toggleAxis').name('Show Axis');
+        this.datgui.add(this, 'enableAxis')
+            .name('Show axis')
+            .onChange(() => {
+                if(this.enableAxis){
+                    this.contents.createAxis()
+                }
+                else {
+                    this.app.scene.remove(this.contents.axis);
+                    this.contents.axis = null;
+                }
+            });
 
-        
+        // EXTERIOR
+        this.datgui.add(this, 'enableExterior')
+            .name('Show exterior walls')
+            .onChange(() => {
+                if(this.enableExterior){
+                    this.showExteriorWalls()
+                }
+                else {
+                    this.hideExteriorWalls()
+                }
+            });
+
+
     }
 
     createLightsFolder(){
@@ -183,14 +207,26 @@ class MyGuiInterface  {
         }
     }
 
-    toggleAxis() {
-        if (!this.contents.axis) {
-            this.contents.createAxis()
-        } else {
-            this.app.scene.remove(this.contents.axis);
-            this.contents.axis = null;
-        }
+
+    showExteriorWalls(){
+        this.contents.nodes.get("exteriorWalls").group.visible = true
+        this.contents.nodes.get("porch").group.visible = true
+        this.contents.nodes.get("roof").group.visible = true
+        this.contents.nodes.get("ceiling").group.visible = true
+        this.contents.nodes.get("chimney").group.visible = true
+        this.contents.nodes.get("kite1").group.visible = true
     }
+
+    hideExteriorWalls(){
+        this.contents.nodes.get("exteriorWalls").group.visible = false
+        this.contents.nodes.get("porch").group.visible = false
+        this.contents.nodes.get("roof").group.visible = false
+        this.contents.nodes.get("ceiling").group.visible = false
+        this.contents.nodes.get("chimney").group.visible = false
+        this.contents.nodes.get("kite1").group.visible = false
+    }
+
+
 }
 
 export { MyGuiInterface };
