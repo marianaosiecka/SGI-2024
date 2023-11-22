@@ -2,22 +2,13 @@ import * as THREE from 'three';
 import { NURBSSurface } from 'three/addons/curves/NURBSSurface.js';
 import { ParametricGeometry } from 'three/addons/geometries/ParametricGeometry.js';
 
-
-/*
- this.descriptors["nurbs"] = [
-			{name: "degree_u", type: "integer"},
-			{name: "degree_v", type: "integer"},
-            {name: "parts_u", type: "integer"},
-            {name: "parts_v", type: "integer"},
-            {name: "distance", type: "float", required: false, default: 0.0}, // The distance at which to display this level of detail. Default 0.0.  
-		]
-*/
 class MyNurbs{
 
     /**
-     * 
-     * 
-     */
+     * Constructor for MyNurbs class.
+     *
+     * @param {Object} nurbsData - The nurbs properties data.
+    */
     constructor(nurbsData) {
         this.nurbsData = nurbsData;
         let dataControlPoints = nurbsData.controlpoints;
@@ -31,6 +22,10 @@ class MyNurbs{
         }
     }
 
+    /**
+     * Builds the curved surface.
+     *
+    */
     build() {
         const knots1 = [];
         const knots2 = [];

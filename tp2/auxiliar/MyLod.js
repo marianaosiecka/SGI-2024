@@ -4,25 +4,32 @@ import { MyNode } from "./MyNode.js";
 class MyLod {
 
     /**
-     * 
-     * @param {MyApp} app the application object
+     * Constructor for MyLod class.
+     *
+     * @param {Object} lodData - The LOD configuration data.
+     * @param {MyMaterial} parentMaterial - The material for the LOD.
+     * @param {Map} materials - A map of materials of the scene.
+     * @param {Map} lights - Map of lights.
+     * @param {Map} nodesMap - Map of nodes.
+     * @param {boolean} castShadows - Indicates whether the LOD casts shadows.
+     * @param {boolean} receiveShadows - Indicates whether the LOD receives shadows.
      */
     constructor(lodData, parentMaterial, materials, lights, nodesMap, castShadows, receiveShadows) {
         this.lod = new THREE.LOD();
         for(let lodRef of lodData.children){
             const lodNode = lodRef.node;
         
-            // MATERIAL
+            // material
             let lodMaterial = null;
             if(lodNode.materialIds != undefined)
                 lodMaterial = lodNode.materialIds.length == 0 ? parentMaterial : materials.get(lodNode.materialIds[0]);
             else lodMaterial = parentMaterial
 
-            // SHADOWS
+            // shadows
             const lodReceiveShadow = (receiveShadows || lodNode.castshadow)
             const lodCastShadow = (castShadows || lodNode.receiveshadow)
 
-            // NODE 
+            // node 
             let myLodNode = null;
             if(!nodesMap.has(lodNode.id)){
                 myLodNode = new MyNode(lodNode.id, lodMaterial, lodNode.transformations, lights, nodesMap, lodCastShadow, lodReceiveShadow)

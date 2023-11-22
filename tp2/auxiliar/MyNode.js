@@ -81,7 +81,7 @@ class MyNode {
 
             // primitive
             else if (child.type === "primitive") {
-                const myPrimitive = new MyPrimitiveVisitor(child, child.transformations, childMaterial, this.castShadows, this.receiveShadows)
+                const myPrimitive = new MyPrimitiveVisitor(child, childMaterial, this.castShadows, this.receiveShadows)
                 const primitive = myPrimitive.mesh;
                 this.group.add(primitive)
             }

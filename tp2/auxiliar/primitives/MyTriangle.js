@@ -1,6 +1,12 @@
 import * as THREE from 'three';
 
 class MyTriangle extends THREE.BufferGeometry {
+
+	/**
+     * Constructor for MyTriangle class.
+     *
+     * @param {Object} triangleData - The triangle properties data.
+    */
 	constructor(triangleData) {
 		super();
 
@@ -11,8 +17,12 @@ class MyTriangle extends THREE.BufferGeometry {
         this.initBuffers();
 	}
 
+	/**
+     * Initializes the buffers.
+     *
+    */
 	initBuffers() {
-        //CALCULATING NORMALS 
+        // calculating normals
         var vectorAx = this.p2.x - this.p1.x
 		var vectorAy = this.p2.y - this.p1.y
 		var vectorAz = this.p2.z - this.p1.z
@@ -28,7 +38,7 @@ class MyTriangle extends THREE.BufferGeometry {
 		var normal = new THREE.Vector3(crossProductX, crossProductY, crossProductZ)
         normal.normalize()
 
-        //TEXTURE COORDINATES
+        // texture coordinates
 		let a = this.p1.distanceTo(this.p2);
 		let b = this.p2.distanceTo(this.p3);
 		let c = this.p1.distanceTo(this.p3);
@@ -53,12 +63,6 @@ class MyTriangle extends THREE.BufferGeometry {
 			...normal.toArray(),
 		];
 
-/* 		const uvs = [
-			0, 0,
-			a , 0,
-			c * cos_ac, c * sin_ac
-		] */
-
 		const uvs = [
 			0, 0,
 			1 , 0,
@@ -66,8 +70,8 @@ class MyTriangle extends THREE.BufferGeometry {
 		]
 
         this.setIndex( indices );
-        this.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
-        this.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
+        this.setAttribute('position', new THREE.Float32BufferAttribute( vertices, 3 ));
+        this.setAttribute('normal', new THREE.Float32BufferAttribute( normals, 3 ));
         this.setAttribute('uv', new THREE.Float32BufferAttribute( uvs, 2));
 
 	}

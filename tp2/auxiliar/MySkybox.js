@@ -2,6 +2,11 @@ import * as THREE from 'three';
 
 class MySkybox extends THREE.Object3D{
 
+    /**
+     * Constructor for MySkybox class.
+     *
+     * @param {Object} skyboxData - The skybox properties data.
+    */
     constructor(skyboxData) {
         super();
 

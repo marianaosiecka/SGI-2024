@@ -3,8 +3,10 @@ import * as THREE from 'three';
 class MyTexture {
 
     /**
-     * 
-     * @param {MyApp} app the application object
+     * Constructor for MyTexture class.
+     *
+     * @param {Object} textureData - The texture properties data.
+     * @param {number} videoNum - The index of the video element if the texture is a video.
      */
     constructor(textureData, videoNum) {
         this.id = textureData.id;
@@ -12,7 +14,7 @@ class MyTexture {
         this.isVideo = textureData.isVideo;
         this.videoNum = videoNum
         
-        if(textureData.isVideo){
+        if(textureData.isVideo){    // the video num is a way of having more than one video in the scene
             let video = document.getElementsByClassName('video')[this.videoNum];
             this.texture = new THREE.VideoTexture(video);  
             this.texture.needsUpdate = true; 
@@ -82,6 +84,13 @@ class MyTexture {
         this.texture.wrapT = THREE.RepeatWrapping;
     }
 
+    /**
+     * Loads a mipmap for the texture.
+     *
+     * @param {THREE.Texture} parentTexture - The parent texture to which the mipmap will be added.
+     * @param {number} level - The mipmap level.
+     * @param {string} path - The file path for the mipmap image.
+     */
     loadMipmap(parentTexture, level, path)
     {
         // load texture. On loaded call the function to create the mipmap for the specified level 

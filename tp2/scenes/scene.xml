@@ -5281,7 +5281,7 @@
             </children> 
         </node>
 
-        <!-- atrás da casa -->
+        <!-- behind the house -->
         <node id="tree1">
             <transforms>
                 <translate value3="-40 0 0"/>
@@ -5382,7 +5382,7 @@
             </children>
         </node>
 
-        <!-- à esquerda da casa -->
+        <!-- on the left of the house -->
         <node id="tree11">
             <transforms>
                 <translate value3="-30 0 40"/>

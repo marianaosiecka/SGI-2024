@@ -1,35 +1,28 @@
 import * as THREE from 'three';
 
-class MyPointLight {
 
-    /*
-    this.descriptors["pointlight"] = [
-			{name: "id", type: "string" },
-			{name: "color", type: "rgba"},
-			{name: "position", type: "vector3"}, 
-            {name: "enabled", type: "boolean", required: false, default: true},
-			{name: "intensity", type: "float", required: false, default: 1.0},
-			{name: "distance", type: "float", required: false, default: 1000},
-			{name: "decay", type: "float", required: false, default: 2.0},
-			{name: "castshadow", type: "boolean", required: false, default: false},
-            {name: "shadowfar", type: "float", required: false, default: 500.0},
-            {name: "shadowmapsize", type: "integer", required: false, default: 512},		
-		]
+class MyPointLight {
+    
+    /**
+     * Constructor for MyPointLight class.
+     *
+     * @param {Object} lightData - The light properties data.
+     * @param {boolean} castShadow - Indicates whether the light must cast shadows.
     */
-    constructor(node, castShadow) {
-        let color = new THREE.Color(node.color.r, node.color.g, node.color.b);
-        this.light = new THREE.PointLight(color, node.intensity, node.distance, node.decay);
-        this.light.position.set(node.position[0], node.position[1], node.position[2]);
+    constructor(lightData, castShadow) {
+        let color = new THREE.Color(lightData.color.r, lightData.color.g, lightData.color.b);
+        this.light = new THREE.PointLight(color, lightData.intensity, lightData.distance, lightData.decay);
+        this.light.position.set(lightData.position[0], lightData.position[1], lightData.position[2]);
         if(castShadow){
             this.light.castShadow = true;
-            this.light.shadow.mapSize.width = node.shadowmapsize;
-            this.light.shadow.mapSize.height = node.shadowmapsize;
-            this.light.camera.far = node.shadowfar;
+            this.light.shadow.mapSize.width = lightData.shadowmapsize;
+            this.light.shadow.mapSize.height = lightData.shadowmapsize;
+            this.light.camera.far = lightData.shadowfar;
         }
-        if(!node.enabled)
+        if(!lightData.enabled)
             this.light.intensity = 0;
-        this.enabled = node.enabled;
-        this.intensity = node.intensity
+        this.enabled = lightData.enabled;
+        this.intensity = lightData.intensity
     }
 }
 

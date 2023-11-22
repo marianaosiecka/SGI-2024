@@ -1,5 +1,11 @@
 import * as THREE from 'three';
 
+/**
+ * Constructor for class MyPerspectiveCamera class.
+ *
+ * @param {Object} cameraData - The camera configuration data.
+ * @param {boolean} isActive - Indicates whether the camera is currently active.
+*/
 class MyPerspectiveCamera {
 
     constructor(cameraData, isActive) {

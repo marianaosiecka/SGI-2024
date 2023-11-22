@@ -43,6 +43,10 @@ class MyContents  {
     init(){
         
     }
+
+    /**
+     * creates the axis
+     */
     createAxis() {
         // create once 
         if (this.axis === null) {
@@ -59,16 +63,17 @@ class MyContents  {
      */
     onSceneLoaded(data) {
         this.visitData(data);
-        //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
-       // this.onAfterSceneLoadedAndBeforeRender(data);
+        console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
+        this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
     output(obj, indent = 0) {
         console.log("" + new Array(indent * 4).join(' ') + " - " + obj.type + " " + (obj.id !== undefined ? "'" + obj.id + "'" : ""))
     }
 
+
     visitData(data) {
-        // TEXTURES
+        // textures
         let videoNum = 0;
         for (var key in data.textures) {
             let textureData = data.textures[key]  
@@ -76,9 +81,8 @@ class MyContents  {
             this.textures.set(textureData.id, myTexture.texture)
             videoNum = myTexture.videoNum;
         }
-        console.log(this.textures)
 
-        // MATERIALS
+        // materials
         for (var key in data.materials) {
             let materialData = data.materials[key]
 
@@ -95,7 +99,7 @@ class MyContents  {
             this.materials.set(materialData.id, myMaterial)
         }
 
-        // CAMERAS
+        // cameras
         this.activeCameraId = data.activeCameraId;
         for (var key in data.cameras) {
             let cameraData = data.cameras[key]
@@ -108,7 +112,7 @@ class MyContents  {
             this.cameras.set(cameraData.id, camera)
         }
         
-        // SKYBOXES
+        // skyboxes
         for (var key in data.skyboxes) {
             let skyboxData = data.skyboxes[key];
             let skybox = new MySkybox(skyboxData);
@@ -116,7 +120,7 @@ class MyContents  {
             this.app.scene.add(skybox.skybox);
         }
 
-        // SCENE GLOBALS
+        // scene globals
         let dataOptions = data.options;
         let fogData = data.fog;
         const ambientLight = new THREE.AmbientLight(dataOptions.ambient, 0.5);
@@ -125,7 +129,7 @@ class MyContents  {
         this.app.scene.fog = new THREE.Fog(fogData.color, fogData.near, fogData.far);
 
         
-        // VISIT SCENE NODE CHILDREN
+        // visit scene node children
         let sceneNode = data.nodes.scene;
         let myScene = new MyNode(sceneNode.id, this.defaultMaterial, sceneNode.transformations, this.lights);
         myScene.visitChildren(sceneNode.children, this.materials);
@@ -138,7 +142,7 @@ class MyContents  {
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
-        //console.log(data)
+        console.log(data)
         // refer to descriptors in class MySceneData.js
         // to see the data structure for each item
         
