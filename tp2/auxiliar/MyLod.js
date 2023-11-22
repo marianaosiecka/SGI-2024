@@ -7,10 +7,10 @@ class MyLod {
      * Constructor for MyLod class.
      *
      * @param {Object} lodData - The LOD configuration data.
-     * @param {MyMaterial} parentMaterial - A basic material.
-     * @param {Map} materials - A map of materials referenced in the LOD configuration.
-     * @param {Array<THREE.Light>} lights - An array of lights affecting the LOD.
-     * @param {Map} nodesMap - A map containing information about nodes in the scene.
+     * @param {MyMaterial} parentMaterial - The material for the LOD.
+     * @param {Map} materials - A map of materials of the scene.
+     * @param {Map} lights - Map of lights.
+     * @param {Map} nodesMap - Map of nodes.
      * @param {boolean} castShadows - Indicates whether the LOD casts shadows.
      * @param {boolean} receiveShadows - Indicates whether the LOD receives shadows.
      */
