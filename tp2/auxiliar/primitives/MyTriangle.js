@@ -36,14 +36,12 @@ class MyTriangle extends THREE.BufferGeometry {
 
 		let cos_ac = (a * a - b * b + c * c) / (2 * a * c)
 		let sin_ac = Math.sqrt(1 - cos_ac * cos_ac)
-        console.log(this.p1)
 		const vertices = new Float32Array( [
             ...this.p1.toArray(),	//0
 			...this.p2.toArray(),	//1
 			...this.p3.toArray(),	//2
 
         ] );
-        console.log(vertices)
 		
 		const indices = [
             0, 1, 2

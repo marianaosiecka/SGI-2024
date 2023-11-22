@@ -3,7 +3,7 @@
 
     <globals background="0 0 0 1" ambient="0.467 0.467 0.467 1" />
 
-    <fog color="0.1 0.1 0.1 1.0" near="40.0" far="200.0" />
+    <fog color="0.2196 0.196 0.271 1.0" near="40.0" far="160.0" />
 
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
 
@@ -91,6 +91,13 @@
             far="1000"
             location="-1 2 -3"
             target="-2.8 1.3 -5.3" />
+
+        <perspective id="sofa2"
+            angle="1.309"
+            near="0.1"
+            far="1000"
+            location="1 2 -3"
+            target="2.8 1.3 -5.3/>" />
         
         <perspective id="window"
             angle="1.309"
@@ -221,6 +228,8 @@
         <texture id="musicVideoTex" filepath="scenes/textures/videos/music.mp4" isVideo="true" />
 
         <texture id="smokeTex" filepath="scenes/textures/smoke.png"/>
+
+        <texture id="pineTex" filepath="scenes/textures/pine.png" />
 
     </textures>
 
@@ -945,13 +954,20 @@
         <material id="bookCover6App"
             emissive="0 0 0 1"
             color="1 0.718 0.301 1"
-            specular="1 0.718 0.301 0"
+            specular="0 0 0 0"
             shininess="2"
             twosided="false" />
 
+        <material id="pineApp" 
+            emissive="0.0 0.0 0.0 1" 
+            color="0.4 0.4 0.4 1.0"  
+            specular="0 0 0 0" 
+            shininess="0" 
+            textureref="pineTex" 
+            texlength_s="1" 
+            texlength_t="1"
+            wireframe = "false" />
 
-
-        
     </materials>
 
 
@@ -1009,12 +1025,34 @@
                 <noderef id="doorFrame"/>            
                 <noderef id="window" />
                 <noderef id="pillow1" />
+                <noderef id="pillow2" />
+                <noderef id="pillow3" />
                 <noderef id="kite1" />
                 <noderef id="outsideDoorLamp" />
                 <noderef id="roof" />
                 <noderef id="vinylCoversColor"/>
                 <noderef id="bookCovers"/>
                 <noderef id="chimney"/>
+                <noderef id="tree1"/>
+                <noderef id="tree2"/>
+                <noderef id="tree3"/>
+                <noderef id="tree4"/>
+                <noderef id="tree5"/>
+                <noderef id="tree6"/>
+                <noderef id="tree7"/>
+                <noderef id="tree8"/>
+                <noderef id="tree9"/>
+                <noderef id="tree10"/>
+                <noderef id="tree11"/>
+                <noderef id="tree12"/>
+                <noderef id="tree13"/>
+                <noderef id="tree14"/>
+                <noderef id="tree15"/>
+                <noderef id="tree16"/>
+                <noderef id="tree17"/>
+                <noderef id="tree18"/>
+                <noderef id="tree19"/>
+                <noderef id="tree20"/>
 
                 <pointlight id="outsideTopLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -3069,7 +3107,7 @@
 
             <children>
                 <primitive>
-                    <sphere radius="0.8" slices="50" stacks="50" thetastart="1.5708" thetalength="6.2832" phistart="0.0" philength="6.2832"/>
+                    <sphere radius="0.8" slices="50" stacks="50" thetastart="1.5708" />
                 </primitive>
             </children>
         </node>
@@ -5037,6 +5075,32 @@
             </children>
         </node>
 
+        <node id="pillow2" castshadows="true">
+            <transforms>
+                <translate value3="2.55 1.37 -5.5"/>
+                <rotate value3="-0.5 -1 -0.3"/>
+                <scale value3="0.4 0.4 0.4"/>
+            </transforms>
+            <materialref id="pillow2App"/>
+
+            <children>
+                <noderef id="pillow"/>
+            </children>
+        </node>
+
+        <node id="pillow3" castshadows="true">
+            <transforms>
+                <translate value3="2.77 1.34 -4.9"/>
+                <rotate value3="-0.5 -0.6 -0.6"/>
+                <scale value3="0.4 0.4 0.4"/>
+            </transforms>
+            <materialref id="pillow4App"/>
+
+            <children>
+                <noderef id="pillow"/>
+            </children>
+        </node>
+
         <lod id="pillowLod">
             <noderef id="pillowLod1" mindist="0"/>
             <noderef id="pillowLod2" mindist="10"/>
@@ -5220,6 +5284,282 @@
                 </primitive>
             </children>
         </node>
+
+
+        <!-- TREES -->
+
+        <node id="treeSeg1">
+			<transforms>
+				<translate value3="0 2.7 0" />
+            </transforms> 
+			
+			<materialref id="pineApp" />
+			
+            <children>             
+                <primitive>
+                    <cylinder base="2" top="1" height="1.9" slices="32" stacks="32" capsclose="true"/>
+                </primitive>
+            </children> 
+        </node>
+		
+		<node id="treeSeg2">
+			<transforms>
+				<translate value3="0 4.6 0" />
+            </transforms> 
+			
+			<materialref id="pineApp" />
+			
+            <children>
+                <primitive >
+                    <cylinder base="1.5" top="0.75" height="2" slices="32" stacks="32"  capsclose="true"/>
+                </primitive>
+            </children> 
+        </node>
+		
+		<node id="treeSeg3">
+			<transforms>
+				<translate value3="0 6.6 0" />
+            </transforms> 
+			
+			<materialref id="pineApp" />
+			
+            <children>             
+                <primitive>
+                    <cylinder base="0.9" top="0" height="2" slices="32" stacks="32" capsclose="true"/>
+                </primitive>
+
+            </children> 
+        </node>
+		
+		<node id="tree">
+			<transforms>
+				<translate value3="0 -1.1 0" />
+            </transforms> 
+			
+            <children>             
+				<noderef id="trunk" />
+				<noderef id="treeSeg1" />
+				<noderef id="treeSeg2" />
+				<noderef id="treeSeg3" />
+            </children> 
+        </node>
+
+        <node id="trunk">
+			<transforms>
+				<translate value3="0 1.7 0" />
+			</transforms> 
+			
+			<materialref id="tableApp" />
+			
+            <children>             
+                <primitive>
+                    <cylinder base="0.4" top="0.4" height="3" slices="32" stacks="32" capsclose="true"/>
+                </primitive>
+            </children> 
+        </node>
+
+        <!-- atrás da casa -->
+        <node id="tree1">
+            <transforms>
+                <translate value3="-40 0 0"/>
+                <scale value3="1 1.7 1"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+
+        <node id="tree2">
+            <transforms>
+                <translate value3="-50 0 -30"/>
+                <scale value3="1.2 2.0 1.0"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree3">
+            <transforms>
+                <translate value3="-45 0 15"/>
+                <scale value3="0.9 1.5 1.2"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree4">
+            <transforms>
+                <translate value3="-55 0 -5"/>
+                <scale value3="1.3 1.8 1.3"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree5">
+            <transforms>
+                <translate value3="-48 0 -45"/>
+                <scale value3="1.1 2.2 1.1"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree6">
+            <transforms>
+                <translate value3="-53 0 25"/>
+                <scale value3="0.8 1.6 0.8"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree7">
+            <transforms>
+                <translate value3="-55 0 -50"/>
+                <scale value3="1.5 1.9 1.5"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree8">
+            <transforms>
+                <translate value3="-40 0 35"/>
+                <scale value3="0.9 1.7 1.0"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree9">
+            <transforms>
+                <translate value3="-52 0 -15"/>
+                <scale value3="1.2 2.0 1.2"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree10">
+            <transforms>
+                <translate value3="-45 0 10"/>
+                <scale value3="1.0 1.5 1.0"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+
+        <!-- à esquerda da casa -->
+        <node id="tree11">
+            <transforms>
+                <translate value3="-30 0 40"/>
+                <scale value3="1.2 1.8 1.2"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree12">
+            <transforms>
+                <translate value3="-20 0 50"/>
+                <scale value3="1.0 2.2 1.0"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree13">
+            <transforms>
+                <translate value3="0 0 45"/>
+                <scale value3="1.3 1.5 1.3"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree14">
+            <transforms>
+                <translate value3="10 0 37"/>
+                <scale value3="0.9 2.0 0.9"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree15">
+            <transforms>
+                <translate value3="25 0 45"/>
+                <scale value3="1.1 1.6 1.1"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree16">
+            <transforms>
+                <translate value3="35 0 38"/>
+                <scale value3="0.8 1.9 0.8"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree17">
+            <transforms>
+                <translate value3="40 0 50"/>
+                <scale value3="1.5 1.7 1.5"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree18">
+            <transforms>
+                <translate value3="50 0 37"/>
+                <scale value3="0.9 2.2 0.9"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree19">
+            <transforms>
+                <translate value3="55 0 40"/>
+                <scale value3="1.2 1.7 1.2"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+    
+        <node id="tree20">
+            <transforms>
+                <translate value3="45 0 45"/>
+                <scale value3="1.0 1.5 1.0"/>
+            </transforms>
+            <children>
+                <noderef id="tree"/>
+            </children>
+        </node>
+        
 
     </graph>
 </yaf> 

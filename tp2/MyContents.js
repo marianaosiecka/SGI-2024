@@ -40,12 +40,15 @@ class MyContents  {
     /**
      * initializes the contents
      */
-    init() {
+    init(){
+        
+    }
+    createAxis() {
         // create once 
         if (this.axis === null) {
             // create and attach the axis to the scene
-            this.axis = new MyAxis(this)
-            this.app.scene.add(this.axis)
+           this.axis = new MyAxis(this)
+           this.app.scene.add(this.axis)
         }
 
     }
