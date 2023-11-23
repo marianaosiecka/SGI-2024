@@ -8,7 +8,7 @@
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
  
     <!-- CAMERAS -->
-    <cameras initial="vinyl">
+    <cameras initial="kiteAndChimney">
         <!-- OUTSIDE CAMERAS -->
         <perspective id="outsidePerspective1"
             angle="1.309"

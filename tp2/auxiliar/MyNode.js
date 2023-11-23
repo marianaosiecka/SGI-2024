@@ -16,7 +16,7 @@ class MyNode {
      * @param {boolean} castShadows - Indicates whether the node casts shadows.
      * @param {boolean} receiveShadows - Indicates whether the node receives shadows.
      */
-    constructor(id, material, transformations, lights, nodesMap = new Map(), castShadows = false, receiveShadows = false) {
+    constructor(id, material, transformations, lights, nodesMap = new Map(), representationsMap = new Map(), castShadows = false, receiveShadows = false) {
         this.id = id;
         this.material = material;
 
@@ -25,6 +25,7 @@ class MyNode {
 
         this.lights = lights;
         this.nodesMap = nodesMap;
+        this.representationsMap = representationsMap;
         this.castShadows = castShadows;
         this.receiveShadows = receiveShadows;
 
@@ -54,7 +55,7 @@ class MyNode {
                 const childReceiveShadow = (this.receiveShadows || child.receiveShadows)
                 const childCastShadow = (this.castShadows || child.castShadows)
 
-                let childNode = new MyNode(child.id, childMaterial, child.transformations, this.lights, this.nodesMap, childCastShadow, childReceiveShadow)
+                let childNode = new MyNode(child.id, childMaterial, child.transformations, this.lights, this.nodesMap, this.representationsMap, childCastShadow, childReceiveShadow)
 
                 // if the node wasn't already created, visit its children
                 if (!this.nodesMap.has(child.id)) {
@@ -74,7 +75,7 @@ class MyNode {
 
             // lod
             else if (child.type === "lod") {
-                const myLod = new MyLod(child, this.material, materials, this.lights, this.nodesMap, this.castShadows, this.receiveShadows);
+                const myLod = new MyLod(child, this.material, materials, this.lights, this.nodesMap, this.representationsMap, this.castShadows, this.receiveShadows);
                 const lod = myLod.lod;
                 this.group.add(lod);
             }
@@ -84,6 +85,7 @@ class MyNode {
                 const myPrimitive = new MyPrimitiveVisitor(child, childMaterial, this.castShadows, this.receiveShadows)
                 const primitive = myPrimitive.mesh;
                 this.group.add(primitive)
+                this.representationsMap.set(this.id, child.representations[0])
             }
 
             // spot light

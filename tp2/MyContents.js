@@ -138,6 +138,7 @@ class MyContents  {
         this.group = myScene.group;
 
         this.nodes = myScene.nodesMap;
+        this.representations = myScene.representationsMap;
 
     }
 

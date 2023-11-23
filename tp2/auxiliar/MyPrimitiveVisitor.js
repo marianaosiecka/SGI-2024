@@ -63,7 +63,7 @@ class MyPrimitiveVisitor {
             }
             case "polygon": {
                 let polygonGeometry = new MyPolygon(this.data);
-                geometry = polygonGeometry;
+                geometry = polygonGeometry.geometry;
                 material.material.vertexColors = true;
                 break;
             }

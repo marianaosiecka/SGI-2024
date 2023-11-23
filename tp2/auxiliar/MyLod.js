@@ -14,7 +14,7 @@ class MyLod {
      * @param {boolean} castShadows - Indicates whether the LOD casts shadows.
      * @param {boolean} receiveShadows - Indicates whether the LOD receives shadows.
      */
-    constructor(lodData, parentMaterial, materials, lights, nodesMap, castShadows, receiveShadows) {
+    constructor(lodData, parentMaterial, materials, lights, nodesMap, representationsMap, castShadows, receiveShadows) {
         this.lod = new THREE.LOD();
         for(let lodRef of lodData.children){
             const lodNode = lodRef.node;
@@ -30,7 +30,7 @@ class MyLod {
             const lodCastShadow = (castShadows || lodNode.receiveshadow)
 
             // node 
-            let myLodNode = new MyNode(lodNode.id, lodMaterial, lodNode.transformations, lights, nodesMap, lodCastShadow, lodReceiveShadow)
+            let myLodNode = new MyNode(lodNode.id, lodMaterial, lodNode.transformations, lights, nodesMap, representationsMap, lodCastShadow, lodReceiveShadow)
 
             if(!nodesMap.has(lodNode.id)){
                 myLodNode.visitChildren(lodNode.children, materials)

@@ -2,6 +2,8 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import * as THREE from 'three';
 import { MyApp } from './MyApp.js';
 import { MyContents } from './MyContents.js';
+import { MyPolygon } from './auxiliar/primitives/MyPolygon.js';
+
 
 /**
     This class customizes the gui interface for the app
@@ -85,8 +87,6 @@ class MyGuiInterface {
                 }
             });
 
-
-
         // WINDOW
         sceneFolder.add(this.contents.nodes.get('windowDown').group.position, 'y', 0, 1.3).name("Open window");
 
@@ -98,6 +98,9 @@ class MyGuiInterface {
 
         // OUTSIDE DOOR LAMP
         this.createMoveOutsideDoorLampButton(sceneFolder);
+
+        // KITE
+        this.createKiteFolder(sceneFolder);
 
         // MIP MAPS
         
@@ -236,6 +239,39 @@ class MyGuiInterface {
                 requestAnimationFrame(rotateVinyl);
             }
         }
+    }
+
+    createKiteFolder(sceneFolder) {
+        // KITE 
+        const kiteFolder = sceneFolder.addFolder('Kite');
+
+        // getting the representations of node with id = kite to create polygon instance
+        const kiteNode = this.contents.representations.get('kite');
+        // getting the buffer geometry of the polygon
+        const kiteGeometry = this.contents.nodes.get('kite').group.children[0].geometry;
+
+        // creating polygon class instance
+        const kitePolygon = new MyPolygon({
+            stacks: kiteNode.stacks,
+            slices: kiteNode.slices,
+            radius: kiteNode.radius,
+            color_c: kiteNode.color_c,
+            color_p: kiteNode.color_p
+        });
+
+        // creates a new colors array with a changed color_c value and updates the geometry's color attribute and request for update
+        kiteFolder.addColor(kiteNode, 'color_c').name("Color C").onChange(function(colorValue) {
+            kiteGeometry.attributes.color = new THREE.Float32BufferAttribute(kitePolygon.updateColor(colorValue, true), 3);
+            kiteGeometry.attributes.color.needsUpdate = true; 
+        });
+
+        // creates a new colors array with a changed color_p value and updates the geometry's color attribute and request for update
+        kiteFolder.addColor(kiteNode, 'color_p').name("Color P").onChange(function(colorValue) {
+            kiteGeometry.attributes.color = new THREE.Float32BufferAttribute(kitePolygon.updateColor(colorValue, false), 3);
+            kiteGeometry.attributes.color.needsUpdate = true; 
+        });
+
+        kiteFolder.close();
     }
 
     showExteriorWalls() {
