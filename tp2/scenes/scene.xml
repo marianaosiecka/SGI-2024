@@ -8,7 +8,7 @@
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
  
     <!-- CAMERAS -->
-    <cameras initial="insidePerspective1">
+    <cameras initial="vinyl">
         <!-- OUTSIDE CAMERAS -->
         <perspective id="outsidePerspective1"
             angle="1.309"
@@ -5197,13 +5197,13 @@
 
         <node id="outsideDoorString">
             <transforms>
-                <translate value3="0 0.61 0" />
+                <translate value3="0 0.7 0" />
             </transforms>
 
             <materialref id="photographyFrameApp" />
             <children>
                 <primitive>
-                    <cylinder base="0.02" top="0.02" height="0.7" stacks="30" slices="30" thetastart="0" thetalength="6.2832" />
+                    <cylinder base="0.02" top="0.02" height="0.9" stacks="30" slices="30" thetastart="0" thetalength="6.2832" />
                 </primitive>
             </children>
         </node>
