@@ -29,7 +29,8 @@ class MyDirectionalLight {
             this.light.intensity = 0;
         
         this.enabled = lightData.enabled;
-        this.intensity = lightData.intensity
+        this.intensity = lightData.intensity;
+        this.castShadow = castShadow;
 
     }
 }

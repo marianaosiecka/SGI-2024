@@ -20,6 +20,7 @@ class MyGuiInterface {
         this.contents = null
         this.enableWireframe = false;
         this.enableExterior = true;
+        this.enableCastShadows = true;
         this.enableAxis = false;
     }
 
@@ -165,8 +166,11 @@ class MyGuiInterface {
             // get the default enable value
             const defaultValue = light.enabled;
 
-            // add the light checkbox to the respective folder
-            lightTypesFolder[lightType].add(light, 'enabled').name(displayName).setValue(defaultValue)
+            // create a folder for each light
+            const lightFolder = lightTypesFolder[lightType].addFolder(displayName);
+
+            // add the enable checkbox to the respective folder
+            lightFolder.add(light, 'enabled').name("Enable light").setValue(defaultValue)
                 .onChange(() => {
                     if (light.enabled) {
                         light.light.intensity = light.intensity;
@@ -186,6 +190,20 @@ class MyGuiInterface {
                     }
 
                 });
+
+            // add the castShadow checkbox to the respective folder
+            lightFolder.add(light, 'castShadow')
+                .name('Cast shadows')
+                .onChange(() => {
+                    if (light.castShadow) {
+                        light.light.castShadow = true;
+                    } else {
+                        light.light.castShadow = false;
+                    }
+    
+                });
+
+            lightFolder.close();
         };
 
         function getLightType(light) {
@@ -199,6 +217,7 @@ class MyGuiInterface {
                 return 'directional lights';
             }
         }
+
         lightsFolder.close()
     }
 
