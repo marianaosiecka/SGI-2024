@@ -1,60 +1,35 @@
-# sgi-tp2-base
-The starting point of the second assignment of SGI.
+# SGI 2023/2024 - TP2
 
+## Group: T05G04
 
-# Getting started
+| Name             | Number    | E-Mail             |
+| ---------------- | --------- | ------------------ |
+| Mafalda Costa    | 202006417 | up202006417@up.pt  |
+| Mariana Carvalho | 202007620 | up202007620@up.pt  |
 
-Considering a code block (for instance class A.js), to load an xml file (in the defined structure) call:
+----
+## Project information
 
-    let reader = new MyFileReader(app, this, *this.onSceneLoaded*);
-    reader.open("<path to xml file>");	
+- Main strong points
+  - What can be controlled through the interface.
+  - The lighting.
+  - The video textures integrated in the scene - the fireplace and the vinyl song.
+  - The use of polygons as lods.
 
-The last argument in the MyFileReader object call is the name of the method that is to be called when the xml file is loaded and parsed.
+- Scene Description
+  - In a night setting, a house is surrounded by stars, trees, and fog. The house features a chimney with an adjustable-color kite attached. It also has a porch, a door, and an outdoor light swaying from a string, that can mimick the effect of wind.
+  - The door can be interactively opened, revealing the living room when you pass through it.
+  - On the left side of the living room, a table is set with two plates and two forks. Four chairs surround the table, and a lamp sits atop it. In the back left corner, there is a vase with two flowers. 
+  - In the center of the back wall, there is a window with a view to the outside. It can be opened and closed as wanted.
+  - On the right side, there is the sitting area with two armchairs and three pillows. There's a fireplace with the fire lit up. A newspaper sits on top of a coffee table. In the right back corner there is a vinyl on top of its holder. The cover of the vinyl is sitting on top of a small shelf. There is a button on the interface controls that when activated, the vinyl's rotation begins and music starts playing.
+  - The living room is decorated with paintings and photos and has several light sources illuminating the scene. The lights can be enabled and disabled in the interface controls as well as their property "cast shadows".
+  
+- **Link to the scene**: http://127.0.0.1:5593/tp2/
 
-Hence, In the same code block (for instance class A.js) add a function method with the following signature: 
+![Outside scene screenshot](screenshots/outsideView1.png)
+![Inside scene screenshot](screenshots/insideHouseView.png)
 
-    onSceneLoaded(data) {
-        // do something with the data object
-    }
-
-This method is called once the xml file is loaded and parsed successfully. This method single input argument, *data*, is an object containing the entire scene data object. This document can be traversed according to the rules defined in the section on MySceneData class
-
-
-
-# MyFileServer
-File MyFileServer.js contains the class responsible for the XML parser general functionality. Most of the parsing process is derived from descriptors defined in MySceneData.js. A small part is hardcoded.
-
-> <span style="color: red;">**DO NOT CHANGE MyFileServer.js FILE. IT WILL BE MODIFIED OR REPLACED DURING EVALUATION**</span>
-
-# MySceneData
-File MySceneData.js contains a class with metadata description and, in the end of parsing, contains the full set of objects loaded from the xml scene file. This class has several important object attributes:
-- options: contains the scene options, from the globals section
-- fog: contains the scene fog options, from the fog section
-- materials: associative array/list with the scene described materials
-- textures: associative array/list with the scene described textures
-- cameras: associative array/list with all the cameras in the scene
-- activeCameraId: the id of the active camera
-- nodes: associative array/list with all the scene nodes.
-- rootId: the id of the root node
-
-NOTES: 
-1. for each entity type, there are no repeated ids. For instance, if there are two nodes with the same id, the parser will complain and the scene will not be loaded.
-2. For each loaded entity, the parser will check if all the required attributes are present. If not, the parser will complain and the scene will not be loaded.
-3. For each entity, a descriptor defined in the constructor defines the attribute's name, type, requiredness, default value.
-4. **DO NOT CHANGE MySceneData.js IT WILL BE MODIFIED OR REPLACED DURING EVALUATION**
-
-## Custom attributes
-Use  the custom attribute in the data objects to add further attributes:
-
-
-    let obj = {
-        id: "some id",
-        type: "some type",
-        custom: {
-            attr1: "value1",
-            attr2: "value2"
-        } 
-    }
-
-in the previous object, attr1 and attr2 are custom attributes that were added to the object by the programmer (student), in light its program specific needs.
-
+----
+## Issues/Problems
+- Choosing textures and simulating certain types of materials.
+- Apply correctly the inherited properties to a object.
