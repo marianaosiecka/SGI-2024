@@ -29,7 +29,16 @@
 ![Outside scene screenshot](screenshots/outsideView1.png)
 ![Inside scene screenshot](screenshots/insideHouseView.png)
 
+- Features
+  - **Lods**: vase, flowers, pillows, sofa seat, and trees.
+  - **Mipmaps**: vinyl cover (sitting on top of the shelf), and newspaper.
+  - **Buffer geometry**: third lod of the pillows, outside lamp, and kite.
+  - **Bump textures**: grass, carpet, stone, and roof tiles.
+  - **Video textures**: fireplace fire, and vinyl song.
+
 ----
 ## Issues/Problems
+We had more difficulties at:
 - Choosing textures and simulating certain types of materials.
-- Apply correctly the inherited properties to a object.
+- Applying correctly the inherited properties to a object.
+- Applying the textures seamlessly to the roof and oustide walls of the house, due to them being made of different meshes.

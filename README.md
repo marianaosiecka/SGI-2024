@@ -24,8 +24,15 @@
 
 -----
 
-### [TP2 - ...](tp2)
+### [TP2 - Development of a 3D graphics application](tp2)
 
+  In a nighttime setting, there's a house surrounded by stars, trees, and fog. The house has a chimney with a kite attached, a porch, and an outdoor light that sways with the wind. 
+
+  The door opens and reveals a living room with a set table, chairs, and a vase of flowers. It also features a sitting area with armchairs, a lit fireplace, a coffee table with a newspaper, and a vinyl player with interactive controls for rotation and music. The living room is adorned with paintings and photos, and its lights can be controlled through the interface.
+
+  [Click here to read more.](tp2/README.md)
+
+  Link to the scene: http://127.0.0.1:5593/tp2/
 
 ----
 
