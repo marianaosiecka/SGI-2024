@@ -3854,14 +3854,14 @@
         </node>
 
         <!-- WALL LAMPS -->
-        <node id="wallLampFLeft">
+        <node id="wallLampBLeft">
             <transforms>
                 <translate value3="-7.47 4.8 4"/>
                 <rotate value3="3.1416 0 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="leftFrontWallLampSpotLight"
+                <spotlight id="leftBackWallLampSpotLight"
                     enabled="false" 
                     color="1 0.929 0.5294 1.0" 
                     intensity="6"
@@ -3878,14 +3878,14 @@
             </children>
         </node>
 
-        <node id="wallLampFRight">
+        <node id="wallLampBRight">
             <transforms>
                 <translate value3="-7.47 4.8 -4"/>
                 <rotate value3="3.1416 0 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="rightFrontWallLampSpotLight"
+                <spotlight id="rightBackWallLampSpotLight"
                     enabled="true" 
                     color="1 0.929 0.5294 1.0" 
                     intensity="5"
@@ -3902,14 +3902,14 @@
             </children>
         </node>
 
-        <node id="wallLampBRight">
+        <node id="wallLampFRight">
             <transforms>
                 <translate value3="7.47 4.8 4"/>
                 <rotate value3="3.1416 3.1416 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="rightBackWallLampSpotLight"
+                <spotlight id="rightFrontWallLampSpotLight"
                     enabled="false" 
                     color="1 0.929 0.5294 1.0" 
                     intensity="6"
@@ -3926,14 +3926,14 @@
             </children>
         </node>
 
-        <node id="wallLampBLeft">
+        <node id="wallLampFLeft">
             <transforms>
                 <translate value3="7.47 4.8 -4"/>
                 <rotate value3="3.1416 3.1416 0"/>
             </transforms>
             <children>
                 <noderef id="wallLamp"/>
-                <spotlight id="leftBackWallLampSpotLight"
+                <spotlight id="leftFrontWallLampSpotLight"
                     enabled="false" 
                     color="1 0.929 0.5294 1.0" 
                     intensity="6"
