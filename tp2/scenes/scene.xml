@@ -8,7 +8,7 @@
     <skybox size="120 120 120" center="0 -2 0" emissive="1.0 1.0 1.0 0.0" intensity="1.0" up="./scenes/textures/up.png" down="./scenes/textures/down.png" left="./scenes/textures/left.png" right="./scenes/textures/right.png" front="./scenes/textures/front.png" back="./scenes/textures/back.png"/>
  
     <!-- CAMERAS -->
-    <cameras initial="kiteAndChimney">
+    <cameras initial="outsidePerspective1">
         <!-- OUTSIDE CAMERAS -->
         <perspective id="outsidePerspective1"
             angle="1.309"
@@ -355,7 +355,7 @@
         <material id="vinylApp"
             emissive="0.0 0.0 0.0 1"
             color="0 0 0 1.0"
-            specular="0.5 0.5 0.5 1.0"
+            specular="0.4 0.4 0.4 1.0"
             shininess="15"
             twosided="false" /> 
 
@@ -953,26 +953,7 @@
                 <noderef id="vinylCoversColor"/>
                 <noderef id="bookCovers"/>
                 <noderef id="chimney"/>
-                <noderef id="tree1"/>
-                <noderef id="tree2"/>
-                <noderef id="tree3"/>
-                <noderef id="tree4"/>
-                <noderef id="tree5"/>
-                <noderef id="tree6"/>
-                <noderef id="tree7"/>
-                <noderef id="tree8"/>
-                <noderef id="tree9"/>
-                <noderef id="tree10"/>
-                <noderef id="tree11"/>
-                <noderef id="tree12"/>
-                <noderef id="tree13"/>
-                <noderef id="tree14"/>
-                <noderef id="tree15"/>
-                <noderef id="tree16"/>
-                <noderef id="tree17"/>
-                <noderef id="tree18"/>
-                <noderef id="tree19"/>
-                <noderef id="tree20"/>
+                <noderef id="trees"/>
 
                 <pointlight id="outsideTopLight" enabled="true" 
                     color="0.969 1.0 0.88 1" 
@@ -2387,7 +2368,7 @@
 
         <node id="seatSofaPillowLod2">
             <transforms>
-                <translate value3="-1 -1 -0.15"/>
+                <translate value3="-1 -1 0.2"/>
             </transforms>
             <children>
                 <primitive>
@@ -5210,6 +5191,31 @@
 
 
         <!-- TREES -->
+        <node id="trees">
+            <children>
+                <noderef id="tree1"/>
+                <noderef id="tree2"/>
+                <noderef id="tree3"/>
+                <noderef id="tree4"/>
+                <noderef id="tree5"/>
+                <noderef id="tree6"/>
+                <noderef id="tree7"/>
+                <noderef id="tree8"/>
+                <noderef id="tree9"/>
+                <noderef id="tree10"/>
+                <noderef id="tree11"/>
+                <noderef id="tree12"/>
+                <noderef id="tree13"/>
+                <noderef id="tree14"/>
+                <noderef id="tree15"/>
+                <noderef id="tree16"/>
+                <noderef id="tree17"/>
+                <noderef id="tree18"/>
+                <noderef id="tree19"/>
+                <noderef id="tree20"/>
+            </children>
+        </node>
+        
         <node id="treeSeg1">
 			<transforms>
 				<translate value3="0 2.7 0" />
@@ -5259,11 +5265,42 @@
             </transforms> 
 			
             <children>             
-				<noderef id="trunk" />
+				<lodref id="treeLod"/>
+            </children> 
+        </node>
+
+        <lod id="treeLod">
+            <noderef id="treeLod1" mindist="0"/>
+            <noderef id="treeLod2" mindist="40"/>
+        </lod>
+
+        <node id="treeLod1">
+            <children>
+                <noderef id="trunk" />
 				<noderef id="treeSeg1" />
 				<noderef id="treeSeg2" />
 				<noderef id="treeSeg3" />
-            </children> 
+            </children>
+        </node>
+
+        <node id="treeLod2">
+            <children>
+                <noderef id="trunk"/>
+                <noderef id="treeOneSeg"/>
+            </children>
+        </node>
+
+        <node id="treeOneSeg">
+            <transforms>
+                <translate value3="0 5 0"/>
+            </transforms>
+            <materialref id="treeApp"/>
+            
+            <children>
+                <primitive>
+                    <cylinder base="2" top="0" height="6" slices="32" stacks="32" capsclose="true"/>
+                </primitive>
+            </children>
         </node>
 
         <node id="trunk">

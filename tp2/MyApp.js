@@ -19,7 +19,10 @@ class MyApp  {
         // camera related attributes
         this.activeCamera = null
         this.activeCameraName = null
+        this.activeCameraInitPosition = null;
+        this.activeCameraInitRotation = null;
         this.lastCameraName = null
+        this.activeCameraCopy = null;
         this.cameras = new Map()
         this.frustumSize = 20
 
@@ -73,7 +76,7 @@ class MyApp  {
      */
     setActiveCamera(cameraName) {
         this.activeCameraName = cameraName
-        this.activeCamera = this.cameras.get(this.activeCameraName).camera
+        this.activeCamera = this.cameras.get(this.activeCameraName).camera.clone()
     }
 
     /**
@@ -83,11 +86,10 @@ class MyApp  {
      * it updates the active camera and the controls
      */
     updateCameraIfRequired() {
-
         // camera changed?
         if (this.lastCameraName !== this.activeCameraName) {
             this.lastCameraName = this.activeCameraName;
-            this.activeCamera = this.cameras.get(this.activeCameraName).camera
+            this.activeCamera = this.cameras.get(this.activeCameraName).camera.clone()
             document.getElementById("camera").innerHTML = this.activeCameraName
            
             // call on resize to update the camera aspect ratio
@@ -140,11 +142,6 @@ class MyApp  {
     render () {
         this.stats.begin()
         this.updateCameraIfRequired()
-
-        // update the animation if contents were provided
-        if (this.activeCamera !== undefined && this.activeCamera !== null) {
-            this.contents.update()
-        }
 
         // required if controls.enableDamping or controls.autoRotate are set to true
         this.controls.update();

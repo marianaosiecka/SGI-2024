@@ -184,10 +184,6 @@ class MyContents  {
             }
         }
     }
-
-    update() {
-
-    }
 }
 
 export { MyContents };
