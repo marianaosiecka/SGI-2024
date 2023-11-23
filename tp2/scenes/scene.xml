@@ -215,7 +215,6 @@
         <texture id="roofTileSpecularTex" filepath="scenes/textures/roof_tiles_specular_texture.jpg" />
         <texture id="fireVideoTex" filepath="scenes/textures/videos/fire.mp4" isVideo="true" />
         <texture id="musicVideoTex" filepath="scenes/textures/videos/music.mp4" isVideo="true" />
-        <texture id="smokeTex" filepath="scenes/textures/smoke.png"/>
         <texture id="treeTex" filepath="scenes/textures/tree.png" />
 
     </textures>
@@ -545,7 +544,7 @@
             specular="0.46 0.46 0.46 1.0"
             shininess="2"
             textureref="pillow1Tex"
-            twosided="true" />
+             />
 
         <material id="pillow2App"
             emissive="0.0 0.0 0.0 1"
@@ -553,7 +552,7 @@
             specular="0.46 0.46 0.46 1.0"
             shininess="2"
             textureref="pillow2Tex"
-            twosided="true" />
+             />
 
         <material id="pillow3App"
             emissive="0.0 0.0 0.0 1"
@@ -561,7 +560,7 @@
             specular="0.46 0.46 0.46 1.0"
             shininess="2"
             textureref="pillow3Tex"
-            twosided="true" />
+             />
 
         <!-- CARPET MATERIAL -->
         <material id="carpetApp"
@@ -800,7 +799,7 @@
             emissive="0 0 0 1"
             color="1 1 1 1"
             specular="0.1 0.1 0.1 1"
-            shininess="3"
+            shininess="0"
             twosided="false"
             textureref="fireVideoTex"
             texlength_s="2.1"
@@ -2836,7 +2835,7 @@
             </children> 
         </node>
     
-        <node id="floorLamp">
+        <node id="floorLamp" castshadows="true">
             <transforms>
                 <translate value3="5.3 0.0 -6" />
                 <rotate value3="0.0 -0.7854 0" />
@@ -4278,7 +4277,7 @@
         </node>
 
         <!-- FIREPLACE -->
-        <node id="fireplaceLeftSide">
+        <node id="fireplaceLeftSide" castshadows="true">
             <children>
                 <primitive>
                     <box xyz1="0 0 0" xyz2="0.3 1.5 1.3"/>
@@ -4286,7 +4285,7 @@
             </children>
         </node>
 
-        <node id="fireplaceRightSide">
+        <node id="fireplaceRightSide" castshadows="true">
             <transforms>
                 <translate value3="1.8 0 0"/>
             </transforms>
@@ -4310,7 +4309,7 @@
             </children>
         </node>
 
-        <node id="fireplaceBottom">
+        <node id="fireplaceBottom" castshadows="false">
             <transforms>
                 <translate value3="0 0 0"/>
             </transforms>
@@ -4322,7 +4321,7 @@
             </children>
         </node>
 
-        <node id="fireplaceBack">
+        <node id="fireplaceBack" castshadows="true">
             <transforms>
                 <translate value3="0 0 0"/>
             </transforms>
@@ -4346,7 +4345,7 @@
             </children>
         </node>
 
-        <node id="fireplaceFirePlane">
+        <node id="fireplaceFirePlane" receiveshadows="false">
             <transforms>
                 <translate value3="0 0 0.8"/>
             </transforms>
@@ -4360,7 +4359,7 @@
             </children>
         </node>
 
-        <node id="fireplace" castshadows="true" receiveshadows="true">
+        <node id="fireplace" receiveshadows="true">
             <transforms>
                 <translate value3="-1 0.1 -8"/>
             </transforms>

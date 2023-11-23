@@ -30,17 +30,21 @@ class MyLod {
             const lodCastShadow = (castShadows || lodNode.receiveshadow)
 
             // node 
-            let myLodNode = null;
+            let myLodNode = new MyNode(lodNode.id, lodMaterial, lodNode.transformations, lights, nodesMap, lodCastShadow, lodReceiveShadow)
+
             if(!nodesMap.has(lodNode.id)){
-                myLodNode = new MyNode(lodNode.id, lodMaterial, lodNode.transformations, lights, nodesMap, lodCastShadow, lodReceiveShadow)
                 myLodNode.visitChildren(lodNode.children, materials)
             }
             else {
                 myLodNode.group = nodesMap.get(lodNode.id).clone()
+                if (lodNode.material.material != this.nodesMap.get(lodNode.id).material.material) {
+                    myLodNode.changeGroupMaterial(lodNode.group, lodNode.material.material)
+                }
             }
             this.lod.addLevel(myLodNode.group, lodRef.mindist);
         }
     }
+
 }
 
 

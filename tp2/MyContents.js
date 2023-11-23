@@ -63,8 +63,8 @@ class MyContents  {
      */
     onSceneLoaded(data) {
         this.visitData(data);
-        console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
-        this.onAfterSceneLoadedAndBeforeRender(data);
+        //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
+        //this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
     output(obj, indent = 0) {
