@@ -36,7 +36,7 @@ class MyGuiInterface {
      * Initialize the gui interface
      */
     init() {
-        /*
+        
         // CAMERAS
         const cameraFolder = this.datgui.addFolder('Cameras')
         const cameraNames = Array.from(this.contents.cameras.keys());
@@ -105,7 +105,7 @@ class MyGuiInterface {
 
         // MIP MAPS
         this.createMipMapsFolder();
-        */
+        
     }
 
     createLightsFolder() {
