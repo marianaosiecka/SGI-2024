@@ -17,7 +17,7 @@ class MyPointLight {
             this.light.castShadow = true;
             this.light.shadow.mapSize.width = lightData.shadowmapsize;
             this.light.shadow.mapSize.height = lightData.shadowmapsize;
-            this.light.camera.far = lightData.shadowfar;
+            this.light.shadow.camera.far = lightData.shadowfar;
         }
         if(!lightData.enabled)
             this.light.intensity = 0;

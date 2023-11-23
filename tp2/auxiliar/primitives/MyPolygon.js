@@ -20,6 +20,8 @@ class MyPolygon {
         const colors = [];
         const uvs = []; 
 
+        const z = 0
+
         for (let stack = 0; stack <= this.stacks; stack++) {         //along the vertical axis
             const verticalAngle = (stack/this.stacks) * Math.PI;     //stack/stacks -> normalizes the value between 0 and 1 | * Math.PI -> normalizes the value to be an angle in radians between 0 and Math.PI
             const sinVerticalAngle = Math.sin(verticalAngle);
@@ -32,7 +34,6 @@ class MyPolygon {
     
                 const x = radius*cosHorizontalAngle*sinVerticalAngle;
                 const y = radius*sinHorizontalAngle*sinVerticalAngle;
-                const z = radius*cosVerticalAngle;
 
                 const u = slice / this.slices;  
                 const v = stack / this.stacks; 
@@ -42,7 +43,7 @@ class MyPolygon {
                 color.lerpColors(this.color_c, this.color_p, slice/this.slices);
     
                 vertices.push(x, y, z);
-                normals.push(cosHorizontalAngle*sinVerticalAngle, sinHorizontalAngle*sinVerticalAngle, cosVerticalAngle);
+                normals.push(cosHorizontalAngle*sinVerticalAngle, sinHorizontalAngle*sinVerticalAngle, 1);
                 colors.push(color.r, color.g, color.b);
                 uvs.push(u, v);  
             }
