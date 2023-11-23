@@ -103,41 +103,7 @@ class MyGuiInterface {
         this.createKiteFolder(sceneFolder);
 
         // MIP MAPS
-        
-        this.options = {
-            minFilters: {
-                'NearestFilter': THREE.NearestFilter,
-                'NearestMipMapLinearFilter': THREE.NearestMipMapLinearFilter,
-                'NearestMipMapNearestFilter': THREE.NearestMipMapNearestFilter,
-                'LinearFilter ': THREE.LinearFilter,
-                'LinearMipMapLinearFilter (Default)': THREE.LinearMipMapLinearFilter,
-                'LinearMipmapNearestFilter': THREE.LinearMipmapNearestFilter,
-            },
-            magFilters: {
-                'NearestFilter': THREE.NearestFilter,
-                'LinearFilter (Default)': THREE.LinearFilter,
-            },
-        }
-
-        const mipmapsFolder = this.datgui.addFolder('Mipmaps');
-
-        for (const myTexture of this.contents.textures) {
-            const textureName = myTexture[0]
-            const texture = myTexture[1];
-            console.log(texture)
-            if (!(texture instanceof THREE.VideoTexture) && !texture.generateMipmaps) {
-                const textureFolder = mipmapsFolder.addFolder(textureName);
-        
-                const minFilterController = textureFolder.add(texture, 'minFilter', this.options.minFilters)
-                    .name('minFilter')
-                    .onChange((value) => this.updateMinFilter(value, textureName));
-        
-                const magFilterController = textureFolder.add(texture, 'magFilter', this.options.magFilters)
-                    .name('magFilter')
-                    .onChange((value) => this.updateMagFilter(value, textureName));
-    
-            }
-        }
+        this.createMipMapsFolder();
     }
 
     createLightsFolder() {
@@ -337,19 +303,43 @@ class MyGuiInterface {
         }
     }
 
-    // Function to update minFilter for a texture
-updateMinFilter(value, textureName) {
-    const texture = this.contents.textures[textureName];
-    texture.minFilter = value;
-    // Add any additional logic you need
-}
+    createMipMapsFolder(){
+        this.options = {
+            minFilters: {
+                'NearestFilter': THREE.NearestFilter,
+                'NearestMipMapLinearFilter': THREE.NearestMipMapLinearFilter,
+                'NearestMipMapNearestFilter': THREE.NearestMipMapNearestFilter,
+                'LinearFilter ': THREE.LinearFilter,
+                'LinearMipMapLinearFilter (Default)': THREE.LinearMipMapLinearFilter,
+                'LinearMipmapNearestFilter': THREE.LinearMipmapNearestFilter,
+            },
+            magFilters: {
+                'NearestFilter': THREE.NearestFilter,
+                'LinearFilter (Default)': THREE.LinearFilter,
+            },
+        }
 
-// Function to update magFilter for a texture
-updateMagFilter(value, textureName) {
-    const texture = this.contents.textures[textureName];
-    texture.magFilter = value;
-    // Add any additional logic you need
-}
+        const mipmapsFolder = this.datgui.addFolder('Mipmaps');
+
+        for (const myTexture of this.contents.textures) {
+            const textureName = myTexture[0]
+            const texture = myTexture[1];
+            if (!(texture instanceof THREE.VideoTexture) && !texture.generateMipmaps) {
+                const textureFolder = mipmapsFolder.addFolder(textureName);
+        
+                const minFilterController = textureFolder.add(texture, 'minFilter', this.options.minFilters)
+                    .name('minFilter')
+                    .onChange((value) => texture.magFilter = value);
+        
+                const magFilterController = textureFolder.add(texture, 'magFilter', this.options.magFilters)
+                    .name('magFilter')
+                    .onChange((value) => texture.magFilter = value);
+    
+            }
+        }
+
+        mipmapsFolder.close()
+    }
 
 
 
