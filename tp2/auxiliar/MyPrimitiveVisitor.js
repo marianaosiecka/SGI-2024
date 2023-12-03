@@ -30,7 +30,16 @@ class MyPrimitiveVisitor {
             case "box": {
                 let boxGeometry = new MyBox(this.data);
                 geometry = boxGeometry.box;
-                material.setRepeat(boxGeometry.boxDepth, boxGeometry.boxWidth)
+
+                // choose the two biggest dimensions
+                const dimensions = [boxGeometry.boxDepth, boxGeometry.boxHeight, boxGeometry.boxWidth];
+                dimensions.sort(function (x, y) {
+                    return y - x;
+                });
+                const setRepeatX = dimensions[0];
+                const setRepeatY = dimensions[1];
+                
+                material.setRepeat(setRepeatX, setRepeatY)
                 break;
             }
             case "cylinder": {

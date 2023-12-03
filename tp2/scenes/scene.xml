@@ -3343,12 +3343,12 @@
 
         <node id="kiteString" >
             <transforms>
-                <translate value3="0 -3 0" />
+                <translate value3="0 -3.5 0" />
             </transforms>
             <materialref id="whiteApp" />
             <children>
                 <primitive>
-                    <cylinder base="0.02" top="0.02" height="8" slices="10" stacks="1" thetastart="0" thetalength="3.1416" capsclose="true"/>
+                    <cylinder base="0.02" top="0.02" height="7" slices="10" stacks="1" thetastart="0" thetalength="3.1416" capsclose="true"/>
                 </primitive>
             </children>
         </node>
@@ -5020,14 +5020,13 @@
 
         <node id="pillowLod3">
             <transforms>
-                <rotate value3="0 1.5708 1.5708"/>
-                <rotate value3="0 0.7854 0" />
+                <rotate value3="0 0 2.3562"/>
                 <scale value3="1.5 1.5 1.5"/>
             </transforms>
             <materialref id="polygonApp" />
             <children>
                 <primitive>
-                    <polygon radius="1" stacks="2" slices="2" color_c="1 1 0 1.0" color_p="0.470588 0.129412 0.0313725 1" />
+                    <polygon radius="1" stacks="2" slices="4" color_c="1 1 0 1.0" color_p="0.470588 0.129412 0.0313725 1" />
                 </primitive>
             </children>
         </node>
@@ -5164,7 +5163,7 @@
 
         <node id="outsideDoorLight" castshadows="true">
             <transforms>
-                <rotate value3="0 3.1416 1.5708"/>
+                <rotate value3="0 -1.5708 1.5708"/>
                 <scale value3="0.28 0.25 0.25" />
             </transforms>
 
