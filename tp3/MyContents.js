@@ -110,8 +110,37 @@ class MyContents {
       new THREE.Vector3(32, 0, 42),
       new THREE.Vector3(30, 0, 40),
       new THREE.Vector3(20, 0, 12),
-      new THREE.Vector3(16, 0, 0),
+      new THREE.Vector3(16, 0, 0)
     ]);
+
+
+    this.raycaster = new THREE.Raycaster()
+    this.raycaster.near = 1
+    this.raycaster.far = 20
+
+    this.pointer = new THREE.Vector2()
+    this.intersectedObj = null
+    this.pickingColor = "#00ff00"
+
+    // structure of layers: each layer will contain its objects
+    // this can be used to select objects that are pickeable     
+    this.availableLayers = ['none', 1, 2, 3, 4]
+    this.selectedLayer = this.availableLayers[0]    // change this in interface
+
+    // define the objects ids that are not to be pickeable
+    // NOTICE: not a ThreeJS facility
+    this.notPickableObjIds = []
+    // this.notPickableObjIds = ["col_0_0", "col_2_0", "col_1_1"]
+    // this.notPickableObjIds = ["myplane", "col_0_0", "col_2_0", "col_1_1"]
+  
+    //register events
+    /*
+    document.addEventListener(
+        "pointermove",
+        // "mousemove",
+        // "pointerdown",
+        this.onPointerMove.bind(this)
+    );*/
   }
   /**
    * initializes the contents
@@ -139,15 +168,36 @@ class MyContents {
     this.app.scene.add(ambientLight);
 
     // create the track
-    this.buildTrack();
+    this.buildTrack(this.availableLayers[0]);
 
   }
 
 
-  buildTrack() {
+  buildTrack(layer) {
     this.track = new MyTrack(this.app, this.segments, 4, this.path, this.trackClosedCurve);
     //this.track.scale.set(3, 0.2, 3);
+    this.track.layers.enable(layer);
     this.app.scene.add(this.track);
+  }
+
+  /*
+    *
+    * Only object from selected layer will be eligible for selection
+    * when 'none' is selected no layer is active, so all objects can be selected
+    */
+  updateSelectedLayer() {
+    this.raycaster.layers.enableAll()
+    if (this.selectedLayer !== 'none') {
+        const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)];
+        this.raycaster.layers.set(selectedIndex);
+    }
+  }
+
+  /*
+    * Update the color of selected object
+    */
+  updatePickingColor(value) {
+    this.pickingColor = value;
   }
 
   /**
