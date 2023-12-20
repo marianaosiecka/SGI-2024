@@ -24,7 +24,7 @@ class MyVehicle extends THREE.Object3D {
     let wheelMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
 
     // meshes
-    let carMesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x0000ff }));
+    let carMesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0xffd700 }));
     let wheelMeshLeftBack = new THREE.Mesh(wheelGeometry, wheelMaterial);
     let wheelMeshLeftFront = new THREE.Mesh(wheelGeometry, wheelMaterial);
     let wheelMeshRightBack = new THREE.Mesh(wheelGeometry, wheelMaterial);

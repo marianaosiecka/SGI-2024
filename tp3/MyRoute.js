@@ -11,7 +11,7 @@ class MyRoute extends THREE.Object3D {
             keyframes.push({ time: i * timeInterval, value: keyPoints[i] });
         }
 
-        const spline = new THREE.CatmullRomCurve3(keyframes.map(kf => kf.value));
+        this.spline = new THREE.CatmullRomCurve3(keyframes.map(kf => kf.value));
 
         // visual representation of the spline
         if (visualRepresentation) {
@@ -25,7 +25,7 @@ class MyRoute extends THREE.Object3D {
                 this.add(sphere)
             }
 
-            const tubeGeometry = new THREE.TubeGeometry(spline, 100, 0.05, 10, false);
+            const tubeGeometry = new THREE.TubeGeometry(this.spline, 100, 0.05, 10, false);
             const tubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
             const tubeMesh = new THREE.Mesh(tubeGeometry, tubeMaterial);
             this.add(tubeMesh)

@@ -17,6 +17,7 @@ class MyContents {
     this.axis = null;
 
     this.startingPoint = new THREE.Vector3(32, 1, -117);
+    this.level = 1;
 
     this.showTrackWireframe = false;
     this.showTrackLine = true;
@@ -147,6 +148,7 @@ class MyContents {
     );*/
 
     this.car = new MyVehicle(1, 0.5, 1.6);
+    this.car.scale.set(3, 3, 3);
     this.app.scene.add(this.car);
   }
 
@@ -242,15 +244,30 @@ class MyContents {
       new THREE.Vector3(140, 1, -25),
       new THREE.Vector3(150, 1, -10),
       new THREE.Vector3(165, 1, 2),
-      new THREE.Vector3(175, 1, 8),
-
+      new THREE.Vector3(175, 1, 5),
+      new THREE.Vector3(185, 1, 3),
+      new THREE.Vector3(195, 1, -5),
+      new THREE.Vector3(203, 1, -30),
+      new THREE.Vector3(206, 1, -55),
+      new THREE.Vector3(205, 1, -70),
+      new THREE.Vector3(200, 1, -85),
+      new THREE.Vector3(180, 1, -100),
+      new THREE.Vector3(150, 1, -107),
+      new THREE.Vector3(115, 1, -110),
+      new THREE.Vector3(80, 1, -113),
+      this.startingPoint
 
     ];
 
-    const timeInterval1 = 2;
+    const timeInterval1 = 10;
 
-    const route1 = new MyRoute(this.app, keyPoints1, timeInterval1, true);
-    this.app.scene.add(route1);
+    const route1 = new MyRoute(this.app, keyPoints1, timeInterval1);
+
+    if(this.level == 1){
+      this.spline = route1.spline;
+      this.app.scene.add(route1);
+    }
+    
   }
 
 
@@ -327,7 +344,12 @@ class MyContents {
    * updates the contents
    * this method is called from the render method of the app
    */
-  update() {}
+  update() {
+    
+    const time = (Date.now() % 30000) / 30000;
+    const point = this.spline.getPointAt(time);
+    this.car.position.set(...point);
+  }
 }
 
 export { MyContents };
