@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import { MyTrack } from "./MyTrack.js";
+import { MyVehicle } from "./MyVehicle.js";
 
 /**
  *  This class contains the contents of out application
@@ -141,6 +142,9 @@ class MyContents {
         // "pointerdown",
         this.onPointerMove.bind(this)
     );*/
+
+    this.car = new MyVehicle(1, 0.5, 1.6);
+    this.app.scene.add(this.car);
   }
   /**
    * initializes the contents
