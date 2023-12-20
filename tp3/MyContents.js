@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import { MyTrack } from "./MyTrack.js";
-
+import { MyRoute } from "./MyRoute.js";
 /**
  *  This class contains the contents of out application
  */
@@ -13,6 +13,8 @@ class MyContents {
   constructor(app) {
     this.app = app;
     this.axis = null;
+
+    this.startingPoint = new THREE.Vector3(32, 1, -117);
 
     this.showTrackWireframe = false;
     this.showTrackLine = true;
@@ -142,6 +144,9 @@ class MyContents {
         this.onPointerMove.bind(this)
     );*/
   }
+
+
+
   /**
    * initializes the contents
    */
@@ -170,6 +175,8 @@ class MyContents {
     // create the track
     this.buildTrack(this.availableLayers[0]);
 
+    this.buildRoutes();
+
   }
 
 
@@ -179,6 +186,68 @@ class MyContents {
     this.track.layers.enable(layer);
     this.app.scene.add(this.track);
   }
+
+  buildRoutes() {
+    const keyPoints1 = [
+      this.startingPoint,
+      new THREE.Vector3(10, 1, -117),
+      new THREE.Vector3(-34, 1, -115),
+      new THREE.Vector3(-70, 1, -112),
+      new THREE.Vector3(-85, 1, -105),
+      new THREE.Vector3(-90, 1, -98),
+      new THREE.Vector3(-95, 1, -90),
+      new THREE.Vector3(-100, 1, -80),
+      new THREE.Vector3(-105, 1, -60),
+      new THREE.Vector3(-102, 1, -35),
+      new THREE.Vector3(-100, 1, 5),
+      new THREE.Vector3(-102, 1, 35),
+      new THREE.Vector3(-110, 1, 50),
+      new THREE.Vector3(-118, 1, 60),
+      new THREE.Vector3(-127, 1, 70),
+      new THREE.Vector3(-129, 1, 78),
+      new THREE.Vector3(-129, 1, 85),
+      new THREE.Vector3(-126, 1, 89),
+      new THREE.Vector3(-120, 1, 95),
+      new THREE.Vector3(-112, 1, 100),
+      new THREE.Vector3(-105, 1, 102),
+      new THREE.Vector3(-98, 1, 102),
+      new THREE.Vector3(-90, 1, 100),
+      new THREE.Vector3(-80, 1, 95),
+      new THREE.Vector3(-70, 1, 87),
+      new THREE.Vector3(-60, 1, 75),
+      new THREE.Vector3(-50, 1, 45),
+      new THREE.Vector3(-32, 1, -10),
+      new THREE.Vector3(-10, 1, -37),
+      new THREE.Vector3(10, 1, -38),
+      new THREE.Vector3(20, 1, -35),
+      new THREE.Vector3(30, 1, -25),
+      new THREE.Vector3(35, 1, -15),
+      new THREE.Vector3(40, 1, 0),
+      new THREE.Vector3(45, 1, 8),
+      new THREE.Vector3(53, 1, 12),
+      new THREE.Vector3(60, 1, 12),
+      new THREE.Vector3(65, 1, 10),
+      new THREE.Vector3(72, 1, 8),
+      new THREE.Vector3(80, 1, 0),
+      new THREE.Vector3(85, 1, -20),
+      new THREE.Vector3(95, 1, -35),
+      new THREE.Vector3(105, 1, -38),
+      new THREE.Vector3(115, 1, -38),
+      new THREE.Vector3(125, 1, -37),
+      new THREE.Vector3(140, 1, -25),
+      new THREE.Vector3(150, 1, -10),
+      new THREE.Vector3(165, 1, 2),
+      new THREE.Vector3(175, 1, 8),
+
+
+    ];
+
+    const timeInterval1 = 2;
+
+    const route1 = new MyRoute(this.app, keyPoints1, timeInterval1, true);
+    this.app.scene.add(route1);
+  }
+
 
   /*
     *
