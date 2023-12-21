@@ -3,6 +3,8 @@ import { MyAxis } from "./MyAxis.js";
 import { MyTrack } from "./MyTrack.js";
 import { MyRoute } from "./MyRoute.js";
 import { MyVehicle } from "./MyVehicle.js";
+import { MyObstacle } from "./MyObstacle.js";
+import { MyPowerUp } from "./MyPowerUp.js";
 
 /**
  *  This class contains the contents of out application
@@ -27,50 +29,6 @@ class MyContents {
     this.segments = 200;
 
     this.path = new THREE.CatmullRomCurve3([
-      /*
-      new THREE.Vector3(-5, 0, 3),
-      new THREE.Vector3(0, 0, 2),
-      new THREE.Vector3(5, 0, 6), 
-      new THREE.Vector3(10, 0, 7), 
-      new THREE.Vector3(15, 0, 3),
-      new THREE.Vector3(20, 0, 0),
-      new THREE.Vector3(18, 0, -8),
-      new THREE.Vector3(15, 0, -10),
-      new THREE.Vector3(10, 0, -14),
-      new THREE.Vector3(5, 0, -12),
-      new THREE.Vector3(0, 0, -16),
-      new THREE.Vector3(5, 0, -20),
-      new THREE.Vector3(-2, 0, -24),
-      new THREE.Vector3(-7, 0, -10),
-      new THREE.Vector3(-10, 0, -7),
-      new THREE.Vector3(-15, 0, -3),
-      new THREE.Vector3(-20, 0, 0),
-      new THREE.Vector3(-20, 0, 4),
-      new THREE.Vector3(-15, 0, 7),
-      new THREE.Vector3(-10, 0, 4),
-      new THREE.Vector3(-5, 0, 3)
-      new THREE.Vector3(-10, 0, 5),
-      new THREE.Vector3(-5, 0, 3),
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(5, 0, 3),
-      new THREE.Vector3(10, 0, 8),
-      new THREE.Vector3(15, 0, 6),
-      new THREE.Vector3(20, 0, 3),
-      new THREE.Vector3(25, 0, -2),
-      new THREE.Vector3(20, 0, -8),
-      new THREE.Vector3(15, 0, -10),
-      new THREE.Vector3(10, 0, -14),
-      new THREE.Vector3(5, 0, -12),
-      new THREE.Vector3(0, 0, -16),
-      new THREE.Vector3(5, 0, -20),
-      new THREE.Vector3(-5, 0, -24),
-      new THREE.Vector3(-7, 0, -10),
-      new THREE.Vector3(-10, 0, -7),
-      new THREE.Vector3(-15, 0, -3),
-      new THREE.Vector3(-20, 0, 0),
-      new THREE.Vector3(-20, 0, 4),
-      new THREE.Vector3(-15, 0, 7),
-      new THREE.Vector3(-10, 0, 5)*/
       new THREE.Vector3(16, 0, 0),
       new THREE.Vector3(10, 0, -15),
       new THREE.Vector3(5, 0, -20),
@@ -118,7 +76,6 @@ class MyContents {
       new THREE.Vector3(16, 0, 0)
     ]);
 
-
     this.raycaster = new THREE.Raycaster()
     this.raycaster.near = 1
     this.raycaster.far = 20
@@ -146,25 +103,20 @@ class MyContents {
         // "pointerdown",
         this.onPointerMove.bind(this)
     );*/
-
-    this.car = new MyVehicle(1, 0.5, 1.6);
-    this.car.scale.set(3, 3, 3);
-    this.app.scene.add(this.car);
   }
-
 
 
   /**
    * initializes the contents
    */
   init() {
-    // create once
+    // AXIS
     if (this.axis === null) {
-      // create and attach the axis to the scene
       this.axis = new MyAxis(this);
       this.app.scene.add(this.axis);
     }
 
+    // LIGHTS
     // add a point light on top of the model
     const pointLight = new THREE.PointLight(0xffffff, 3000, 0);
     pointLight.position.set(0, 40, -10);
@@ -179,10 +131,23 @@ class MyContents {
     const ambientLight = new THREE.AmbientLight(0x555555);
     this.app.scene.add(ambientLight);
 
+    // ASFDSA
     // create the track
     this.buildTrack(this.availableLayers[0]);
 
+    // create the routes and define the one to be used
     this.buildRoutes();
+
+    // create obstacles
+    this.buildObstacles();
+
+    // create power ups
+    this.buildPowerUps();
+
+    // create the autonomous car
+    this.autonomousCar = new MyVehicle(1, 0.5, 1.6);
+    this.autonomousCar.scale.set(3, 3, 3);
+    this.app.scene.add(this.autonomousCar);
 
   }
 
@@ -270,6 +235,78 @@ class MyContents {
     
   }
 
+  buildObstacles() {
+    // TYPE 1
+    const obstacleTexture1 = new THREE.TextureLoader().load("textures/obstacle_switchdirections.png");
+    const obstacleColor1 = 0xD71D03;
+
+    const obstaclesType1 = [ 
+      [new THREE.Vector3(-97, 1, -20), new THREE.Vector3(0, Math.PI / 2, 0)],
+    ];
+
+    for (let i = 0; i < obstaclesType1.length; i++) {
+      const obstacle = new MyObstacle(this.app, 1, obstacleTexture1, obstacleColor1);
+      obstacle.position.set(...obstaclesType1[i][0]);
+      obstacle.rotation.set(...obstaclesType1[i][1]);
+      this.app.scene.add(obstacle);
+    }
+
+    // TYPE 2
+    const obstacleTexture2 = new THREE.TextureLoader().load("textures/obstacle_slip.png");
+    const obstacleColor2 = 0xD71D03;
+    const obstaclesType2 = [
+      [new THREE.Vector3(0, 1, -44), new THREE.Vector3(0, -Math.PI, 0)],
+    ];
+
+    for (let i = 0; i < obstaclesType2.length; i++) {
+      const obstacle = new MyObstacle(this.app, 2, obstacleTexture2, obstacleColor2);
+      obstacle.position.set(...obstaclesType2[i][0]);
+      obstacle.rotation.set(...obstaclesType2[i][1]);
+      this.app.scene.add(obstacle);
+    }
+  }
+
+  buildPowerUps() {
+    // TYPE 1
+    const powerUpTexture1 = new THREE.TextureLoader().load("textures/shield_powerup.png");
+    const powerUpColor1 = 0xFFDF35;
+    const powerUpType1 = [ 
+      [new THREE.Vector3(-42, 1, 20), new THREE.Vector3(0, -Math.PI / 2 - 0.3, 0)],
+    ];
+    for (let i = 0; i < powerUpType1.length; i++) {
+      const powerUp = new MyPowerUp(this.app, 1, powerUpTexture1, powerUpColor1);
+      powerUp.position.set(...powerUpType1[i][0]);
+      powerUp.rotation.set(...powerUpType1[i][1]);
+      this.app.scene.add(powerUp);
+    }
+
+    // TYPE 2
+    const powerUpTexture2 = new THREE.TextureLoader().load("textures/shortcut_powerup.png");
+    const powerUpColor2 = 0xFFDF35;
+    const powerUpType2 = [
+      [new THREE.Vector3(82, 1, -20), new THREE.Vector3(0, -Math.PI / 2 - 0.2, 0)],
+    ];
+    for (let i = 0; i < powerUpType2.length; i++) {
+      const powerUp = new MyPowerUp(this.app, 2, powerUpTexture2, powerUpColor2);
+      powerUp.position.set(...powerUpType2[i][0]);
+      powerUp.rotation.set(...powerUpType2[i][1]);
+      this.app.scene.add(powerUp);
+    }
+
+    // TYPE 3
+    const powerUpTexture3 = new THREE.TextureLoader().load("textures/speed_powerup.png");
+    const powerUpColor3 = 0xFFDF35;
+    const powerUpType3 = [
+      [new THREE.Vector3(210, 1, -70), new THREE.Vector3(0, -Math.PI / 2, 0)],
+    ];
+    for (let i = 0; i < powerUpType3.length; i++) {
+      const powerUp = new MyPowerUp(this.app, 3, powerUpTexture3, powerUpColor3);
+      powerUp.position.set(...powerUpType3[i][0]);
+      powerUp.rotation.set(...powerUpType3[i][1]);
+      this.app.scene.add(powerUp);
+    }
+  }
+
 
   /*
     *
@@ -345,10 +382,9 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
-    
     const time = (Date.now() % 30000) / 30000;
     const point = this.spline.getPointAt(time);
-    this.car.position.set(...point);
+    //this.autonomousCar.position.set(...point);
   }
 }
 
