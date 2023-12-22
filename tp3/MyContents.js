@@ -227,6 +227,7 @@ class MyContents {
       this.checkKeys();
       this.playerVehicle.update(time, this.speedFactor);
       this.previousTime = time;
+      this.reader.checkForCollisions();
     }
   }
 }
