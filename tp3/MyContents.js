@@ -23,50 +23,6 @@ class MyContents {
     this.segments = 200;
 
     this.path = new THREE.CatmullRomCurve3([
-      /*
-      new THREE.Vector3(-5, 0, 3),
-      new THREE.Vector3(0, 0, 2),
-      new THREE.Vector3(5, 0, 6), 
-      new THREE.Vector3(10, 0, 7), 
-      new THREE.Vector3(15, 0, 3),
-      new THREE.Vector3(20, 0, 0),
-      new THREE.Vector3(18, 0, -8),
-      new THREE.Vector3(15, 0, -10),
-      new THREE.Vector3(10, 0, -14),
-      new THREE.Vector3(5, 0, -12),
-      new THREE.Vector3(0, 0, -16),
-      new THREE.Vector3(5, 0, -20),
-      new THREE.Vector3(-2, 0, -24),
-      new THREE.Vector3(-7, 0, -10),
-      new THREE.Vector3(-10, 0, -7),
-      new THREE.Vector3(-15, 0, -3),
-      new THREE.Vector3(-20, 0, 0),
-      new THREE.Vector3(-20, 0, 4),
-      new THREE.Vector3(-15, 0, 7),
-      new THREE.Vector3(-10, 0, 4),
-      new THREE.Vector3(-5, 0, 3)
-      new THREE.Vector3(-10, 0, 5),
-      new THREE.Vector3(-5, 0, 3),
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(5, 0, 3),
-      new THREE.Vector3(10, 0, 8),
-      new THREE.Vector3(15, 0, 6),
-      new THREE.Vector3(20, 0, 3),
-      new THREE.Vector3(25, 0, -2),
-      new THREE.Vector3(20, 0, -8),
-      new THREE.Vector3(15, 0, -10),
-      new THREE.Vector3(10, 0, -14),
-      new THREE.Vector3(5, 0, -12),
-      new THREE.Vector3(0, 0, -16),
-      new THREE.Vector3(5, 0, -20),
-      new THREE.Vector3(-5, 0, -24),
-      new THREE.Vector3(-7, 0, -10),
-      new THREE.Vector3(-10, 0, -7),
-      new THREE.Vector3(-15, 0, -3),
-      new THREE.Vector3(-20, 0, 0),
-      new THREE.Vector3(-20, 0, 4),
-      new THREE.Vector3(-15, 0, 7),
-      new THREE.Vector3(-10, 0, 5)*/
       new THREE.Vector3(16, 0, 0),
       new THREE.Vector3(10, 0, -15),
       new THREE.Vector3(5, 0, -20),
@@ -143,13 +99,25 @@ class MyContents {
         this.onPointerMove.bind(this)
     );*/
 
-    this.car = new MyVehicle(1, 0.5, 1.6);
+    this.car = new MyVehicle(this, 1, 0.5, 1.6, 20, [this.path.getPoint(0).x, this.path.getPoint(0).y, this.path.getPoint(0).z]);
+    this.car.scale.set(4, 4, 4)
     this.app.scene.add(this.car);
   }
+
+  keyListeners() {
+    document.addEventListener('keydown', this.keyDown.bind(this), false);
+    document.addEventListener('keyup', this.keyUp.bind(this), false);
+  }
+
   /**
    * initializes the contents
    */
   init() {
+    this.previousTime = 0;
+    this.speedFactor = 0.5;
+    this.keys = {};
+    this.keyListeners();
+
     // create once
     if (this.axis === null) {
       // create and attach the axis to the scene
@@ -176,6 +144,13 @@ class MyContents {
 
   }
 
+  keyDown(event) {
+    this.keys[event.code] = true;
+  }
+
+  keyUp(event) {
+    this.keys[event.code] = false;
+  }
 
   buildTrack(layer) {
     this.track = new MyTrack(this.app, this.segments, 4, this.path, this.trackClosedCurve);
@@ -183,6 +158,27 @@ class MyContents {
     this.track.layers.enable(layer);
     this.app.scene.add(this.track);
   }
+
+  checkKeys() {
+    if (this.keys['KeyW']) 
+      this.car.accelerate(this.speedFactor);
+
+    if (this.keys['KeyA'])
+      this.car.shouldStop = true;
+
+    if (this.keys['KeyS'])
+      this.car.turn(this.speedFactor/15); //the higher the number that divides speed factor -> the smaller is the turning angle
+
+    if (this.keys['KeyD'])
+      this.car.turn(-this.speedFactor/15);
+
+    if (this.keys['KeyR'])
+      this.car.reverse(this.speedFactor);
+
+    if (this.keys['KeyP'])
+      this.car.reset();
+  }
+
 
   /*
     *
@@ -257,7 +253,17 @@ class MyContents {
    * updates the contents
    * this method is called from the render method of the app
    */
-  update() {}
+  update() {
+    const time = Date.now();
+
+    if (this.previousTime == 0)
+      this.previousTime = time;
+    else {
+      this.checkKeys();
+      this.car.update(time, this.speedFactor);
+      this.previousTime = time;
+    }
+  }
 }
 
 export { MyContents };
