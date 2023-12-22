@@ -15,6 +15,8 @@ class MyContents {
     this.app = app;
     this.axis = null;
 
+    this.clock = new THREE.Clock()
+
     this.startingPoint = new THREE.Vector3(32, 1, -117);
     this.level = 1;
 
@@ -105,14 +107,14 @@ class MyContents {
     this.app.scene.add(ambientLight);
 
     // SCENARIO
-    const scenario = new MyScenario(this.app);
+    this.scenario = new MyScenario(this.app);
 
     // track
     this.reader.readTrack();
 
     // routes
     this.reader.readRoutes(true);
-    this.spline = this.reader.chosenRoute.spline;
+    this.mixer = this.reader.mixer;
 
     // create obstacles
     this.reader.readObstacles();
@@ -216,10 +218,12 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
+    this.scenario.clouds.display();
+    
     const time = Date.now();
-    const timeSpline = (time % 30000) / 30000;
-    const point = this.spline.getPointAt(timeSpline);
-    this.autonomousVehicle.updateAutonomous(point);
+    
+    const delta = this.clock.getDelta()
+    this.mixer.update(delta)
 
     if (this.previousTime == 0)
       this.previousTime = time;

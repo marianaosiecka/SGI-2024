@@ -18,6 +18,7 @@ class MyReader{
 
         this.routes = [];
         this.chosenRoute = null;
+        this.mixer = null;
 
         this.obstacles = [];
         this.powerUps = [];
@@ -150,9 +151,9 @@ class MyReader{
             this.startingPoint
         ];
       
-        const timeInterval1 = 10;
+        const timeInterval1 = 1;
       
-        const route1 = new MyRoute(this.app, keyPoints1, timeInterval1, visualRepresentation);
+        const route1 = new MyRoute(this.app, keyPoints1, timeInterval1, this.autonomousVehicle, visualRepresentation);
         this.routes.push(route1);
 
 
@@ -160,6 +161,7 @@ class MyReader{
         //...
 
         this.chosenRoute = this.routes[this.level-1];
+        this.mixer = this.chosenRoute.mixer;
         this.app.scene.add(this.chosenRoute);
     }
 
