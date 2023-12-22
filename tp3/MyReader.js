@@ -23,7 +23,7 @@ class MyReader{
         
         this.vehicle = null;
         this.autonomousVehicle = null;
-        this.readAutonomousVehicle();
+        //this.readAutonomousVehicle();
     }
 
     readTrack(){

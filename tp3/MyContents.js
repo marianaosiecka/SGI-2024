@@ -1,11 +1,7 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
-import { MyTrack } from "./MyTrack.js";
-import { MyRoute } from "./MyRoute.js";
-import { MyVehicle } from "./MyVehicle.js";
-import { MyObstacle } from "./MyObstacle.js";
-import { MyPowerUp } from "./MyPowerUp.js";
 import { MyReader } from "./MyReader.js";
+import { MyScenario } from "./MyScenario.js";
 
 /**
  *  This class contains the contents of out application
@@ -59,7 +55,6 @@ class MyContents {
 
     this.reader = new MyReader(this.app, this.level, this.startingPoint, this.segments)
     // create the autonomous vehicle
-    this.reader.readAutonomousVehicle();
     this.autonomousVehicle = this.reader.autonomousVehicle; 
   }
 
@@ -88,6 +83,9 @@ class MyContents {
     // add an ambient light
     const ambientLight = new THREE.AmbientLight(0x555555);
     this.app.scene.add(ambientLight);
+
+    // SCENARIO
+    const scenario = new MyScenario(this.app);
 
     // track
     this.reader.readTrack();
