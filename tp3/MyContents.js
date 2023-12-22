@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import { MyReader } from "./MyReader.js";
+import { MyScenario } from "./MyScenario.js";
 
 /**
  *  This class contains the contents of out application
@@ -102,6 +103,9 @@ class MyContents {
     // add an ambient light
     const ambientLight = new THREE.AmbientLight(0x555555);
     this.app.scene.add(ambientLight);
+
+    // SCENARIO
+    const scenario = new MyScenario(this.app);
 
     // track
     this.reader.readTrack();
