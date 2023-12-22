@@ -2,12 +2,10 @@ import * as THREE from 'three';
 
 class MyPowerUp extends THREE.Object3D {
     
-    constructor(app, powerUpType, texture, color) {
+    constructor(app, type, texture, color) {
         super();
         this.app = app;
-        this.type = 'Group';
-
-        this.powerUpType = powerUpType;
+        this.type = type;
 
         let geometry = new THREE.CylinderGeometry(2, 2, 1, 32, 32);
         let material = new THREE.MeshPhongMaterial({ color: color });
@@ -24,7 +22,19 @@ class MyPowerUp extends THREE.Object3D {
         this.bs = new THREE.Sphere(this.position, 2);
     }
 
-    applyPower(){}
+    applyModifier(){
+        if(this.type == "shield"){
+
+        }
+        else if(this.type == "shortcut"){
+
+        }
+        else if(this.type == "speed"){
+
+        }
+    }
+
+    stopModifier(){}
 
 }
 

@@ -106,6 +106,9 @@ class MyContents {
     const ambientLight = new THREE.AmbientLight(0x555555);
     this.app.scene.add(ambientLight);
 
+    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 ); 
+    this.app.scene.add(hemiLight);
+
     // SCENARIO
     this.scenario = new MyScenario(this.app);
 
@@ -124,17 +127,22 @@ class MyContents {
   }
 
   checkKeys() {
+    let isSwitch = this.reader.isAppliedModifier("switch");
+
     if (this.keys['KeyW']) 
       this.playerVehicle.accelerate(this.speedFactor);
 
     if (this.keys['KeyA'])
       this.playerVehicle.shouldStop = true;
 
-    if (this.keys['KeyS'])
-      this.playerVehicle.turn(this.speedFactor/15); //the higher the number that divides speed factor -> the smaller is the turning angle
-
-    if (this.keys['KeyD'])
-      this.playerVehicle.turn(-this.speedFactor/15);
+    if (this.keys['KeyS']){
+      if(!isSwitch) this.playerVehicle.turn(this.speedFactor/15); //the higher the number that divides speed factor -> the smaller is the turning angle
+      else this.playerVehicle.turn(-this.speedFactor/15);
+    }
+    if (this.keys['KeyD']){
+      if(!isSwitch) this.playerVehicle.turn(-this.speedFactor/15);
+      else this.playerVehicle.turn(this.speedFactor/15);
+    }
 
     if (this.keys['KeyR'])
       this.playerVehicle.reverse(this.speedFactor);
@@ -218,10 +226,12 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
+    // update the clouds lookAt
     this.scenario.clouds.display();
     
     const time = Date.now();
     
+    // update the autonomous car position and rotation
     const delta = this.clock.getDelta()
     this.mixer.update(delta)
 
@@ -232,6 +242,14 @@ class MyContents {
       this.playerVehicle.update(time, this.speedFactor);
       this.previousTime = time;
       this.reader.checkForCollisions();
+
+      // check if any modifier is applied for more than 15 seconds
+      for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
+        if (time - this.reader.appliedModifiersStartTime[i] > 15000) {
+          this.reader.stopModifier(this.reader.appliedModifiers[i]);
+        }
+      }
+      
     }
   }
 }

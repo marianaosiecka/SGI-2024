@@ -1,12 +1,10 @@
 import * as THREE from 'three';
 
 class MyObstacle extends THREE.Object3D {
-    constructor(app, obstacleType, texture, color) {
+    constructor(app, type, texture, color) {
         super();
-        this.type = 'Group';
         this.app = app;
-
-        this.obstacleType = obstacleType;
+        this.type = type;
 
         let geometry = new THREE.CylinderGeometry(2, 2, 1, 32, 32);
         let material = new THREE.MeshPhongMaterial({ color: color });
@@ -23,7 +21,16 @@ class MyObstacle extends THREE.Object3D {
         this.bs = new THREE.Sphere(this.position, 2);
     }
 
-    applyPower() {
+    applyModifier() {
+        if(this.type == "slip"){
+
+        }
+    }
+
+    stopModifier() {
+        if(this.type == "slip"){
+
+        }
     }
 
 }

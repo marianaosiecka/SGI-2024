@@ -27,6 +27,9 @@ class MyReader{
         this.autonomousVehicle = null;
         this.readAutonomousVehicle();
         this.readPlayerVehicle();
+
+        this.appliedModifiers = [];
+        this.appliedModifiersStartTime = [];
     }
 
     readTrack(){
@@ -166,7 +169,7 @@ class MyReader{
     }
 
     readObstacles(){
-        // TYPE 1
+        // TYPE: SWITCH
         const obstacleTexture1 = new THREE.TextureLoader().load("textures/obstacle_switchdirections.png");
         const obstacleColor1 = 0xD71D03;
         const obstaclesType1 = [ 
@@ -174,7 +177,7 @@ class MyReader{
         ];
     
         for (let i = 0; i < obstaclesType1.length; i++) {
-            const obstacle = new MyObstacle(this.app, 1, obstacleTexture1, obstacleColor1);
+            const obstacle = new MyObstacle(this.app, "switch", obstacleTexture1, obstacleColor1);
             obstacle.position.set(...obstaclesType1[i][0]);
             obstacle.rotation.set(...obstaclesType1[i][1]);
 
@@ -185,7 +188,7 @@ class MyReader{
         }
 
     
-        // TYPE 2
+        // TYPE: SLIP
         const obstacleTexture2 = new THREE.TextureLoader().load("textures/obstacle_slip.png");
         const obstacleColor2 = 0xD71D03;
         const obstaclesType2 = [
@@ -193,7 +196,7 @@ class MyReader{
         ];
     
         for (let i = 0; i < obstaclesType2.length; i++) {
-            const obstacle = new MyObstacle(this.app, 2, obstacleTexture2, obstacleColor2);
+            const obstacle = new MyObstacle(this.app, "slip", obstacleTexture2, obstacleColor2);
             obstacle.position.set(...obstaclesType2[i][0]);
             obstacle.rotation.set(...obstaclesType2[i][1]);
 
@@ -205,7 +208,7 @@ class MyReader{
     }
 
     readPowerUps(){
-        // TYPE 1
+        // TYPE: SHIELD
         const powerUpTexture1 = new THREE.TextureLoader().load("textures/shield_powerup.png");
         const powerUpColor1 = 0xFFDF35;
         const powerUpType1 = [ 
@@ -213,7 +216,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType1.length; i++) {
-            const powerUp = new MyPowerUp(this.app, 1, powerUpTexture1, powerUpColor1);
+            const powerUp = new MyPowerUp(this.app, "shield", powerUpTexture1, powerUpColor1);
             powerUp.position.set(...powerUpType1[i][0]);
             powerUp.rotation.set(...powerUpType1[i][1]);
 
@@ -223,7 +226,7 @@ class MyReader{
             this.app.scene.add(powerUp);
         }
 
-        // TYPE 2
+        // TYPE: SHORTCUT
         const powerUpTexture2 = new THREE.TextureLoader().load("textures/shortcut_powerup.png");
         const powerUpColor2 = 0xFFDF35;
         const powerUpType2 = [
@@ -231,7 +234,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType2.length; i++) {
-            const powerUp = new MyPowerUp(this.app, 2, powerUpTexture2, powerUpColor2);
+            const powerUp = new MyPowerUp(this.app, "shortcut", powerUpTexture2, powerUpColor2);
             powerUp.position.set(...powerUpType2[i][0]);
             powerUp.rotation.set(...powerUpType2[i][1]);
 
@@ -241,7 +244,7 @@ class MyReader{
             this.app.scene.add(powerUp);
         }
 
-        // TYPE 3
+        // TYPE: SPEED
         const powerUpTexture3 = new THREE.TextureLoader().load("textures/speed_powerup.png");
         const powerUpColor3 = 0xFFDF35;
         const powerUpType3 = [
@@ -249,7 +252,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType3.length; i++) {
-            const powerUp = new MyPowerUp(this.app, 3, powerUpTexture3, powerUpColor3);
+            const powerUp = new MyPowerUp(this.app, "speed", powerUpTexture3, powerUpColor3);
             powerUp.position.set(...powerUpType3[i][0]);
             powerUp.rotation.set(...powerUpType3[i][1]);
 
@@ -279,17 +282,39 @@ class MyReader{
     checkForCollisions() {
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsSphere(powerUp.bs)){
-                console.log("colidiu power up", powerUp.bs)
+                console.log("colidiu power up", powerUp.bs);
+                powerUp.applyModifier();
+                this.appliedModifiers.push(powerUp);
+                this.appliedModifiersStartTime.push(Date.now());
             }
         });
         this.obstacles.forEach(obstacle => {
             if(this.playerVehicle.detectCollisionsSphere(obstacle.bs)){
                 console.log("colidiu obstaculo", obstacle.bs)
+                obstacle.applyModifier();
+                this.appliedModifiers.push(obstacle);
+                this.appliedModifiersStartTime.push(Date.now());
             }
         });
         if(this.playerVehicle.detectCollisionsVehicles(this.autonomousVehicle))
             console.log("colidiu carro")
     }
+
+    stopModifier(modifier){
+        power.stopModifier();
+        const index = this.appliedModifiers.indexOf(modifier);
+        this.appliedModifiers.splice(index, 1);
+        this.appliedModifiersStartTime.splice(index, 1);
+    }
+
+    isAppliedModifier(modifierType){
+        for (let i = 0; i < this.appliedModifiers.length; i++) {
+            if(this.appliedModifiers[i].type == modifierType)
+                return true;
+        }
+        return false;
+    }
+        
 
 }
 
