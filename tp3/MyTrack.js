@@ -47,7 +47,7 @@ class MyTrack extends THREE.Object3D {
     this.mesh = new THREE.Mesh(geometry, material);
     this.wireframe = new THREE.Mesh(geometry, wireframeMaterial);
     this.wireframe.visible = false;
-  
+
     let points = path.getPoints(segments);
     let bufferGeometry = new THREE.BufferGeometry().setFromPoints(points);
     this.line = new THREE.Line(bufferGeometry, lineMaterial);

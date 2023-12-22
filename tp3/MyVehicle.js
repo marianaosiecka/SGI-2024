@@ -84,6 +84,10 @@ class MyVehicle extends THREE.Object3D {
         return this.velocity*this.directionForward;
     }
 
+    updateAutonomous(point) {
+        this.position.set(...point);
+    }
+
     update(time, velocity) {
         if(this.shouldStop)
             this.stop(velocity)

@@ -69,7 +69,7 @@ class MyApp  {
 
         // Create a basic perspective camera
         const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        perspective1.position.set(10,40,-10)
+        perspective1.position.set(30,150,-20)
         this.cameras['Perspective'] = perspective1
     }
 

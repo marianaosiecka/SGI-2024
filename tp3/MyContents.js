@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
-import { MyTrack } from "./MyTrack.js";
-import { MyVehicle } from "./MyVehicle.js";
+import { MyReader } from "./MyReader.js";
 
 /**
  *  This class contains the contents of out application
@@ -15,61 +14,15 @@ class MyContents {
     this.app = app;
     this.axis = null;
 
+    this.startingPoint = new THREE.Vector3(32, 1, -117);
+    this.level = 1;
+
     this.showTrackWireframe = false;
     this.showTrackLine = true;
     this.trackClosedCurve = false;
 
     //Curve related attributes
     this.segments = 200;
-
-    this.path = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(16, 0, 0),
-      new THREE.Vector3(10, 0, -15),
-      new THREE.Vector3(5, 0, -20),
-      new THREE.Vector3(0, 0, -20.5),
-      new THREE.Vector3(-5, 0, -20.5),
-      new THREE.Vector3(-10, 0, -20),
-      new THREE.Vector3(-15, 0, -15),
-      new THREE.Vector3(-20, 0, 4),
-      new THREE.Vector3(-30, 0, 8),
-      new THREE.Vector3(-38, 0, 4),
-      new THREE.Vector3(-45, 0, -15),
-      new THREE.Vector3(-50, 0, -20),
-      new THREE.Vector3(-55, 0, -20.5),
-      new THREE.Vector3(-60, 0, -20.5),
-      new THREE.Vector3(-65, 0, -20),
-      new THREE.Vector3(-70, 0, -15),
-      new THREE.Vector3(-75, 0, -5),
-      new THREE.Vector3(-80, 0, 1),
-      new THREE.Vector3(-85, 0, 4),
-      new THREE.Vector3(-90, 0, 4),
-      new THREE.Vector3(-95, 0, 2),
-      new THREE.Vector3(-100, 0, -4),
-      new THREE.Vector3(-105, 0, -30),
-      new THREE.Vector3(-100, 0, -45),
-      new THREE.Vector3(-90, 0, -52),
-      new THREE.Vector3(-80, 0, -55),
-      new THREE.Vector3(30, 0, -55),
-      new THREE.Vector3(40, 0, -52),
-      new THREE.Vector3(50, 0, -45),
-      new THREE.Vector3(50, 0, 10),
-      new THREE.Vector3(55, 0, 25),
-      new THREE.Vector3(60, 0, 30),
-      new THREE.Vector3(65, 0, 35),
-      new THREE.Vector3(65.5, 0, 40),
-      new THREE.Vector3(65, 0, 45),
-      new THREE.Vector3(60, 0, 50),
-      new THREE.Vector3(55, 0, 52),
-      new THREE.Vector3(50, 0, 53),
-      new THREE.Vector3(45, 0, 52),
-      new THREE.Vector3(38, 0, 48),
-      new THREE.Vector3(35, 0, 45),
-      new THREE.Vector3(32, 0, 42),
-      new THREE.Vector3(30, 0, 40),
-      new THREE.Vector3(20, 0, 12),
-      new THREE.Vector3(16, 0, 0)
-    ]);
-
 
     this.raycaster = new THREE.Raycaster()
     this.raycaster.near = 1
@@ -99,14 +52,25 @@ class MyContents {
         this.onPointerMove.bind(this)
     );*/
 
-    this.car = new MyVehicle(this, 1, 0.5, 1.6, 20, [this.path.getPoint(0).x, this.path.getPoint(0).y, this.path.getPoint(0).z]);
-    this.car.scale.set(4, 4, 4)
-    this.app.scene.add(this.car);
+    this.reader = new MyReader(this, this.app, this.level, this.startingPoint, this.segments)
+    // create the autonomous vehicle
+    this.autonomousVehicle = this.reader.autonomousVehicle; 
+    
+    //player vehicle
+    this.playerVehicle = this.reader.playerVehicle;
   }
 
   keyListeners() {
     document.addEventListener('keydown', this.keyDown.bind(this), false);
     document.addEventListener('keyup', this.keyUp.bind(this), false);
+  }
+
+  keyDown(event) {
+    this.keys[event.code] = true;
+  }
+
+  keyUp(event) {
+    this.keys[event.code] = false;
   }
 
   /**
@@ -120,11 +84,11 @@ class MyContents {
 
     // create once
     if (this.axis === null) {
-      // create and attach the axis to the scene
       this.axis = new MyAxis(this);
       this.app.scene.add(this.axis);
     }
 
+    // LIGHTS
     // add a point light on top of the model
     const pointLight = new THREE.PointLight(0xffffff, 3000, 0);
     pointLight.position.set(0, 40, -10);
@@ -139,44 +103,38 @@ class MyContents {
     const ambientLight = new THREE.AmbientLight(0x555555);
     this.app.scene.add(ambientLight);
 
-    // create the track
-    this.buildTrack(this.availableLayers[0]);
+    // track
+    this.reader.readTrack();
 
-  }
+    // routes
+    this.reader.readRoutes(true);
+    this.spline = this.reader.chosenRoute.spline;
 
-  keyDown(event) {
-    this.keys[event.code] = true;
-  }
+    // create obstacles
+    this.reader.readObstacles();
 
-  keyUp(event) {
-    this.keys[event.code] = false;
-  }
-
-  buildTrack(layer) {
-    this.track = new MyTrack(this.app, this.segments, 4, this.path, this.trackClosedCurve);
-    //this.track.scale.set(3, 0.2, 3);
-    this.track.layers.enable(layer);
-    this.app.scene.add(this.track);
+    // create power ups
+    this.reader.readPowerUps();
   }
 
   checkKeys() {
     if (this.keys['KeyW']) 
-      this.car.accelerate(this.speedFactor);
+      this.playerVehicle.accelerate(this.speedFactor);
 
     if (this.keys['KeyA'])
-      this.car.shouldStop = true;
+      this.playerVehicle.shouldStop = true;
 
     if (this.keys['KeyS'])
-      this.car.turn(this.speedFactor/15); //the higher the number that divides speed factor -> the smaller is the turning angle
+      this.playerVehicle.turn(this.speedFactor/15); //the higher the number that divides speed factor -> the smaller is the turning angle
 
     if (this.keys['KeyD'])
-      this.car.turn(-this.speedFactor/15);
+      this.playerVehicle.turn(-this.speedFactor/15);
 
     if (this.keys['KeyR'])
-      this.car.reverse(this.speedFactor);
+      this.playerVehicle.reverse(this.speedFactor);
 
     if (this.keys['KeyP'])
-      this.car.reset();
+      this.playerVehicle.reset();
   }
 
 
@@ -255,12 +213,15 @@ class MyContents {
    */
   update() {
     const time = Date.now();
+    const timeSpline = (time % 30000) / 30000;
+    const point = this.spline.getPointAt(timeSpline);
+    this.autonomousVehicle.updateAutonomous(point);
 
     if (this.previousTime == 0)
       this.previousTime = time;
     else {
       this.checkKeys();
-      this.car.update(time, this.speedFactor);
+      this.playerVehicle.update(time, this.speedFactor);
       this.previousTime = time;
     }
   }
