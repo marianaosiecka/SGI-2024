@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
-import { MyTrack } from "./MyTrack.js";
-import { MyRoute } from "./MyRoute.js";
-import { MyObstacle } from "./MyObstacle.js";
-import { MyPowerUp } from "./MyPowerUp.js";
-import { MyVehicle } from "./MyVehicle.js";
+import { MyTrack } from "./elements/MyTrack.js";
+import { MyRoute } from "./elements/MyRoute.js";
+import { MyObstacle } from "./elements/MyObstacle.js";
+import { MyPowerUp } from "./elements/MyPowerUp.js";
+import { MyVehicle } from "./elements/MyVehicle.js";
 
 class MyReader{
     constructor(scene, app, level, startingPoint, segments){
@@ -178,6 +178,8 @@ class MyReader{
             obstacle.position.set(...obstaclesType1[i][0]);
             obstacle.rotation.set(...obstaclesType1[i][1]);
 
+            obstacle.setBoundingSphere();
+
             this.obstacles.push(obstacle);
             this.app.scene.add(obstacle);
         }
@@ -194,6 +196,8 @@ class MyReader{
             const obstacle = new MyObstacle(this.app, 2, obstacleTexture2, obstacleColor2);
             obstacle.position.set(...obstaclesType2[i][0]);
             obstacle.rotation.set(...obstaclesType2[i][1]);
+
+            obstacle.setBoundingSphere();
 
             this.obstacles.push(obstacle);
             this.app.scene.add(obstacle);
@@ -213,6 +217,8 @@ class MyReader{
             powerUp.position.set(...powerUpType1[i][0]);
             powerUp.rotation.set(...powerUpType1[i][1]);
 
+            powerUp.setBoundingSphere();
+
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
         }
@@ -228,6 +234,8 @@ class MyReader{
             const powerUp = new MyPowerUp(this.app, 2, powerUpTexture2, powerUpColor2);
             powerUp.position.set(...powerUpType2[i][0]);
             powerUp.rotation.set(...powerUpType2[i][1]);
+
+            powerUp.setBoundingSphere();
 
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
@@ -245,6 +253,8 @@ class MyReader{
             powerUp.position.set(...powerUpType3[i][0]);
             powerUp.rotation.set(...powerUpType3[i][1]);
 
+            powerUp.setBoundingSphere();
+
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
         }
@@ -253,18 +263,33 @@ class MyReader{
     readAutonomousVehicle(){
         this.autonomousVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z]);
         this.autonomousVehicle.scale.set(3, 3, 3);
+        this.autonomousVehicle.position.y += 0.75;
         //this.autonomousVehicle.position.set(this.startingPoint.x, this.startingPoint.y, this.startingPoint.z)
         this.app.scene.add(this.autonomousVehicle);
     }
 
     readPlayerVehicle(){
         this.playerVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z + 7])
+        this.playerVehicle.position.y += 0.75;
         this.playerVehicle.scale.set(3, 3, 3);
         this.app.scene.add(this.playerVehicle);
         
     }
 
-
+    checkForCollisions() {
+        this.powerUps.forEach(powerUp => {
+            if(this.playerVehicle.detectCollisionsSphere(powerUp.bs)){
+                console.log("colidiu power up", powerUp.bs)
+            }
+        });
+        this.obstacles.forEach(obstacle => {
+            if(this.playerVehicle.detectCollisionsSphere(obstacle.bs)){
+                console.log("colidiu obstaculo", obstacle.bs)
+            }
+        });
+        if(this.playerVehicle.detectCollisionsVehicles(this.autonomousVehicle))
+            console.log("colidiu carro")
+    }
 
 }
 

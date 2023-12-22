@@ -1,13 +1,12 @@
 import * as THREE from 'three';
 
-class MyPowerUp extends THREE.Object3D {
-    
-    constructor(app, powerUpType, texture, color) {
+class MyObstacle extends THREE.Object3D {
+    constructor(app, obstacleType, texture, color) {
         super();
-        this.app = app;
         this.type = 'Group';
+        this.app = app;
 
-        this.powerUpType = powerUpType;
+        this.obstacleType = obstacleType;
 
         let geometry = new THREE.CylinderGeometry(2, 2, 1, 32, 32);
         let material = new THREE.MeshPhongMaterial({ color: color });
@@ -20,9 +19,14 @@ class MyPowerUp extends THREE.Object3D {
         this.add(this.mesh);
     }
 
-    applyPower(){}
+    setBoundingSphere() {
+        this.bs = new THREE.Sphere(this.position, 2);
+    }
+
+    applyPower() {
+    }
 
 }
 
-MyPowerUp.prototype.isGroup = true;
-export { MyPowerUp };
+MyObstacle.prototype.isGroup = true;
+export { MyObstacle };

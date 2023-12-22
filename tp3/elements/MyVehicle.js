@@ -46,6 +46,23 @@ class MyVehicle extends THREE.Object3D {
     this.wheelMeshRightBack = new THREE.Mesh(wheelGeometry, wheelMaterial);
     this.wheelMeshRightFront = new THREE.Mesh(wheelGeometry, wheelMaterial);
 
+    this.wheels = [this.wheelMeshLeftBack, this.wheelMeshLeftFront, this.wheelMeshRightBack, this.wheelMeshRightFront];
+
+    // bounding boxes
+    this.carBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+    this.carBB.setFromObject(this.carMesh);
+
+    this.wheel1BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+    this.wheel1BB.setFromObject(this.wheelMeshLeftBack);
+    this.wheel2BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+    this.wheel2BB.setFromObject(this.wheelMeshLeftFront);
+    this.wheel3BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+    this.wheel3BB.setFromObject(this.wheelMeshRightBack);
+    this.wheel4BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+    this.wheel4BB.setFromObject(this.wheelMeshRightFront);
+
+    this.wheelsBB = [this.wheel1BB, this.wheel2BB, this.wheel3BB, this.wheel4BB];
+
     // wheel positions
     this.wheelMeshLeftFront.rotation.set(0, Math.PI / 2, Math.PI / 2);
     this.wheelMeshLeftFront.position.x = -depth / 2 + wheelHeight;
@@ -86,6 +103,18 @@ class MyVehicle extends THREE.Object3D {
 
     updateAutonomous(point) {
         this.position.set(...point);
+
+        this.carMesh.updateMatrixWorld();
+        this.wheels.forEach(wheel => {
+            wheel.updateMatrixWorld();
+        })
+
+         // update the bounding box positions
+        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
+        this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
+        this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
+        this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
+        this.wheel4BB.copy(this.wheelMeshRightFront.geometry.boundingBox).applyMatrix4(this.wheelMeshRightFront.matrixWorld);
     }
 
     update(time, velocity) {
@@ -99,6 +128,18 @@ class MyVehicle extends THREE.Object3D {
         this.updatePosition(dist)
         this.updateRotation()
         this.updateWheelRotation(dist)
+
+        this.carMesh.updateMatrixWorld();
+        this.wheels.forEach(wheel => {
+            wheel.updateMatrixWorld();
+        })
+
+        // update the bounding box positions
+        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
+        this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
+        this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
+        this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
+        this.wheel4BB.copy(this.wheelMeshRightFront.geometry.boundingBox).applyMatrix4(this.wheelMeshRightFront.matrixWorld);
     }
 
     updatePosition(dist){
@@ -133,17 +174,16 @@ class MyVehicle extends THREE.Object3D {
             this.wheelMeshLeftFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
             this.wheelMeshRightFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
         }
-            
+
     }
 
     updateWheelRotation(dist){
         // all wheels rotate on themselves
         this.wheelTurnAngle = Math.sin(dist * this.directionForward);
 
-        this.wheelMeshLeftFront.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.wheelTurnAngle)
-        this.wheelMeshLeftBack.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.wheelTurnAngle)
-        this.wheelMeshRightFront.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.wheelTurnAngle)
-        this.wheelMeshRightBack.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.wheelTurnAngle)
+        this.wheels.forEach(wheel => {
+            wheel.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.wheelTurnAngle);
+        });
     }
 
     accelerate(velocity) {
@@ -192,11 +232,21 @@ class MyVehicle extends THREE.Object3D {
         this.position.z = this.initialPosition[2];
 
         //reset wheel rotations
-        this.wheelMeshLeftBack.rotation.set(0, Math.PI / 2, Math.PI / 2);
-        this.wheelMeshLeftFront.rotation.set(0, Math.PI / 2, Math.PI / 2);
-        this.wheelMeshRightBack.rotation.set(0, Math.PI / 2, Math.PI / 2);
-        this.wheelMeshRightFront.rotation.set(0, Math.PI / 2, Math.PI / 2);
-        
+        this.wheels.forEach(wheel => {
+            wheel.rotation.set(0, Math.PI / 2, Math.PI / 2);
+        });
+    }
+
+    detectCollisionsSphere (otherObject) {
+        return this.carBB.intersectsSphere(otherObject) || this.wheel1BB.intersectsSphere(otherObject) || this.wheel2BB.intersectsSphere(otherObject) || this.wheel3BB.intersectsSphere(otherObject) || this.wheel4BB.intersectsSphere(otherObject)
+    }
+
+    detectCollisionsVehicles (otherVehicle) {
+        return this.carBB.intersectsBox(otherVehicle.carBB) || this.wheel1BB.intersectsBox(otherVehicle.carBB) || this.wheel2BB.intersectsBox(otherVehicle.carBB) || this.wheel3BB.intersectsBox(otherVehicle.carBB) || this.wheel4BB.intersectsBox(otherVehicle.carBB)
+         || this.carBB.intersectsBox(otherVehicle.wheel1BB) || this.wheel1BB.intersectsBox(otherVehicle.wheel1BB) || this.wheel2BB.intersectsBox(otherVehicle.wheel1BB) || this.wheel3BB.intersectsBox(otherVehicle.wheel1BB) || this.wheel4BB.intersectsBox(otherVehicle.wheel1BB)
+         || this.carBB.intersectsBox(otherVehicle.wheel2BB) || this.wheel1BB.intersectsBox(otherVehicle.wheel2BB) || this.wheel2BB.intersectsBox(otherVehicle.wheel2BB) || this.wheel3BB.intersectsBox(otherVehicle.wheel2BB) || this.wheel4BB.intersectsBox(otherVehicle.wheel2BB)
+         || this.carBB.intersectsBox(otherVehicle.wheel3BB) || this.wheel1BB.intersectsBox(otherVehicle.wheel3BB) || this.wheel2BB.intersectsBox(otherVehicle.wheel3BB) || this.wheel3BB.intersectsBox(otherVehicle.wheel3BB) || this.wheel4BB.intersectsBox(otherVehicle.wheel3BB)
+         || this.carBB.intersectsBox(otherVehicle.wheel4BB) || this.wheel1BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel2BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel3BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel4BB.intersectsBox(otherVehicle.wheel4BB);
     }
 
 }
