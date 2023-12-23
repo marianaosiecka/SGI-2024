@@ -71,8 +71,13 @@ class MyApp  {
         const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         perspective1.position.set(30,150,-20)
         this.cameras['Perspective'] = perspective1
-    }
+        
+        const playerCarPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        playerCarPerspective.position.set(0, 10, 0)
+        this.cameras['PlayerCarPerspective'] = playerCarPerspective
 
+    }
+   
     /**
      * sets the active camera by name
      * @param {String} cameraName 
@@ -80,6 +85,12 @@ class MyApp  {
     setActiveCamera(cameraName) {   
         this.activeCameraName = cameraName
         this.activeCamera = this.cameras[this.activeCameraName]
+        if(this.activeCameraName == 'PlayerCarPerspective') {
+            this.contents.followPlayerVehicle = true
+        }
+        else if(this.contents) {
+            this.contents.followPlayerVehicle = false
+        }
     }
 
     /**

@@ -265,8 +265,8 @@ class MyReader{
 
     readAutonomousVehicle(){
         this.autonomousVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z]);
-        this.autonomousVehicle.scale.set(3, 3, 3);
         this.autonomousVehicle.position.y += 0.75;
+        this.autonomousVehicle.scale.set(3, 3, 3);
         //this.autonomousVehicle.position.set(this.startingPoint.x, this.startingPoint.y, this.startingPoint.z)
         this.app.scene.add(this.autonomousVehicle);
     }

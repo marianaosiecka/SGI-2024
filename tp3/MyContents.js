@@ -16,6 +16,7 @@ class MyContents {
     this.axis = null;
 
     this.clock = new THREE.Clock()
+    this.followPlayerVehicle = false;
 
     this.startingPoint = new THREE.Vector3(32, 1, -117);
     this.level = 1;
@@ -249,7 +250,11 @@ class MyContents {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
         }
       }
-      
+    }
+
+    if(this.followPlayerVehicle) {
+      this.app.activeCamera.position.set(this.playerVehicle.position.x + 10 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 5, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
+      this.app.controls.target = this.playerVehicle.position;
     }
   }
 }
