@@ -22,19 +22,29 @@ class MyPowerUp extends THREE.Object3D {
         this.bs = new THREE.Sphere(this.position, 2);
     }
 
-    applyModifier(){
+    applyModifier(playerVehicle){
         if(this.type == "shield"){
-
+            playerVehicle.shield = true;
+        }
+        else if(this.type == "speed"){
+            playerVehicle.velocity *= 1.1;
         }
         else if(this.type == "shortcut"){
 
         }
-        else if(this.type == "speed"){
-
-        }
     }
 
-    stopModifier(){}
+    stopModifier(playerVehicle){
+        if(this.type == "shield"){
+            playerVehicle.shield = false;
+        }
+        else if (this.type == "speed"){
+            playerVehicle.velocity /= 1.1;
+        }
+        else if(this.type == "shortcut"){
+            
+        }
+    }
 
 }
 

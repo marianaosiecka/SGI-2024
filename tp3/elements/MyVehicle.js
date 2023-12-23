@@ -28,7 +28,9 @@ class MyVehicle extends THREE.Object3D {
     this.shouldStop = false;
     this.rotationAdjusted = false;
     this.previousTurnAngle = null;
-
+    this.shield = false;
+    this.slipping = false;
+    
     // car geometry
     let geometry = new THREE.BoxGeometry(depth, height, width);
 
@@ -124,7 +126,7 @@ class MyVehicle extends THREE.Object3D {
         // calculate the distance that the car should move
         let timeVariation = time - this.scene.previousTime;
         let dist = this.velocity * timeVariation * 0.005 * this.directionForward;
-            
+
         this.updatePosition(dist)
         this.updateRotation()
         this.updateWheelRotation(dist)
@@ -148,8 +150,18 @@ class MyVehicle extends THREE.Object3D {
     }
 
     updateRotation(){
+        let noise = 0;
+
+        // if the car is slipping it will rotate randomly
+        if(this.slipping){
+            // controls the amplitude of the angle
+            const slippingEffect = 0.6; 
+            // controls the frequency of the rotation
+            noise = Math.sin(Date.now() * 0.0025) * slippingEffect;
+        }
+
         // car rotation
-        this.rotation.set(0, this.carOrientation, 0)
+        this.rotation.set(0, this.carOrientation + noise, 0)
 
         // front wheels rotation
         if(this.wheelOrientation !== 0 && this.needsRotationAdjusted) {
@@ -165,6 +177,7 @@ class MyVehicle extends THREE.Object3D {
                 rotationAngle = -maxRotationAngle;
             }
 
+            
             // apply rotation
             this.wheelMeshLeftFront.rotation.set(0, this.initialWheelTurnAngle + (rotationAngle*this.directionForward), this.initialWheelTurnAngle);
             this.wheelMeshRightFront.rotation.set(0, this.initialWheelTurnAngle + (rotationAngle*this.directionForward), this.initialWheelTurnAngle);
@@ -189,6 +202,11 @@ class MyVehicle extends THREE.Object3D {
     accelerate(velocity) {
         if (this.velocity + velocity < this.maxVelocity)  
             this.velocity += velocity/3;
+    }
+
+    decelerate(velocity) {
+        if (this.velocity + velocity > 0)  
+            this.velocity -= velocity/3;
     }
 
     stop(velocity) {

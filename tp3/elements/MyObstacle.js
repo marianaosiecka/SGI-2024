@@ -21,15 +21,15 @@ class MyObstacle extends THREE.Object3D {
         this.bs = new THREE.Sphere(this.position, 2);
     }
 
-    applyModifier() {
+    applyModifier(playerVehicle) {
         if(this.type == "slip"){
-
+            playerVehicle.slipping = true;
         }
     }
 
-    stopModifier() {
+    stopModifier(playerVehicle) {
         if(this.type == "slip"){
-
+            playerVehicle.slipping = false;
         }
     }
 

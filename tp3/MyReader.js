@@ -33,7 +33,7 @@ class MyReader{
     }
 
     readTrack(){
-        this.trackWidth = 4;
+        this.trackWidth = 7;
 
         const path = new THREE.CatmullRomCurve3([
             new THREE.Vector3(16, 0, 0),
@@ -90,68 +90,69 @@ class MyReader{
     }
 
     readRoutes(visualRepresentation){
+        let startingPointRoute = new THREE.Vector3(this.startingPoint.x, this.startingPoint.y + 0.75, this.startingPoint.z);
         // LEVEL 1
         const keyPoints1 = [
-            this.startingPoint,
-            new THREE.Vector3(10, 1, -117),
-            new THREE.Vector3(-34, 1, -115),
-            new THREE.Vector3(-70, 1, -112),
-            new THREE.Vector3(-85, 1, -105),
-            new THREE.Vector3(-90, 1, -98),
-            new THREE.Vector3(-95, 1, -90),
-            new THREE.Vector3(-100, 1, -80),
-            new THREE.Vector3(-105, 1, -60),
-            new THREE.Vector3(-102, 1, -35),
-            new THREE.Vector3(-100, 1, 5),
-            new THREE.Vector3(-102, 1, 35),
-            new THREE.Vector3(-110, 1, 50),
-            new THREE.Vector3(-118, 1, 60),
-            new THREE.Vector3(-127, 1, 70),
-            new THREE.Vector3(-129, 1, 78),
-            new THREE.Vector3(-129, 1, 85),
-            new THREE.Vector3(-126, 1, 89),
-            new THREE.Vector3(-120, 1, 95),
-            new THREE.Vector3(-112, 1, 100),
-            new THREE.Vector3(-105, 1, 102),
-            new THREE.Vector3(-98, 1, 102),
-            new THREE.Vector3(-90, 1, 100),
-            new THREE.Vector3(-80, 1, 95),
-            new THREE.Vector3(-70, 1, 87),
-            new THREE.Vector3(-60, 1, 75),
-            new THREE.Vector3(-50, 1, 45),
-            new THREE.Vector3(-32, 1, -10),
-            new THREE.Vector3(-10, 1, -37),
-            new THREE.Vector3(10, 1, -38),
-            new THREE.Vector3(20, 1, -35),
-            new THREE.Vector3(30, 1, -25),
-            new THREE.Vector3(35, 1, -15),
-            new THREE.Vector3(40, 1, 0),
-            new THREE.Vector3(45, 1, 8),
-            new THREE.Vector3(53, 1, 12),
-            new THREE.Vector3(60, 1, 12),
-            new THREE.Vector3(65, 1, 10),
-            new THREE.Vector3(72, 1, 8),
-            new THREE.Vector3(80, 1, 0),
-            new THREE.Vector3(85, 1, -20),
-            new THREE.Vector3(95, 1, -35),
-            new THREE.Vector3(105, 1, -38),
-            new THREE.Vector3(115, 1, -38),
-            new THREE.Vector3(125, 1, -37),
-            new THREE.Vector3(140, 1, -25),
-            new THREE.Vector3(150, 1, -10),
-            new THREE.Vector3(165, 1, 2),
-            new THREE.Vector3(175, 1, 5),
-            new THREE.Vector3(185, 1, 3),
-            new THREE.Vector3(195, 1, -5),
-            new THREE.Vector3(203, 1, -30),
-            new THREE.Vector3(206, 1, -55),
-            new THREE.Vector3(205, 1, -70),
-            new THREE.Vector3(200, 1, -85),
-            new THREE.Vector3(180, 1, -100),
-            new THREE.Vector3(150, 1, -107),
-            new THREE.Vector3(115, 1, -110),
-            new THREE.Vector3(80, 1, -113),
-            this.startingPoint
+            startingPointRoute,
+            new THREE.Vector3(10, 2, -117),
+            new THREE.Vector3(-34, 2, -115),
+            new THREE.Vector3(-70, 2, -112),
+            new THREE.Vector3(-85, 2, -105),
+            new THREE.Vector3(-90, 2, -98),
+            new THREE.Vector3(-95, 2, -90),
+            new THREE.Vector3(-100, 2, -80),
+            new THREE.Vector3(-105, 2, -60),
+            new THREE.Vector3(-102, 2, -35),
+            new THREE.Vector3(-100, 2, 5),
+            new THREE.Vector3(-102, 2, 35),
+            new THREE.Vector3(-110, 2, 50),
+            new THREE.Vector3(-118, 2, 60),
+            new THREE.Vector3(-127, 2, 70),
+            new THREE.Vector3(-129, 2, 78),
+            new THREE.Vector3(-129, 2, 85),
+            new THREE.Vector3(-126, 2, 89),
+            new THREE.Vector3(-120, 2, 95),
+            new THREE.Vector3(-112, 2, 100),
+            new THREE.Vector3(-105, 2, 102),
+            new THREE.Vector3(-98, 2, 102),
+            new THREE.Vector3(-90, 2, 100),
+            new THREE.Vector3(-80, 2, 95),
+            new THREE.Vector3(-70, 2, 87),
+            new THREE.Vector3(-60, 2, 75),
+            new THREE.Vector3(-50, 2, 45),
+            new THREE.Vector3(-32, 2, -10),
+            new THREE.Vector3(-10, 2, -37),
+            new THREE.Vector3(10, 2, -38),
+            new THREE.Vector3(20, 2, -35),
+            new THREE.Vector3(30, 2, -25),
+            new THREE.Vector3(35, 2, -15),
+            new THREE.Vector3(40, 2, 0),
+            new THREE.Vector3(45, 2, 8),
+            new THREE.Vector3(53, 2, 12),
+            new THREE.Vector3(60, 2, 12),
+            new THREE.Vector3(65, 2, 10),
+            new THREE.Vector3(72, 2, 8),
+            new THREE.Vector3(80, 2, 0),
+            new THREE.Vector3(85, 2, -20),
+            new THREE.Vector3(95, 2, -35),
+            new THREE.Vector3(105, 2, -38),
+            new THREE.Vector3(115, 2, -38),
+            new THREE.Vector3(125, 2, -37),
+            new THREE.Vector3(140, 2, -25),
+            new THREE.Vector3(150, 2, -10),
+            new THREE.Vector3(165, 2, 2),
+            new THREE.Vector3(175, 2, 5),
+            new THREE.Vector3(185, 2, 3),
+            new THREE.Vector3(195, 2, -5),
+            new THREE.Vector3(203, 2, -30),
+            new THREE.Vector3(206, 2, -55),
+            new THREE.Vector3(205, 2, -70),
+            new THREE.Vector3(200, 2, -85),
+            new THREE.Vector3(180, 2, -100),
+            new THREE.Vector3(150, 2, -107),
+            new THREE.Vector3(115, 2, -110),
+            new THREE.Vector3(80, 2, -113),
+            startingPointRoute
         ];
       
         const timeInterval1 = 1;
@@ -265,25 +266,27 @@ class MyReader{
 
     readAutonomousVehicle(){
         this.autonomousVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z]);
-        this.autonomousVehicle.position.y += 0.75;
         this.autonomousVehicle.scale.set(3, 3, 3);
         //this.autonomousVehicle.position.set(this.startingPoint.x, this.startingPoint.y, this.startingPoint.z)
         this.app.scene.add(this.autonomousVehicle);
     }
 
     readPlayerVehicle(){
-        this.playerVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z + 7])
-        this.playerVehicle.position.y += 0.75;
+        this.playerVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y + 1, this.startingPoint.z + 10])
         this.playerVehicle.scale.set(3, 3, 3);
         this.app.scene.add(this.playerVehicle);
         
     }
 
     checkForCollisions() {
+        // if the player has the shield modifier, he can't collide with anything
+        if(this.playerVehicle.shield)
+            return;
+
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsSphere(powerUp.bs)){
                 console.log("colidiu power up", powerUp.bs);
-                powerUp.applyModifier();
+                powerUp.applyModifier(this.playerVehicle);
                 this.appliedModifiers.push(powerUp);
                 this.appliedModifiersStartTime.push(Date.now());
             }
@@ -291,7 +294,7 @@ class MyReader{
         this.obstacles.forEach(obstacle => {
             if(this.playerVehicle.detectCollisionsSphere(obstacle.bs)){
                 console.log("colidiu obstaculo", obstacle.bs)
-                obstacle.applyModifier();
+                obstacle.applyModifier(this.playerVehicle);
                 this.appliedModifiers.push(obstacle);
                 this.appliedModifiersStartTime.push(Date.now());
             }
@@ -301,7 +304,7 @@ class MyReader{
     }
 
     stopModifier(modifier){
-        power.stopModifier();
+        modifier.stopModifier(this.playerVehicle);
         const index = this.appliedModifiers.indexOf(modifier);
         this.appliedModifiers.splice(index, 1);
         this.appliedModifiersStartTime.splice(index, 1);

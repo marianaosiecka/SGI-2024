@@ -82,7 +82,7 @@ class MyContents {
    */
   init() {
     this.previousTime = 0;
-    this.speedFactor = 0.5;
+    this.speedFactor = 0.8;
     this.keys = {};
     this.keyListeners();
 
@@ -128,28 +128,36 @@ class MyContents {
   }
 
   checkKeys() {
+    let speed = this.speedFactor;
+    let turnSpeed = speed/25;
+    
     let isSwitch = this.reader.isAppliedModifier("switch");
 
     if (this.keys['KeyW']) 
-      this.playerVehicle.accelerate(this.speedFactor);
+      this.playerVehicle.accelerate(speed);
+
+    if (this.keys['KeyX']) 
+      this.playerVehicle.decelerate(speed);
 
     if (this.keys['KeyA'])
       this.playerVehicle.shouldStop = true;
 
     if (this.keys['KeyS']){
-      if(!isSwitch) this.playerVehicle.turn(this.speedFactor/15); //the higher the number that divides speed factor -> the smaller is the turning angle
-      else this.playerVehicle.turn(-this.speedFactor/15);
+      if(!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
+      else this.playerVehicle.turn(-turnSpeed);
     }
     if (this.keys['KeyD']){
-      if(!isSwitch) this.playerVehicle.turn(-this.speedFactor/15);
-      else this.playerVehicle.turn(this.speedFactor/15);
+      if(!isSwitch) this.playerVehicle.turn(-turnSpeed);
+      else this.playerVehicle.turn(turnSpeed);
     }
 
     if (this.keys['KeyR'])
-      this.playerVehicle.reverse(this.speedFactor);
+      this.playerVehicle.reverse(speed);
 
     if (this.keys['KeyP'])
       this.playerVehicle.reset();
+
+    return speed;
   }
 
 
@@ -235,25 +243,28 @@ class MyContents {
     // update the autonomous car position and rotation
     const delta = this.clock.getDelta()
     this.mixer.update(delta)
+    // this updates the position of the actual object of MyVehicle class
+    this.reader.chosenRoute.updateBoundingBoxPositions(this.reader.autonomousVehicle);
+  
 
     if (this.previousTime == 0)
       this.previousTime = time;
     else {
-      this.checkKeys();
-      this.playerVehicle.update(time, this.speedFactor);
+      let speed = this.checkKeys();
+      this.playerVehicle.update(time, speed);
       this.previousTime = time;
       this.reader.checkForCollisions();
 
       // check if any modifier is applied for more than 15 seconds
       for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
-        if (time - this.reader.appliedModifiersStartTime[i] > 15000) {
+        if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
         }
       }
     }
 
     if(this.followPlayerVehicle) {
-      this.app.activeCamera.position.set(this.playerVehicle.position.x + 10 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 5, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
+      this.app.activeCamera.position.set(this.playerVehicle.position.x + 10 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 8, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.app.controls.target = this.playerVehicle.position;
     }
   }
