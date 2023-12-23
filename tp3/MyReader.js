@@ -272,7 +272,7 @@ class MyReader{
     }
 
     readPlayerVehicle(){
-        this.playerVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y + 1, this.startingPoint.z + 10])
+        this.playerVehicle = new MyVehicle(this.scene, 1, 0.5, 1.6, 30, [this.startingPoint.x, this.startingPoint.y + 0.95, this.startingPoint.z + 10])
         this.playerVehicle.scale.set(3, 3, 3);
         this.app.scene.add(this.playerVehicle);
         
@@ -299,8 +299,20 @@ class MyReader{
                 this.appliedModifiersStartTime.push(Date.now());
             }
         });
-        if(this.playerVehicle.detectCollisionsVehicles(this.autonomousVehicle))
-            console.log("colidiu carro")
+        if(this.playerVehicle.detectCollisionsVehicles(this.autonomousVehicle)){
+            console.log("colidiu carro")           
+            this.playerVehicle.previousVelocity = this.playerVehicle.velocity;
+            this.playerVehicle.velocity = 0.7*this.playerVehicle.velocity;
+            this.appliedModifiers.push(this.autonomousVehicle);
+            this.appliedModifiersStartTime.push(Date.now());
+        }
+
+        if(this.playerVehicle.detectOutOfTrack(this.track)){
+            console.log("saiu track")
+            this.playerVehicle.outOfTrack = true;
+        }
+        else
+            this.playerVehicle.outOfTrack = false;
     }
 
     stopModifier(modifier){

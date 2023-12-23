@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import { MyReader } from "./MyReader.js";
 import { MyScenario } from "./MyScenario.js";
+import { MyVehicle } from "./elements/MyVehicle.js";
 
 /**
  *  This class contains the contents of out application
@@ -258,18 +259,26 @@ class MyContents {
 
       // check if any modifier is applied for more than 15 seconds
       for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
-        if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
-          this.reader.stopModifier(this.reader.appliedModifiers[i]);
-        }
+        if(this.reader.appliedModifiers[i] instanceof MyVehicle){
+          if(time - this.reader.appliedModifiersStartTime[i] > 3000)
+            this.reader.stopModifier(this.reader.appliedModifiers[i]);
+        } 
+        else
+          if(time - this.reader.appliedModifiersStartTime[i] > 6000) {
+            this.reader.stopModifier(this.reader.appliedModifiers[i]);
+          }
       }
+      
     }
 
     if(this.followPlayerVehicle) {
+      //console.log(this.playerVehicle.carOrientation)
       this.app.activeCamera.position.set(this.playerVehicle.position.x + 10 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 8, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.app.controls.target = this.playerVehicle.position;
     }
 
     if(this.followAutonomousVehicle) {
+      console.log(this.autonomousVehicle.carOrientation)
       this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
       this.app.controls.target = this.autonomousVehicle.position;
     }

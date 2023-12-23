@@ -18,6 +18,7 @@ class MyVehicle extends THREE.Object3D {
     this.wheelOrientation = 0;
     this.directionForward = 1;
     this.velocity = 0;
+    this.previousVelocity = 0;
     this.position.x = initialPosition[0];
     this.position.y = initialPosition[1];
     this.position.z = initialPosition[2] - depth/2; //so that the rotation pivot is in the rear axle
@@ -32,6 +33,7 @@ class MyVehicle extends THREE.Object3D {
     this.slipping = false;
     this.speeding = false;
     this.isReverse = false;
+    this.outOfTrack = false;
     
     // car geometry
     let geometry = new THREE.BoxGeometry(depth, height, width);
@@ -53,7 +55,7 @@ class MyVehicle extends THREE.Object3D {
     this.wheels = [this.wheelMeshLeftBack, this.wheelMeshLeftFront, this.wheelMeshRightBack, this.wheelMeshRightFront];
 
     // bounding boxes
-    this.carBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+    this.carBB = new THREE.Box3()
     this.carBB.setFromObject(this.carMesh);
 
     this.wheel1BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
@@ -97,10 +99,6 @@ class MyVehicle extends THREE.Object3D {
 
     }
 
-    getOrientation(){
-        return this.carOrientation;
-    }
-
     getVelocity() {
         return this.velocity*this.directionForward;
     }
@@ -108,6 +106,8 @@ class MyVehicle extends THREE.Object3D {
     updateAutonomous(point, orientation) {
         this.position.set(...point);
         this.setRotationFromQuaternion(orientation);
+        this.carOrientation = this.rotation.y;
+        //console.log(this.carOrientation)
 
         this.carMesh.updateMatrixWorld();
         this.wheels.forEach(wheel => {
@@ -125,10 +125,15 @@ class MyVehicle extends THREE.Object3D {
     update(time, velocity) {
         if(this.shouldStop)
             this.stop(velocity)
-    
+
+        let currentVelocity = this.velocity;
+        if(this.outOfTrack){
+            currentVelocity = 0.4*this.velocity;
+        }
+
         // calculate the distance that the car should move
         let timeVariation = time - this.scene.previousTime;
-        let dist = this.velocity * timeVariation * 0.005 * this.directionForward;
+        let dist = currentVelocity * timeVariation * 0.005 * this.directionForward;
 
         this.updatePosition(dist)
         this.updateRotation()
@@ -270,6 +275,34 @@ class MyVehicle extends THREE.Object3D {
          || this.carBB.intersectsBox(otherVehicle.wheel4BB) || this.wheel1BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel2BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel3BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel4BB.intersectsBox(otherVehicle.wheel4BB);
     }
 
+    detectOutOfTrack (track) {
+        let positionWheel1 = this.position.clone().add(this.wheelMeshLeftBack.position);
+        let positionWheel2 = this.position.clone().add(this.wheelMeshLeftFront.position);
+        let positionWheel3 = this.position.clone().add(this.wheelMeshRightBack.position);
+        let positionWheel4 = this.position.clone().add(this.wheelMeshRightFront.position);
+
+        const verticalVector = new THREE.Vector3(0, -1, 0);
+
+        //raycaster for each wheel
+        const raycaster1 = new THREE.Raycaster(positionWheel1, verticalVector);
+        const intersections1 = raycaster1.intersectObject(track);
+
+        const raycaster2 = new THREE.Raycaster(positionWheel2, verticalVector);
+        const intersections2 = raycaster2.intersectObject(track);
+
+        const raycaster3 = new THREE.Raycaster(positionWheel3, verticalVector);
+        const intersections3 = raycaster3.intersectObject(track);
+        
+        const raycaster4 = new THREE.Raycaster(positionWheel4, verticalVector);
+        const intersections4 = raycaster4.intersectObject(track);
+        
+        // return true if any of the wheels is out of the track (0 intersections)
+        return intersections1.length === 0 || intersections2.length === 0 || intersections3.length === 0 || intersections4.length === 0;
+    }
+
+    stopModifier(vehicle) {
+        vehicle.velocity = vehicle.previousVelocity;
+    }
 }
 
 
