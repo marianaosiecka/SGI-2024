@@ -75,6 +75,10 @@ class MyApp  {
         const playerCarPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         playerCarPerspective.position.set(0, 10, 0)
         this.cameras['PlayerCarPerspective'] = playerCarPerspective
+
+        const autonomousCarPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        autonomousCarPerspective.position.set(0, 10, 0)
+        this.cameras['AutonomousCarPerspective'] = autonomousCarPerspective
     }
    
     /**
@@ -86,9 +90,17 @@ class MyApp  {
         this.activeCamera = this.cameras[this.activeCameraName]
         if(this.activeCameraName == 'PlayerCarPerspective') {
             this.contents.followPlayerVehicle = true
+            this.contents.followAutonomousVehicle = false
         }
-        else if(this.contents) {
+        else if(this.activeCameraName == 'AutonomousCarPerspective') {
             this.contents.followPlayerVehicle = false
+            this.contents.followAutonomousVehicle = true
+        }
+        else {
+            if(this.contents){
+                this.contents.followPlayerVehicle = false
+                this.contents.followAutonomousVehicle = false
+            }
         }
     }
 

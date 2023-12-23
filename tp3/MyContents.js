@@ -17,6 +17,7 @@ class MyContents {
 
     this.clock = new THREE.Clock()
     this.followPlayerVehicle = false;
+    this.followAutonomousVehicle = false;
 
     this.startingPoint = new THREE.Vector3(32, 1, -117);
     this.level = 1;
@@ -117,7 +118,7 @@ class MyContents {
     this.reader.readTrack();
 
     // routes
-    this.reader.readRoutes(true);
+    this.reader.readRoutes();
     this.mixer = this.reader.mixer;
 
     // create obstacles
@@ -266,6 +267,11 @@ class MyContents {
     if(this.followPlayerVehicle) {
       this.app.activeCamera.position.set(this.playerVehicle.position.x + 10 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 8, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.app.controls.target = this.playerVehicle.position;
+    }
+
+    if(this.followAutonomousVehicle) {
+      this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
+      this.app.controls.target = this.autonomousVehicle.position;
     }
   }
 }
