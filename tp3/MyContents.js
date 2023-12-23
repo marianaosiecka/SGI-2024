@@ -236,7 +236,7 @@ class MyContents {
    */
   update() {
     // update the clouds lookAt
-    this.scenario.clouds.display();
+    this.scenario.update();
     
     const time = Date.now();
     

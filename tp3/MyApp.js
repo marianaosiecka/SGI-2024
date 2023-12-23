@@ -75,7 +75,6 @@ class MyApp  {
         const playerCarPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         playerCarPerspective.position.set(0, 10, 0)
         this.cameras['PlayerCarPerspective'] = playerCarPerspective
-
     }
    
     /**
