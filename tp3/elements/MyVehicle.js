@@ -30,6 +30,8 @@ class MyVehicle extends THREE.Object3D {
     this.previousTurnAngle = null;
     this.shield = false;
     this.slipping = false;
+    this.speeding = false;
+    this.isReverse = false;
     
     // car geometry
     let geometry = new THREE.BoxGeometry(depth, height, width);
@@ -103,8 +105,9 @@ class MyVehicle extends THREE.Object3D {
         return this.velocity*this.directionForward;
     }
 
-    updateAutonomous(point) {
+    updateAutonomous(point, orientation) {
         this.position.set(...point);
+        this.setRotationFromQuaternion(orientation);
 
         this.carMesh.updateMatrixWorld();
         this.wheels.forEach(wheel => {

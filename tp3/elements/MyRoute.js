@@ -77,11 +77,17 @@ class MyRoute extends THREE.Object3D {
         this.app.scene.add(tubeMesh)
     }
 
-    updateBoundingBoxPositions(autonomousVehicle) {
+    updateBoundingBox(autonomousVehicle) {
         const carPosition = new THREE.Vector3();
-        this.mixer.getRoot().getWorldPosition(carPosition);
-        autonomousVehicle.updateAutonomous(carPosition);
+        const carQuaternion = new THREE.Quaternion();
+        const vehicle = this.mixer.getRoot();
+        
+        vehicle.getWorldPosition(carPosition);
+        vehicle.getWorldQuaternion(carQuaternion);
+
+        autonomousVehicle.updateAutonomous(carPosition, carQuaternion);
     }
+
 }
 
 MyRoute.prototype.isGroup = true;

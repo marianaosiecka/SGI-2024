@@ -27,7 +27,11 @@ class MyPowerUp extends THREE.Object3D {
             playerVehicle.shield = true;
         }
         else if(this.type == "speed"){
-            playerVehicle.velocity *= 1.1;
+            if (playerVehicle.velocity + 1.2*playerVehicle.velocity < playerVehicle.maxVelocity){
+                playerVehicle.velocity *= 1.2;
+                playerVehicle.speeding = true;  
+                console.log("here")              
+            }  
         }
         else if(this.type == "shortcut"){
 
@@ -39,7 +43,10 @@ class MyPowerUp extends THREE.Object3D {
             playerVehicle.shield = false;
         }
         else if (this.type == "speed"){
-            playerVehicle.velocity /= 1.1;
+            if(playerVehicle.speeding){
+                playerVehicle.velocity /= 1.2;
+                playerVehicle.speeding = false;
+            }
         }
         else if(this.type == "shortcut"){
             

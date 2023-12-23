@@ -244,8 +244,8 @@ class MyContents {
     const delta = this.clock.getDelta()
     this.mixer.update(delta)
     // this updates the position of the actual object of MyVehicle class
-    this.reader.chosenRoute.updateBoundingBoxPositions(this.reader.autonomousVehicle);
-  
+    this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
+
 
     if (this.previousTime == 0)
       this.previousTime = time;
