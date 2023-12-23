@@ -40,7 +40,7 @@ class MyClouds {
         
             }`;
 
-        let material = new THREE.ShaderMaterial( {
+        this.material = new THREE.ShaderMaterial( {
             uniforms: {
                 "map": { value: texture },
                 "fogColor" : { type: "c", value: fog.color },
@@ -60,7 +60,7 @@ class MyClouds {
         this.clouds_list = []
 
         for ( var i = -500; i < 500; i += 1 ) {
-            let cloud = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), material );
+            let cloud = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), this.material );
             cloud.position.x =  Math.random() * 1000 - 500; // between -500 and 500
             cloud.position.y = - Math.random() * Math.random() * 100 - 50; // between -50 and -100
             cloud.position.z = i; // between -500 and 500
@@ -78,15 +78,30 @@ class MyClouds {
             this.clouds.add(cloud);
             this.clouds.add(cloud_clone);
         }
+
         this.app.scene.add(this.clouds);
 
+    }
 
+    setCloudUnderCar (vehiclePosition) {
+        this.cloudUnderCar = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.material);
+        this.cloudUnderCar.position.set(vehiclePosition.x, vehiclePosition.y - 100, vehiclePosition.z);
+        this.cloudUnderCar.scale.x = 0.15;
+        this.cloudUnderCar.scale.y = 0.15;
+        this.app.scene.add(this.cloudUnderCar);
+        console.log(this.cloudUnderCar)
     }
 
     update() {
         this.clouds_list.forEach(cloud => {
             cloud.lookAt(this.cameraPosition);
         });
+    }
+
+    updateCloudUnderCar(carPosition) {
+        this.cloudUnderCar.position.set(carPosition.x, carPosition.y - 2, carPosition.z);
+        console.log(this.cloudUnderCar.position)
+        this.cloudUnderCar.lookAt(this.cameraPosition);
     }
 }
 

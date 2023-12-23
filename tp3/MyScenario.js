@@ -24,9 +24,18 @@ class MyScenario {
         this.skyscraper1.skyscraper.position.z = -200;
     }
 
-    update() {
+    setCloudUnderCar (vehiclePosition) {
+        this.clouds.setCloudUnderCar(vehiclePosition);
+    }
+
+    update(playerVehicle) {
         this.clouds.update();
         this.bird.update();
+
+        if(playerVehicle.outOfTrack && playerVehicle.allCarOutOfTrack){
+            console.log("nuvem");
+            this.clouds.updateCloudUnderCar(playerVehicle.position, playerVehicle.orientation);
+        }
     }
 }
 

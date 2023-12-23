@@ -34,6 +34,8 @@ class MyVehicle extends THREE.Object3D {
     this.speeding = false;
     this.isReverse = false;
     this.outOfTrack = false;
+    this.allCarOutOfTrack = false;
+
     
     // car geometry
     let geometry = new THREE.BoxGeometry(depth, height, width);
@@ -200,7 +202,7 @@ class MyVehicle extends THREE.Object3D {
 
     updateWheelRotation(dist){
         // all wheels rotate on themselves
-        this.wheelTurnAngle = Math.sin(dist * this.directionForward);
+        this.wheelTurnAngle = Math.sin(dist);
 
         this.wheels.forEach(wheel => {
             wheel.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.wheelTurnAngle);
@@ -228,7 +230,10 @@ class MyVehicle extends THREE.Object3D {
     }
 
     reverse () {
-        this.directionForward = -1;
+        if(this.directionForward === 1)
+            this.directionForward = -1;
+        else if (this.directionForward === -1)
+            this.directionForward = 1;
     }
 
     turn(turningRate) {
@@ -253,6 +258,11 @@ class MyVehicle extends THREE.Object3D {
         this.carOrientation = 0;
         this.velocity = 0;
         this.directionForward = 1;
+        this.outOfTrack = false;
+        this.allCarOutOfTrack = false;
+        this.slipping = false;
+        this.speeding = false;
+        this.shield = false;
         this.position.x = this.initialPosition[0];
         this.position.y = this.initialPosition[1];
         this.position.z = this.initialPosition[2];
@@ -297,6 +307,11 @@ class MyVehicle extends THREE.Object3D {
         const intersections4 = raycaster4.intersectObject(track);
         
         // return true if any of the wheels is out of the track (0 intersections)
+        if(intersections1.length === 0 && intersections2.length === 0 && intersections3.length === 0 && intersections4.length === 0){
+            this.allCarOutOfTrack = true;
+            return true;
+        }
+        this.allCarOutOfTrack = false;
         return intersections1.length === 0 || intersections2.length === 0 || intersections3.length === 0 || intersections4.length === 0;
     }
 

@@ -77,6 +77,10 @@ class MyContents {
 
   keyUp(event) {
     this.keys[event.code] = false;
+
+    if (event.code === 'KeyR') {
+      this.rKeyPressed = false;
+    }
   }
 
   /**
@@ -86,6 +90,7 @@ class MyContents {
     this.previousTime = 0;
     this.speedFactor = 0.8;
     this.keys = {};
+    this.rKeyPressed = false;
     this.keyListeners();
 
     // create once
@@ -114,6 +119,7 @@ class MyContents {
 
     // SCENARIO
     this.scenario = new MyScenario(this.app);
+    this.scenario.setCloudUnderCar(this.playerVehicle.position);
 
     // track
     this.reader.readTrack();
@@ -153,8 +159,10 @@ class MyContents {
       else this.playerVehicle.turn(turnSpeed);
     }
 
-    if (this.keys['KeyR'])
-      this.playerVehicle.reverse(speed);
+    if (this.keys['KeyR'] && !this.rKeyPressed){
+      this.rKeyPressed = true;
+      this.playerVehicle.reverse();
+    }
 
     if (this.keys['KeyP'])
       this.playerVehicle.reset();
@@ -238,7 +246,7 @@ class MyContents {
    */
   update() {
     // update the clouds lookAt
-    this.scenario.update();
+    this.scenario.update(this.playerVehicle);
     
     const time = Date.now();
     
