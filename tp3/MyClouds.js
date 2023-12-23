@@ -77,15 +77,16 @@ class MyClouds {
             this.clouds_list.push(cloud_clone);
             this.clouds.add(cloud);
             this.clouds.add(cloud_clone);
-        }        
+        }
+        this.app.scene.add(this.clouds);
+
 
     }
 
-    display() {
+    update() {
         this.clouds_list.forEach(cloud => {
             cloud.lookAt(this.cameraPosition);
         });
-        this.app.scene.add(this.clouds);
     }
 }
 
