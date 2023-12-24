@@ -33,6 +33,10 @@ class MyReader{
         this.appliedModifiersStartTime = [];
 
         this.shortcut = false;
+        this.startShortcut = false;
+        this.shortcutMixer = null;
+        this.shortcutAction = null;
+        this.endPosition = null;
     }
 
     readTrack(){
@@ -241,7 +245,7 @@ class MyReader{
         const powerUpTexture2 = new THREE.TextureLoader().load("textures/shortcut_powerup.png");
         const powerUpColor2 = 0xFFDF35;
         const powerUpType2 = [
-            [new THREE.Vector3(2, 1.25, -115), new THREE.Vector3(0, -Math.PI / 2 - 0.2, 0)],
+            [new THREE.Vector3(82, 1, -20), new THREE.Vector3(0, -Math.PI / 2 - 0.2, 0)],
         ];
 
         for (let i = 0; i < powerUpType2.length; i++) {
@@ -297,9 +301,15 @@ class MyReader{
             if(this.playerVehicle.detectCollisionsSphere(powerUp.bs)){
                 console.log("colidiu power up");
                 powerUp.applyModifier(this.playerVehicle);
-                if(powerUp.type == "shortcut")
+                if(powerUp.type == "shortcut"){
                     this.shortcut = true;
+                    if(!this.startShortcut){
+                        this.startShortcut = true;
+                        this.shortcutMixer = this.shortcutAnimation();
+                    }
+                }
                 else{
+                    this.shortcut = false;
                     this.appliedModifiers.push(powerUp);
                     this.appliedModifiersStartTime.push(Date.now());
                 }
@@ -331,15 +341,17 @@ class MyReader{
 
     shortcutAnimation(){
         const startPosition = this.playerVehicle.position.clone();
-        const endPosition = this.pickPointFromRoute().clone();
-
+        this.endPosition = this.pickPointFromRoute().clone();
         const mixer = new THREE.AnimationMixer(this.playerVehicle);
 
-        const positionTrack = new THREE.KeyframeTrack('.position', [0, 3000], [startPosition.x, startPosition.y, startPosition.z, endPosition.x, endPosition.y, endPosition.z]);
-        const positionClip = new THREE.AnimationClip('ShortCutAnimation', this.animationDuration, [positionTrack]);
+        const positionTrack = new THREE.VectorKeyframeTrack('.position', [0, 3], [startPosition.x, startPosition.y, startPosition.z, this.endPosition.x, this.endPosition.y, this.endPosition.z]);
+
+        const positionClip = new THREE.AnimationClip('ShortCutAnimation', 3, [positionTrack]);
 
         const positionAction = mixer.clipAction(positionClip);
         positionAction.play();
+
+        this.shortcutAction = positionAction;
 
         this.cloud = new MyCloud(this.app, this.playerVehicle.position.clone().add(new THREE.Vector3(0, -1, 0)));
         this.app.scene.add(this.cloud);
@@ -348,8 +360,14 @@ class MyReader{
     }
 
     stopShortcutAnimation() {
-        this.shortcutMixer.stopAllAction();
-        this.shortcutMixer = null;
+        let position = this.endPosition.clone();
+        position.y = this.endPosition.y + 0.95;
+        this.playerVehicle.setPos(this.endPosition);
+        this.startShortcut = false;
+        this.shortcut = false;
+        if (this.shortcutMixer) {
+            this.app.scene.remove(this.cloud);
+        }
     }
 
     stopModifier(modifier){

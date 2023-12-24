@@ -254,17 +254,6 @@ class MyContents {
     const delta = this.clock.getDelta()
     this.mixer.update(delta)
 
-    if(this.reader.shortcut){
-      let shortcutMixer = this.reader.shortcutAnimation();
-      shortcutMixer.update(delta);
-      this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
-
-      /*if (!shortcutMixer.isRunning()) {
-        this.reader.shortcut = false;
-        this.reader.stopShortcutAnimation();
-      }*/
-    }
-
     // this updates the position of the actual object of MyVehicle class
     this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 
@@ -276,6 +265,19 @@ class MyContents {
       this.playerVehicle.update(time, speed);
       this.previousTime = time;
       this.reader.checkForCollisions();
+
+      if(this.reader.shortcut){
+        this.reader.shortcutMixer.update(delta);
+        this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
+  
+        const elapsedTime = this.reader.shortcutAction.time; // Get elapsed time of the animation
+        const duration = this.reader.shortcutAction._clip.duration; // Get actual duration
+        const tolerance = 0.08;
+  
+        if (elapsedTime + tolerance >= duration) {
+          this.reader.stopShortcutAnimation();
+        }
+      }
 
       // check if any modifier is applied for more than 15 seconds
       for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
