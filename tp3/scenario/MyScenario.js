@@ -12,6 +12,7 @@ class MyScenario {
 
         this.sky = new MySky(this.app);
         this.clouds = new MyClouds(this.app);
+        this.app.scene.add(this.clouds)
 
         // birds
         this.bird1 = new MyBird(this.app, 1, 2.4, new THREE.Vector3(20, 0, 0));
