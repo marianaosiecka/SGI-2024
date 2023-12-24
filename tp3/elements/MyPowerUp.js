@@ -22,6 +22,10 @@ class MyPowerUp extends THREE.Object3D {
         this.bs = new THREE.Sphere(this.position, 2);
     }
 
+    setDestinationPoint(destinationPoint) {
+        this.animationDestPosition = destinationPoint;
+    }
+
     applyModifier(playerVehicle){
         if(this.type == "shield"){
             playerVehicle.shield = true;
@@ -30,11 +34,7 @@ class MyPowerUp extends THREE.Object3D {
             if (playerVehicle.velocity + 1.1*playerVehicle.velocity < playerVehicle.maxVelocity){
                 playerVehicle.velocity *= 1.1;
                 playerVehicle.speeding = true;  
-                console.log("here")              
             }  
-        }
-        else if(this.type == "shortcut"){
-
         }
     }
 
@@ -47,9 +47,6 @@ class MyPowerUp extends THREE.Object3D {
                 playerVehicle.velocity /= 1.1;
                 playerVehicle.speeding = false;
             }
-        }
-        else if(this.type == "shortcut"){
-            
         }
     }
 

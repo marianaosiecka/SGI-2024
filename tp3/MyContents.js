@@ -141,7 +141,7 @@ class MyContents {
     
     let isSwitch = this.reader.isAppliedModifier("switch");
 
-    if (this.keys['KeyW']) 
+    if (this.keys['KeyW'] && !this.playerVehicle.outOfTrack) 
       this.playerVehicle.accelerate(speed);
 
     if (this.keys['KeyX']) 
@@ -253,6 +253,18 @@ class MyContents {
     // update the autonomous car position and rotation
     const delta = this.clock.getDelta()
     this.mixer.update(delta)
+
+    if(this.reader.shortcut){
+      let shortcutMixer = this.reader.shortcutAnimation();
+      shortcutMixer.update(delta);
+      this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
+
+      /*if (!shortcutMixer.isRunning()) {
+        this.reader.shortcut = false;
+        this.reader.stopShortcutAnimation();
+      }*/
+    }
+
     // this updates the position of the actual object of MyVehicle class
     this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 

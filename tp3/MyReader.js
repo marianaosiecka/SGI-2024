@@ -5,6 +5,7 @@ import { MyRoute } from "./elements/MyRoute.js";
 import { MyObstacle } from "./elements/MyObstacle.js";
 import { MyPowerUp } from "./elements/MyPowerUp.js";
 import { MyVehicle } from "./elements/MyVehicle.js";
+import { MyCloud } from './elements/MyCloud.js';
 
 class MyReader{
     constructor(scene, app, level, startingPoint, segments){
@@ -30,6 +31,8 @@ class MyReader{
 
         this.appliedModifiers = [];
         this.appliedModifiersStartTime = [];
+
+        this.shortcut = false;
     }
 
     readTrack(){
@@ -92,7 +95,7 @@ class MyReader{
     readRoutes(visualRepresentation){
         let startingPointRoute = new THREE.Vector3(this.startingPoint.x, this.startingPoint.y + 0.75, this.startingPoint.z);
         // LEVEL 1
-        const keyPoints1 = [
+        this.keyPoints1 = [
             startingPointRoute,
             new THREE.Vector3(10, 2, -117),
             new THREE.Vector3(-34, 2, -115),
@@ -157,7 +160,7 @@ class MyReader{
       
         const timeInterval1 = 1;
       
-        const route1 = new MyRoute(this.app, keyPoints1, timeInterval1, this.autonomousVehicle, visualRepresentation);
+        const route1 = new MyRoute(this.app, this.keyPoints1, timeInterval1, this.autonomousVehicle, visualRepresentation);
         this.routes.push(route1);
 
 
@@ -174,7 +177,7 @@ class MyReader{
         const obstacleTexture1 = new THREE.TextureLoader().load("textures/obstacle_switchdirections.png");
         const obstacleColor1 = 0xD71D03;
         const obstaclesType1 = [ 
-            [new THREE.Vector3(-97, 1, -20), new THREE.Vector3(0, Math.PI / 2, 0)],
+            [new THREE.Vector3(-97, 1.25, -20), new THREE.Vector3(0, Math.PI / 2, 0)],
         ];
     
         for (let i = 0; i < obstaclesType1.length; i++) {
@@ -193,7 +196,7 @@ class MyReader{
         const obstacleTexture2 = new THREE.TextureLoader().load("textures/obstacle_slip.png");
         const obstacleColor2 = 0xD71D03;
         const obstaclesType2 = [
-            [new THREE.Vector3(0, 1, -44), new THREE.Vector3(0, -Math.PI, 0)],
+            [new THREE.Vector3(0, 1.25, -44), new THREE.Vector3(0, -Math.PI, 0)],
         ];
     
         for (let i = 0; i < obstaclesType2.length; i++) {
@@ -208,12 +211,19 @@ class MyReader{
         }
     }
 
+    pickPointFromRoute() {
+        const lastIndex = this.keyPoints1.length - 1;
+        const lastQuarterStartIndex = Math.floor(3 * lastIndex / 4);
+        const randomIndex = Math.floor(Math.random() * (lastIndex - lastQuarterStartIndex + 1) + lastQuarterStartIndex);
+        return this.keyPoints1[randomIndex]
+    }
+
     readPowerUps(){
         // TYPE: SHIELD
         const powerUpTexture1 = new THREE.TextureLoader().load("textures/shield_powerup.png");
         const powerUpColor1 = 0xFFDF35;
         const powerUpType1 = [ 
-            [new THREE.Vector3(-42, 1, 20), new THREE.Vector3(0, -Math.PI / 2 - 0.3, 0)],
+            [new THREE.Vector3(-42, 1.25, 20), new THREE.Vector3(0, -Math.PI / 2 - 0.3, 0)],
         ];
 
         for (let i = 0; i < powerUpType1.length; i++) {
@@ -231,7 +241,7 @@ class MyReader{
         const powerUpTexture2 = new THREE.TextureLoader().load("textures/shortcut_powerup.png");
         const powerUpColor2 = 0xFFDF35;
         const powerUpType2 = [
-            [new THREE.Vector3(82, 1, -20), new THREE.Vector3(0, -Math.PI / 2 - 0.2, 0)],
+            [new THREE.Vector3(2, 1.25, -115), new THREE.Vector3(0, -Math.PI / 2 - 0.2, 0)],
         ];
 
         for (let i = 0; i < powerUpType2.length; i++) {
@@ -249,7 +259,7 @@ class MyReader{
         const powerUpTexture3 = new THREE.TextureLoader().load("textures/speed_powerup.png");
         const powerUpColor3 = 0xFFDF35;
         const powerUpType3 = [
-            [new THREE.Vector3(210, 1, -70), new THREE.Vector3(0, -Math.PI / 2, 0)],
+            [new THREE.Vector3(210, 1.25, -70), new THREE.Vector3(0, -Math.PI / 2, 0)],
         ];
 
         for (let i = 0; i < powerUpType3.length; i++) {
@@ -285,15 +295,19 @@ class MyReader{
 
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsSphere(powerUp.bs)){
-                console.log("colidiu power up", powerUp.bs);
+                console.log("colidiu power up");
                 powerUp.applyModifier(this.playerVehicle);
-                this.appliedModifiers.push(powerUp);
-                this.appliedModifiersStartTime.push(Date.now());
+                if(powerUp.type == "shortcut")
+                    this.shortcut = true;
+                else{
+                    this.appliedModifiers.push(powerUp);
+                    this.appliedModifiersStartTime.push(Date.now());
+                }
             }
         });
         this.obstacles.forEach(obstacle => {
             if(this.playerVehicle.detectCollisionsSphere(obstacle.bs)){
-                console.log("colidiu obstaculo", obstacle.bs)
+                console.log("colidiu obstaculo")
                 obstacle.applyModifier(this.playerVehicle);
                 this.appliedModifiers.push(obstacle);
                 this.appliedModifiersStartTime.push(Date.now());
@@ -313,6 +327,29 @@ class MyReader{
         }
         else
             this.playerVehicle.outOfTrack = false;
+    }
+
+    shortcutAnimation(){
+        const startPosition = this.playerVehicle.position.clone();
+        const endPosition = this.pickPointFromRoute().clone();
+
+        const mixer = new THREE.AnimationMixer(this.playerVehicle);
+
+        const positionTrack = new THREE.KeyframeTrack('.position', [0, 3000], [startPosition.x, startPosition.y, startPosition.z, endPosition.x, endPosition.y, endPosition.z]);
+        const positionClip = new THREE.AnimationClip('ShortCutAnimation', this.animationDuration, [positionTrack]);
+
+        const positionAction = mixer.clipAction(positionClip);
+        positionAction.play();
+
+        this.cloud = new MyCloud(this.app, this.playerVehicle.position.clone().add(new THREE.Vector3(0, -1, 0)));
+        this.app.scene.add(this.cloud);
+
+        return mixer;
+    }
+
+    stopShortcutAnimation() {
+        this.shortcutMixer.stopAllAction();
+        this.shortcutMixer = null;
     }
 
     stopModifier(modifier){

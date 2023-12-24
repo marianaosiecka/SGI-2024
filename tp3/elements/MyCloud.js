@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 
-class MyClouds {
-    constructor(app) {
+class MyCloud extends THREE.Object3D{
+    constructor(app, position) {
+        super();
         this.app = app;
         this.cameraPosition = this.app.activeCamera.position;
         
@@ -56,40 +57,19 @@ class MyClouds {
 
         } );
 
-        this.clouds = new THREE.Object3D();
-        this.clouds_list = []
 
-        for ( var i = -500; i < 500; i += 1 ) {
-            let cloud = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), this.material );
-            cloud.position.x =  Math.random() * 1000 - 500; // between -500 and 500
-            cloud.position.y = - Math.random() * Math.random() * 100 - 50; // between -50 and -100
-            cloud.position.z = i; // between -500 and 500
-            cloud.rotation.z = Math.random() * Math.PI;
-            cloud.scale.x = cloud.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
-
-            cloud.lookAt(this.cameraPosition);
-
-            let cloud_clone = cloud.clone();
-            cloud_clone.position.y -= 100;
-            cloud_clone.lookAt(this.cameraPosition);
-
-            this.clouds_list.push(cloud);
-            this.clouds_list.push(cloud_clone);
-            this.clouds.add(cloud);
-            this.clouds.add(cloud_clone);
-        }
-
-        this.app.scene.add(this.clouds);
-
+        this.cloud = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.material);
+        this.cloud.position.set(position.x, position.y - 100, position.z);
+        this.cloud.scale.x = 0.15;
+        this.cloud.scale.y = 0.15;
+        this.cloud.lookAt(this.cameraPosition);
+        this.app.scene.add(this.cloud);
     }
 
-
-    update() {
-        this.clouds_list.forEach(cloud => {
-            cloud.lookAt(this.cameraPosition);
-        });
+    update(position) {
+        this.cloud.position.set(position.x, position.y - 2, position.z);
+        this.cloud.lookAt(this.cameraPosition);
     }
-
 }
 
-export { MyClouds }
+export { MyCloud }

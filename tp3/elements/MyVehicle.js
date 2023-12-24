@@ -109,7 +109,6 @@ class MyVehicle extends THREE.Object3D {
         this.position.set(...point);
         this.setRotationFromQuaternion(orientation);
         this.carOrientation = this.rotation.y;
-        //console.log(this.carOrientation)
 
         this.carMesh.updateMatrixWorld();
         this.wheels.forEach(wheel => {

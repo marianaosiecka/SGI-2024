@@ -4,6 +4,7 @@ import { MySky } from './MySky.js';
 import { MyClouds } from './MyClouds.js';
 import { MyBird } from './MyBird.js';
 import { MySkyscraper } from './MySkyscraper.js';
+import { MyCloud } from './elements/MyCloud.js';
 
 class MyScenario {
     constructor(app) {
@@ -25,7 +26,7 @@ class MyScenario {
     }
 
     setCloudUnderCar (vehiclePosition) {
-        this.clouds.setCloudUnderCar(vehiclePosition);
+        this.cloudUnderCar = new MyCloud(this.app, vehiclePosition);
     }
 
     update(playerVehicle) {
@@ -33,8 +34,11 @@ class MyScenario {
         this.bird.update();
 
         if(playerVehicle.outOfTrack && playerVehicle.allCarOutOfTrack){
-            console.log("nuvem");
-            this.clouds.updateCloudUnderCar(playerVehicle.position, playerVehicle.orientation);
+            this.cloudUnderCar.cloud.visible = true;
+            this.cloudUnderCar.update(playerVehicle.position, playerVehicle.orientation);
+        }
+        else{
+            this.cloudUnderCar.cloud.visible = false;
         }
     }
 }
