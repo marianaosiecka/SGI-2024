@@ -123,6 +123,25 @@ class MyVehicle extends THREE.Object3D {
         this.wheel4BB.copy(this.wheelMeshRightFront.geometry.boundingBox).applyMatrix4(this.wheelMeshRightFront.matrixWorld);
     }
 
+    setPos(position) {
+        this.position.set(...position);
+
+        this.carMesh.updateMatrixWorld();
+        this.wheels.forEach(wheel => {
+            wheel.updateMatrixWorld();
+        })
+
+        // update the bounding box positions
+        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
+        this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
+        this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
+        this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
+        this.wheel4BB.copy(this.wheelMeshRightFront.geometry.boundingBox).applyMatrix4(this.wheelMeshRightFront.matrixWorld);
+
+        this.velocity *= 0.2;
+
+    }
+
     update(time, velocity) {
         if(this.shouldStop)
             this.stop(velocity)
