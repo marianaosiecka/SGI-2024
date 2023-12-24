@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import { MyReader } from "./MyReader.js";
-import { MyScenario } from "./MyScenario.js";
+import { MyScenario } from "./scenario/MyScenario.js";
 import { MyVehicle } from "./elements/MyVehicle.js";
 
 /**
@@ -91,24 +91,14 @@ class MyContents {
     this.speedFactor = 0.8;
     this.keys = {};
     this.rKeyPressed = false;
-    this.keyListeners();
-
-    // create once
-    if (this.axis === null) {
-      this.axis = new MyAxis(this);
-      this.app.scene.add(this.axis);
-    }
+    this.keyListeners();    
+    this.createAxis();
 
     // LIGHTS
     // add a point light on top of the model
     const pointLight = new THREE.PointLight(0xffffff, 3000, 0);
     pointLight.position.set(0, 40, -10);
-    this.app.scene.add(pointLight);
-
-    // add a point light helper for the previous point light
-    const sphereSize = 0.5;
-    const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-    this.app.scene.add(pointLightHelper);
+    //this.app.scene.add(pointLight);
 
     // add an ambient light
     const ambientLight = new THREE.AmbientLight(0x555555);
@@ -192,6 +182,18 @@ class MyContents {
   }
 
   /**
+   * Creates the axis
+   */
+  createAxis() {
+    // create once 
+    if (this.axis === null) {
+        // create and attach the axis to the scene
+       this.axis = new MyAxis(this)
+       this.app.scene.add(this.axis)
+    }
+  }
+
+  /**
    * Called when user changes number of segments in UI. Recreates the track's objects accordingly.
    */
   updateTrack() {
@@ -245,13 +247,13 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
-    // update the clouds lookAt
-    this.scenario.update(this.playerVehicle);
-    
+    const delta = this.clock.getDelta()
     const time = Date.now();
+
+    // update the clouds lookAt
+    this.scenario.update(this.playerVehicle, delta);
     
     // update the autonomous car position and rotation
-    const delta = this.clock.getDelta()
     this.mixer.update(delta)
 
     // this updates the position of the actual object of MyVehicle class

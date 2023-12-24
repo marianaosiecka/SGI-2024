@@ -113,7 +113,7 @@ class MyVehicle extends THREE.Object3D {
         this.carMesh.updateMatrixWorld();
         this.wheels.forEach(wheel => {
             wheel.updateMatrixWorld();
-        })
+        })        
 
          // update the bounding box positions
         this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);

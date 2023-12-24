@@ -15,6 +15,7 @@ class MyGuiInterface  {
         this.app = app
         this.datgui =  new GUI();
         this.contents = null
+        this.enableAxis = false;
     }
 
     /**
@@ -49,6 +50,18 @@ class MyGuiInterface  {
             .name("Show track wireframe")
             .onChange(()=>this.contents.updateTrackWireframeVisibility());
 
+        // AXIS
+        this.datgui.add(this, 'enableAxis')
+            .name('Axis')
+            .onChange(() => {
+                if (this.enableAxis) {
+                    this.contents.createAxis()
+                }
+                else {
+                    this.app.scene.remove(this.contents.axis);
+                    this.contents.axis = null;
+                }
+            });
     }
 }
 

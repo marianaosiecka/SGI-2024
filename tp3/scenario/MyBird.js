@@ -1,9 +1,10 @@
 import * as THREE from 'three';
+import { MyRoute } from '../elements/MyRoute.js';
 
 const FLIGHT_SPEED = 10;
 
 class MyBird {
-    constructor(app, height, width) {
+    constructor(app, height, width, routeOffset) {
         this.app = app;
         let geometry = new THREE.BufferGeometry();
 
@@ -34,15 +35,22 @@ class MyBird {
             geometry,
             new THREE.MeshBasicMaterial({
                 color: 0xffffff,
+                side: THREE.DoubleSide
             }),
         );
+
+        this.bird.rotateY(Math.PI / 2);
         this.app.scene.add(this.bird)
+
+        let birdFlight = new MyRoute(this.app, this.generateCircularKeyPoints(100, 280, 10), 2, this.bird, routeOffset, Math.PI/2, false);
+        this.mixer = birdFlight.mixer;
     }
 
-    update(){
+    update(elapsedTime){
         const angle = this.app.contents.clock.elapsedTime * this.halfHeight * 10;
         const centerVel = this.halfHeight * 30;
         const sideVel = this.halfHeight * 6;
+
         this.bird.geometry.attributes.position.array[1] = -Math.sin(angle) / centerVel;
         this.bird.geometry.attributes.position.array[4] = Math.sin(angle) / sideVel;
         this.bird.geometry.attributes.position.array[7] = -Math.sin(angle) / centerVel;
@@ -52,7 +60,21 @@ class MyBird {
         this.bird.geometry.attributes.position.array[16] = -Math.sin(angle) / centerVel;
 
         this.bird.geometry.attributes.position.needsUpdate = true;
-        //this.bird.position.z += FLIGHT_SPEED * this.app.contents.clock.getDelta();
+        this.mixer.update(elapsedTime);
+    }
+
+    generateCircularKeyPoints(numPoints, radius, maxHeight = 0) {
+        const keyPoints = [];
+
+        for (let i = 0; i < numPoints; i++) {
+            const theta = (i / numPoints) * 2 * Math.PI;
+            const x = radius * Math.cos(theta);
+            const y = maxHeight * Math.sin((i / numPoints) * Math.PI); // Use sine function for up and down motion
+            const z = radius * Math.sin(theta);
+
+            keyPoints.push(new THREE.Vector3(x, y, z));
+        }
+        return keyPoints;
     }
 }
 

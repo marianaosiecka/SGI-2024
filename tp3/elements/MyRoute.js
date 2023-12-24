@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class MyRoute extends THREE.Object3D {
-    constructor(app, keyPoints, timeInterval, autonomousVehicle, visualRepresentation = false) {
+    constructor(app, keyPoints, timeInterval, object, offsetPos, offsetRot, visualRepresentation = false) {
         super();
         this.type = 'Group';
         this.app = app;
@@ -14,7 +14,7 @@ class MyRoute extends THREE.Object3D {
         const positionKF = new THREE.VectorKeyframeTrack(
             '.position', 
             times,
-            keyPoints.map(kp => [...kp, 0]).flat(),
+            keyPoints.map(kp => [kp.x + offsetPos.x, kp.y + offsetPos.y, kp.z + offsetPos.z, 0]).flat(),
             THREE.InterpolateSmooth
         );
 
@@ -31,7 +31,7 @@ class MyRoute extends THREE.Object3D {
             const dx = p1_x - p2_x
             const dz = p1_z - p2_z
             const angle = Math.atan2(dz, dx)
-            const q1 = new THREE.Quaternion().setFromAxisAngle(yAxis, -angle)
+            const q1 = new THREE.Quaternion().setFromAxisAngle(yAxis, -angle + offsetRot)
             q_list.push(q1)
         }
         q_list.push(q0)
@@ -47,7 +47,7 @@ class MyRoute extends THREE.Object3D {
         const positionClip = new THREE.AnimationClip('positionAnimation', this.animationMaxDuration, [positionKF])
         const rotationClip = new THREE.AnimationClip('rotationAnimation', this.animationMaxDuration, [quaternionKF])
 
-        this.mixer = new THREE.AnimationMixer(autonomousVehicle)
+        this.mixer = new THREE.AnimationMixer(object)
 
         const positionAction = this.mixer.clipAction(positionClip)
         const rotationAction = this.mixer.clipAction(rotationClip)

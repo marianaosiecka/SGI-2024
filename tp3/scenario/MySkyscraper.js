@@ -7,7 +7,7 @@ class MySkyscraper {
         this.skyscraper = new THREE.Object3D();
 
         let geometry = new THREE.CylinderGeometry( width, width, height, numSides );
-        let material = new THREE.MeshBasicMaterial( {color: colorBulding} );
+        let material = new THREE.MeshPhongMaterial( {color: colorBulding} );
         this.building = new THREE.Mesh( geometry, material );
         this.building.position.y = -(height - 5) + height / 2;
         this.skyscraper.add(this.building);
@@ -20,7 +20,7 @@ class MySkyscraper {
         const windowTopBorder = windowHeight / 4;
 
         let windows = new THREE.Object3D();
-        let windowMaterial = new THREE.MeshBasicMaterial( {color: colorWindows} );
+        let windowMaterial = new THREE.MeshPhongMaterial( {color: colorWindows} );
         let windowGeometry1 = new THREE.BoxGeometry( windowWidth, windowHeight, 0.1 );
         let windowGeometry2 = new THREE.BoxGeometry( windowWidth, windowHeight, 0.1 );
         let windowMesh1 = new THREE.Mesh( windowGeometry1, windowMaterial );

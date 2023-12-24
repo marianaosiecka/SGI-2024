@@ -40,7 +40,7 @@ class MyReader{
     }
 
     readTrack(){
-        this.trackWidth = 7;
+        this.trackWidth = 10;
 
         const path = new THREE.CatmullRomCurve3([
             new THREE.Vector3(16, 0, 0),
@@ -163,8 +163,10 @@ class MyReader{
         ];
       
         const timeInterval1 = 1;
-      
-        const route1 = new MyRoute(this.app, this.keyPoints1, timeInterval1, this.autonomousVehicle, visualRepresentation);
+        const offsetPos = new THREE.Vector3(0, 0, 0);
+        const offsetRot = 0;
+
+        const route1 = new MyRoute(this.app, this.keyPoints1, timeInterval1, this.autonomousVehicle, offsetPos, offsetRot, visualRepresentation);
         this.routes.push(route1);
 
 
