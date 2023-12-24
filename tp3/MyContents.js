@@ -87,6 +87,7 @@ class MyContents {
    * initializes the contents
    */
   init() {
+    this.menu();
     this.previousTime = 0;
     this.speedFactor = 0.8;
     this.keys = {};
@@ -133,6 +134,30 @@ class MyContents {
 
     // create power ups
     this.reader.readPowerUps();
+  }
+
+  menu() {
+    this.app.setActiveCamera("MenuPerspective");
+    this.app.updateCameraIfRequired();
+
+    const logoGeometry = new THREE.PlaneGeometry(10, 10);
+    const logoTexture = new THREE.TextureLoader().load("textures/logo.png");
+    const logoMaterial = new THREE.MeshBasicMaterial({ map: logoTexture });
+    const logo = new THREE.Mesh(logoGeometry, logoMaterial);
+
+    /*
+    const middlePoint = new THREE.Vector3();
+    if (!this.app.controls) {
+      this.app.controls.target = new THREE.Vector3(0, 0, 0);
+    }
+    middlePoint.addVectors(this.app.activeCamera.position, this.app.controls.target);
+    middlePoint.divideScalar(2);
+    logo.position.copy(middlePoint);*/
+
+    logo.position.set(-160, -112, 15);
+    this.app.scene.add(logo)
+
+
   }
 
   checkKeys() {
@@ -254,20 +279,6 @@ class MyContents {
     const delta = this.clock.getDelta()
     this.mixer.update(delta)
 
-    if(this.reader.shortcut){
-      let shortcutMixer = this.reader.shortcutAnimation();
-      shortcutMixer.update(delta);
-      this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
-
-      /*if (!shortcutMixer.isRunning()) {
-        this.reader.shortcut = false;
-        this.reader.stopShortcutAnimation();
-      }*/
-    }
-
-    // this updates the position of the actual object of MyVehicle class
-    this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
-
 
     if (this.previousTime == 0)
       this.previousTime = time;
@@ -276,6 +287,20 @@ class MyContents {
       this.playerVehicle.update(time, speed);
       this.previousTime = time;
       this.reader.checkForCollisions();
+
+      if(this.reader.shortcut){
+        let shortcutMixer = this.reader.shortcutAnimation();
+        shortcutMixer.update(delta);
+        this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
+  
+        /*if (!shortcutMixer.isRunning()) {
+          this.reader.shortcut = false;
+          this.reader.stopShortcutAnimation();
+        }*/
+      }
+  
+      // this updates the position of the actual object of MyVehicle class
+      this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 
       // check if any modifier is applied for more than 15 seconds
       for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
@@ -295,6 +320,7 @@ class MyContents {
       //console.log(this.playerVehicle.carOrientation)
       this.app.activeCamera.position.set(this.playerVehicle.position.x + 10 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 8, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.app.controls.target = this.playerVehicle.position;
+      this.scenario.clouds.update()
     }
 
     if(this.followAutonomousVehicle) {

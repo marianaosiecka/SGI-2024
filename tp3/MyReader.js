@@ -335,8 +335,8 @@ class MyReader{
 
         const mixer = new THREE.AnimationMixer(this.playerVehicle);
 
-        const positionTrack = new THREE.KeyframeTrack('.position', [0, 3000], [startPosition.x, startPosition.y, startPosition.z, endPosition.x, endPosition.y, endPosition.z]);
-        const positionClip = new THREE.AnimationClip('ShortCutAnimation', this.animationDuration, [positionTrack]);
+        const positionTrack = new THREE.VectorKeyframeTrack('.position', [0, 3000], [startPosition.x, startPosition.y, startPosition.z, endPosition.x, endPosition.y, endPosition.z]);
+        const positionClip = new THREE.AnimationClip('ShortCutAnimation', 3000, [positionTrack]);
 
         const positionAction = mixer.clipAction(positionClip);
         positionAction.play();

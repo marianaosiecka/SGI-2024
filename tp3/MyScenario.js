@@ -12,6 +12,7 @@ class MyScenario {
 
         this.sky = new MySky(this.app);
         this.clouds = new MyClouds(this.app);
+        this.app.scene.add(this.clouds)
         this.bird = new MyBird(this.app, 1, 2.4);
 
         this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 500, 20, 4, "#CCCCCC", 4, "#001F3F", -1);

@@ -31,7 +31,7 @@ class MyGuiInterface  {
     init() {
         const folderCamera = this.datgui.addFolder("Camera");
         folderCamera
-            .add(this.app, "activeCameraName", ["Perspective", "PlayerCarPerspective", "AutonomousCarPerspective"])
+            .add(this.app, "activeCameraName", ["Perspective", "PlayerCarPerspective", "AutonomousCarPerspective", "MenuPerspective"])
             .name("Active camera")
             .onChange((value)=>this.app.setActiveCamera(value));
         

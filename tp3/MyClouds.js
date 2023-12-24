@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 
-class MyClouds {
+class MyClouds extends THREE.Object3D{
     constructor(app) {
+        super()
         this.app = app;
         this.cameraPosition = this.app.activeCamera.position;
         
@@ -56,7 +57,6 @@ class MyClouds {
 
         } );
 
-        this.clouds = new THREE.Object3D();
         this.clouds_list = []
 
         for ( var i = -500; i < 500; i += 1 ) {
@@ -75,18 +75,22 @@ class MyClouds {
 
             this.clouds_list.push(cloud);
             this.clouds_list.push(cloud_clone);
-            this.clouds.add(cloud);
-            this.clouds.add(cloud_clone);
+            this.add(cloud);
+            this.add(cloud_clone);
         }
-
-        this.app.scene.add(this.clouds);
-
     }
 
 
     update() {
         this.clouds_list.forEach(cloud => {
-            cloud.lookAt(this.cameraPosition);
+            const lookAtDirection = new THREE.Vector3();
+            lookAtDirection.subVectors(this.app.controls.target, this.app.activeCamera.position).normalize();
+        
+            const upVector = this.app.activeCamera.up.clone();
+            const rotationMatrix = new THREE.Matrix4();
+            rotationMatrix.lookAt(new THREE.Vector3(), lookAtDirection, upVector);
+        
+            cloud.rotation.setFromRotationMatrix(rotationMatrix);
         });
     }
 

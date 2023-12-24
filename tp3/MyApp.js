@@ -79,6 +79,10 @@ class MyApp  {
         const autonomousCarPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         autonomousCarPerspective.position.set(0, 10, 0)
         this.cameras['AutonomousCarPerspective'] = autonomousCarPerspective
+
+        const menuPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        menuPerspective.position.set(-160, -112, 15)
+        this.cameras['MenuPerspective'] = menuPerspective
     }
    
     /**
@@ -111,7 +115,6 @@ class MyApp  {
      * it updates the active camera and the controls
      */
     updateCameraIfRequired() {
-
         // camera changed?
         if (this.lastCameraName !== this.activeCameraName) {
             this.lastCameraName = this.activeCameraName;
