@@ -8,10 +8,10 @@ import { MyVehicle } from "./elements/MyVehicle.js";
 import { MyCloud } from './elements/MyCloud.js';
 
 class MyReader{
-    constructor(scene, app, level, startingPoint, segments){
+    constructor(scene, app, startingPoint, segments){
         this.scene = scene;
         this.app = app;
-        this.level = level;
+        this.level = null;
         this.startingPoint = startingPoint;
         this.segments = segments;
 
@@ -39,7 +39,7 @@ class MyReader{
         this.endPosition = null;
     }
 
-    readTrack(){
+    readTrack(layer){
         this.trackWidth = 10;
 
         const path = new THREE.CatmullRomCurve3([
@@ -92,11 +92,12 @@ class MyReader{
 
 
         this.track = new MyTrack(this.app, this.segments, this.trackWidth, path);
+        this.track.layers.enable(layer);
         //this.track.layers.enable(layer);
         this.app.scene.add(this.track);
     }
 
-    readRoutes(visualRepresentation){
+    readRoutes(layer, visualRepresentation = false){
         let startingPointRoute = new THREE.Vector3(this.startingPoint.x, this.startingPoint.y + 0.75, this.startingPoint.z);
         // LEVEL 1
         this.keyPoints1 = [
@@ -176,9 +177,10 @@ class MyReader{
         this.chosenRoute = this.routes[this.level-1];
         this.mixer = this.chosenRoute.mixer;
         this.app.scene.add(this.chosenRoute);
+        this.chosenRoute.layers.enable(layer);
     }
 
-    readObstacles(){
+    readObstacles(layer){
         // TYPE: SWITCH
         const obstacleTexture1 = new THREE.TextureLoader().load("textures/obstacle_switchdirections.png");
         const obstacleColor1 = 0xD71D03;
@@ -195,6 +197,7 @@ class MyReader{
 
             this.obstacles.push(obstacle);
             this.app.scene.add(obstacle);
+            obstacle.layers.enable(layer);
         }
 
     
@@ -214,6 +217,7 @@ class MyReader{
 
             this.obstacles.push(obstacle);
             this.app.scene.add(obstacle);
+            obstacle.layers.enable(layer);
         }
     }
 
@@ -224,7 +228,7 @@ class MyReader{
         return this.keyPoints1[randomIndex]
     }
 
-    readPowerUps(){
+    readPowerUps(layer){
         // TYPE: SHIELD
         const powerUpTexture1 = new THREE.TextureLoader().load("textures/shield_powerup.png");
         const powerUpColor1 = 0xFFDF35;
@@ -241,6 +245,7 @@ class MyReader{
 
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
+            powerUp.layers.enable(layer);
         }
 
         // TYPE: SHORTCUT
@@ -259,6 +264,7 @@ class MyReader{
 
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
+            powerUp.layers.enable(layer);
         }
 
         // TYPE: SPEED
@@ -277,6 +283,7 @@ class MyReader{
 
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
+            powerUp.layers.enable(layer);
         }
     }
 
