@@ -33,8 +33,7 @@ class MyApp  {
     /**
      * initializes the application
      */
-    init() {
-                
+    init() {    
         // Create an empty scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color( 0x101010 );

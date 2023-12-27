@@ -1,6 +1,5 @@
 import * as THREE from "three";
 
-
 class MyMenu extends THREE.Object3D{
     constructor(app, layer) {
         super();
@@ -24,6 +23,7 @@ class MyMenu extends THREE.Object3D{
         let logoTexture = new THREE.TextureLoader().load( 'textures/logo.png' );
         let logoMaterial = new THREE.MeshBasicMaterial( { map: logoTexture, side: THREE.DoubleSide, transparent: true } );
         let logoMesh = new THREE.Mesh(logo, logoMaterial);
+        logoMesh.layers.enable(this.layer)
         this.mainMenu.add(logoMesh);
 
         // feup logo
@@ -33,6 +33,7 @@ class MyMenu extends THREE.Object3D{
         let feupMaterial = new THREE.MeshBasicMaterial( { map: feupTexture, side: THREE.DoubleSide, transparent: true } );
         let feupMesh = new THREE.Mesh(feup, feupMaterial);
         feupMesh.position.y = 14;
+        feupMesh.layers.enable(this.layer)
         this.mainMenu.add(feupMesh);
 
         // click anywhere to start text
@@ -42,6 +43,7 @@ class MyMenu extends THREE.Object3D{
         let clickMaterial = new THREE.MeshBasicMaterial( { map: clickTexture, side: THREE.DoubleSide, transparent: true } );
         let clickMesh = new THREE.Mesh(click, clickMaterial);
         clickMesh.position.y = -13;
+        clickMesh.layers.enable(this.layer)
         this.mainMenu.add(clickMesh);
 
         // click flashing animation
@@ -107,12 +109,13 @@ class MyMenu extends THREE.Object3D{
 
     createBackButton() {
         const backgroundBackButton = new THREE.Mesh(this.backgroudButtonGeometry, this.backgroudButtonMaterial);
-        
+        backgroundBackButton.layers.enable(this.layer);
 
         const backButtonGeometry = new THREE.CircleGeometry( 1.1, 32 );
         const backTexture = new THREE.TextureLoader().load('textures/backButton.png');
         const backButtonMaterial = new THREE.MeshBasicMaterial( { map: backTexture, side: THREE.DoubleSide, transparent: true } );
         const backButtonMesh = new THREE.Mesh(backButtonGeometry, backButtonMaterial);
+        backButtonMesh.layers.enable(this.layer);
 
         this.backButton = new THREE.Object3D();
         this.backButton.add(backgroundBackButton);
@@ -120,8 +123,6 @@ class MyMenu extends THREE.Object3D{
         this.backButton.position.x = -10;
         this.backButton.position.y = 9;
         this.backButton.position.z = 0;
-
-        this.backButton.layers.enable(this.layer);
 
         this.startMenu.add(this.backButton);
     }

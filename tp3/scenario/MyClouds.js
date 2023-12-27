@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class MyClouds extends THREE.Object3D{
-    constructor(app) {
+    constructor(app, layer) {
         super()
         this.app = app;
         this.cameraPosition = this.app.activeCamera.position;
@@ -76,7 +76,9 @@ class MyClouds extends THREE.Object3D{
             this.clouds_list.push(cloud);
             this.clouds_list.push(cloud_clone);
             cloud.renderOrder = 0
+            cloud.layers.enable(layer);
             this.add(cloud);
+            cloud_clone.layers.enable(layer);
             this.add(cloud_clone);
         }
     }

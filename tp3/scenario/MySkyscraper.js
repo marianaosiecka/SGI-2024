@@ -3,7 +3,6 @@ import * as THREE from 'three';
 class MySkyscraper {
     constructor(app, height, width, numSides, colorBulding, windowHeight, colorWindows, layer, ups = 0) {
         this.app = app;
-
         this.skyscraper = new THREE.Object3D();
 
         let geometry = new THREE.CylinderGeometry( width, width, height, numSides );

@@ -1,10 +1,8 @@
 import * as THREE from 'three';
 import { MyRoute } from '../elements/MyRoute.js';
 
-const FLIGHT_SPEED = 10;
-
 class MyBird {
-    constructor(app, height, width, routeOffset) {
+    constructor(app, height, width, routeOffset, layer) {
         this.app = app;
         let geometry = new THREE.BufferGeometry();
 
@@ -40,6 +38,7 @@ class MyBird {
         );
 
         this.bird.rotateY(Math.PI / 2);
+        this.bird.layers.enable(layer);
         this.app.scene.add(this.bird)
 
         let birdFlight = new MyRoute(this.app, this.generateCircularKeyPoints(100, 280, 10), 2, this.bird, routeOffset, Math.PI/2, false);

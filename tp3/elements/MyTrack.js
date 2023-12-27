@@ -59,7 +59,7 @@ class MyTrack extends THREE.Object3D {
 
     this.line.position.y -= 2;
     this.rotateZ(Math.PI);
-    this.scale.set(2,0.2,2); 
+    this.scale.set(2.5,0.2,2); 
 
   }
 
