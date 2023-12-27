@@ -75,6 +75,7 @@ class MyClouds extends THREE.Object3D{
 
             this.clouds_list.push(cloud);
             this.clouds_list.push(cloud_clone);
+            cloud.renderOrder = 0
             this.add(cloud);
             this.add(cloud_clone);
         }

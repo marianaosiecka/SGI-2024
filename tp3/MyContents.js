@@ -7,7 +7,7 @@ import { MyCarModelRed } from "./carModels/MyCarModelRed.js";
 import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
 import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
 import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
-
+import { MyMenu } from "./MyMenu.js";
 
 /**
  *  This class contains the contents of out application
@@ -26,7 +26,6 @@ class MyContents {
     this.followAutonomousVehicle = false;
 
     this.startingPoint = new THREE.Vector3(32, 1.7, -117);
-    this.level = 1;
 
     this.showTrackWireframe = false;
     this.showTrackLine = true;
@@ -35,6 +34,7 @@ class MyContents {
     //Curve related attributes
     this.segments = 200;
 
+    // layers
     this.raycaster = new THREE.Raycaster()
     this.raycaster.near = 1
     this.raycaster.far = 20
@@ -43,18 +43,12 @@ class MyContents {
     this.intersectedObj = null
     this.pickingColor = "#00ff00"
 
-    // structure of layers: each layer will contain its objects
-    // this can be used to select objects that are pickeable     
-    this.availableLayers = ['none', 1, 2, 3, 4]
-    this.selectedLayer = this.availableLayers[0]    // change this in interface
+    this.availableLayers = ['none', 1, 2, 3, 4, 5, 6]
+    this.lastSelectedLayer = null
+    this.selectedLayer = this.availableLayers[0]
 
-    // define the objects ids that are not to be pickeable
-    // NOTICE: not a ThreeJS facility
     this.notPickableObjIds = []
-    // this.notPickableObjIds = ["col_0_0", "col_2_0", "col_1_1"]
-    // this.notPickableObjIds = ["myplane", "col_0_0", "col_2_0", "col_1_1"]
-  
-    //register events
+
     /*
     document.addEventListener(
         "pointermove",
@@ -62,20 +56,9 @@ class MyContents {
         // "pointerdown",
         this.onPointerMove.bind(this)
     );*/
-
-    this.reader = new MyReader(this, this.app, this.level, this.startingPoint, this.segments)
-    
-    // create the autonomous vehicle
-    this.autonomousVehicle = this.reader.autonomousVehicle; 
-    
-    //player vehicle
-    this.playerVehicle = this.reader.playerVehicle;
-
-    this.loadPlayerVehicle();
-    this.loadAutonomousVehicle();
-
   }
 
+  
   loadPlayerVehicle() {
     const myCarModelGreen = new MyCarModelPurple();
     myCarModelGreen.loadModel().then((properties) => {
@@ -125,12 +108,15 @@ class MyContents {
    * initializes the contents
    */
   init() {
+    // CREATE THE SCENE
+    this.reader = new MyReader(this, this.app, this.startingPoint, this.segments)
     this.menu();
     this.previousTime = 0;
     this.speedFactor = 0.5;
     this.keys = {};
     this.rKeyPressed = false;
     this.keyListeners();    
+    this.createAxis();
 
     // LIGHTS
     // add a point light on top of the model
@@ -142,49 +128,64 @@ class MyContents {
     const ambientLight = new THREE.AmbientLight(0x555555);
     this.app.scene.add(ambientLight);
 
+    // add a hemisphere light
     const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 ); 
     this.app.scene.add(hemiLight);
 
-    // SCENARIO
-    this.scenario = new MyScenario(this.app);
-    this.scenario.setCloudUnderCar(this.playerVehicle.position);
+    // scenario
+    this.scenario = new MyScenario(this.app, 6);
 
     // track
-    this.reader.readTrack();
+    this.reader.readTrack(5);
 
-    // routes
-    this.reader.readRoutes();
+    // axis
+    // this.createAxis();
+
+    // menu
+    this.menu = new MyMenu(this.app, 1);
+    this.app.setActiveCamera('MainMenuPerspective');
+    this.selectedLayer = 1
+    this.menu.mainMenu();
+    this.app.scene.add(this.menu.mainMenuObj);
+
+    // by clicking anywhere on the screen remove mainMenuObj and add startMenuObj
+    this.app.renderer.domElement.addEventListener('click', () => {
+      this.app.scene.remove(this.menu.mainMenuObj);
+      this.app.setActiveCamera('StartMenuPerspective');
+      this.menu.startMenu();
+      this.app.scene.add(this.menu.startMenuObj);
+    }); 
+
+    // START THE GAME
+    this.level = 1;
+    this.reader.level = this.level;
+    this.previousTime = 0;
+    this.speedFactor = 0.8;
+    this.keys = {};
+    this.rKeyPressed = false;
+    this.keyListeners();
+    
+    // route
+    this.reader.readRoutes(4);
     this.mixer = this.reader.mixer;
 
     // create obstacles
-    this.reader.readObstacles();
+    this.reader.readObstacles(3);
 
     // create power ups
-    this.reader.readPowerUps();
-  }
+    this.reader.readPowerUps(2);
 
-  menu() {
-    //this.app.setActiveCamera("MenuPerspective");
-    this.app.updateCameraIfRequired();
+    // autonomous vehicle
+    this.autonomousVehicle = this.reader.autonomousVehicle; 
+    
+    // player vehicle
+    this.playerVehicle = this.reader.playerVehicle;
 
-    const logoGeometry = new THREE.PlaneGeometry(10, 10);
-    const logoTexture = new THREE.TextureLoader().load("textures/logo.png");
-    const logoMaterial = new THREE.MeshBasicMaterial({ map: logoTexture });
-    const logo = new THREE.Mesh(logoGeometry, logoMaterial);
-
-    /*
-    const middlePoint = new THREE.Vector3();
-    if (!this.app.controls) {
-      this.app.controls.target = new THREE.Vector3(0, 0, 0);
-    }
-    middlePoint.addVectors(this.app.activeCamera.position, this.app.controls.target);
-    middlePoint.divideScalar(2);
-    logo.position.copy(middlePoint);*/
-
-    logo.position.set(-160, -112, 15);
-    this.app.scene.add(logo)
-
-
+    // load car models
+    this.loadPlayerVehicle();
+    this.loadAutonomousVehicle();
+    
+    this.scenario.setCloudUnderCar(this.playerVehicle.position);
   }
 
 
@@ -223,25 +224,10 @@ class MyContents {
     return speed;
   }
 
-
-  /*
-    *
-    * Only object from selected layer will be eligible for selection
-    * when 'none' is selected no layer is active, so all objects can be selected
-    */
   updateSelectedLayer() {
     this.raycaster.layers.enableAll()
-    if (this.selectedLayer !== 'none') {
-        const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)];
-        this.raycaster.layers.set(selectedIndex);
-    }
-  }
-
-  /*
-    * Update the color of selected object
-    */
-  updatePickingColor(value) {
-    this.pickingColor = value;
+    const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)];
+    this.raycaster.layers.set(selectedIndex);
   }
 
   /**
@@ -320,6 +306,12 @@ class MyContents {
 
     // this updates the position of the actual object of MyVehicle class
     this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
+
+    // update the selected layer
+    if (this.lastSelectedLayer !== this.selectedLayer) {
+      this.updateSelectedLayer();
+      this.lastSelectedLayer = this.selectedLayer;
+    }
 
 
     if (this.previousTime == 0)

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class MySkyscraper {
-    constructor(app, height, width, numSides, colorBulding, windowHeight, colorWindows, ups = 0) {
+    constructor(app, height, width, numSides, colorBulding, windowHeight, colorWindows, layer, ups = 0) {
         this.app = app;
 
         this.skyscraper = new THREE.Object3D();
@@ -43,7 +43,6 @@ class MySkyscraper {
             }
         }
     
-
        this.app.scene.add(this.skyscraper)
     }
 }

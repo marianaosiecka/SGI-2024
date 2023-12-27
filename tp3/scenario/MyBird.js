@@ -48,7 +48,7 @@ class MyBird {
 
     update(elapsedTime){
         const angle = this.app.contents.clock.elapsedTime * this.halfHeight * 10;
-        const centerVel = this.halfHeight * 30;
+        const centerVel = this.halfHeight * 20;
         const sideVel = this.halfHeight * 6;
 
         this.bird.geometry.attributes.position.array[1] = -Math.sin(angle) / centerVel;

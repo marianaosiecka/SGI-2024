@@ -80,9 +80,13 @@ class MyApp  {
         autonomousCarPerspective.position.set(0, 10, 0)
         this.cameras['AutonomousCarPerspective'] = autonomousCarPerspective
 
-        const menuPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        menuPerspective.position.set(-160, -112, 15)
-        this.cameras['MenuPerspective'] = menuPerspective
+        const mainMenuPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        mainMenuPerspective.position.set(-197, -260, 335)
+        this.cameras['MainMenuPerspective'] = mainMenuPerspective
+
+        const startMenuPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        startMenuPerspective.position.set(-197, 0, 250)
+        this.cameras['StartMenuPerspective'] = startMenuPerspective
     }
    
     /**
@@ -129,7 +133,9 @@ class MyApp  {
             if (this.controls === null) {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls( this.activeCamera, this.renderer.domElement );
-                this.controls.enableZoom = true;
+                this.controls.enableZoom = false;
+                this.controls.enableRotate = false;
+                this.controls.enablePan = false;
                 this.controls.update();
             }
             else {

@@ -22,7 +22,6 @@ class MyCarModelRed {
             //removing camera
             fbx.remove(fbx.children[0]);
             
-            console.log(fbx);
             //setting attributes
             this.car = fbx;
             this.wheelsRatio = 2.3;
