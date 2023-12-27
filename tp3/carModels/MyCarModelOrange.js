@@ -25,10 +25,10 @@ class MyCarModelOrange {
             
             //setting attributes
             this.car = fbx;
-            this.wheelsRatio = 2;
-            this.width = 4.5;
-            this.height = 2;
-            this.depth = 9;
+            this.wheelsRatio = 1;
+            this.width = 5;
+            this.height = 3.5;
+            this.depth = 14;
             this.mesh = fbx.children[0].children[1].children[1].children[0];
             resolve([this.car, this.mesh, this.wheelsRatio, this.width, this.height, this.depth]);
             });

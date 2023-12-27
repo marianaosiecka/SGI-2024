@@ -110,13 +110,11 @@ class MyContents {
   init() {
     // CREATE THE SCENE
     this.reader = new MyReader(this, this.app, this.startingPoint, this.segments)
-    this.menu();
     this.previousTime = 0;
     this.speedFactor = 0.5;
     this.keys = {};
     this.rKeyPressed = false;
     this.keyListeners();    
-    this.createAxis();
 
     // LIGHTS
     // add a point light on top of the model
@@ -142,7 +140,7 @@ class MyContents {
     // this.createAxis();
 
     // menu
-    this.menu = new MyMenu(this.app, 1);
+    /*this.menu = new MyMenu(this.app, 1);
     this.app.setActiveCamera('MainMenuPerspective');
     this.selectedLayer = 1
     this.menu.mainMenu();
@@ -154,7 +152,7 @@ class MyContents {
       this.app.setActiveCamera('StartMenuPerspective');
       this.menu.startMenu();
       this.app.scene.add(this.menu.startMenuObj);
-    }); 
+    }); */
 
     // START THE GAME
     this.level = 1;
