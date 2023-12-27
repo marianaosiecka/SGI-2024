@@ -6,18 +6,25 @@ class MyMenu extends THREE.Object3D{
         super();
         this.app = app;
         this.layer = layer;
-        this.mainMenuObj = new THREE.Object3D();
-        this.startMenuObj = new THREE.Object3D();
+
+        this.backgroudButtonGeometry = new THREE.CircleGeometry( 2, 32 );
+        this.backgroudButtonMaterial = new THREE.MeshBasicMaterial( { color: 0xB7661A, side: THREE.DoubleSide } );
+        this.backButton = null;
+        this.leaderboardButton = null;
+        this.instructionsButton = null;
+
+        this.mainMenu = new THREE.Object3D();
+        this.startMenu = new THREE.Object3D();
     }
 
-    mainMenu() {
+    initMainMenu() {
         // game logo
         let logo = new THREE.PlaneGeometry( 20, 13, 32 );
         logo.scale(1.5, 1.5, 1.5);
         let logoTexture = new THREE.TextureLoader().load( 'textures/logo.png' );
         let logoMaterial = new THREE.MeshBasicMaterial( { map: logoTexture, side: THREE.DoubleSide, transparent: true } );
         let logoMesh = new THREE.Mesh(logo, logoMaterial);
-        this.mainMenuObj.add(logoMesh);
+        this.mainMenu.add(logoMesh);
 
         // feup logo
         let feup = new THREE.PlaneGeometry( 27, 10, 32 );
@@ -26,7 +33,7 @@ class MyMenu extends THREE.Object3D{
         let feupMaterial = new THREE.MeshBasicMaterial( { map: feupTexture, side: THREE.DoubleSide, transparent: true } );
         let feupMesh = new THREE.Mesh(feup, feupMaterial);
         feupMesh.position.y = 14;
-        this.mainMenuObj.add(feupMesh);
+        this.mainMenu.add(feupMesh);
 
         // click anywhere to start text
         let click = new THREE.PlaneGeometry( 20, 3, 32 );
@@ -35,17 +42,17 @@ class MyMenu extends THREE.Object3D{
         let clickMaterial = new THREE.MeshBasicMaterial( { map: clickTexture, side: THREE.DoubleSide, transparent: true } );
         let clickMesh = new THREE.Mesh(click, clickMaterial);
         clickMesh.position.y = -13;
-        this.mainMenuObj.add(clickMesh);
+        this.mainMenu.add(clickMesh);
 
         // click flashing animation
         setInterval(() => {
             clickMaterial.opacity = 1 - clickMaterial.opacity;
         }, 700);
 
-        this.setPosAndRotRelativeToCamera(this.mainMenuObj);
+        this.setPosAndRotRelativeToCamera(this.mainMenu);
     }
 
-    startMenu() {
+    initStartMenu() {
         /*this.backButton();
         this.leaderboardButton();
         this.instructionsButton();
@@ -57,36 +64,33 @@ class MyMenu extends THREE.Object3D{
         // 4. select opponent car
         // 5. play game button
 
-        // add a black plane to the scene
-        let plane = new THREE.PlaneGeometry( 20, 20, 32 );
-        plane.scale(1, 1, 1);
-        let planeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
-        let planeMesh = new THREE.Mesh(plane, planeMaterial);
-        this.startMenuObj.add(planeMesh);
 
-        this.setPosAndRotRelativeToCamera(this.startMenuObj);
+        this.createBackButton();
+        this.createLeaderboardButton();
+        this.createInstructionsButton();
+
+        
+        
+
+        this.setPosAndRotRelativeToCamera(this.startMenu);
     }
 
-    instructionsMenu() {
+    initInstructionsMenu() {
         // instructions, back button
     }
 
-    leaderboardMenu() {
+    initLeaderboardMenu() {
         // leaderboard, back button
     }
 
-    pauseMenu() {
+    initPauseMenu() {
         //this.app.contents.updateSelectedLayer('menu')
         // resume button, restart button, exit button
     }
 
-    gameOverMenu() {
+    initGameOverMenu() {
         //this.app.contents.updateSelectedLayer('menu')
         // show winner and time, show loser and time, restart same run button, restart game button, exit button
-    }
-
-    backButton() {
-        // create a button (round and green) that when clicked goes back to the previous menu
     }
 
     setPosAndRotRelativeToCamera(obj) {
@@ -99,6 +103,56 @@ class MyMenu extends THREE.Object3D{
         const lookAtMatrix = new THREE.Matrix4().lookAt(this.app.activeCamera.position, new THREE.Vector3(0, 0, 0), this.app.activeCamera.up);
         const rotation = new THREE.Euler().setFromRotationMatrix(lookAtMatrix);
         obj.rotation.set(rotation.x, rotation.y, rotation.z);
+    }
+
+    createBackButton() {
+        const backgroundBackButton = new THREE.Mesh(this.backgroudButtonGeometry, this.backgroudButtonMaterial);
+        
+
+        const backButtonGeometry = new THREE.CircleGeometry( 1.1, 32 );
+        const backTexture = new THREE.TextureLoader().load('textures/backButton.png');
+        const backButtonMaterial = new THREE.MeshBasicMaterial( { map: backTexture, side: THREE.DoubleSide, transparent: true } );
+        const backButtonMesh = new THREE.Mesh(backButtonGeometry, backButtonMaterial);
+
+        this.backButton = new THREE.Object3D();
+        this.backButton.add(backgroundBackButton);
+        this.backButton.add(backButtonMesh);
+        this.backButton.position.x = -10;
+        this.backButton.position.y = 9;
+        this.backButton.position.z = 0;
+
+        this.backButton.layers.enable(this.layer);
+
+        this.startMenu.add(this.backButton);
+    }
+
+    createLeaderboardButton() {
+        let leaderboardGeometry = new THREE.SphereGeometry(1, 10, 10)
+        let leaderboardTexture = new THREE.TextureLoader().load('textures/leaderboardButton.png');
+        let leaderboardMaterial = new THREE.MeshBasicMaterial( { color: 0xB7661A, map: leaderboardTexture, side: THREE.DoubleSide, transparent: true } );
+        let leaderboardMesh = new THREE.Mesh(leaderboardGeometry, leaderboardMaterial);
+        leaderboardMesh.position.x = 10;
+        leaderboardMesh.position.y = 9;
+        leaderboardMesh.position.z = -1;
+        this.startMenu.add(leaderboardMesh);
+    }
+
+    createInstructionsButton() {
+        let instructionsGeometry = new THREE.SphereGeometry(1.8, 10, 10)
+        let instructionsTexture = new THREE.TextureLoader().load('textures/instructionsButton.png');
+        let instructionsMaterial = new THREE.MeshBasicMaterial( { color: 0xB7661A, map: instructionsTexture, side: THREE.DoubleSide, transparent: true } );
+        let instructionsMesh = new THREE.Mesh(instructionsGeometry, instructionsMaterial);
+        instructionsMesh.position.x = 0;
+        instructionsMesh.position.y = 9;
+        this.startMenu.add(instructionsMesh);
+    }
+
+    handleMouseOverButton() {
+        console.log("mouse over button");
+    }
+
+    handleMouseOutButton() {
+        this.backButton.children[0].material.color.setHex(0xB7661A);
     }
 
 }

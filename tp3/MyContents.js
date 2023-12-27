@@ -45,13 +45,13 @@ class MyContents {
 
     this.notPickableObjIds = []
 
-    /*
+    
     document.addEventListener(
         "pointermove",
         // "mousemove",
         // "pointerdown",
         this.onPointerMove.bind(this)
-    );*/
+    );
   }
 
   keyListeners() {
@@ -99,19 +99,20 @@ class MyContents {
     // axis
     // this.createAxis();
 
-    // menu
+    // main menu
     this.menu = new MyMenu(this.app, 1);
     this.app.setActiveCamera('MainMenuPerspective');
     this.selectedLayer = 1
-    this.menu.mainMenu();
-    this.app.scene.add(this.menu.mainMenuObj);
+    this.menu.initMainMenu();
+    this.app.scene.add(this.menu.mainMenu);
 
-    // by clicking anywhere on the screen remove mainMenuObj and add startMenuObj
+    // start menu
+    // by clicking anywhere on the screen remove mainMenu and add startMenu
     this.app.renderer.domElement.addEventListener('click', () => {
-      this.app.scene.remove(this.menu.mainMenuObj);
+      this.app.scene.remove(this.menu.mainMenu);
       this.app.setActiveCamera('StartMenuPerspective');
-      this.menu.startMenu();
-      this.app.scene.add(this.menu.startMenuObj);
+      this.menu.initStartMenu();
+      this.app.scene.add(this.menu.startMenu);
     }); 
 
     // START THE GAME
@@ -315,6 +316,46 @@ class MyContents {
       this.app.controls.target = this.autonomousVehicle.position;
     }
   }
+
+  onPointerMove(event) {
+
+    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    console.log("Position x: " + this.pointer.x + " y: " + this.pointer.y);
+
+    this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
+    var intersects = this.raycaster.intersectObjects(this.app.scene.children);
+
+    this.pickingHelper(intersects)
+    this.transverseRaycastProperties(intersects);
+  }
+
+  transverseRaycastProperties(intersects) {
+    for (var i = 0; i < intersects.length; i++) {
+        console.log(intersects[i]);
+    }
+  }
+
+  pickingHelper(intersects) {
+    if (intersects.length > 0) {
+      const obj = intersects[0].object
+      if (this.notPickableObjIds.includes(obj.name)) {
+          this.restoreColorOfFirstPickedObj()
+          console.log("Object cannot be picked !")
+      }
+      else
+          this.changeColorOfFirstPickedObj(obj)
+    } else {
+      this.restoreColorOfFirstPickedObj()
+    }
+  }
+
+  restoreColorOfFirstPickedObj() {
+    if (this.lastPickedObj)
+        this.lastPickedObj.material.color.setHex(this.lastPickedObj.currentHex);
+    this.lastPickedObj = null;
+  }
+
 }
 
 export { MyContents };
