@@ -27,10 +27,11 @@ class MyScenario {
         this.birds = [this.bird1, this.bird2, this.bird3];
 
         this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 200, 20, 4, "#ffffff", 4, "#3A6392", -1);
-        this.skyscraperAutonomousVehicle.skyscraper.position.z = 80;
+        this.skyscraperAutonomousVehicle.skyscraper.position.x = -30;
+        this.skyscraperAutonomousVehicle.skyscraper.position.z = 70;
         let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3 );
         spotlight1.target = this.skyscraperAutonomousVehicle.skyscraper;
-        spotlight1.position.set(0, 20, 80);
+        spotlight1.position.set(-30, 20, 70);
         this.app.scene.add(spotlight1);
 
         this.skyscraperObstacles = new MySkyscraper(this.app, 200, 30, 5, "#AAAE7F", 4, "#454544", 8);
@@ -54,13 +55,13 @@ class MyScenario {
         let pillar = new THREE.CylinderGeometry( 5, 5, 200, 32 );
         let pillarMaterial = new THREE.MeshPhongMaterial( {color: "#454544"} );
         let pillarMesh1 = new THREE.Mesh( pillar, pillarMaterial );
-        pillarMesh1.position.set(-100, -100, 110)
+        pillarMesh1.position.set(-160, -100, 105)
         let pillarMesh2 = new THREE.Mesh( pillar, pillarMaterial );
-        pillarMesh2.position.set(-100, -100, -100)
+        pillarMesh2.position.set(-155, -100, -90)
         let pillarMesh3 = new THREE.Mesh( pillar, pillarMaterial );
-        pillarMesh3.position.set(200, -100, -95)
+        pillarMesh3.position.set(210, -100, -95)
         let pillarMesh4 = new THREE.Mesh( pillar, pillarMaterial );
-        pillarMesh4.position.set(200, -100, -2)
+        pillarMesh4.position.set(210, -100, 5)
 
         this.app.scene.add(pillarMesh1);
         this.app.scene.add(pillarMesh2);

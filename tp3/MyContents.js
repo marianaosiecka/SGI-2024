@@ -3,6 +3,11 @@ import { MyAxis } from "./MyAxis.js";
 import { MyReader } from "./MyReader.js";
 import { MyScenario } from "./scenario/MyScenario.js";
 import { MyVehicle } from "./elements/MyVehicle.js";
+import { MyCarModelRed } from "./carModels/MyCarModelRed.js";
+import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
+import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
+import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
+
 
 /**
  *  This class contains the contents of out application
@@ -20,7 +25,7 @@ class MyContents {
     this.followPlayerVehicle = false;
     this.followAutonomousVehicle = false;
 
-    this.startingPoint = new THREE.Vector3(32, 1, -117);
+    this.startingPoint = new THREE.Vector3(32, 1.7, -117);
     this.level = 1;
 
     this.showTrackWireframe = false;
@@ -59,11 +64,44 @@ class MyContents {
     );*/
 
     this.reader = new MyReader(this, this.app, this.level, this.startingPoint, this.segments)
+    
     // create the autonomous vehicle
     this.autonomousVehicle = this.reader.autonomousVehicle; 
     
     //player vehicle
     this.playerVehicle = this.reader.playerVehicle;
+
+    this.loadPlayerVehicle();
+    this.loadAutonomousVehicle();
+
+  }
+
+  loadPlayerVehicle() {
+    const myCarModelGreen = new MyCarModelPurple();
+    myCarModelGreen.loadModel().then((properties) => {
+      this.updatePlayerVehicleModel(properties);
+    });
+  }
+
+  loadAutonomousVehicle() {
+    const myCarModelRed = new MyCarModelRed();
+    myCarModelRed.loadModel().then((properties) => {
+      this.updateAutonomousVehicleModel(properties);
+    });
+  }
+
+  updatePlayerVehicleModel(properties) {
+    this.reader.readPlayerVehicle(properties[2], properties[3], properties[4], properties[5])
+    this.playerVehicle = this.reader.playerVehicle;
+    this.playerVehicle.setModel(properties[0], properties[1]);
+    this.app.scene.add(this.playerVehicle);
+  }
+
+  updateAutonomousVehicleModel(properties) {
+    this.reader.readAutonomousVehicle(properties[2], properties[3], properties[4], properties[5])
+    this.autonomousVehicle = this.reader.autonomousVehicle;
+    this.autonomousVehicle.setModel(properties[0], properties[1]);
+    this.app.scene.add(this.autonomousVehicle);
   }
 
   keyListeners() {
@@ -89,11 +127,10 @@ class MyContents {
   init() {
     this.menu();
     this.previousTime = 0;
-    this.speedFactor = 0.8;
+    this.speedFactor = 0.5;
     this.keys = {};
     this.rKeyPressed = false;
     this.keyListeners();    
-    this.createAxis();
 
     // LIGHTS
     // add a point light on top of the model
@@ -127,7 +164,7 @@ class MyContents {
   }
 
   menu() {
-    this.app.setActiveCamera("MenuPerspective");
+    //this.app.setActiveCamera("MenuPerspective");
     this.app.updateCameraIfRequired();
 
     const logoGeometry = new THREE.PlaneGeometry(10, 10);
@@ -150,9 +187,10 @@ class MyContents {
 
   }
 
+
   checkKeys() {
     let speed = this.speedFactor;
-    let turnSpeed = speed/25;
+    let turnSpeed = speed/30;
     
     let isSwitch = this.reader.isAppliedModifier("switch");
 
@@ -210,7 +248,6 @@ class MyContents {
    * Creates the axis
    */
   createAxis() {
-    // create once 
     if (this.axis === null) {
         // create and attach the axis to the scene
        this.axis = new MyAxis(this)
@@ -322,7 +359,7 @@ class MyContents {
 
     if(this.followPlayerVehicle) {
       //console.log(this.playerVehicle.carOrientation)
-      this.app.activeCamera.position.set(this.playerVehicle.position.x + 10 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 8, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
+      this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.app.controls.target = this.playerVehicle.position;
       this.scenario.clouds.update()
     }
