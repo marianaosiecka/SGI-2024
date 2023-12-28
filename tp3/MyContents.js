@@ -3,6 +3,7 @@ import { MyAxis } from "./MyAxis.js";
 import { MyReader } from "./MyReader.js";
 import { MyScenario } from "./scenario/MyScenario.js";
 import { MyVehicle } from "./elements/MyVehicle.js";
+import { MyObstacle } from "./elements/MyObstacle.js";
 import { MyCarModelRed } from "./carModels/MyCarModelRed.js";
 import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
 import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
@@ -171,8 +172,6 @@ class MyContents {
     this.rKeyPressed = false;
     this.keyListeners();    
 
-    this.parkingLotCars = [];
-
     // LIGHTS
     // add a point light on top of the model
     const pointLight = new THREE.PointLight(0xffffff, 3000);
@@ -192,9 +191,6 @@ class MyContents {
 
     // track
     this.reader.readTrack(5);
-
-    // axis
-    // this.createAxis();
 
     // menu
     /*this.menu = new MyMenu(this.app, 1);
@@ -253,6 +249,8 @@ class MyContents {
     this.loadRedPlayerParkingLot();
 
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI/2), 0, 36.5);
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0), Math.PI/2, 35.2);
     
   }
 
@@ -418,14 +416,14 @@ class MyContents {
     }
 
     if(this.followPlayerVehicle) {
-      console.log(this.playerVehicle.carOrientation)
+      //console.log(this.playerVehicle.carOrientation)
       this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.scenario.clouds.update()
     }
 
     if(this.followAutonomousVehicle) {
-      console.log(this.autonomousVehicle.carOrientation)
+      //console.log(this.autonomousVehicle.carOrientation)
       this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
       this.app.controls.target = this.autonomousVehicle.position;
     }

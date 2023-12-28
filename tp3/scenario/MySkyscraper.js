@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 
 class MySkyscraper extends THREE.Object3D {
-    constructor(app, height, width, numSides, colorBulding, windowHeight, colorWindows, layer, ups = 0) {
+    constructor(app, height, width, numSides, colorBulding, windowHeight, colorWindows, numParkingLotSpaces, layer, offset = 0) {
         super();
         this.app = app;
         this.height = height;
         this.width = width;
+        this.numParkingLotSpaces = numParkingLotSpaces;
 
         let geometry = new THREE.CylinderGeometry( width, width, height, numSides );
         let material = new THREE.MeshPhongMaterial( {color: colorBulding} );
@@ -37,9 +38,9 @@ class MySkyscraper extends THREE.Object3D {
             for(let j = 0; j < height - windowHeight - windowTopBorder; j += windowHeight + windowTopBorder){
                 let window = windows.clone();
                 window.rotation.y = angle;
-                window.position.x = (width + windowWidth + ups) / 2 * Math.sin(angle)
+                window.position.x = (width + windowWidth + offset) / 2 * Math.sin(angle)
                 window.position.y -= j
-                window.position.z = (width + windowWidth + ups) / 2 * Math.cos(angle);
+                window.position.z = (width + windowWidth + offset) / 2 * Math.cos(angle);
                 this.add(window);
             }
         }
@@ -58,64 +59,63 @@ class MySkyscraper extends THREE.Object3D {
 
         this.lineWidth = width*1.2;
 
+        this.turnParkingLot = (numParkingLotSpaces === 2) ? Math.PI/4 : 0;
+
         let horizontalLineGeo = new THREE.PlaneGeometry( 0.5, this.lineWidth );
         let lineMat = new THREE.MeshPhongMaterial( {color: 0xFFFFFF} );
         let horizontalLine = new THREE.Mesh( horizontalLineGeo, lineMat );
         horizontalLine.rotation.x = -Math.PI / 2;
-        horizontalLine.position.x = -width / 2 + 1;
+        horizontalLine.rotation.z = this.turnParkingLot;
         horizontalLine.position.y = 5.25;
+        if(numParkingLotSpaces !== 2) {
+            horizontalLine.position.x = -width / 2 + 1;
+        }
+        else {
+            horizontalLine.position.z = 5;
+            horizontalLine.position.x = -5;
+        }
+        this.add(horizontalLine);
 
         let verticalLineGeo = new THREE.PlaneGeometry( 0.5, width/1.8 );
-        let verticalLine1 = new THREE.Mesh( verticalLineGeo, lineMat );
-        verticalLine1.rotation.x = -Math.PI / 2;
-        verticalLine1.rotation.z = -Math.PI / 2;
-        verticalLine1.position.x = -3;
-        verticalLine1.position.y = 5.25;
 
-        let verticalLine2 = new THREE.Mesh( verticalLineGeo, lineMat );
-        verticalLine2.rotation.x = -Math.PI / 2;
-        verticalLine2.rotation.z = -Math.PI / 2;
-        verticalLine2.position.x = -3;
-        verticalLine2.position.z = -this.lineWidth/4;
-        verticalLine2.position.y = 5.25;
-
-        let verticalLine3 = new THREE.Mesh( verticalLineGeo, lineMat );
-        verticalLine3.rotation.x = -Math.PI / 2;
-        verticalLine3.rotation.z = -Math.PI / 2;
-        verticalLine3.position.x = -3;
-        verticalLine3.position.z = -this.lineWidth/2;
-        verticalLine3.position.y = 5.25;
-
-        let verticalLine4 = new THREE.Mesh( verticalLineGeo, lineMat );
-        verticalLine4.rotation.x = -Math.PI / 2;
-        verticalLine4.rotation.z = -Math.PI / 2;
-        verticalLine4.position.x = -3;
-        verticalLine4.position.z = this.lineWidth/4;
-        verticalLine4.position.y = 5.25;
-
-        let verticalLine5 = new THREE.Mesh( verticalLineGeo, lineMat );
-        verticalLine5.rotation.x = -Math.PI / 2;
-        verticalLine5.rotation.z = -Math.PI / 2;
-        verticalLine5.position.x = -3;
-        verticalLine5.position.z = this.lineWidth/2;
-        verticalLine5.position.y = 5.25;
-
-        this.add(horizontalLine);
-        this.add(verticalLine1);
-        this.add(verticalLine2);
-        this.add(verticalLine3);
-        this.add(verticalLine4);
-        this.add(verticalLine5);
-
+        if(numParkingLotSpaces === 2) {
+            for (let i = 0; i < numParkingLotSpaces + 1; i++) {
+                let verticalLine = new THREE.Mesh( verticalLineGeo, lineMat );
+                verticalLine.rotation.x = -Math.PI / 2;
+                verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
+                verticalLine.position.x = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
+                verticalLine.position.z = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
+                verticalLine.position.y = 5.25;
+                this.add(verticalLine);
+            }
+        }
+        else{
+            for (let i = 0; i < numParkingLotSpaces + 1; i++) {
+                let verticalLine = new THREE.Mesh( verticalLineGeo, lineMat );
+                verticalLine.rotation.x = -Math.PI / 2;
+                verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
+                verticalLine.position.x = -3;
+                verticalLine.position.z = -this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces);
+                verticalLine.position.y = 5.25;
+                this.add(verticalLine);
+            }
+        }
         this.app.scene.add(this)
     }
 
-    setVehicle(vehicle, rotation, y, offset) {
-        vehicle.rotation.y = Math.PI + Math.PI/2 - rotation;
-        vehicle.position.x = this.position.x - this.lineWidth/8;
-        vehicle.position.y = y;
-        vehicle.position.z = this.position.z - this.width/2 + 1.5 + offset;
-        this.app.scene.add(vehicle);
+    setObject(object, rotation, y, offset) {
+        object.rotation.y = Math.PI + Math.PI/2 - rotation - this.turnParkingLot;
+        object.position.y = y;
+        if(this.numParkingLotSpaces !== 2){
+            object.position.x = this.position.x - this.lineWidth/8;
+            object.position.z = this.position.z - this.width/2 + 1.5 + offset;
+        }
+        else{
+            object.rotation.z = rotation;
+            object.position.x = this.position.x - this.lineWidth/8 + offset - 3.5;
+            object.position.z = this.position.z - this.width/2 + 1.5 + offset + 3.5;
+        }
+        this.app.scene.add(object);
     }
 }
 
