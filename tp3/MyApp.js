@@ -87,6 +87,14 @@ class MyApp  {
         const startMenuPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         startMenuPerspective.position.set(-197, 0, 250)
         this.cameras['StartMenuPerspective'] = startMenuPerspective
+
+        const playerParkingLotPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        playerParkingLotPerspective.position.set(160, 40, -230)
+        this.cameras['PlayerParkingLot'] = playerParkingLotPerspective
+
+        const autonomousParkingLotPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        autonomousParkingLotPerspective.position.set(-200, 20, -25)
+        this.cameras['AutonomousParkingLot'] = autonomousParkingLotPerspective
     }
    
     /**
@@ -137,10 +145,29 @@ class MyApp  {
                 //this.controls.enableRotate = false;
                 //this.controls.enablePan = false;
                 this.controls.update();
+                this.setControlsTarget();
             }
             else {
                 this.controls.object = this.activeCamera
+                this.setControlsTarget();
             }
+        }
+    }
+
+    /**
+     * sets the controls' target
+     */
+    setControlsTarget() {
+        switch (this.activeCameraName) {
+            case 'PlayerParkingLot':
+                this.controls.target = new THREE.Vector3(120, 10, -200);
+                break;
+            case 'AutonomousParkingLot':
+                this.controls.target = new THREE.Vector3(-250, 10, 0);
+                break;
+            case 'Perspective':
+                this.controls.target = new THREE.Vector3(0, 0, 0);
+                break;
         }
     }
 

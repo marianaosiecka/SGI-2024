@@ -16,6 +16,8 @@ class MyCarModelRed {
             
             //removing platform that came with the model
             fbx.remove(fbx.children[1]);
+            let fullCar = fbx.clone();
+
             //removing the wheels
             fbx.children[1].remove(fbx.children[1].children[5]);
             fbx.children[1].remove(fbx.children[1].children[5]);
@@ -23,13 +25,13 @@ class MyCarModelRed {
             fbx.remove(fbx.children[0]);
             
             //setting attributes
-            this.car = fbx;
-            this.wheelsRatio = 1.2;
-            this.width = 5.5;
-            this.height = 4.5;
-            this.depth = 10;
-            this.mesh = fbx.children[0].children[3];
-            resolve([this.car, this.mesh, this.wheelsRatio, this.width, this.height, this.depth]);
+            let car = fbx;
+            let wheelsRatio = 1.2;
+            let width = 5.5;
+            let height = 4.5;
+            let depth = 10;
+            let rotation = Math.PI / 7.5;
+            resolve([fullCar, car, rotation, wheelsRatio, width, height, depth]);
           });
         });
     }

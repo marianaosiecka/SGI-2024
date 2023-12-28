@@ -58,7 +58,62 @@ class MyContents {
     );*/
   }
 
-  
+  loadRedAutoParkingLot() {
+    const myCarModelRed = new MyCarModelRed();
+    myCarModelRed.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
+    });
+  }
+
+  loadGreenAutoParkingLot() {
+    const myCarModelGreen = new MyCarModelGreen();
+    myCarModelGreen.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -4);
+    });
+  }
+
+  loadPurpleAutoParkingLot() {
+    const myCarModelPurple = new MyCarModelPurple();
+    myCarModelPurple.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
+    });
+  }
+
+  loadOrangeAutoParkingLot() {
+    const myCarModelOrange = new MyCarModelOrange();
+    myCarModelOrange.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -4);
+    });
+  }
+
+  loadRedPlayerParkingLot() {
+    const myCarModelRed = new MyCarModelRed();
+    myCarModelRed.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 14.2);
+    });
+  }
+
+  loadGreenPlayerParkingLot() {
+    const myCarModelGreen = new MyCarModelGreen();
+    myCarModelGreen.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 16);
+    });
+  }
+
+  loadPurplePlayerParkingLot() {
+    const myCarModelPurple = new MyCarModelPurple();
+    myCarModelPurple.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 14.2);
+    });
+  }
+
+  loadOrangePlayerParkingLot() {
+    const myCarModelOrange = new MyCarModelOrange();
+    myCarModelOrange.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 16);
+    });
+  }
+
   loadPlayerVehicle() {
     const myCarModelGreen = new MyCarModelPurple();
     myCarModelGreen.loadModel().then((properties) => {
@@ -74,16 +129,16 @@ class MyContents {
   }
 
   updatePlayerVehicleModel(properties) {
-    this.reader.readPlayerVehicle(properties[2], properties[3], properties[4], properties[5])
+    this.reader.readPlayerVehicle(properties[3], properties[4], properties[5], properties[6])
     this.playerVehicle = this.reader.playerVehicle;
-    this.playerVehicle.setModel(properties[0], properties[1]);
+    this.playerVehicle.setModel(properties[1]);
     this.app.scene.add(this.playerVehicle);
   }
 
   updateAutonomousVehicleModel(properties) {
-    this.reader.readAutonomousVehicle(properties[2], properties[3], properties[4], properties[5])
+    this.reader.readAutonomousVehicle(properties[3], properties[4], properties[5], properties[6])
     this.autonomousVehicle = this.reader.autonomousVehicle;
-    this.autonomousVehicle.setModel(properties[0], properties[1]);
+    this.autonomousVehicle.setModel(properties[1]);
     this.app.scene.add(this.autonomousVehicle);
   }
 
@@ -116,14 +171,16 @@ class MyContents {
     this.rKeyPressed = false;
     this.keyListeners();    
 
+    this.parkingLotCars = [];
+
     // LIGHTS
     // add a point light on top of the model
-    const pointLight = new THREE.PointLight(0xffffff, 3000, 0);
-    pointLight.position.set(0, 40, -10);
+    const pointLight = new THREE.PointLight(0xffffff, 3000);
+    pointLight.position.set(0, 50, -10);
     //this.app.scene.add(pointLight);
 
     // add an ambient light
-    const ambientLight = new THREE.AmbientLight(0x555555);
+    const ambientLight = new THREE.AmbientLight(0x555555, 3);
     this.app.scene.add(ambientLight);
 
     // add a hemisphere light
@@ -183,7 +240,20 @@ class MyContents {
     this.loadPlayerVehicle();
     this.loadAutonomousVehicle();
     
+    // load car models to autonomous vehicle parking lot
+    this.loadGreenAutoParkingLot();
+    this.loadPurpleAutoParkingLot();
+    this.loadOrangeAutoParkingLot();
+    this.loadRedAutoParkingLot();
+
+    // load car models to player vehicle parking lot
+    this.loadGreenPlayerParkingLot();
+    this.loadPurplePlayerParkingLot();
+    this.loadOrangePlayerParkingLot();
+    this.loadRedPlayerParkingLot();
+
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
+    
   }
 
 
@@ -348,9 +418,9 @@ class MyContents {
     }
 
     if(this.followPlayerVehicle) {
-      //console.log(this.playerVehicle.carOrientation)
+      console.log(this.playerVehicle.carOrientation)
       this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-      this.app.controls.target = this.playerVehicle.position;
+      this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
       this.scenario.clouds.update()
     }
 

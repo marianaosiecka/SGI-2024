@@ -16,21 +16,23 @@ class MyCarModelOrange {
             
             //removing platform that came with the model
             fbx.remove(fbx.children[2]);
-            //removing the wheels
-            fbx.children[0].remove(fbx.children[0].children[0]);
             //removing camera
             fbx.remove(fbx.children[1]);
             //removing extra elements
             fbx.remove(fbx.children[1]);
+            let fullCar = fbx.clone();
+
+            //removing the wheels
+            fbx.children[0].remove(fbx.children[0].children[0]);
             
             //setting attributes
-            this.car = fbx;
-            this.wheelsRatio = 1;
-            this.width = 5;
-            this.height = 3.5;
-            this.depth = 14;
-            this.mesh = fbx.children[0].children[1].children[1].children[0];
-            resolve([this.car, this.mesh, this.wheelsRatio, this.width, this.height, this.depth]);
+            let car = fbx;
+            let wheelsRatio = 1;
+            let width = 5;
+            let height = 3.5;
+            let depth = 14;
+            let rotation = 0;
+            resolve([fullCar, car, rotation, wheelsRatio, width, height, depth]);
             });
         });
     }

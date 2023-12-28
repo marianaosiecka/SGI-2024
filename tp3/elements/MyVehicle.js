@@ -113,7 +113,7 @@ class MyVehicle extends THREE.Object3D {
         return this.velocity*this.directionForward;
     }
 
-    updateAutonomous(point, orientation) {
+    updateAutonomous(velocity, point, orientation) {
         this.position.set(...point);
         this.setRotationFromQuaternion(orientation);
         this.carOrientation = this.rotation.y;
@@ -122,6 +122,8 @@ class MyVehicle extends THREE.Object3D {
         this.wheels.forEach(wheel => {
             wheel.updateMatrixWorld();
         })        
+
+        this.updateWheelRotation(velocity, true)
 
         // update the bounding box positions
         this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
@@ -163,7 +165,7 @@ class MyVehicle extends THREE.Object3D {
 
         this.updatePosition(dist)
         this.updateRotation()
-        this.updateWheelRotation(dist)
+        this.updateWheelRotation(dist, false)
 
         this.carMesh.updateMatrixWorld();
         this.wheels.forEach(wheel => {
@@ -223,9 +225,11 @@ class MyVehicle extends THREE.Object3D {
 
     }
 
-    updateWheelRotation(dist){
+    updateWheelRotation(dist, autonomous){
         // all wheels rotate on themselves
         let wheelTurnAngle = Math.sin(dist);
+        if(autonomous)
+            wheelTurnAngle = Math.abs(wheelTurnAngle);
 
         this.wheels.forEach(wheel => {
             wheel.rotateOnAxis(new THREE.Vector3(0, 1, 0), wheelTurnAngle);
