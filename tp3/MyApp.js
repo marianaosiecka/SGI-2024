@@ -87,6 +87,38 @@ class MyApp  {
         const startMenuPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         startMenuPerspective.position.set(-197, 0, 250)
         this.cameras['StartMenuPerspective'] = startMenuPerspective
+
+        const playerParkingLotPerspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        playerParkingLotPerspective1.position.set(128, 20, -197)
+        this.cameras['PlayerParkingLot1'] = playerParkingLotPerspective1
+
+        const playerParkingLotPerspective2 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        playerParkingLotPerspective2.position.set(128, 20, -205)
+        this.cameras['PlayerParkingLot2'] = playerParkingLotPerspective2
+
+        const playerParkingLotPerspective3 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        playerParkingLotPerspective3.position.set(128, 20, -213)
+        this.cameras['PlayerParkingLot3'] = playerParkingLotPerspective3
+
+        const playerParkingLotPerspective4 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        playerParkingLotPerspective4.position.set(128, 20, -221)
+        this.cameras['PlayerParkingLot4'] = playerParkingLotPerspective4
+
+        const autonomousParkingLotPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        autonomousParkingLotPerspective.position.set(-285, 6, -50)
+        this.cameras['OpponentParkingLot1'] = autonomousParkingLotPerspective
+
+        const autonomousParkingLotPerspective2 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        autonomousParkingLotPerspective2.position.set(-285, 6, -50)
+        this.cameras['OpponentParkingLot2'] = autonomousParkingLotPerspective2
+
+        const autonomousParkingLotPerspective3 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        autonomousParkingLotPerspective3.position.set(-285, 6, -50)
+        this.cameras['OpponentParkingLot3'] = autonomousParkingLotPerspective3
+
+        const autonomousParkingLotPerspective4 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        autonomousParkingLotPerspective4.position.set(-285, 6, -50)
+        this.cameras['OpponentParkingLot4'] = autonomousParkingLotPerspective4
     }
 
     smoothCameraTransition(toCameraName, duration) {
@@ -167,11 +199,32 @@ class MyApp  {
                 this.controls.enableRotate = false;
                 this.controls.enablePan = false;
                 this.controls.update();
+                this.setControlsTarget();
             }
             else {
                 this.controls.object = this.activeCamera
+                this.setControlsTarget();
             }
         }
+    }
+
+    /**
+     * sets the controls' target
+     */
+    setControlsTarget() {
+        /*
+        switch (this.activeCameraName) {
+            case 'PlayerParkingLot':
+                this.controls.target = new THREE.Vector3(120, 10, -200);
+                break;
+            case 'AutonomousParkingLot':
+                this.controls.target = new THREE.Vector3(-250, 10, 0);
+                break;
+            case 'Perspective':
+                this.controls.target = new THREE.Vector3(0, 0, 0);
+                break;
+        }
+        */
     }
 
     /**

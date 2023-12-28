@@ -85,7 +85,23 @@ class MyRoute extends THREE.Object3D {
         vehicle.getWorldPosition(carPosition);
         vehicle.getWorldQuaternion(carQuaternion);
 
-        autonomousVehicle.updateAutonomous(carPosition, carQuaternion);
+        const currentTime = this.mixer.time;
+        const currentIndex = Math.floor(currentTime / this.animationMaxDuration * (this.keyPoints.length - 1));
+
+        let velocity = new THREE.Vector3();
+
+        if (currentIndex < this.keyPoints.length - 1) {
+            const currentKeyPoint = this.keyPoints[currentIndex];
+            const nextKeyPoint = this.keyPoints[currentIndex + 1];
+
+            const displacement = nextKeyPoint.clone().add(carPosition).sub(currentKeyPoint);
+            velocity = displacement.divideScalar(currentTime);
+        }
+
+        // begging of the program
+        if(velocity.z === Infinity) velocity.z = 0;
+        
+        autonomousVehicle.updateAutonomous(velocity.z, carPosition, carQuaternion);
     }
 
 }

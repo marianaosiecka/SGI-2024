@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 class MyVehicle extends THREE.Object3D {
 
@@ -45,7 +44,7 @@ class MyVehicle extends THREE.Object3D {
     let texture = textureLoader.load('textures/rodas.png');
 
     // wheel geometry
-    let wheelHeight = height/2.5;
+    let wheelHeight = height/8;
     let wheelGeometry = new THREE.CylinderGeometry(wheelHeight, wheelHeight, wheelHeight, 32);
     
     // materials
@@ -57,6 +56,8 @@ class MyVehicle extends THREE.Object3D {
     this.wheelMeshLeftFront = new THREE.Mesh(wheelGeometry, wheelMaterial);
     this.wheelMeshRightBack = new THREE.Mesh(wheelGeometry, wheelMaterial);
     this.wheelMeshRightFront = new THREE.Mesh(wheelGeometry, wheelMaterial);
+
+    this.carMesh.position.y = height/3;
 
     this.wheels = [this.wheelMeshLeftBack, this.wheelMeshLeftFront, this.wheelMeshRightBack, this.wheelMeshRightFront];
 
@@ -74,22 +75,24 @@ class MyVehicle extends THREE.Object3D {
 
     this.wheelsBB = [this.wheel1BB, this.wheel2BB, this.wheel3BB, this.wheel4BB];
 
+    let xWheels = depth/3;
+
     // wheel positions
     this.wheelMeshLeftFront.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshLeftFront.position.x = -depth / 2 + wheelHeight;
-    this.wheelMeshLeftFront.position.z = width / 2 - wheelHeight / 3;
+    this.wheelMeshLeftFront.position.x = -xWheels + wheelHeight;
+    this.wheelMeshLeftFront.position.z = width / 2 * 1.1 - wheelHeight / 3;
 
     this.wheelMeshRightFront.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshRightFront.position.x = -depth / 2  + wheelHeight;
-    this.wheelMeshRightFront.position.z = -width / 2 + wheelHeight / 3;
+    this.wheelMeshRightFront.position.x = -xWheels  + wheelHeight;
+    this.wheelMeshRightFront.position.z = -width / 1.9 + wheelHeight / 3;
 
     this.wheelMeshLeftBack.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshLeftBack.position.x = depth / wheelsRatio - wheelHeight;
-    this.wheelMeshLeftBack.position.z = width / 2 - wheelHeight / 3;
+    this.wheelMeshLeftBack.position.x = xWheels / wheelsRatio - wheelHeight;
+    this.wheelMeshLeftBack.position.z = width / 2 * 1.1 - wheelHeight / 3;
 
     this.wheelMeshRightBack.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshRightBack.position.x = depth / wheelsRatio - wheelHeight;
-    this.wheelMeshRightBack.position.z = -width / 2 + wheelHeight / 3;
+    this.wheelMeshRightBack.position.x = xWheels / wheelsRatio - wheelHeight;
+    this.wheelMeshRightBack.position.z = -width / 1.9 + wheelHeight / 3;
 
     this.add(this.carMesh);
     this.add(this.wheelMeshLeftBack);
@@ -102,20 +105,15 @@ class MyVehicle extends THREE.Object3D {
     }
 
     setModel(model) {
-        this.remove(this.carMesh);
-        this.carMesh = model;
-
-        // bounding box
-        this.carBB = new THREE.Box3()
-        this.carBB.setFromObject(this.carMesh);
-        this.add(this.carMesh);
+        this.carMesh.visible = false;
+        this.add(model);
     }
 
     getVelocity() {
         return this.velocity*this.directionForward;
     }
 
-    updateAutonomous(point, orientation) {
+    updateAutonomous(velocity, point, orientation) {
         this.position.set(...point);
         this.setRotationFromQuaternion(orientation);
         this.carOrientation = this.rotation.y;
@@ -125,8 +123,10 @@ class MyVehicle extends THREE.Object3D {
             wheel.updateMatrixWorld();
         })        
 
+        this.updateWheelRotation(velocity, true)
+
         // update the bounding box positions
-        this.carBB.copy(this.carBB).applyMatrix4(this.carMesh.matrixWorld);
+        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
         this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
         this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
         this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
@@ -142,7 +142,7 @@ class MyVehicle extends THREE.Object3D {
         })
 
         // update the bounding box positions
-        this.carBB.copy(this.carBB).applyMatrix4(this.carMesh.matrixWorld);
+        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
         this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
         this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
         this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
@@ -165,7 +165,7 @@ class MyVehicle extends THREE.Object3D {
 
         this.updatePosition(dist)
         this.updateRotation()
-        this.updateWheelRotation(dist)
+        this.updateWheelRotation(dist, false)
 
         this.carMesh.updateMatrixWorld();
         this.wheels.forEach(wheel => {
@@ -173,7 +173,7 @@ class MyVehicle extends THREE.Object3D {
         })
 
         // update the bounding box positions
-        this.carBB.copy(this.carBB).applyMatrix4(this.carMesh.matrixWorld);
+        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
         this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
         this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
         this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
@@ -225,9 +225,11 @@ class MyVehicle extends THREE.Object3D {
 
     }
 
-    updateWheelRotation(dist){
+    updateWheelRotation(dist, autonomous){
         // all wheels rotate on themselves
         let wheelTurnAngle = Math.sin(dist);
+        if(autonomous)
+            wheelTurnAngle = Math.abs(wheelTurnAngle);
 
         this.wheels.forEach(wheel => {
             wheel.rotateOnAxis(new THREE.Vector3(0, 1, 0), wheelTurnAngle);

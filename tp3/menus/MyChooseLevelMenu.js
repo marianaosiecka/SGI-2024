@@ -48,12 +48,12 @@ class MyChooseLevelMenu extends THREE.Object3D {
         this.add(textMesh);
 
         // Add buttons to levels
-        const level1Button = this.addLevelButton(0x00E068, "textures/level1.png", "level1Button")
+        const level1Button = this.addLevelButton(0x72BA51, "textures/level1.png", "level1Button")
         level1Button.position.x = -5
         this.add(level1Button)
-        const level2Button = this.addLevelButton(0xEDE640, "textures/level2.png", "level2Button")
+        const level2Button = this.addLevelButton(0xEBE70C, "textures/level2.png", "level2Button")
         this.add(level2Button)
-        const level3Button = this.addLevelButton(0xEF0014, "textures/level3.png", "level3Button")
+        const level3Button = this.addLevelButton(0x98132A, "textures/level3.png", "level3Button")
         level3Button.position.x = 5
         this.add(level3Button)
 
@@ -69,7 +69,7 @@ class MyChooseLevelMenu extends THREE.Object3D {
         this.clickableObjects.push(levelMesh)
         levelMesh.name = buttonName
 
-        const levelTextGeometry = new THREE.PlaneGeometry(0.8, 1.2, 32)
+        const levelTextGeometry = new THREE.PlaneGeometry(0.7, 1.2, 32)
         const levelTextTexture = new THREE.TextureLoader().load(texturePath);
         const levelTextMaterial = new THREE.MeshBasicMaterial({ map: levelTextTexture, transparent: true, side: THREE.DoubleSide });
         const levelTextMesh = new THREE.Mesh(levelTextGeometry, levelTextMaterial)

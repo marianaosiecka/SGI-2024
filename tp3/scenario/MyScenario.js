@@ -27,30 +27,40 @@ class MyScenario {
 
         this.birds = [this.bird1, this.bird2, this.bird3];
 
-        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 20, 4, "#ffffff", 4, "#3A6392", this.layer, 0);
-        this.skyscraperAutonomousVehicle.skyscraper.position.x = -30;
-        this.skyscraperAutonomousVehicle.skyscraper.position.z = 70;
-        let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI / 3);
-        spotlight1.target = this.skyscraperAutonomousVehicle.skyscraper;
-        spotlight1.position.set(-30, 20, 70);
+        this.skyscraperObstacles = new MySkyscraper(this.app, 400, 20, 4, "#ffffff", 4, "#3A6392", layer, 0);
+        this.skyscraperObstacles.position.x = -20;
+        this.skyscraperObstacles.position.z = 110;
+        this.skyscraperObstacles.position.y = 30;
+       
+        let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3 );
+        spotlight1.target = this.skyscraperObstacles;
+        spotlight1.position.set(-30, 50, 70);
         this.app.scene.add(spotlight1);
 
-        this.skyscraperObstacles = new MySkyscraper(this.app, 400, 30, 5, "#AAAE7F", 4, "#454544", this.layer, 10);
-        this.skyscraperObstacles.skyscraper.position.x = -250;
-        let spotlight2 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI / 3);
-        spotlight2.target = this.skyscraperObstacles.skyscraper;
-        spotlight2.position.set(-250, 20, 0);
-        this.app.scene.add(spotlight2);
-        /*this.skyscraperPlayerVehicle = new MySkyscraper(this.app, 400, 15, 3, "#e15d31", 2, "#dc764d", -8);
-        this.skyscraperPlayerVehicle.skyscraper.position.x = 250;*/
+        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 30, 6, "#AAAE7F", 4, "#454544", layer, 12);
+        this.skyscraperAutonomousVehicle.position.x = -250;
+        this.skyscraperAutonomousVehicle.position.y = -10;
+        this.skyscraperAutonomousVehicle.position.z = -40;
+        this.autoParkingLotOffset = 0;
 
-        this.skyscraper1 = new MySkyscraper(this.app, 400, 30, 30, "#C5351B", 4, "#f1e9d0", this.layer, 28);
-        this.skyscraper1.skyscraper.position.x = 120;
-        this.skyscraper1.skyscraper.position.z = -200;
-        let spotlight3 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI / 3);
-        spotlight3.target = this.skyscraper1.skyscraper;
-        spotlight3.position.set(120, 20, -200);
+        let spotlight2 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
+        spotlight2.target = this.skyscraperAutonomousVehicle;
+        spotlight2.position.set(-250, 10, 0);
+        this.app.scene.add(spotlight2);
+
+        this.skyscraperPlayerVehicle = new MySkyscraper(this.app, 400, 30, 30, "#C5351B", 4, "#f1e9d0", layer, 28);
+        this.skyscraperPlayerVehicle.position.x = 120;
+        this.skyscraperPlayerVehicle.position.y = 10;
+        this.skyscraperPlayerVehicle.position.z = -200;
+        this.playerParkingLotOffset = 0;
+
+        let spotlight3 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
+        spotlight3.target = this.skyscraperPlayerVehicle;
+        spotlight3.position.set(120, 30, -200);
         this.app.scene.add(spotlight3);
+
+        this.autoParkingLotCars = [];
+        this.playerParkingLotCars = [];
 
         // pillars supporting the track
         let pillar = new THREE.CylinderGeometry(5, 5, 400, 32);
@@ -78,6 +88,18 @@ class MyScenario {
         this.cloudUnderCar = new MyCloud(this.app, vehiclePosition);
     }
 
+    setAutonomousVehicleParkingLot (vehicle, rotation, y) {
+        this.skyscraperAutonomousVehicle.setVehicle(vehicle, rotation, y, this.autoParkingLotOffset);
+        this.autoParkingLotOffset += this.skyscraperAutonomousVehicle.lineWidth/4;
+        this.autoParkingLotCars.push(vehicle);
+    }
+
+    setPlayerVehicleParkingLot (vehicle, rotation, y) {
+        this.skyscraperPlayerVehicle.setVehicle(vehicle, rotation, y, this.playerParkingLotOffset);
+        this.playerParkingLotOffset += this.skyscraperPlayerVehicle.lineWidth/4;
+        this.playerParkingLotCars.push(vehicle);
+    }
+    
     update(playerVehicle, elapsedTime) {
         this.clouds.update();
         this.birds.forEach(bird => bird.update(elapsedTime));

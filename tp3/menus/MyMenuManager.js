@@ -2,6 +2,8 @@ import { MyMainMenu } from './MyMainMenu.js';
 import { MyInstructionsMenu } from './MyInstructionsMenu.js';
 import { MyEnterUsernameMenu } from './MyEnterUsernameMenu.js';
 import { MyChooseLevelMenu } from './MyChooseLevelMenu.js';
+import { MyChoosePlayerVehicleMenu } from './MyChoosePlayerVehicleMenu.js';
+import { MyChooseOpponentVehicleMenu } from './MyChooseOpponentVehicleMenu.js';
 
 class MyMenuManager {
     constructor(app, layer, pickableObjects, clickableObjects) {
@@ -31,21 +33,35 @@ class MyMenuManager {
 
     // choose level menu
     initChooseLevelMenu() {
+        this.app.setActiveCamera('StartMenuPerspective');
         this.clearCurrentMenu();
         this.currentMenu = new MyChooseLevelMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects);
         this.app.scene.add(this.currentMenu);
     }
 
+    // choose player vehicle menu
     initChoosePlayerVehicleMenu() {
         this.clearCurrentMenu();
+        this.app.smoothCameraTransition('PlayerParkingLot1', 90000)
         this.currentMenu = new MyChoosePlayerVehicleMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects);
         this.app.scene.add(this.currentMenu);
     }
 
     initChooseOpponentVehicleMenu() {
         this.clearCurrentMenu();
+        this.app.smoothCameraTransition('OpponentParkingLot1', 90000)
         this.currentMenu = new MyChooseOpponentVehicleMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects);
         this.app.scene.add(this.currentMenu);
+    }
+
+    // update choose vehicle menu
+    updateChooseVehicleMenu(num) {
+        if(this.currentMenu instanceof MyChoosePlayerVehicleMenu){
+            this.currentMenu.updateChoosePlayerVehicleMenu(num);
+        }
+        else if(this.currentMenu instanceof MyChooseOpponentVehicleMenu){
+            this.currentMenu.updateChooseOpponentVehicleMenu(num);
+        }
     }
 
     // instructions menu

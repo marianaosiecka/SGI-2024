@@ -69,7 +69,7 @@ class MyEnterUsernameMenu extends THREE.Object3D {
             `);
             inputMesh.element = input;
             document.body.appendChild(input);
-        }, 2000);
+        }, 2400);
 
 
         // Add a submit button

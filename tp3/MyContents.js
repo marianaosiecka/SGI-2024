@@ -36,7 +36,9 @@ class MyContents {
     // menu related attributes
     this.username = null;
     this.selectedLevel = null;
+    this.availablePlayerVehicles = [];
     this.selectedPlayerVehicle = null;
+    this.availableOpponentVehicles = [];
     this.selectedOpponentVehicle = null;
 
     this.playing = false;
@@ -76,15 +78,16 @@ class MyContents {
     this.rKeyPressed = false;
     this.keyListeners();
     this.createAxis();
+    this.parkingLotCars = [];
 
     // LIGHTS
     // add a point light on top of the model
-    const pointLight = new THREE.PointLight(0xffffff, 3000, 0);
-    pointLight.position.set(0, 40, -10);
+    const pointLight = new THREE.PointLight(0xffffff, 3000);
+    pointLight.position.set(0, 50, -10);
     //this.app.scene.add(pointLight);
 
     // add an ambient light
-    const ambientLight = new THREE.AmbientLight(0x555555);
+    const ambientLight = new THREE.AmbientLight(0x555555, 3);
     this.app.scene.add(ambientLight);
 
     // add a hemisphere light
@@ -344,6 +347,12 @@ class MyContents {
         this.app.controls.target = this.playerVehicle.position;
         this.scenario.clouds.update()
       }
+      if (this.followPlayerVehicle) {
+        console.log(this.playerVehicle.carOrientation)
+        this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
+        this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
+        this.scenario.clouds.update()
+      }
 
       if (this.followAutonomousVehicle) {
         this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
@@ -389,16 +398,14 @@ class MyContents {
         this.menuManager.initEnterUsernameMenu();
       }
       else if (intersects[0].object.name.startsWith("backButton")) {
+        if (document.getElementById("username")) {
+          document.body.removeChild(document.getElementById("username"));
+        }
         const menuName = intersects[0].object.name.substring(12);
         this.menuManager.initMenu(menuName);
       }
       else if (intersects[0].object.name == "submitUsernameButton") {
         this.username = document.getElementById("username").value;
-        /*if(this.username != ""){
-          console.log("username: ", this.username);
-          document.body.removeChild(document.getElementById("username"));
-          this.menuManager.initChooseLevelMenu();
-        }*/
         if (this.username == "") this.username = "player"
         console.log("username: ", this.username);
         document.body.removeChild(document.getElementById("username"));
@@ -407,14 +414,86 @@ class MyContents {
       else if (intersects[0].object.name.startsWith("level")) {
         this.selectedLevel = parseInt(intersects[0].object.name.substring(5));
         console.log("level: ", this.selectedLevel);
+        this.loadPlayerParkingLot();
         this.menuManager.initChoosePlayerVehicleMenu();
+      }
+      else if (intersects[0].object.name == "rightCarButton") {
+        this.menuManager.updateChooseVehicleMenu(1);
+      }
+      else if (intersects[0].object.name == "leftCarButton") {
+        this.menuManager.updateChooseVehicleMenu(-1);
+      }
+      else if (intersects[0].object.name == "selectPlayerVehicleButton") {
+        this.selectedPlayerVehicle = this.availablePlayerVehicles[this.app.activeCameraName];
+        console.log("selected player vehicle: ", this.selectedPlayerVehicle);
+        // put the car in the starting point
+        this.loadAutonomousParkingLot();
+        this.menuManager.initChooseOpponentVehicleMenu();
+      }
+      else if (intersects[0].object.name == "selectOpponentVehicleButton") {
+        this.selectedOpponentVehicle = this.availableOpponentVehicles[this.app.activeCameraName];
+        console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
+        // put the car in the starting point
+        //this.app.smoothCameraTransition('PlayerCarPerspective', 1000);
+        //this.startGame();
       }
     }
   }
 
-  setPosAndRotRelativeToCamera(obj, camera = this.app.activeCamera) {
+  loadPlayerParkingLot() {
+    const myCarModelGreen = new MyCarModelGreen();
+    myCarModelGreen.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 16);
+    });
+    this.availablePlayerVehicles['PlayerParkingLot4'] = myCarModelGreen;
+
+    const myCarModelOrange = new MyCarModelOrange();
+    myCarModelOrange.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 16);
+    });
+    this.availablePlayerVehicles['PlayerParkingLot3'] = myCarModelOrange;
+
+    const myCarModelPurple = new MyCarModelPurple();
+    myCarModelPurple.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 14.2);
+    });
+    this.availablePlayerVehicles['PlayerParkingLot2'] = myCarModelPurple;
+
+    const myCarModelRed = new MyCarModelRed();
+    myCarModelRed.loadModel().then((properties) => {
+      this.scenario.setPlayerVehicleParkingLot(properties[0], properties[2], 14.2);
+    });
+    this.availablePlayerVehicles['PlayerParkingLot1'] = myCarModelRed;
+  }
+
+  loadAutonomousParkingLot() {
+    const myCarModelRed = new MyCarModelRed();
+    myCarModelRed.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
+    });
+    this.availableOpponentVehicles['OpponentParkingLot1'] = myCarModelRed;
+
+    const myCarModelGreen = new MyCarModelGreen();
+    myCarModelGreen.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -4);
+    });
+    this.availableOpponentVehicles['OpponentParkingLot2'] = myCarModelGreen;
+
+    const myCarModelPurple = new MyCarModelPurple();
+    myCarModelPurple.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
+    });
+    this.availableOpponentVehicles['OpponentParkingLot3'] = myCarModelPurple;
+
+    const myCarModelOrange = new MyCarModelOrange();
+    myCarModelOrange.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -4);
+    });
+    this.availableOpponentVehicles['OpponentParkingLot4'] = myCarModelOrange;
+  }
+
+  setPosAndRotRelativeToCamera(obj, camera = this.app.activeCamera, distance = 30) {
     const direction = new THREE.Vector3(0, 0, 0).sub(camera.position).normalize();
-    const distance = 30;
     const position = new THREE.Vector3().copy(camera.position).add(direction.multiplyScalar(distance));
 
     obj.position.copy(position);
