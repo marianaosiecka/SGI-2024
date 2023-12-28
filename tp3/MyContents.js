@@ -7,7 +7,7 @@ import { MyCarModelRed } from "./carModels/MyCarModelRed.js";
 import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
 import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
 import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
-import { MyMenu } from "./MyMenu.js";
+import { MyMenuManager } from "./menus/MyMenuManager.js";
 
 /**
  *  This class contains the contents of out application
@@ -19,6 +19,7 @@ class MyContents {
     */
   constructor(app) {
     this.app = app;
+    this.app.setContents(this);
     this.axis = null;
 
     this.clock = new THREE.Clock()
@@ -31,6 +32,15 @@ class MyContents {
     this.showTrackLine = true;
     this.trackClosedCurve = false;
 
+    this.levels = [1, 2, 3];
+    // menu related attributes
+    this.username = null;
+    this.selectedLevel = null;
+    this.selectedPlayerVehicle = null;
+    this.selectedOpponentVehicle = null;
+
+    this.playing = false;
+
     //Curve related attributes
     this.segments = 200;
 
@@ -40,23 +50,18 @@ class MyContents {
     this.raycaster.far = 100;
 
     this.pointer = new THREE.Vector2();
-    this.intersectedObj = null
-    this.pickingColor = "0x00ff00"
+    this.lastIntersectedObj = null;
 
     this.availableLayers = ['none', 1, 2, 3, 4]
     // 1 -> menu
     // 2 -> powerups and obstacles
     // 3 -> track
-    // 4 -> scenario
     this.selectedLayer = this.availableLayers[0]
-    this.notPickableObjIds = []
+    this.pickableObjects = []
+    this.clickableObjects = []
 
-    document.addEventListener(
-        "pointermove",
-        // "mousemove",
-        // "pointerdown",
-        this.onPointerMove.bind(this)
-    );
+    document.addEventListener("pointermove", this.onPointerMove.bind(this));
+    document.addEventListener("pointerdown", this.onPointerDown.bind(this));
   }
 
   /**
@@ -69,7 +74,7 @@ class MyContents {
     this.speedFactor = 0.5;
     this.keys = {};
     this.rKeyPressed = false;
-    this.keyListeners();    
+    this.keyListeners();
     this.createAxis();
 
     // LIGHTS
@@ -83,7 +88,7 @@ class MyContents {
     this.app.scene.add(ambientLight);
 
     // add a hemisphere light
-    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 ); 
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
     this.app.scene.add(hemiLight);
 
     // SCENARIO
@@ -97,31 +102,20 @@ class MyContents {
 
     // MENU
     this.selectedLayer = this.availableLayers[1];
-    // main menu
-    this.menu = new MyMenu(this.app, this.availableLayers[1]);
-    this.app.setActiveCamera('MainMenuPerspective');
-    this.menu.initMainMenu();
-    this.app.scene.add(this.menu.mainMenu);
+    this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
+    this.menuManager.initMainMenu();
+  }
 
-    // start menu
-    // by clicking anywhere on the screen remove mainMenu and add startMenu
-    this.app.renderer.domElement.addEventListener('click', () => {
-      this.app.scene.remove(this.menu.mainMenu);
-      this.app.setActiveCamera('StartMenuPerspective');
-      this.menu.initStartMenu();
-      this.app.scene.add(this.menu.startMenu);
-    }); 
-
-
+  startGame() {
+    this.playing = true;
     // START THE GAME
-    this.level = 1;
-    this.reader.level = this.level;
+    this.reader.level = this.selectedLevel;
     this.previousTime = 0;
     this.speedFactor = 0.8;
     this.keys = {};
     this.rKeyPressed = false;
     this.keyListeners();
-    
+
     // route
     this.reader.readRoutes();
     this.mixer = this.reader.mixer;
@@ -133,19 +127,19 @@ class MyContents {
     this.reader.readPowerUps(this.availableLayers[2]);
 
     // autonomous vehicle
-    this.autonomousVehicle = this.reader.autonomousVehicle; 
-    
+    this.autonomousVehicle = this.reader.autonomousVehicle;
+
     // player vehicle
     this.playerVehicle = this.reader.playerVehicle;
 
     // load car models
     this.loadPlayerVehicle();
     this.loadAutonomousVehicle();
-    
+
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
   }
 
-    
+
   loadPlayerVehicle() {
     const myCarModelGreen = new MyCarModelPurple();
     myCarModelGreen.loadModel().then((properties) => {
@@ -194,29 +188,29 @@ class MyContents {
 
   checkKeys() {
     let speed = this.speedFactor;
-    let turnSpeed = speed/30;
-    
+    let turnSpeed = speed / 30;
+
     let isSwitch = this.reader.isAppliedModifier("switch");
 
-    if (this.keys['KeyW'] && !this.playerVehicle.outOfTrack) 
+    if (this.keys['KeyW'] && !this.playerVehicle.outOfTrack)
       this.playerVehicle.accelerate(speed);
 
-    if (this.keys['KeyX']) 
+    if (this.keys['KeyX'])
       this.playerVehicle.decelerate(speed);
 
     if (this.keys['KeyA'])
       this.playerVehicle.shouldStop = true;
 
-    if (this.keys['KeyS']){
-      if(!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
+    if (this.keys['KeyS']) {
+      if (!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
       else this.playerVehicle.turn(-turnSpeed);
     }
-    if (this.keys['KeyD']){
-      if(!isSwitch) this.playerVehicle.turn(-turnSpeed);
+    if (this.keys['KeyD']) {
+      if (!isSwitch) this.playerVehicle.turn(-turnSpeed);
       else this.playerVehicle.turn(turnSpeed);
     }
 
-    if (this.keys['KeyR'] && !this.rKeyPressed){
+    if (this.keys['KeyR'] && !this.rKeyPressed) {
       this.rKeyPressed = true;
       this.playerVehicle.reverse();
     }
@@ -232,9 +226,9 @@ class MyContents {
    */
   createAxis() {
     if (this.axis === null) {
-        // create and attach the axis to the scene
-       this.axis = new MyAxis(this)
-       this.app.scene.add(this.axis)
+      // create and attach the axis to the scene
+      this.axis = new MyAxis(this)
+      this.app.scene.add(this.axis)
     }
   }
 
@@ -272,7 +266,7 @@ class MyContents {
   updateTrackLineVisibility() {
     this.track.line.visible = this.showTrackLine;
   }
-  
+
   /**
    * Called when user changes track wireframe visibility. Shows/hides wireframe object.
    */
@@ -292,151 +286,142 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
+    this.raycaster.layers.enableAll()
+    if (this.selectedLayer !== 'none') {
+      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
+      this.raycaster.layers.set(selectedIndex)
+    }
     const delta = this.clock.getDelta()
     const time = Date.now();
 
     // update the clouds lookAt
     this.scenario.update(this.playerVehicle, delta);
-    
-    // update the autonomous car position and rotation
-    this.mixer.update(delta)
 
-    // this updates the position of the actual object of MyVehicle class
-    this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
+    if (this.playing) {
+      // update the autonomous car position and rotation
+      this.mixer.update(delta)
 
-    if (this.previousTime == 0)
-      this.previousTime = time;
-    else {
-      let speed = this.checkKeys();
-      this.playerVehicle.update(time, speed);
-      this.previousTime = time;
-      this.reader.checkForCollisions();
+      // this updates the position of the actual object of MyVehicle class
+      this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 
-      if(this.reader.shortcut){
-        this.reader.shortcutMixer.update(delta);
-        this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
-  
-        const elapsedTime = this.reader.shortcutAction.time; // Get elapsed time of the animation
-        const duration = this.reader.shortcutAction._clip.duration; // Get actual duration
-        const tolerance = 0.08;
-  
-        if (elapsedTime + tolerance >= duration) {
-          this.reader.stopShortcutAnimation();
-        }
-      }
+      if (this.previousTime == 0)
+        this.previousTime = time;
+      else {
+        let speed = this.checkKeys();
+        this.playerVehicle.update(time, speed);
+        this.previousTime = time;
+        this.reader.checkForCollisions();
 
-      // check if any modifier is applied for more than 15 seconds
-      for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
-        if(this.reader.appliedModifiers[i] instanceof MyVehicle){
-          if(time - this.reader.appliedModifiersStartTime[i] > 3000)
-            this.reader.stopModifier(this.reader.appliedModifiers[i]);
-        } 
-        else
-          if(time - this.reader.appliedModifiersStartTime[i] > 6000) {
-            this.reader.stopModifier(this.reader.appliedModifiers[i]);
+        if (this.reader.shortcut) {
+          this.reader.shortcutMixer.update(delta);
+          this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
+
+          const elapsedTime = this.reader.shortcutAction.time; // Get elapsed time of the animation
+          const duration = this.reader.shortcutAction._clip.duration; // Get actual duration
+          const tolerance = 0.08;
+
+          if (elapsedTime + tolerance >= duration) {
+            this.reader.stopShortcutAnimation();
           }
-      }
-      
-    }
+        }
 
-    if(this.followPlayerVehicle) {
-      //console.log(this.playerVehicle.carOrientation)
-      this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-      this.app.controls.target = this.playerVehicle.position;
-      this.scenario.clouds.update()
-    }
-
-    if(this.followAutonomousVehicle) {
-      console.log(this.autonomousVehicle.carOrientation)
-      this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
-      this.app.controls.target = this.autonomousVehicle.position;
-    }
-  }
-
-  onPointerMove(event) {
-
-    // calculate pointer position in normalized device coordinates
-    // (-1 to +1) for both components
-
-    //of the screen is the origin
-    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    //console.log("Position x: " + this.pointer.x + " y: " + this.pointer.y);
-
-    //2. set the picking ray from the camera position and mouse coordinates
-    this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
-
-    //3. compute intersections
-    var intersects = this.raycaster.intersectObjects(this.app.scene.children);
-
-    this.pickingHelper(intersects)
-
-    this.transverseRaycastProperties(intersects)
-  }
-
-  /*
-  * Change the color of the first intersected object
-  *
-  */
-  changeColorOfFirstPickedObj(obj) {
-    if (this.lastPickedObj != obj) {
-        if (this.lastPickedObj)
-            this.lastPickedObj.material.color.setHex(this.lastPickedObj.currentHex);
-        this.lastPickedObj = obj;
-        console.log(this.lastPickedObj)
-        this.lastPickedObj.currentHex = this.lastPickedObj.material.color.getHex();
-        this.lastPickedObj.material.color.setHex(this.pickingColor);
-    }
-  }
-
-  /*
-  * Restore the original color of the intersected object
-  *
-  */
-  restoreColorOfFirstPickedObj() {
-      if (this.lastPickedObj)
-          this.lastPickedObj.material.color.setHex(this.lastPickedObj.currentHex);
-      this.lastPickedObj = null;
-  }
-
-  /*
-  * Helper to visualize the intersected object
-  *
-  */
-  pickingHelper(intersects) {
-      if (intersects.length > 0) {
-          const obj = intersects[0].object
-          if (this.notPickableObjIds.includes(obj.name)) {
-              this.restoreColorOfFirstPickedObj()
-              console.log("Object cannot be picked !")
+        // check if any modifier is applied for more than 15 seconds
+        for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
+          if (this.reader.appliedModifiers[i] instanceof MyVehicle) {
+            if (time - this.reader.appliedModifiersStartTime[i] > 3000)
+              this.reader.stopModifier(this.reader.appliedModifiers[i]);
           }
           else
-              this.changeColorOfFirstPickedObj(obj)
-      } else {
-          this.restoreColorOfFirstPickedObj()
+            if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
+              this.reader.stopModifier(this.reader.appliedModifiers[i]);
+            }
+        }
+
       }
+
+      if (this.followPlayerVehicle) {
+        this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
+        this.app.controls.target = this.playerVehicle.position;
+        this.scenario.clouds.update()
+      }
+
+      if (this.followAutonomousVehicle) {
+        this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
+        this.app.controls.target = this.autonomousVehicle.position;
+      }
+    }
   }
 
+  // picking
+  onPointerMove(event) {
+    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
+    var intersects = this.raycaster.intersectObjects(this.pickableObjects);
 
-  /**
-   * Print to console information about the intersected objects
-   */
-  transverseRaycastProperties(intersects) {
-      for (var i = 0; i < intersects.length; i++) {
-
-          console.log(intersects[i]);
-
-          /*
-          An intersection has the following properties :
-              - object : intersected object (THREE.Mesh)
-              - distance : distance from camera to intersection (number)
-              - face : intersected face (THREE.Face3)
-              - faceIndex : intersected face index (number)
-              - point : intersection point (THREE.Vector3)
-              - uv : intersection point in the object's UV coordinates (THREE.Vector2)
-          */
+    if (intersects.length > 0) {
+      document.body.style.cursor = "pointer";
+      if (intersects[0].object != this.lastIntersectedObj) {
+        this.lastIntersectedObj = intersects[0].object;
+        this.menuManager.handleButtonHover(this.lastIntersectedObj)
       }
+    }
+
+    else {
+      document.body.style.cursor = "default";
+
+      if (this.lastIntersectedObj != null) {
+        this.menuManager.resetButtonState(this.lastIntersectedObj);
+        this.lastIntersectedObj = null;
+      }
+    }
+  }
+
+  // clicking
+  onPointerDown(event) {
+    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
+    var intersects = this.raycaster.intersectObjects(this.clickableObjects);
+
+    if (intersects.length > 0) {
+      if (intersects[0].object.name == "clickHereToStart") {
+        this.menuManager.initEnterUsernameMenu();
+      }
+      else if (intersects[0].object.name.startsWith("backButton")) {
+        const menuName = intersects[0].object.name.substring(12);
+        this.menuManager.initMenu(menuName);
+      }
+      else if (intersects[0].object.name == "submitUsernameButton") {
+        this.username = document.getElementById("username").value;
+        /*if(this.username != ""){
+          console.log("username: ", this.username);
+          document.body.removeChild(document.getElementById("username"));
+          this.menuManager.initChooseLevelMenu();
+        }*/
+        if (this.username == "") this.username = "player"
+        console.log("username: ", this.username);
+        document.body.removeChild(document.getElementById("username"));
+        this.menuManager.initChooseLevelMenu();
+      }
+      else if (intersects[0].object.name.startsWith("level")) {
+        this.selectedLevel = parseInt(intersects[0].object.name.substring(5));
+        console.log("level: ", this.selectedLevel);
+        this.menuManager.initChoosePlayerVehicleMenu();
+      }
+    }
+  }
+
+  setPosAndRotRelativeToCamera(obj, camera = this.app.activeCamera) {
+    const direction = new THREE.Vector3(0, 0, 0).sub(camera.position).normalize();
+    const distance = 30;
+    const position = new THREE.Vector3().copy(camera.position).add(direction.multiplyScalar(distance));
+
+    obj.position.copy(position);
+
+    const lookAtMatrix = new THREE.Matrix4().lookAt(camera.position, new THREE.Vector3(0, 0, 0), camera.up);
+    const rotation = new THREE.Euler().setFromRotationMatrix(lookAtMatrix);
+    obj.rotation.set(rotation.x, rotation.y, rotation.z);
   }
 
 }

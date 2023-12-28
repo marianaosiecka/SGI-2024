@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class MyObstacle extends THREE.Object3D {
-    constructor(app, type, texture, color) {
+    constructor(app, type, texture, color, layer) {
         super();
         this.app = app;
         this.type = type;

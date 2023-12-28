@@ -43,7 +43,8 @@ class MyApp  {
         document.body.appendChild(this.stats.dom)
 
         this.initCameras();
-        this.setActiveCamera('Perspective')
+        //this.setActiveCamera('Perspective')
+        this.setActiveCamera('MainMenuPerspective')
 
         // Create a renderer with Antialiasing
         this.renderer = new THREE.WebGLRenderer({antialias:true});
@@ -87,6 +88,36 @@ class MyApp  {
         startMenuPerspective.position.set(-197, 0, 250)
         this.cameras['StartMenuPerspective'] = startMenuPerspective
     }
+
+    smoothCameraTransition(toCameraName, duration) {
+        if(this.activeCameraName == toCameraName) {
+            return
+        }
+        
+        const fromCamera = this.activeCamera;
+        const fromCameraOriginalPosition = fromCamera.position.clone();
+        const toCamera = this.cameras[toCameraName];
+        const startTime = performance.now();
+    
+        const updateCamera = () => {
+            const now = performance.now();
+            const progress = Math.min((now - startTime) / duration, 1);
+
+            fromCamera.position.lerpVectors(fromCamera.position, toCamera.position, progress);
+            fromCamera.lookAt(toCamera.position);
+        
+            if (progress < 0.13) {
+                requestAnimationFrame(updateCamera);
+            } else {
+                fromCamera.position.copy(fromCameraOriginalPosition);
+                this.setActiveCamera(toCameraName);
+            }
+        };
+
+        updateCamera();
+    }
+    
+    
    
     /**
      * sets the active camera by name

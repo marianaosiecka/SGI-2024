@@ -30,14 +30,14 @@ class MyScenario {
         this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 20, 4, "#ffffff", 4, "#3A6392", this.layer, 0);
         this.skyscraperAutonomousVehicle.skyscraper.position.x = -30;
         this.skyscraperAutonomousVehicle.skyscraper.position.z = 70;
-        let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3 );
+        let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI / 3);
         spotlight1.target = this.skyscraperAutonomousVehicle.skyscraper;
         spotlight1.position.set(-30, 20, 70);
         this.app.scene.add(spotlight1);
 
         this.skyscraperObstacles = new MySkyscraper(this.app, 400, 30, 5, "#AAAE7F", 4, "#454544", this.layer, 10);
         this.skyscraperObstacles.skyscraper.position.x = -250;
-        let spotlight2 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
+        let spotlight2 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI / 3);
         spotlight2.target = this.skyscraperObstacles.skyscraper;
         spotlight2.position.set(-250, 20, 0);
         this.app.scene.add(spotlight2);
@@ -47,21 +47,21 @@ class MyScenario {
         this.skyscraper1 = new MySkyscraper(this.app, 400, 30, 30, "#C5351B", 4, "#f1e9d0", this.layer, 28);
         this.skyscraper1.skyscraper.position.x = 120;
         this.skyscraper1.skyscraper.position.z = -200;
-        let spotlight3 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
+        let spotlight3 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI / 3);
         spotlight3.target = this.skyscraper1.skyscraper;
         spotlight3.position.set(120, 20, -200);
         this.app.scene.add(spotlight3);
 
         // pillars supporting the track
-        let pillar = new THREE.CylinderGeometry( 5, 5, 400, 32 );
-        let pillarMaterial = new THREE.MeshPhongMaterial( {color: "#454544"} );
-        let pillarMesh1 = new THREE.Mesh( pillar, pillarMaterial );
+        let pillar = new THREE.CylinderGeometry(5, 5, 400, 32);
+        let pillarMaterial = new THREE.MeshPhongMaterial({ color: "#454544" });
+        let pillarMesh1 = new THREE.Mesh(pillar, pillarMaterial);
         pillarMesh1.position.set(-160, -200, 105)
-        let pillarMesh2 = new THREE.Mesh( pillar, pillarMaterial );
+        let pillarMesh2 = new THREE.Mesh(pillar, pillarMaterial);
         pillarMesh2.position.set(-155, -200, -90)
-        let pillarMesh3 = new THREE.Mesh( pillar, pillarMaterial );
+        let pillarMesh3 = new THREE.Mesh(pillar, pillarMaterial);
         pillarMesh3.position.set(210, -200, -95)
-        let pillarMesh4 = new THREE.Mesh( pillar, pillarMaterial );
+        let pillarMesh4 = new THREE.Mesh(pillar, pillarMaterial);
         pillarMesh4.position.set(210, -200, 5)
 
         pillarMesh1.layers.enable(this.layer);
@@ -74,7 +74,7 @@ class MyScenario {
         this.app.scene.add(pillarMesh4);
     }
 
-    setCloudUnderCar (vehiclePosition) {
+    setCloudUnderCar(vehiclePosition) {
         this.cloudUnderCar = new MyCloud(this.app, vehiclePosition);
     }
 
@@ -82,14 +82,16 @@ class MyScenario {
         this.clouds.update();
         this.birds.forEach(bird => bird.update(elapsedTime));
 
-        if(playerVehicle.outOfTrack && playerVehicle.allCarOutOfTrack){
-            this.cloudUnderCar.cloud.visible = true;
-            this.cloudUnderCar.update(playerVehicle.position, playerVehicle.orientation);
-        }
-        else{
-            this.cloudUnderCar.cloud.visible = false;
+        if (this.app.contents.playing) {
+            if (playerVehicle.outOfTrack && playerVehicle.allCarOutOfTrack) {
+                this.cloudUnderCar.cloud.visible = true;
+                this.cloudUnderCar.update(playerVehicle.position, playerVehicle.orientation);
+            }
+            else {
+                this.cloudUnderCar.cloud.visible = false;
+            }
         }
     }
 }
 
-export { MyScenario}
+export { MyScenario }
