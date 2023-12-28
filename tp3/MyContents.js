@@ -191,6 +191,7 @@ class MyContents {
 
     // track
     this.reader.readTrack(5);
+    this.reader.setFinishLine();
 
     // menu
     /*this.menu = new MyMenu(this.app, 1);

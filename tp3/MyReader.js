@@ -99,6 +99,31 @@ class MyReader{
         this.app.scene.add(this.track);
     }
 
+    setFinishLine() {
+        let pillarGeo = new THREE.CylinderGeometry( 0.3, 0.3, 14.2, 32 );
+        let pillarMat = new THREE.MeshPhongMaterial( {color: "#000000", shininess: 5} );
+        
+        let pillarRight = new THREE.Mesh( pillarGeo, pillarMat );
+        pillarRight.position.set(this.startingPoint.x, this.startingPoint.y + 6.15, this.startingPoint.z - this.trackWidth*1.25);
+        
+        let pillarLeft = new THREE.Mesh( pillarGeo, pillarMat );
+        pillarLeft.position.set(this.startingPoint.x, this.startingPoint.y + 6.15, this.startingPoint.z + this.trackWidth*2.05);
+        
+        let panelGeo = new THREE.BoxGeometry(0.4, 3.5 ,this.trackWidth*3.25);
+        let texture = new THREE.TextureLoader().load("textures/checkers.jpg")
+        texture.repeat.set(2, 0.5)
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        let panelMat = new THREE.MeshPhongMaterial( {map:texture} );
+        let panel = new THREE.Mesh( panelGeo, panelMat );
+        panel.position.set(this.startingPoint.x, this.startingPoint.y + 11.5, this.startingPoint.z + this.trackWidth/2.5);
+        
+        this.app.scene.add(pillarRight);
+        this.app.scene.add(pillarLeft);
+        this.app.scene.add(panel);
+    }
+
     readRoutes(layer, visualRepresentation = false){
         let startingPointRoute = new THREE.Vector3(this.startingPoint.x, this.startingPoint.y, this.startingPoint.z);
         // LEVEL 1
