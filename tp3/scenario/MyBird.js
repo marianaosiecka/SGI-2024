@@ -42,7 +42,7 @@ class MyBird {
         this.bird.rotateY(Math.PI / 2);
         this.app.scene.add(this.bird)
 
-        let birdFlight = new MyRoute(this.app, this.generateCircularKeyPoints(100, 280, 10), 2, this.bird, routeOffset, Math.PI/2, false);
+        let birdFlight = new MyRoute(this.app, this.generateCircularKeyPoints(100, 300, 10), 2, this.bird, routeOffset, Math.PI/2, false);
         this.mixer = birdFlight.mixer;
     }
 

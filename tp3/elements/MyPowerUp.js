@@ -19,7 +19,7 @@ class MyPowerUp extends THREE.Object3D {
     }
 
     setBoundingBox() {
-        this.bb = new THREE.Box3().setFromObject(this.mesh);
+        this.bb = new THREE.Box3().setFromObject(this);
     }
 
     setDestinationPoint(destinationPoint) {

@@ -306,7 +306,7 @@ class MyReader{
 
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsBox(powerUp.bb)){
-                console.log("colidiu power up");
+                console.log("colidiu power up", powerUp.type);
                 powerUp.applyModifier(this.playerVehicle);
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;
