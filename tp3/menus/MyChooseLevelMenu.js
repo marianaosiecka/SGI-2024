@@ -20,7 +20,7 @@ class MyChooseLevelMenu extends THREE.Object3D {
         backgroundButtonMesh.layers.enable(this.layer);
         this.pickableObjects.push(backgroundButtonMesh);
         this.clickableObjects.push(backgroundButtonMesh);
-        backgroundButtonMesh.name = "backButtonToMainMenu";
+        backgroundButtonMesh.name = "backButtonToEnterUsernameMenu";
 
         const buttonGeometry = new THREE.CircleGeometry(1.1, 32);
         const buttonTexture = new THREE.TextureLoader().load("textures/backButton.png");
