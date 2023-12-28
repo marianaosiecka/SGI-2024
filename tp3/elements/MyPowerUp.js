@@ -2,24 +2,24 @@ import * as THREE from 'three';
 
 class MyPowerUp extends THREE.Object3D {
     
-    constructor(app, type, texture, color) {
+    constructor(app, type, texture) {
         super();
         this.app = app;
         this.type = type;
 
-        let geometry = new THREE.CylinderGeometry(2, 2, 1, 32, 32);
-        let material = new THREE.MeshPhongMaterial({ color: color });
+        let geometry = new THREE.PlaneGeometry(6, 6);
+        let material = new THREE.MeshPhongMaterial({ transparent:true, side: THREE.DoubleSide });
         material.map = texture;
+
         this.mesh = new THREE.Mesh(geometry, material);
-        this.mesh.rotateZ(Math.PI / 2);
-        this.mesh.rotateY(Math.PI)
         this.mesh.position.set(0, 1.5, 0);
+        this.mesh.rotation.y = Math.PI/2;
 
         this.add(this.mesh);
     }
 
-    setBoundingSphere() {
-        this.bs = new THREE.Sphere(this.position, 2);
+    setBoundingBox() {
+        this.bb = new THREE.Box3().setFromObject(this);
     }
 
     setDestinationPoint(destinationPoint) {

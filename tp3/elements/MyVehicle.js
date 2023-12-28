@@ -219,8 +219,8 @@ class MyVehicle extends THREE.Object3D {
             this.needsRotationAdjusted = false;
         }
         else if (!this.needsRotationAdjusted){
-            this.wheelMeshLeftFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
-            this.wheelMeshRightFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
+            this.wheelMeshLeftFront.rotation.y = this.initialWheelTurnAngle;
+            this.wheelMeshRightFront.rotation.y = this.initialWheelTurnAngle;
         }
 
     }
@@ -302,8 +302,8 @@ class MyVehicle extends THREE.Object3D {
         });
     }
 
-    detectCollisionsSphere (otherObject) {
-        return this.carBB.intersectsSphere(otherObject) || this.wheel1BB.intersectsSphere(otherObject) || this.wheel2BB.intersectsSphere(otherObject) || this.wheel3BB.intersectsSphere(otherObject) || this.wheel4BB.intersectsSphere(otherObject)
+    detectCollisionsBox (otherObject) {
+        return this.carBB.intersectsBox(otherObject) || this.wheel1BB.intersectsBox(otherObject) || this.wheel2BB.intersectsBox(otherObject) || this.wheel3BB.intersectsBox(otherObject) || this.wheel4BB.intersectsBox(otherObject)
     }
 
     detectCollisionsVehicles (otherVehicle) {

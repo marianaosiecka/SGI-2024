@@ -3,6 +3,7 @@ import { MyAxis } from "./MyAxis.js";
 import { MyReader } from "./MyReader.js";
 import { MyScenario } from "./scenario/MyScenario.js";
 import { MyVehicle } from "./elements/MyVehicle.js";
+import { MyObstacle } from "./elements/MyObstacle.js";
 import { MyCarModelRed } from "./carModels/MyCarModelRed.js";
 import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
 import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
@@ -122,6 +123,7 @@ class MyContents {
     // route
     this.reader.readRoutes();
     this.mixer = this.reader.mixer;
+    this.reader.setFinishLine();
 
     // create obstacles
     this.reader.readObstacles(this.availableLayers[2]);
@@ -341,7 +343,6 @@ class MyContents {
         }
 
       }
-
       if (this.followPlayerVehicle) {
         this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
         this.app.controls.target = this.playerVehicle.position;
@@ -502,7 +503,6 @@ class MyContents {
     const rotation = new THREE.Euler().setFromRotationMatrix(lookAtMatrix);
     obj.rotation.set(rotation.x, rotation.y, rotation.z);
   }
-
 }
 
 export { MyContents };

@@ -27,17 +27,18 @@ class MyScenario {
 
         this.birds = [this.bird1, this.bird2, this.bird3];
 
-        this.skyscraperObstacles = new MySkyscraper(this.app, 400, 20, 4, "#ffffff", 4, "#3A6392", layer, 0);
+        this.skyscraperObstacles = new MySkyscraper(this.app, 400, 20, 4, "#ffffff", 4, "#3A6392", 2, layer, -1.5);
         this.skyscraperObstacles.position.x = -20;
         this.skyscraperObstacles.position.z = 110;
         this.skyscraperObstacles.position.y = 30;
+        this.obsParkingLotOffset = 1.5;
        
         let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3 );
         spotlight1.target = this.skyscraperObstacles;
         spotlight1.position.set(-30, 50, 70);
         this.app.scene.add(spotlight1);
 
-        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 30, 6, "#AAAE7F", 4, "#454544", layer, 12);
+        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 12);
         this.skyscraperAutonomousVehicle.position.x = -250;
         this.skyscraperAutonomousVehicle.position.y = -10;
         this.skyscraperAutonomousVehicle.position.z = -40;
@@ -48,7 +49,7 @@ class MyScenario {
         spotlight2.position.set(-250, 10, 0);
         this.app.scene.add(spotlight2);
 
-        this.skyscraperPlayerVehicle = new MySkyscraper(this.app, 400, 30, 30, "#C5351B", 4, "#f1e9d0", layer, 28);
+        this.skyscraperPlayerVehicle = new MySkyscraper(this.app, 400, 30, 30, "#C5351B", 4, "#f1e9d0", 4, layer, 28);
         this.skyscraperPlayerVehicle.position.x = 120;
         this.skyscraperPlayerVehicle.position.y = 10;
         this.skyscraperPlayerVehicle.position.z = -200;
@@ -61,6 +62,7 @@ class MyScenario {
 
         this.autoParkingLotCars = [];
         this.playerParkingLotCars = [];
+        this.obstaclesParkingLot = [];
 
         // pillars supporting the track
         let pillar = new THREE.CylinderGeometry(5, 5, 400, 32);
@@ -88,14 +90,20 @@ class MyScenario {
         this.cloudUnderCar = new MyCloud(this.app, vehiclePosition);
     }
 
+    setObstaclesParkingLot (obstacle, rotation, y) {
+        this.skyscraperObstacles.setObject(obstacle, rotation, y, this.obsParkingLotOffset);
+        this.obsParkingLotOffset += this.skyscraperObstacles.lineWidth/3.3;
+        this.obstaclesParkingLot.push(obstacle);
+    }
+
     setAutonomousVehicleParkingLot (vehicle, rotation, y) {
-        this.skyscraperAutonomousVehicle.setVehicle(vehicle, rotation, y, this.autoParkingLotOffset);
+        this.skyscraperAutonomousVehicle.setObject(vehicle, rotation, y, this.autoParkingLotOffset);
         this.autoParkingLotOffset += this.skyscraperAutonomousVehicle.lineWidth/4;
         this.autoParkingLotCars.push(vehicle);
     }
 
     setPlayerVehicleParkingLot (vehicle, rotation, y) {
-        this.skyscraperPlayerVehicle.setVehicle(vehicle, rotation, y, this.playerParkingLotOffset);
+        this.skyscraperPlayerVehicle.setObject(vehicle, rotation, y, this.playerParkingLotOffset);
         this.playerParkingLotOffset += this.skyscraperPlayerVehicle.lineWidth/4;
         this.playerParkingLotCars.push(vehicle);
     }

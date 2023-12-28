@@ -97,6 +97,31 @@ class MyReader{
         this.app.scene.add(this.track);
     }
 
+    setFinishLine() {
+        let pillarGeo = new THREE.CylinderGeometry( 0.3, 0.3, 14.2, 32 );
+        let pillarMat = new THREE.MeshPhongMaterial( {color: "#000000", shininess: 5} );
+        
+        let pillarRight = new THREE.Mesh( pillarGeo, pillarMat );
+        pillarRight.position.set(this.startingPoint.x, this.startingPoint.y + 6.15, this.startingPoint.z - this.trackWidth*1.25);
+        
+        let pillarLeft = new THREE.Mesh( pillarGeo, pillarMat );
+        pillarLeft.position.set(this.startingPoint.x, this.startingPoint.y + 6.15, this.startingPoint.z + this.trackWidth*2.05);
+        
+        let panelGeo = new THREE.BoxGeometry(0.4, 3.5 ,this.trackWidth*3.25);
+        let texture = new THREE.TextureLoader().load("textures/checkers.jpg")
+        texture.repeat.set(2, 0.5)
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        let panelMat = new THREE.MeshPhongMaterial( {map:texture} );
+        let panel = new THREE.Mesh( panelGeo, panelMat );
+        panel.position.set(this.startingPoint.x, this.startingPoint.y + 11.5, this.startingPoint.z + this.trackWidth/2.5);
+        
+        this.app.scene.add(pillarRight);
+        this.app.scene.add(pillarLeft);
+        this.app.scene.add(panel);
+    }
+
     readRoutes(layer, visualRepresentation = false){
         let startingPointRoute = new THREE.Vector3(this.startingPoint.x, this.startingPoint.y, this.startingPoint.z);
         // LEVEL 1
@@ -189,17 +214,16 @@ class MyReader{
     readObstacles(layer){
         // TYPE: SWITCH
         const obstacleTexture1 = new THREE.TextureLoader().load("textures/obstacle_switchdirections.png");
-        const obstacleColor1 = 0xD71D03;
         const obstaclesType1 = [ 
             [new THREE.Vector3(-150, 2, -20), new THREE.Vector3(0, Math.PI / 2, 0)],
         ];
     
         for (let i = 0; i < obstaclesType1.length; i++) {
-            const obstacle = new MyObstacle(this.app, "switch", obstacleTexture1, obstacleColor1);
+            const obstacle = new MyObstacle(this.app, "switch", obstacleTexture1, 0);
             obstacle.position.set(...obstaclesType1[i][0]);
             obstacle.rotation.set(...obstaclesType1[i][1]);
 
-            obstacle.setBoundingSphere();
+            obstacle.setBoundingBox();
 
             this.obstacles.push(obstacle);
             this.app.scene.add(obstacle);
@@ -208,17 +232,16 @@ class MyReader{
     
         // TYPE: SLIP
         const obstacleTexture2 = new THREE.TextureLoader().load("textures/obstacle_slip.png");
-        const obstacleColor2 = 0xD71D03;
         const obstaclesType2 = [
-            [new THREE.Vector3(0, 2, -44), new THREE.Vector3(0, -Math.PI, 0)],
+            [new THREE.Vector3(0, 2, -42), new THREE.Vector3(0, -Math.PI, 0)],
         ];
     
         for (let i = 0; i < obstaclesType2.length; i++) {
-            const obstacle = new MyObstacle(this.app, "slip", obstacleTexture2, obstacleColor2);
+            const obstacle = new MyObstacle(this.app, "slip", obstacleTexture2, Math.PI/2);
             obstacle.position.set(...obstaclesType2[i][0]);
             obstacle.rotation.set(...obstaclesType2[i][1]);
 
-            obstacle.setBoundingSphere();
+            obstacle.setBoundingBox();
 
             this.obstacles.push(obstacle);
             this.app.scene.add(obstacle);
@@ -235,17 +258,16 @@ class MyReader{
     readPowerUps(layer){
         // TYPE: SHIELD
         const powerUpTexture1 = new THREE.TextureLoader().load("textures/shield_powerup.png");
-        const powerUpColor1 = 0xFFDF35;
         const powerUpType1 = [ 
             [new THREE.Vector3(-85, 2, 20), new THREE.Vector3(0, -Math.PI / 2 - 0.3, 0)],
         ];
 
         for (let i = 0; i < powerUpType1.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "shield", powerUpTexture1, powerUpColor1);
+            const powerUp = new MyPowerUp(this.app, "shield", powerUpTexture1);
             powerUp.position.set(...powerUpType1[i][0]);
             powerUp.rotation.set(...powerUpType1[i][1]);
 
-            powerUp.setBoundingSphere();
+            powerUp.setBoundingBox();
 
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
@@ -253,17 +275,16 @@ class MyReader{
 
         // TYPE: SHORTCUT
         const powerUpTexture2 = new THREE.TextureLoader().load("textures/shortcut_powerup.png");
-        const powerUpColor2 = 0xFFDF35;
         const powerUpType2 = [
             [new THREE.Vector3(82, 2, -20), new THREE.Vector3(0, -Math.PI / 2 - 0.2, 0)],
         ];
 
         for (let i = 0; i < powerUpType2.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "shortcut", powerUpTexture2, powerUpColor2);
+            const powerUp = new MyPowerUp(this.app, "shortcut", powerUpTexture2);
             powerUp.position.set(...powerUpType2[i][0]);
             powerUp.rotation.set(...powerUpType2[i][1]);
 
-            powerUp.setBoundingSphere();
+            powerUp.setBoundingBox();
 
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
@@ -271,17 +292,16 @@ class MyReader{
 
         // TYPE: SPEED
         const powerUpTexture3 = new THREE.TextureLoader().load("textures/speed_powerup.png");
-        const powerUpColor3 = 0xFFDF35;
         const powerUpType3 = [
             [new THREE.Vector3(220, 2, -90), new THREE.Vector3(0, -Math.PI / 2, 0)],
         ];
 
         for (let i = 0; i < powerUpType3.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "speed", powerUpTexture3, powerUpColor3);
+            const powerUp = new MyPowerUp(this.app, "speed", powerUpTexture3);
             powerUp.position.set(...powerUpType3[i][0]);
             powerUp.rotation.set(...powerUpType3[i][1]);
 
-            powerUp.setBoundingSphere();
+            powerUp.setBoundingBox();
 
             this.powerUps.push(powerUp);
             this.app.scene.add(powerUp);
@@ -302,8 +322,8 @@ class MyReader{
             return;
 
         this.powerUps.forEach(powerUp => {
-            if(this.playerVehicle.detectCollisionsSphere(powerUp.bs)){
-                console.log("colidiu power up");
+            if(this.playerVehicle.detectCollisionsBox(powerUp.bb)){
+                console.log("colidiu power up", powerUp.type);
                 powerUp.applyModifier(this.playerVehicle);
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;
@@ -320,7 +340,7 @@ class MyReader{
             }
         });
         this.obstacles.forEach(obstacle => {
-            if(this.playerVehicle.detectCollisionsSphere(obstacle.bs)){
+            if(this.playerVehicle.detectCollisionsBox(obstacle.bb)){
                 console.log("colidiu obstaculo")
                 obstacle.applyModifier(this.playerVehicle);
                 this.appliedModifiers.push(obstacle);
