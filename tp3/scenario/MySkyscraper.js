@@ -63,18 +63,18 @@ class MySkyscraper extends THREE.Object3D {
 
         let horizontalLineGeo = new THREE.PlaneGeometry( 0.5, this.lineWidth );
         let lineMat = new THREE.MeshPhongMaterial( {color: 0xFFFFFF} );
-        let horizontalLine = new THREE.Mesh( horizontalLineGeo, lineMat );
-        horizontalLine.rotation.x = -Math.PI / 2;
-        horizontalLine.rotation.z = this.turnParkingLot;
-        horizontalLine.position.y = 5.25;
+        this.horizontalLine = new THREE.Mesh( horizontalLineGeo, lineMat );
+        this.horizontalLine.rotation.x = -Math.PI / 2;
+        this.horizontalLine.rotation.z = this.turnParkingLot;
+        this.horizontalLine.position.y = 5.25;
         if(numParkingLotSpaces !== 2) {
-            horizontalLine.position.x = -width / 2 + 1;
+            this.horizontalLine.position.x = -width / 2 + 1;
         }
         else {
-            horizontalLine.position.z = 5;
-            horizontalLine.position.x = -5;
+            this.horizontalLine.position.z = 5;
+            this.horizontalLine.position.x = -5;
         }
-        this.add(horizontalLine);
+        this.add(this.horizontalLine);
 
         let verticalLineGeo = new THREE.PlaneGeometry( 0.5, width/1.8 );
 

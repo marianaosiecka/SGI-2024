@@ -468,38 +468,38 @@ class MyContents {
   }
 
   loadAutonomousParkingLot() {
-    const myCarModelRed = new MyCarModelRed();
-    myCarModelRed.loadModel().then((properties) => {
-      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
-    });
-    this.availableOpponentVehicles['OpponentParkingLot1'] = myCarModelRed;
-
     const myCarModelGreen = new MyCarModelGreen();
     myCarModelGreen.loadModel().then((properties) => {
       this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -4);
     });
-    this.availableOpponentVehicles['OpponentParkingLot2'] = myCarModelGreen;
-
-    const myCarModelPurple = new MyCarModelPurple();
-    myCarModelPurple.loadModel().then((properties) => {
-      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
-    });
-    this.availableOpponentVehicles['OpponentParkingLot3'] = myCarModelPurple;
+    this.availableOpponentVehicles['OpponentParkingLot4'] = myCarModelGreen;
 
     const myCarModelOrange = new MyCarModelOrange();
     myCarModelOrange.loadModel().then((properties) => {
       this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -4);
     });
-    this.availableOpponentVehicles['OpponentParkingLot4'] = myCarModelOrange;
+    this.availableOpponentVehicles['OpponentParkingLot3'] = myCarModelOrange;
+
+    const myCarModelPurple = new MyCarModelPurple();
+    myCarModelPurple.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
+    });
+    this.availableOpponentVehicles['OpponentParkingLot2'] = myCarModelPurple;
+
+    const myCarModelRed = new MyCarModelRed();
+    myCarModelRed.loadModel().then((properties) => {
+      this.scenario.setAutonomousVehicleParkingLot(properties[0], properties[2], -5.8);
+    });
+    this.availableOpponentVehicles['OpponentParkingLot1'] = myCarModelRed;
   }
 
-  setPosAndRotRelativeToCamera(obj, camera = this.app.activeCamera, distance = 30) {
-    const direction = new THREE.Vector3(0, 0, 0).sub(camera.position).normalize();
-    const position = new THREE.Vector3().copy(camera.position).add(direction.multiplyScalar(distance));
+  setPosAndRotRelativeToCamera(obj, camera = this.app.activeCamera, target = new THREE.Vector3(0, 0, 0), distance = 30) {
+    const direction = new THREE.Vector3().subVectors(target, camera.position).normalize();
+    const position = new THREE.Vector3().copy(camera.position).addScaledVector(direction, distance);
 
     obj.position.copy(position);
 
-    const lookAtMatrix = new THREE.Matrix4().lookAt(camera.position, new THREE.Vector3(0, 0, 0), camera.up);
+    const lookAtMatrix = new THREE.Matrix4().lookAt(camera.position, target, camera.up);
     const rotation = new THREE.Euler().setFromRotationMatrix(lookAtMatrix);
     obj.rotation.set(rotation.x, rotation.y, rotation.z);
   }

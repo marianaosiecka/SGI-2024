@@ -41,7 +41,7 @@ class MyScenario {
         this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 12);
         this.skyscraperAutonomousVehicle.position.x = -250;
         this.skyscraperAutonomousVehicle.position.y = -10;
-        this.skyscraperAutonomousVehicle.position.z = -40;
+        this.skyscraperAutonomousVehicle.horizontalLine.position.x = 10;
         this.autoParkingLotOffset = 0;
 
         let spotlight2 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
@@ -97,7 +97,7 @@ class MyScenario {
     }
 
     setAutonomousVehicleParkingLot (vehicle, rotation, y) {
-        this.skyscraperAutonomousVehicle.setObject(vehicle, rotation, y, this.autoParkingLotOffset);
+        this.skyscraperAutonomousVehicle.setObject(vehicle, rotation + Math.PI, y, this.autoParkingLotOffset);
         this.autoParkingLotOffset += this.skyscraperAutonomousVehicle.lineWidth/4;
         this.autoParkingLotCars.push(vehicle);
     }
