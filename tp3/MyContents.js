@@ -9,6 +9,7 @@ import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
 import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
 import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
 import { MyMenuManager } from "./menus/MyMenuManager.js";
+import { MyHUD } from "./menus/MyHUD.js";
 
 /**
  *  This class contains the contents of out application
@@ -117,12 +118,15 @@ class MyContents {
     this.autoLaps = 0;
     this.autoTime = 0;
     this.autoCheckPoints = [];
-    this.reader.level = this.selectedLevel; //this.reader.level = 1;
+    this.reader.level = 1//this.selectedLevel; //this.reader.level = 1;
     this.previousTime = 0;
     this.speedFactor = 0.8;
     this.keys = {};
     this.rKeyPressed = false;
     this.keyListeners();
+
+    this.HUD = new MyHUD(this.app);
+    this.app.scene.add(this.HUD);
 
     // route
     this.reader.readRoutes();
@@ -164,6 +168,7 @@ class MyContents {
   }
 
   finishGame() {
+    this.scenario.setPodium();
     this.playerLaps = 0;
     this.playerTime = 0;
     this.autoLaps = 0;
@@ -338,6 +343,8 @@ class MyContents {
       // update the autonomous car position and rotation
       this.mixer.update(delta)
 
+      this.reader.updateModifiers(this.clock.getElapsedTime());
+
       // this updates the position of the actual object of MyVehicle class
       this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 
@@ -388,22 +395,33 @@ class MyContents {
         }
 
       }
-      if (this.followPlayerVehicle) {
-        this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-        this.app.controls.target = this.playerVehicle.position;
-        this.scenario.clouds.update()
-      }
+      this.HUD.update(this.numLaps, this.playerLaps, this.timeLimit, time, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
+        
       if (this.followPlayerVehicle) {
         //console.log(this.playerVehicle.carOrientation)
         this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
         this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
         this.scenario.clouds.update()
+
+        //this.HUD.update(this.numLaps, this.playerLaps, this.timeLimit, this.playerTime, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
+        const distanceFromCamera = 15; // Adjust the distance as needed
+        const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
+            .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
+
+        hudPosition.y += 8.5;
+        //console.log(hudPosition)
+        this.HUD.position.copy(hudPosition);
+
+        // Make the HUD always face the camera
+        const cameraRotation = this.app.activeCamera.rotation.clone();
+        this.HUD.rotation.set(cameraRotation.x, cameraRotation.y, cameraRotation.z);
       }
 
       if (this.followAutonomousVehicle) {
         this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
         this.app.controls.target = this.autonomousVehicle.position;
       }
+
     }
   }
 

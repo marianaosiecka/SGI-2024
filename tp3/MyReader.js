@@ -476,6 +476,15 @@ class MyReader{
         return false;
     }
         
+    updateModifiers(time){
+        this.powerUps.forEach(powerUp => {
+            powerUp.shaderMaterial.uniforms.time.value = time;
+        });
+
+        this.obstacles.forEach(obstacle => {
+           obstacle.shaderMaterial.uniforms.time.value = time;      
+        });
+    }
 
 }
 

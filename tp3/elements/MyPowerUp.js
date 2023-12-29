@@ -6,16 +6,53 @@ class MyPowerUp extends THREE.Object3D {
         super();
         this.app = app;
         this.type = type;
-
+        this.texture = texture;
+        this.mesh = null;
+        
         let geometry = new THREE.PlaneGeometry(6, 6);
-        let material = new THREE.MeshPhongMaterial({ transparent:true, side: THREE.DoubleSide });
-        material.map = texture;
+        
+        //vertex shader
+        const vertexShader = `
+            varying vec2 vUv;
+            uniform float time;
 
-        this.mesh = new THREE.Mesh(geometry, material);
-        this.mesh.position.set(0, 1.5, 0);
+            void main() {
+                vUv = uv;
+
+                float scaleFactor = 1.0 + 0.15 * sin(4.0*time);
+                vec3 newPosition = position * scaleFactor;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+            }`
+
+        // fragment shader 
+        const fragmentShader = `
+            varying vec2 vUv;        
+            uniform sampler2D text;
+            
+            void main() {
+                vec4 color = texture2D(text, vUv);
+                gl_FragColor = vec4(color.rgb, color.a);
+            }`
+        ;
+
+        const uniforms = {
+            time: { value: 1 },
+            text: { value: this.texture },
+        };
+
+        this.shaderMaterial = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+
+        this.mesh = new THREE.Mesh(geometry, this.shaderMaterial);
+        this.mesh.position.set(0, 2.2, 0);
         this.mesh.rotation.y = Math.PI/2;
-
         this.add(this.mesh);
+        
     }
 
     setBoundingBox() {

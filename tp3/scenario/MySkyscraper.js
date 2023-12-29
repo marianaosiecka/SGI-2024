@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class MySkyscraper extends THREE.Object3D {
-    constructor(app, height, width, numSides, colorBulding, windowHeight, colorWindows, numParkingLotSpaces, layer, offset = 0) {
+    constructor(app, parkingLotLines, height, width, numSides, colorBulding, windowHeight, colorWindows, numParkingLotSpaces, layer, offset = 0) {
         super();
         this.app = app;
         this.height = height;
@@ -57,47 +57,49 @@ class MySkyscraper extends THREE.Object3D {
         parkingLot.position.y = 5.2;
         this.add(parkingLot);
 
-        this.lineWidth = width*1.2;
+        if(parkingLotLines){
+            this.lineWidth = width*1.2;
 
-        this.turnParkingLot = (numParkingLotSpaces === 2) ? Math.PI/4 : 0;
+            this.turnParkingLot = (numParkingLotSpaces === 2) ? Math.PI/4 : 0;
 
-        let horizontalLineGeo = new THREE.PlaneGeometry( 0.5, this.lineWidth );
-        let lineMat = new THREE.MeshPhongMaterial( {color: 0xFFFFFF} );
-        this.horizontalLine = new THREE.Mesh( horizontalLineGeo, lineMat );
-        this.horizontalLine.rotation.x = -Math.PI / 2;
-        this.horizontalLine.rotation.z = this.turnParkingLot;
-        this.horizontalLine.position.y = 5.3;
-        if(numParkingLotSpaces !== 2) {
-            this.horizontalLine.position.x = -width / 2 + 1;
-        }
-        else {
-            this.horizontalLine.position.z = 5;
-            this.horizontalLine.position.x = -5;
-        }
-        this.add(this.horizontalLine);
-
-        let verticalLineGeo = new THREE.PlaneGeometry( 0.5, width/1.8 );
-
-        if(numParkingLotSpaces === 2) {
-            for (let i = 0; i < numParkingLotSpaces + 1; i++) {
-                let verticalLine = new THREE.Mesh( verticalLineGeo, lineMat );
-                verticalLine.rotation.x = -Math.PI / 2;
-                verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
-                verticalLine.position.x = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
-                verticalLine.position.z = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
-                verticalLine.position.y = 5.3;
-                this.add(verticalLine);
+            let horizontalLineGeo = new THREE.PlaneGeometry( 0.5, this.lineWidth );
+            let lineMat = new THREE.MeshPhongMaterial( {color: 0xFFFFFF} );
+            this.horizontalLine = new THREE.Mesh( horizontalLineGeo, lineMat );
+            this.horizontalLine.rotation.x = -Math.PI / 2;
+            this.horizontalLine.rotation.z = this.turnParkingLot;
+            this.horizontalLine.position.y = 5.3;
+            if(numParkingLotSpaces !== 2) {
+                this.horizontalLine.position.x = -width / 2 + 1;
             }
-        }
-        else{
-            for (let i = 0; i < numParkingLotSpaces + 1; i++) {
-                let verticalLine = new THREE.Mesh( verticalLineGeo, lineMat );
-                verticalLine.rotation.x = -Math.PI / 2;
-                verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
-                verticalLine.position.x = -3;
-                verticalLine.position.z = -this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces);
-                verticalLine.position.y = 5.3;
-                this.add(verticalLine);
+            else {
+                this.horizontalLine.position.z = 5;
+                this.horizontalLine.position.x = -5;
+            }
+            this.add(this.horizontalLine);
+
+            let verticalLineGeo = new THREE.PlaneGeometry( 0.5, width/1.8 );
+
+            if(numParkingLotSpaces === 2) {
+                for (let i = 0; i < numParkingLotSpaces + 1; i++) {
+                    let verticalLine = new THREE.Mesh( verticalLineGeo, lineMat );
+                    verticalLine.rotation.x = -Math.PI / 2;
+                    verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
+                    verticalLine.position.x = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
+                    verticalLine.position.z = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
+                    verticalLine.position.y = 5.3;
+                    this.add(verticalLine);
+                }
+            }
+            else{
+                for (let i = 0; i < numParkingLotSpaces + 1; i++) {
+                    let verticalLine = new THREE.Mesh( verticalLineGeo, lineMat );
+                    verticalLine.rotation.x = -Math.PI / 2;
+                    verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
+                    verticalLine.position.x = -3;
+                    verticalLine.position.z = -this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces);
+                    verticalLine.position.y = 5.3;
+                    this.add(verticalLine);
+                }
             }
         }
         this.app.scene.add(this)

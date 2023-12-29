@@ -27,7 +27,7 @@ class MyScenario {
 
         this.birds = [this.bird1, this.bird2, this.bird3];
 
-        this.skyscraperObstacles = new MySkyscraper(this.app, 400, 20, 4, "#ffffff", 4, "#3A6392", 2, layer, -1.5);
+        this.skyscraperObstacles = new MySkyscraper(this.app, true, 400, 20, 4, "#ffffff", 4, "#3A6392", 2, layer, -1);
         this.skyscraperObstacles.position.x = -20;
         this.skyscraperObstacles.position.z = 110;
         this.skyscraperObstacles.position.y = 30;
@@ -35,10 +35,10 @@ class MyScenario {
        
         let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3 );
         spotlight1.target = this.skyscraperObstacles;
-        spotlight1.position.set(-30, 50, 70);
+        spotlight1.position.set(-20, 50, 110);
         this.app.scene.add(spotlight1);
 
-        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 11.9);
+        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, true, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 11.9);
         this.skyscraperAutonomousVehicle.position.x = -250;
         this.skyscraperAutonomousVehicle.position.y = -10;
         this.skyscraperAutonomousVehicle.horizontalLine.position.x = 10;
@@ -49,7 +49,7 @@ class MyScenario {
         spotlight2.position.set(-250, 10, 0);
         this.app.scene.add(spotlight2);
 
-        this.skyscraperPlayerVehicle = new MySkyscraper(this.app, 400, 30, 30, "#C5351B", 4, "#f1e9d0", 4, layer, 28);
+        this.skyscraperPlayerVehicle = new MySkyscraper(this.app, true, 400, 30, 30, "#C5351B", 4, "#f1e9d0", 4, layer, 28);
         this.skyscraperPlayerVehicle.position.x = 120;
         this.skyscraperPlayerVehicle.position.y = 10;
         this.skyscraperPlayerVehicle.position.z = -200;
@@ -59,6 +59,18 @@ class MyScenario {
         spotlight3.target = this.skyscraperPlayerVehicle;
         spotlight3.position.set(120, 30, -200);
         this.app.scene.add(spotlight3);
+
+        this.skyscraperPodium = new MySkyscraper(this.app, false, 400, 45, 3, "#f7e240", 4, "#736958", 4, layer, -26);
+        this.skyscraperPodium.rotation.y = Math.PI/2;
+        this.skyscraperPodium.position.x = 260;
+        this.skyscraperPodium.position.y = 50;
+        this.skyscraperPodium.position.z = 90;
+        this.playerParkingLotOffset = 0;
+
+        let spotlight4 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
+        spotlight4.target = this.skyscraperPodium;
+        spotlight4.position.set(260, 80, 90);
+        this.app.scene.add(spotlight4);
 
         this.autoParkingLotCars = [];
         this.playerParkingLotCars = [];
@@ -106,6 +118,26 @@ class MyScenario {
         this.skyscraperPlayerVehicle.setObject(vehicle, rotation, y, this.playerParkingLotOffset);
         this.playerParkingLotOffset += this.skyscraperPlayerVehicle.lineWidth/4;
         this.playerParkingLotCars.push(vehicle);
+    }
+
+    setPodium () {
+        let podium1 = new THREE.CylinderGeometry(10, 10, 5, 32);
+        let podiumMaterial = new THREE.MeshPhongMaterial({ color: "#f1e9d0", shininess: 1, specular: "#f1e9d0" });
+        let podiumMesh1 = new THREE.Mesh(podium1, podiumMaterial);
+        podiumMesh1.position.copy(this.skyscraperPodium.position);
+        podiumMesh1.position.x += 6;
+        podiumMesh1.position.y += 8;
+        podiumMesh1.position.z -= 6;
+
+        let podiumMesh2 = new THREE.Mesh(podium1, podiumMaterial);
+        podiumMesh2.scale.set(1, 0.6, 1);
+        podiumMesh2.position.copy(this.skyscraperPodium.position);
+        podiumMesh2.position.y += 6;
+        podiumMesh2.position.x -= 6;
+        podiumMesh2.position.z += 10;
+
+        this.app.scene.add(podiumMesh1);
+        this.app.scene.add(podiumMesh2);
     }
     
     update(playerVehicle, elapsedTime) {
