@@ -36,6 +36,8 @@ class MyInstructionsMenu extends THREE.Object3D {
         backgroundButtonMesh.position.x = -10;
         buttonMesh.position.y = 12;
         buttonMesh.position.x = -10;
+        buttonMesh.position.z = 0.01;
+
         this.add(buttonMesh);
 
         console.log(buttonMesh.name)

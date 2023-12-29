@@ -78,7 +78,6 @@ class MyContents {
     this.keys = {};
     this.rKeyPressed = false;
     this.keyListeners();
-    this.createAxis();
     this.parkingLotCars = [];
 
     // LIGHTS
@@ -101,19 +100,24 @@ class MyContents {
     // TRACK
     this.reader.readTrack(this.availableLayers[3]);
 
-    // AXIS
-    // this.createAxis();
-
     // MENU
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.menuManager.initMainMenu();
+    this.menuManager.initMainMenu();//this.startGame()
   }
 
   startGame() {
-    this.playing = true;
     // START THE GAME
-    this.reader.level = this.selectedLevel;
+    this.numLaps = 3;
+    this.timeLimit = 150000; //milisegundos
+    this.timeStart = Date.now(); 
+    this.playerLaps = 0;
+    this.playerTime = 0;
+    this.playerCheckPoints = [];
+    this.autoLaps = 0;
+    this.autoTime = 0;
+    this.autoCheckPoints = [];
+    this.reader.level = this.selectedLevel; //this.reader.level = 1;
     this.previousTime = 0;
     this.speedFactor = 0.8;
     this.keys = {};
@@ -138,38 +142,46 @@ class MyContents {
     this.playerVehicle = this.reader.playerVehicle;
 
     // load car models
-    this.loadPlayerVehicle();
-    this.loadAutonomousVehicle();
-
-    this.scenario.setCloudUnderCar(this.playerVehicle.position);
-  }
-
-
-  loadPlayerVehicle() {
-    const myCarModelGreen = new MyCarModelPurple();
-    myCarModelGreen.loadModel().then((properties) => {
+    this.selectedPlayerVehicle/*const myCarModelGreen1 = new MyCarModelRed();
+    myCarModelGreen1*/.loadModel().then((properties) => {
       this.updatePlayerVehicleModel(properties);
-    });
-  }
+    }); 
 
-  loadAutonomousVehicle() {
-    const myCarModelRed = new MyCarModelRed();
-    myCarModelRed.loadModel().then((properties) => {
+    this.selectedOpponentVehicle/*const myCarModelGreen2 = new MyCarModelGreen();
+    myCarModelGreen2*/.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
     });
+
+    this.scenario.setCloudUnderCar(this.playerVehicle.position);
+    
+    // set obstacles parking lot
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI/2), 0, 36.5);
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0), Math.PI/2, 35.5);
+    
+    // count down for the game to start
+    this.playing = true;
+  
+  }
+
+  finishGame() {
+    this.playerLaps = 0;
+    this.playerTime = 0;
+    this.autoLaps = 0;
+    this.autoTime = 0;
+    console.log("FINISHED GAME");
   }
 
   updatePlayerVehicleModel(properties) {
-    this.reader.readPlayerVehicle(properties[2], properties[3], properties[4], properties[5])
+    this.reader.readPlayerVehicle(properties[3], properties[4], properties[5], properties[6])
     this.playerVehicle = this.reader.playerVehicle;
-    this.playerVehicle.setModel(properties[0], properties[1]);
+    this.playerVehicle.setModel(properties[1]);
     this.app.scene.add(this.playerVehicle);
   }
 
   updateAutonomousVehicleModel(properties) {
-    this.reader.readAutonomousVehicle(properties[2], properties[3], properties[4], properties[5])
+    this.reader.readAutonomousVehicle(properties[3], properties[4], properties[5], properties[6])
     this.autonomousVehicle = this.reader.autonomousVehicle;
-    this.autonomousVehicle.setModel(properties[0], properties[1]);
+    this.autonomousVehicle.setModel(properties[1]);
     this.app.scene.add(this.autonomousVehicle);
   }
 
@@ -210,6 +222,7 @@ class MyContents {
       if (!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
       else this.playerVehicle.turn(-turnSpeed);
     }
+
     if (this.keys['KeyD']) {
       if (!isSwitch) this.playerVehicle.turn(-turnSpeed);
       else this.playerVehicle.turn(turnSpeed);
@@ -303,17 +316,49 @@ class MyContents {
     this.scenario.update(this.playerVehicle, delta);
 
     if (this.playing) {
+      const timePassed = time-this.timeStart;
+      if(timePassed >= this.timeLimit){
+        this.autoTime = this.timeLimit/1000;
+        this.playerTime = this.timeLimit/1000;
+        //this.playing = false;
+        //this.finishGame();
+      }
+      else{
+        if(this.autoLaps === this.numLaps)
+          this.autoTime = timePassed/1000;
+          //stop car
+        if(this.playerLaps === this.numLaps)
+          this.playerTime = timePassed/1000;
+        if(this.autoLaps === this.numLaps && this.playerLaps === this.numLaps){
+          //this.playing = false;
+          //this.finishGame();
+        }
+      }
+
       // update the autonomous car position and rotation
       this.mixer.update(delta)
 
       // this updates the position of the actual object of MyVehicle class
       this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 
+      if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length && this.autonomousVehicle.detectCollisionsObject(this.reader.finishingLine, false)){
+        this.autoLaps++;
+        this.reader.autonomousCheckLineIdx = 0;
+        console.log("auto laps", this.autoLaps)
+    }
+
       if (this.previousTime == 0)
         this.previousTime = time;
       else {
         let speed = this.checkKeys();
         this.playerVehicle.update(time, speed);
+        if((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length/2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))){
+          this.playerLaps++;
+          this.reader.caughtShortcut = false;
+          this.reader.playerCheckLineIdx = 0;
+          console.log("player laps", this.playerLaps)
+        }
+
         this.previousTime = time;
         this.reader.checkForCollisions();
 
@@ -349,7 +394,7 @@ class MyContents {
         this.scenario.clouds.update()
       }
       if (this.followPlayerVehicle) {
-        console.log(this.playerVehicle.carOrientation)
+        //console.log(this.playerVehicle.carOrientation)
         this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
         this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
         this.scenario.clouds.update()
@@ -435,8 +480,8 @@ class MyContents {
         this.selectedOpponentVehicle = this.availableOpponentVehicles[this.app.activeCameraName];
         console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
         // put the car in the starting point
-        //this.app.smoothCameraTransition('PlayerCarPerspective', 1000);
-        //this.startGame();
+        this.app.smoothCameraTransition('PlayerCarPerspective', 1000);
+        this.startGame();
       }
     }
   }

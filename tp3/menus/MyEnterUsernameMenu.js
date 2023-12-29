@@ -34,6 +34,8 @@ class MyEnterUsernameMenu extends THREE.Object3D {
         button.add(backgroundButtonMesh);
         button.add(buttonMesh);
 
+        buttonMesh.position.z = 0.01;
+
         button.position.y = 12;
         button.position.x = -10;
         this.add(button);

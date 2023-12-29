@@ -38,7 +38,7 @@ class MyScenario {
         spotlight1.position.set(-30, 50, 70);
         this.app.scene.add(spotlight1);
 
-        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 12);
+        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 11.9);
         this.skyscraperAutonomousVehicle.position.x = -250;
         this.skyscraperAutonomousVehicle.position.y = -10;
         this.skyscraperAutonomousVehicle.position.z = -40;

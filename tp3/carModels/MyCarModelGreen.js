@@ -34,8 +34,8 @@ class MyCarModelGreen {
             //setting attributes
             let car = fbx;
             let wheelsRatio = 1;
-            let width = 5;
-            let height = 3.5;
+            let width = 4.5;
+            let height = 5;
             let depth = 14;
             let rotation = 0;
             resolve([fullCar, car, rotation, wheelsRatio, width, height, depth]);

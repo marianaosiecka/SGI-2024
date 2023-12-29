@@ -27,7 +27,7 @@ class MyCarModelRed {
             //setting attributes
             let car = fbx;
             let wheelsRatio = 1.2;
-            let width = 5.5;
+            let width = 5;
             let height = 4.5;
             let depth = 10;
             let rotation = Math.PI / 7.5;

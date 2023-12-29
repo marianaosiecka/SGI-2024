@@ -96,6 +96,7 @@ class MyChooseOpponentVehicleMenu extends THREE.Object3D {
         let button = new THREE.Object3D();
         button.add(backgroundButtonMesh);
         button.add(buttonMesh);
+        buttonMesh.position.z = 0.01;
 
         return button;
     }

@@ -16,7 +16,8 @@ class MyReader{
         this.segments = segments;
 
         this.track = null;
-
+        this.checkKeyLines = [];
+        
         this.routes = [];
         this.chosenRoute = null;
         this.mixer = null;
@@ -25,7 +26,12 @@ class MyReader{
         this.powerUps = [];
         
         this.playerVehicle = null;
+        this.playerCheckLineIdx = 0;
+        this.caughtShortcut = false;
+
         this.autonomousVehicle = null;
+        this.autonomousCheckLineIdx = 0;
+
         //default values
         this.readAutonomousVehicle(1, 1, 1, 1);
         this.readPlayerVehicle(1, 1, 1, 1);
@@ -91,32 +97,41 @@ class MyReader{
             new THREE.Vector3(16, 0, 0)
         ]);
 
-
         this.track = new MyTrack(this.app, this.segments, this.trackWidth, path);
         this.track.position.set(-30, 0, 0);
         this.app.scene.add(this.track);
     }
 
     setFinishLine() {
-        let pillarGeo = new THREE.CylinderGeometry( 0.3, 0.3, 14.2, 32 );
+        let pillarGeo = new THREE.CylinderGeometry( 0.3, 0.3, 16.2, 32 );
         let pillarMat = new THREE.MeshPhongMaterial( {color: "#000000", shininess: 5} );
         
         let pillarRight = new THREE.Mesh( pillarGeo, pillarMat );
-        pillarRight.position.set(this.startingPoint.x, this.startingPoint.y + 6.15, this.startingPoint.z - this.trackWidth*1.25);
+        pillarRight.position.set(this.startingPoint.x - 10, this.startingPoint.y + 7.15, this.startingPoint.z - this.trackWidth*1.25);
         
         let pillarLeft = new THREE.Mesh( pillarGeo, pillarMat );
-        pillarLeft.position.set(this.startingPoint.x, this.startingPoint.y + 6.15, this.startingPoint.z + this.trackWidth*2.05);
+        pillarLeft.position.set(this.startingPoint.x - 10, this.startingPoint.y + 7.15, this.startingPoint.z + this.trackWidth*2.05);
         
         let panelGeo = new THREE.BoxGeometry(0.4, 3.5 ,this.trackWidth*3.25);
-        let texture = new THREE.TextureLoader().load("textures/checkers.jpg")
-        texture.repeat.set(2, 0.5)
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-
-        let panelMat = new THREE.MeshPhongMaterial( {map:texture} );
+        let texture1 = new THREE.TextureLoader().load("textures/checkers.jpg")
+        texture1.repeat.set(2, 0.5)
+        texture1.wrapS = THREE.RepeatWrapping;
+        texture1.wrapT = THREE.RepeatWrapping;
+        let panelMat = new THREE.MeshPhongMaterial( {map:texture1} );
         let panel = new THREE.Mesh( panelGeo, panelMat );
-        panel.position.set(this.startingPoint.x, this.startingPoint.y + 11.5, this.startingPoint.z + this.trackWidth/2.5);
+        panel.position.set(this.startingPoint.x - 10, this.startingPoint.y + 13.5, this.startingPoint.z + this.trackWidth/2.5);
         
+        let texture2 = new THREE.TextureLoader().load("textures/checkers.jpg")
+        texture2.repeat.set(0.17, 2)
+        texture2.wrapS = THREE.RepeatWrapping;
+        texture2.wrapT = THREE.RepeatWrapping;
+        let lineMat = new THREE.MeshPhongMaterial( {map:texture2} );
+
+        let finishingLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth*3.25)
+        this.finishingLine = new THREE.Mesh( finishingLineGeo, lineMat );
+        this.finishingLine.position.set(this.startingPoint.x - 10, this.startingPoint.y-0.75, this.startingPoint.z + this.trackWidth/2.5);
+        
+        this.app.scene.add(this.finishingLine)
         this.app.scene.add(pillarRight);
         this.app.scene.add(pillarLeft);
         this.app.scene.add(panel);
@@ -209,6 +224,8 @@ class MyReader{
         this.chosenRoute = this.routes[this.level-1];
         this.mixer = this.chosenRoute.mixer;
         this.app.scene.add(this.chosenRoute);
+
+        this.setCheckKeyPoints(12);
     }
 
     readObstacles(layer){
@@ -253,6 +270,34 @@ class MyReader{
         const lastQuarterStartIndex = Math.floor(3 * lastIndex / 4);
         const randomIndex = Math.floor(Math.random() * (lastIndex - lastQuarterStartIndex + 1) + lastQuarterStartIndex);
         return this.keyPoints1[randomIndex]
+    }
+
+    setCheckKeyPoints(numKeyPoints) {
+        let checkKeyPoints = [];
+        let checkKeyRotations = [];	
+        const numPoints = this.keyPoints1.length;
+        const offset = Math.floor(numPoints / numKeyPoints);
+
+        for (let i = 0; i < numKeyPoints; i++) {
+            const index = (i * offset) % numPoints;
+            const t = index/numPoints;
+            if(i===0)
+                continue;
+            checkKeyPoints.push(this.keyPoints1[index]);
+            checkKeyRotations.push(this.chosenRoute.q_list[index]);
+        }
+
+        checkKeyPoints.forEach((point, index) => {
+        let checkLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth * 4.5);
+        let checkLine = new THREE.Mesh(checkLineGeo, new THREE.MeshBasicMaterial());
+
+        checkLine.quaternion.copy(checkKeyRotations[index]);
+        checkLine.position.set(point.x, point.y-0.75, point.z);
+        
+        checkLine.visible = false;
+        this.checkKeyLines.push(checkLine);
+        this.app.scene.add(checkLine)
+        });
     }
 
     readPowerUps(layer){
@@ -317,16 +362,13 @@ class MyReader{
     }
 
     checkForCollisions() {
-        // if the player has the shield modifier, he can't collide with anything
-        if(this.playerVehicle.shield)
-            return;
-
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsBox(powerUp.bb)){
                 console.log("colidiu power up", powerUp.type);
                 powerUp.applyModifier(this.playerVehicle);
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;
+                    this.caughtShortcut = true;
                     if(!this.startShortcut){
                         this.startShortcut = true;
                         this.shortcutMixer = this.shortcutAnimation();
@@ -339,6 +381,25 @@ class MyReader{
                 }
             }
         });
+
+        if(this.playerCheckLineIdx < this.checkKeyLines.length){
+            if(this.playerVehicle.detectCollisionsObject(this.checkKeyLines[this.playerCheckLineIdx], false)){
+                console.log("player colidiu check line", this.playerCheckLineIdx+1)
+                this.playerCheckLineIdx = (this.playerCheckLineIdx + 1);
+            }
+        }
+
+        if(this.autonomousCheckLineIdx < this.checkKeyLines.length){
+            if(this.autonomousVehicle.detectCollisionsObject(this.checkKeyLines[this.autonomousCheckLineIdx], false)){
+                console.log("autonomo colidiu check line", this.autonomousCheckLineIdx+1)
+                this.autonomousCheckLineIdx = (this.autonomousCheckLineIdx + 1);
+            }
+        }
+
+        // if the player has the shield modifier, he can't collide with anything
+        if(this.playerVehicle.shield)
+            return;
+
         this.obstacles.forEach(obstacle => {
             if(this.playerVehicle.detectCollisionsBox(obstacle.bb)){
                 console.log("colidiu obstaculo")
@@ -362,7 +423,7 @@ class MyReader{
             this.playerVehicle.collidedCarStarted = false;
         }
 
-        if(this.playerVehicle.detectOutOfTrack(this.track)){
+        if(this.playerVehicle.detectCollisionsObject(this.track, true)){
             console.log("saiu track")
             this.playerVehicle.outOfTrack = true;
         }
@@ -372,6 +433,7 @@ class MyReader{
 
     shortcutAnimation(){
         const startPosition = this.playerVehicle.position.clone();
+        // point from the last quarter of the route
         this.endPosition = this.pickPointFromRoute().clone();
         const mixer = new THREE.AnimationMixer(this.playerVehicle);
 
@@ -396,9 +458,7 @@ class MyReader{
         this.playerVehicle.setPos(this.endPosition);
         this.startShortcut = false;
         this.shortcut = false;
-        if (this.shortcutMixer) {
-            this.app.scene.remove(this.cloud);
-        }
+        this.app.scene.remove(this.cloud);
     }
 
     stopModifier(modifier){

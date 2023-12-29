@@ -22,7 +22,7 @@ class MyRoute extends THREE.Object3D {
         const yAxis = new THREE.Vector3(0, 1, 0)
 
         const q0 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(0))
-        const q_list = []
+        this.q_list = []
         for (let i = 0; i < keyPoints.length - 1; i++) {
             const p1_x = keyPoints[i].x
             const p1_z = keyPoints[i].z
@@ -32,14 +32,14 @@ class MyRoute extends THREE.Object3D {
             const dz = p1_z - p2_z
             const angle = Math.atan2(dz, dx)
             const q1 = new THREE.Quaternion().setFromAxisAngle(yAxis, -angle + offsetRot)
-            q_list.push(q1)
+            this.q_list.push(q1)
         }
-        q_list.push(q0)
+        this.q_list.push(q0)
 
         const quaternionKF = new THREE.QuaternionKeyframeTrack(
             '.quaternion', 
             times,
-            q_list.map(q => [...q]).flat()
+            this.q_list.map(q => [...q]).flat()
         );
 
         this.animationMaxDuration = times[times.length - 1];

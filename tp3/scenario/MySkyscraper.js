@@ -54,7 +54,7 @@ class MySkyscraper extends THREE.Object3D {
         const parkingLotGeometry = new THREE.CylinderGeometry( width, width, 0.01, numSides );
         const parkingLotMaterial = new THREE.MeshPhongMaterial({ map:parkingLotTexture, bumpMap:parkingLotBumpTexture, bumpScale:2, side: THREE.DoubleSide });
         const parkingLot = new THREE.Mesh(parkingLotGeometry, parkingLotMaterial);
-        parkingLot.position.y = 5.15;
+        parkingLot.position.y = 5.2;
         this.add(parkingLot);
 
         this.lineWidth = width*1.2;
@@ -66,7 +66,7 @@ class MySkyscraper extends THREE.Object3D {
         let horizontalLine = new THREE.Mesh( horizontalLineGeo, lineMat );
         horizontalLine.rotation.x = -Math.PI / 2;
         horizontalLine.rotation.z = this.turnParkingLot;
-        horizontalLine.position.y = 5.25;
+        horizontalLine.position.y = 5.3;
         if(numParkingLotSpaces !== 2) {
             horizontalLine.position.x = -width / 2 + 1;
         }
@@ -85,7 +85,7 @@ class MySkyscraper extends THREE.Object3D {
                 verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
                 verticalLine.position.x = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
                 verticalLine.position.z = (-this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces))/1.5;
-                verticalLine.position.y = 5.25;
+                verticalLine.position.y = 5.3;
                 this.add(verticalLine);
             }
         }
@@ -96,7 +96,7 @@ class MySkyscraper extends THREE.Object3D {
                 verticalLine.rotation.z = -Math.PI / 2 + this.turnParkingLot;
                 verticalLine.position.x = -3;
                 verticalLine.position.z = -this.lineWidth/2 + i * (this.lineWidth / numParkingLotSpaces);
-                verticalLine.position.y = 5.25;
+                verticalLine.position.y = 5.3;
                 this.add(verticalLine);
             }
         }

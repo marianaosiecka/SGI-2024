@@ -99,14 +99,12 @@ class MyVehicle extends THREE.Object3D {
     this.add(this.wheelMeshLeftFront);
     this.add(this.wheelMeshRightBack);
     this.add(this.wheelMeshRightFront);
-
-    this.carBodyMesh = null;
-
     }
 
     setModel(model) {
         this.carMesh.visible = false;
         this.add(model);
+        this.position.set(this.initialPosition[0], this.initialPosition[1], this.initialPosition[2]);
     }
 
     getVelocity() {
@@ -219,8 +217,8 @@ class MyVehicle extends THREE.Object3D {
             this.needsRotationAdjusted = false;
         }
         else if (!this.needsRotationAdjusted){
-            this.wheelMeshLeftFront.rotation.y = this.initialWheelTurnAngle;
-            this.wheelMeshRightFront.rotation.y = this.initialWheelTurnAngle;
+            this.wheelMeshLeftFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
+            this.wheelMeshRightFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
         }
 
     }
@@ -314,34 +312,41 @@ class MyVehicle extends THREE.Object3D {
          || this.carBB.intersectsBox(otherVehicle.wheel4BB) || this.wheel1BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel2BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel3BB.intersectsBox(otherVehicle.wheel4BB) || this.wheel4BB.intersectsBox(otherVehicle.wheel4BB);
     }
 
-    detectOutOfTrack (track) {
-        let positionWheel1 = this.position.clone().add(this.wheelMeshLeftBack.position);
-        let positionWheel2 = this.position.clone().add(this.wheelMeshLeftFront.position);
+    detectCollisionsObject (object, isTrack) {
+        let positionWheel1 = this.position.clone().add(this.wheelMeshLeftFront.position);
+        let positionWheel2 = this.position.clone().add(this.wheelMeshRightFront.position);
         let positionWheel3 = this.position.clone().add(this.wheelMeshRightBack.position);
-        let positionWheel4 = this.position.clone().add(this.wheelMeshRightFront.position);
+        let positionWheel4 = this.position.clone().add(this.wheelMeshLeftBack.position);
 
         const verticalVector = new THREE.Vector3(0, -1, 0);
 
         //raycaster for each wheel
         const raycaster1 = new THREE.Raycaster(positionWheel1, verticalVector);
-        const intersections1 = raycaster1.intersectObject(track);
+        const intersections1 = raycaster1.intersectObject(object);
 
         const raycaster2 = new THREE.Raycaster(positionWheel2, verticalVector);
-        const intersections2 = raycaster2.intersectObject(track);
+        const intersections2 = raycaster2.intersectObject(object);
 
         const raycaster3 = new THREE.Raycaster(positionWheel3, verticalVector);
-        const intersections3 = raycaster3.intersectObject(track);
+        const intersections3 = raycaster3.intersectObject(object);
         
         const raycaster4 = new THREE.Raycaster(positionWheel4, verticalVector);
-        const intersections4 = raycaster4.intersectObject(track);
+        const intersections4 = raycaster4.intersectObject(object);
         
-        // return true if any of the wheels is out of the track (0 intersections)
-        if(intersections1.length === 0 && intersections2.length === 0 && intersections3.length === 0 && intersections4.length === 0){
-            this.allCarOutOfTrack = true;
-            return true;
+        if(isTrack){
+            // if all wheels are out of the track 
+            if(intersections1.length === 0 && intersections2.length === 0 && intersections3.length === 0 && intersections4.length === 0){
+                this.allCarOutOfTrack = true;
+                return true;
+            }
+            this.allCarOutOfTrack = false;
+
+            // return true if any of the wheels is out of the track (0 intersections)
+            return intersections1.length === 0 || intersections2.length === 0 || intersections3.length === 0 || intersections4.length === 0;
         }
-        this.allCarOutOfTrack = false;
-        return intersections1.length === 0 || intersections2.length === 0 || intersections3.length === 0 || intersections4.length === 0;
+
+        return intersections1.length !== 0 || intersections2.length !== 0 || intersections3.length !== 0 || intersections4.length !== 0;
+
     }
 
     stopModifier(vehicle) {
