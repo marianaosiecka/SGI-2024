@@ -479,6 +479,7 @@ class MyContents {
       else if (intersects[0].object.name == "selectOpponentVehicleButton") {
         this.selectedOpponentVehicle = this.availableOpponentVehicles[this.app.activeCameraName];
         console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
+        this.menuManager.clearCurrentMenu();
         // put the car in the starting point
         this.app.smoothCameraTransition('PlayerCarPerspective', 1000);
         this.startGame();
