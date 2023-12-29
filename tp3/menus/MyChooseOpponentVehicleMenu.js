@@ -59,7 +59,7 @@ class MyChooseOpponentVehicleMenu extends THREE.Object3D {
         this.clickableObjects.push(selectTextMesh);
         this.add(selectTextMesh);
 
-        this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['OpponentParkingLot1'])
+        this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['OpponentParkingLot1'], this.app.getCameraTarget('OpponentParkingLot1'), 25)
     }
 
     updateChooseOpponentVehicleMenu(num) {
@@ -73,7 +73,7 @@ class MyChooseOpponentVehicleMenu extends THREE.Object3D {
             newCameraIndex = 0;
         }
         const cameraName = this.cars[newCameraIndex];
-        this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras[cameraName])
+        this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras[cameraName], this.app.getCameraTarget(cameraName), 25)
         this.app.smoothCameraTransition(cameraName, 2000)
     }
 

@@ -88,47 +88,51 @@ class MyApp  {
         startMenuPerspective.position.set(-197, 0, 250)
         this.cameras['StartMenuPerspective'] = startMenuPerspective
 
+        // player parking lot
         const playerParkingLotPerspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        playerParkingLotPerspective1.position.set(128, 20, -197)
+        playerParkingLotPerspective1.position.set(128.5, 20, -197)
         this.cameras['PlayerParkingLot1'] = playerParkingLotPerspective1
 
         const playerParkingLotPerspective2 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        playerParkingLotPerspective2.position.set(128, 20, -205)
+        playerParkingLotPerspective2.position.set(128.5, 20, -204)
         this.cameras['PlayerParkingLot2'] = playerParkingLotPerspective2
 
         const playerParkingLotPerspective3 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        playerParkingLotPerspective3.position.set(128, 20, -213)
+        playerParkingLotPerspective3.position.set(128.5, 20, -211)
         this.cameras['PlayerParkingLot3'] = playerParkingLotPerspective3
 
         const playerParkingLotPerspective4 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        playerParkingLotPerspective4.position.set(128, 20, -221)
+        playerParkingLotPerspective4.position.set(128.5, 20, -218)
         this.cameras['PlayerParkingLot4'] = playerParkingLotPerspective4
 
+        // autonomous parking lot
         const autonomousParkingLotPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        autonomousParkingLotPerspective.position.set(-285, 6, -50)
+        autonomousParkingLotPerspective.position.set(-268.5, 1, -24)
         this.cameras['OpponentParkingLot1'] = autonomousParkingLotPerspective
 
         const autonomousParkingLotPerspective2 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        autonomousParkingLotPerspective2.position.set(-285, 6, -50)
+        autonomousParkingLotPerspective2.position.set(-268.5, 1, -15)
         this.cameras['OpponentParkingLot2'] = autonomousParkingLotPerspective2
 
         const autonomousParkingLotPerspective3 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        autonomousParkingLotPerspective3.position.set(-285, 6, -50)
+        autonomousParkingLotPerspective3.position.set(-268.5, 1, -7)
         this.cameras['OpponentParkingLot3'] = autonomousParkingLotPerspective3
 
         const autonomousParkingLotPerspective4 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        autonomousParkingLotPerspective4.position.set(-285, 6, -50)
+        autonomousParkingLotPerspective4.position.set(-268.5, 1, 2)
         this.cameras['OpponentParkingLot4'] = autonomousParkingLotPerspective4
     }
 
-    smoothCameraTransition(toCameraName, duration) {
+    smoothCameraTransition(toCameraName, duration, stopThreshold = 0.15, targetProgressMultiplier = 80) {
         if(this.activeCameraName == toCameraName) {
             return
         }
         
         const fromCamera = this.activeCamera;
         const fromCameraOriginalPosition = fromCamera.position.clone();
+        const fromTarget = this.controls.target.clone();
         const toCamera = this.cameras[toCameraName];
+        const toTarget = this.getCameraTarget(toCameraName);
         const startTime = performance.now();
     
         const updateCamera = () => {
@@ -137,12 +141,20 @@ class MyApp  {
 
             fromCamera.position.lerpVectors(fromCamera.position, toCamera.position, progress);
             fromCamera.lookAt(toCamera.position);
+            const distance = fromCamera.position.distanceTo(toCamera.position);
+
+            const targetProgress = Math.min(progress * targetProgressMultiplier, 1);
+            const newTarget = fromTarget.clone().lerp(toTarget, targetProgress);
+            this.controls.target.copy(newTarget);
         
-            if (progress < 0.13) {
+            if (distance > stopThreshold) {
                 requestAnimationFrame(updateCamera);
             } else {
                 fromCamera.position.copy(fromCameraOriginalPosition);
-                this.setActiveCamera(toCameraName);
+                if (this.activeCameraName != toCameraName){
+                    this.setActiveCamera(toCameraName);
+                    this.controls.target.copy(toTarget);
+                }
             }
         };
 
@@ -172,6 +184,9 @@ class MyApp  {
                 this.contents.followAutonomousVehicle = false
             }
         }
+        if(this.controls){
+            this.controls.target = this.getCameraTarget(cameraName);
+        }
     }
 
     /**
@@ -195,7 +210,7 @@ class MyApp  {
             if (this.controls === null) {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls( this.activeCamera, this.renderer.domElement );
-                //this.controls.enableZoom = false;
+                this.controls.enableZoom = true;
                 //this.controls.enableRotate = false;
                 //this.controls.enablePan = false;
                 this.controls.update();
@@ -225,6 +240,42 @@ class MyApp  {
                 break;
         }
         */
+    }
+
+    getCameraTarget(cameraName) {
+        let cameraTarget = null;
+        switch (cameraName) {
+            case 'OpponentParkingLot1':
+                cameraTarget =  new THREE.Vector3(-254, -2, -13);
+                break;
+            case 'OpponentParkingLot2':
+                cameraTarget = new THREE.Vector3(-254, -2, -4);
+                break;
+            case 'OpponentParkingLot3':
+                cameraTarget = new THREE.Vector3(-254, -2, 4);
+                break;
+            case 'OpponentParkingLot4':
+                cameraTarget = new THREE.Vector3(-254, -2, 13);
+                break;
+
+            
+            case 'PlayerParkingLot1':
+                cameraTarget = new THREE.Vector3(115, 17, -186);
+                break;
+            case 'PlayerParkingLot2':
+                cameraTarget = new THREE.Vector3(115, 17, -195);
+                break;
+            case 'PlayerParkingLot3':
+                cameraTarget = new THREE.Vector3(115, 17, -204);
+                break;
+            case 'PlayerParkingLot4':
+                cameraTarget = new THREE.Vector3(115, 17, -213);
+                break;
+            default:
+                cameraTarget = new THREE.Vector3(0, 0, 0);
+                break;
+        }
+        return cameraTarget;
     }
 
     /**
