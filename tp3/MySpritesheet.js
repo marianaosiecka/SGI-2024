@@ -49,6 +49,7 @@ class MySpritesheet {
     }
 
     getText(text){
+        text = text.toString();
         const group = new THREE.Group();
         const characters = text.split("");
         const numCharacters = characters.length;

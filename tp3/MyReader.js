@@ -374,8 +374,10 @@ class MyReader{
                         this.shortcutMixer = this.shortcutAnimation();
                     }
                 }
-                else{
+                else
                     this.shortcut = false;
+                
+                if(!this.appliedModifiers.includes(powerUp)){
                     this.appliedModifiers.push(powerUp);
                     this.appliedModifiersStartTime.push(Date.now());
                 }
@@ -404,8 +406,10 @@ class MyReader{
             if(this.playerVehicle.detectCollisionsBox(obstacle.bb)){
                 console.log("colidiu obstaculo")
                 obstacle.applyModifier(this.playerVehicle);
-                this.appliedModifiers.push(obstacle);
-                this.appliedModifiersStartTime.push(Date.now());
+                if(!this.appliedModifiers.includes(obstacle)){
+                    this.appliedModifiers.push(obstacle);
+                    this.appliedModifiersStartTime.push(Date.now());
+                }
             }
         });
         if(this.playerVehicle.detectCollisionsVehicles(this.autonomousVehicle)){
@@ -486,6 +490,13 @@ class MyReader{
         });
     }
 
+    removeShortcut(){
+        this.appliedModifiers.forEach(modifier => {
+            if(modifier.type == "shortcut"){
+                this.stopModifier(modifier);
+            }
+        });
+    }
 }
 
 export { MyReader };

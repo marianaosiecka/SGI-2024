@@ -224,6 +224,8 @@ class MyVehicle extends THREE.Object3D {
     accelerate(velocity) {
         if (this.velocity + velocity < this.maxVelocity && !this.outOfTrack && !this.collidedCar)  
             this.velocity += velocity/3;
+        if (this.velocity + velocity >= this.maxVelocity && !this.outOfTrack && !this.collidedCar) 
+            this.velocity = this.maxVelocity; 
     }
 
     decelerate(velocity) {
