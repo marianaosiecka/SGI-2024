@@ -10,6 +10,7 @@ import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
 import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
 import { MyMenuManager } from "./menus/MyMenuManager.js";
 import { MyHUD } from "./menus/MyHUD.js";
+import { MyFirework } from "./scenario/MyFireworks.js";
 
 /**
  *  This class contains the contents of out application
@@ -44,6 +45,7 @@ class MyContents {
     this.selectedOpponentVehicle = null;
 
     this.playing = false;
+    this.finished = false;
 
     //Curve related attributes
     this.segments = 200;
@@ -104,7 +106,7 @@ class MyContents {
     // MENU
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.menuManager.initMainMenu();//this.startGame()
+    this.startGame()//this.menuManager.initMainMenu();
   }
 
   startGame() {
@@ -146,13 +148,13 @@ class MyContents {
     this.playerVehicle = this.reader.playerVehicle;
 
     // load car models
-    this.selectedPlayerVehicle/*const myCarModelGreen1 = new MyCarModelRed();
-    myCarModelGreen1*/.loadModel().then((properties) => {
+    /*this.selectedPlayerVehicle*/const myCarModelGreen1 = new MyCarModelRed();
+    myCarModelGreen1.loadModel().then((properties) => {
       this.updatePlayerVehicleModel(properties);
     }); 
 
-    this.selectedOpponentVehicle/*const myCarModelGreen2 = new MyCarModelGreen();
-    myCarModelGreen2*/.loadModel().then((properties) => {
+    /*this.selectedOpponentVehicle*/const myCarModelGreen2 = new MyCarModelGreen();
+    myCarModelGreen2.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
     });
 
@@ -164,10 +166,13 @@ class MyContents {
     
     // count down for the game to start
     this.playing = true;
-  
+    
+    this.finishGame()//this.scenario.setPodium();
   }
 
   finishGame() {
+    this.finished = true;
+    this.fireworks = [];
     this.scenario.setPodium();
     this.playerLaps = 0;
     this.playerTime = 0;
@@ -319,6 +324,25 @@ class MyContents {
 
     // update the clouds lookAt
     this.scenario.update(this.playerVehicle, delta);
+
+    if(this.finished){
+      // add new fireworks every 5% of the calls
+      if(Math.random()  < 0.05 ) {
+        this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
+      }
+
+      // for each fireworks 
+      for( let i = 0; i < this.fireworks.length; i++ ) {
+          // is firework finished?
+          if (this.fireworks[i].done) {
+              // remove firework 
+              this.fireworks.splice(i,1) 
+              continue 
+          }
+          // otherwise update  firework
+          this.fireworks[i].update(delta)
+      }
+    }
 
     if (this.playing) {
       const timePassed = time-this.timeStart;
