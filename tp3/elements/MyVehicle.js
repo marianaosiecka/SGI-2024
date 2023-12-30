@@ -111,40 +111,37 @@ class MyVehicle extends THREE.Object3D {
         return this.velocity*this.directionForward;
     }
 
+    // Inside the MyVehicle class
+
+    updateBoundingBoxes() {
+        this.carMesh.updateMatrixWorld();
+        this.wheels.forEach(wheel => {
+            wheel.updateMatrixWorld();
+        });
+
+        // Update the bounding box positions
+        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
+        this.wheelsBB.forEach((wheelBB, index) => {
+            wheelBB.copy(this.wheels[index].geometry.boundingBox).applyMatrix4(this.wheels[index].matrixWorld);
+        });
+    }
+
     updateAutonomous(velocity, point, orientation) {
         this.position.set(...point);
         this.setRotationFromQuaternion(orientation);
         this.carOrientation = this.rotation.y;
 
-        this.carMesh.updateMatrixWorld();
-        this.wheels.forEach(wheel => {
-            wheel.updateMatrixWorld();
-        })        
-
         this.updateWheelRotation(velocity, true)
 
         // update the bounding box positions
-        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
-        this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
-        this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
-        this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
-        this.wheel4BB.copy(this.wheelMeshRightFront.geometry.boundingBox).applyMatrix4(this.wheelMeshRightFront.matrixWorld);
+        this.updateBoundingBoxes();
     }
 
     setPos(position) {
         this.position.set(...position);
 
-        this.carMesh.updateMatrixWorld();
-        this.wheels.forEach(wheel => {
-            wheel.updateMatrixWorld();
-        })
-
         // update the bounding box positions
-        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
-        this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
-        this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
-        this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
-        this.wheel4BB.copy(this.wheelMeshRightFront.geometry.boundingBox).applyMatrix4(this.wheelMeshRightFront.matrixWorld);
+        this.updateBoundingBoxes();
 
         this.velocity *= 0.2;
 
@@ -165,17 +162,7 @@ class MyVehicle extends THREE.Object3D {
         this.updateRotation()
         this.updateWheelRotation(dist, false)
 
-        this.carMesh.updateMatrixWorld();
-        this.wheels.forEach(wheel => {
-            wheel.updateMatrixWorld();
-        })
-
-        // update the bounding box positions
-        this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
-        this.wheel1BB.copy(this.wheelMeshLeftBack.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftBack.matrixWorld);
-        this.wheel2BB.copy(this.wheelMeshLeftFront.geometry.boundingBox).applyMatrix4(this.wheelMeshLeftFront.matrixWorld);
-        this.wheel3BB.copy(this.wheelMeshRightBack.geometry.boundingBox).applyMatrix4(this.wheelMeshRightBack.matrixWorld);
-        this.wheel4BB.copy(this.wheelMeshRightFront.geometry.boundingBox).applyMatrix4(this.wheelMeshRightFront.matrixWorld);
+        this.updateBoundingBoxes();
     }
 
     updatePosition(dist){
