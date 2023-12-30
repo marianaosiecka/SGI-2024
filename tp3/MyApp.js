@@ -73,7 +73,7 @@ class MyApp  {
         this.cameras['Perspective'] = perspective1
         
         const playerCarPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        playerCarPerspective.position.set(0, 10, 0)
+        playerCarPerspective.position.set(47, 11.7, -107.5)
         this.cameras['PlayerCarPerspective'] = playerCarPerspective
 
         const autonomousCarPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
@@ -227,6 +227,7 @@ class MyApp  {
      * sets the controls' target
      */
     setControlsTarget() {
+        this.controls.target = this.getCameraTarget(this.activeCameraName);
         /*
         switch (this.activeCameraName) {
             case 'PlayerParkingLot':
@@ -245,6 +246,10 @@ class MyApp  {
     getCameraTarget(cameraName) {
         let cameraTarget = null;
         switch (cameraName) {
+            case 'PlayerCarPerspective':
+                cameraTarget = new THREE.Vector3(31, 1.7, -107.5);
+                break;
+
             case 'OpponentParkingLot1':
                 cameraTarget =  new THREE.Vector3(-254, -2, -13);
                 break;
