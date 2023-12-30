@@ -65,11 +65,11 @@ class MyMainMenu extends THREE.Object3D {
     }
 
     handleButtonHover(button){
-
+        button.scale.set(1.1, 1.1, 1.1)
     }
 
     resetButtonState(button){
-        
+        button.scale.set(1, 1, 1)
     }
     
 }
