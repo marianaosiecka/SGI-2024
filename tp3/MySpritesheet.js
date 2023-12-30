@@ -43,6 +43,7 @@ class MySpritesheet {
 
         const material = new THREE.MeshBasicMaterial({map: this.texture, side: THREE.DoubleSide, transparent: true});
         const mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = Math.PI;
         
         return mesh;
     }

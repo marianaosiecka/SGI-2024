@@ -161,8 +161,7 @@ class MyContents {
     const countdownLoop = () => {
       const countdownNumber = countdownNumbers[i];
       const countdownMesh = this.spritesheetTitle2.getText(countdownNumber);
-      countdownMesh.position.set(countdownPosition.x, countdownPosition.y, countdownPosition.z);
-      countdownMesh.rotation.set(Math.PI + 5, -Math.PI / 2, 5);
+      this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, countdownPosition, 15);
       countdownMesh.scale.set(5, 5, 1);
       this.app.scene.add(countdownMesh);
 
