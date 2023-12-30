@@ -62,7 +62,7 @@ class MyScenario {
 
         this.skyscraperPodium = new MySkyscraper(this.app, false, 400, 45, 3, "#f7e240", 4, "#736958", 4, layer, -26);
         this.skyscraperPodium.rotation.y = Math.PI/2;
-        this.skyscraperPodium.position.x = 260;
+        this.skyscraperPodium.position.x = 200;
         this.skyscraperPodium.position.y = 50;
         this.skyscraperPodium.position.z = 90;
         this.playerParkingLotOffset = 0;
@@ -136,6 +136,17 @@ class MyScenario {
         podiumMesh2.position.x -= 6;
         podiumMesh2.position.z += 10;
 
+        let fireworksPlane = new THREE.PlaneGeometry( 10, 10 );
+        this.fireworksMesh = new THREE.Mesh( fireworksPlane, 
+            new THREE.MeshPhongMaterial({ color: "#736958",  specular:  "#777777", emissive: "#000000", shininess: 30 }) );
+        this.fireworksMesh.rotation.x = -Math.PI / 2;
+        this.fireworksMesh.rotation.z = -Math.PI / 8;
+        this.fireworksMesh.position.copy(this.skyscraperPodium.position);
+        this.fireworksMesh.position.y += 6;
+        this.fireworksMesh.position.x -= 6;
+        this.fireworksMesh.position.z -= 14;
+
+        this.app.scene.add(this.fireworksMesh);
         this.app.scene.add(podiumMesh1);
         this.app.scene.add(podiumMesh2);
     }

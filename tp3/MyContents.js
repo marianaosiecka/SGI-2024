@@ -11,6 +11,7 @@ import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
 import { MyMenuManager } from "./menus/MyMenuManager.js";
 import { MySpritesheet } from "./MySpritesheet.js";
 import { MyHUD } from "./menus/MyHUD.js";
+import { MyFirework } from "./scenario/MyFireworks.js";
 
 /**
  *  This class contains the contents of out application
@@ -53,6 +54,7 @@ class MyContents {
 
     // game state
     this.playing = false;
+    this.finished = false;
 
     // load the spritesheets
     this.spritesheetTitle1 = new MySpritesheet('spritesheets/spritesheet_title_1.png', 10, 10);
@@ -247,6 +249,8 @@ class MyContents {
    * finishes the game
    */ 
   finishGame() {
+    this.finished = true;
+    this.fireworks = [];
     // set podium
     this.scenario.setPodium();
 
@@ -411,6 +415,25 @@ class MyContents {
 
     // update the clouds lookAt
     this.scenario.update(this.playerVehicle, delta);
+
+    if(this.finished){
+      // add new fireworks every 5% of the calls
+      if(Math.random()  < 0.05 ) {
+        this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
+      }
+
+      // for each fireworks 
+      for( let i = 0; i < this.fireworks.length; i++ ) {
+          // is firework finished?
+          if (this.fireworks[i].done) {
+              // remove firework 
+              this.fireworks.splice(i,1) 
+              continue 
+          }
+          // otherwise update  firework
+          this.fireworks[i].update(delta)
+      }
+    }
 
     if (this.playing) {
       const timePassed = time - this.timeStart;
