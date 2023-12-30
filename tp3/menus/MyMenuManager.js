@@ -111,15 +111,15 @@ class MyMenuManager {
     }
 
     handleButtonHover(button) {
-        this.currentMenu.handleButtonHover(button);
+        if (this.currentMenu) this.currentMenu.handleButtonHover(button);
     }
 
     resetButtonState(button) {
-        this.currentMenu.resetButtonState(button);
+        if (this.currentMenu) this.currentMenu.resetButtonState(button);
     }
 
     handleClickButton(button){
-        this.currentMenu.handleClickButton(button);
+        if (this.currentMenu) this.currentMenu.handleClickButton(button);
     }
 }
 

@@ -126,8 +126,15 @@ class MyContents {
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
     /// UNCOMMENT HERE
-    //this.menuManager.initMainMenu();
-    this.countdown()
+    this.menuManager.initMainMenu();
+    //this.countdown()
+    //this.finishGame();
+    //    this.app.setActiveCamera('BillboardPerspective');
+    // set timeout before getting the billboard image
+    setTimeout(() => {
+      this.scenario.billboard.getImage();
+      this.billboardTime = Date.now();
+    }, 100);
   }
 
   countdown() {
@@ -142,12 +149,12 @@ class MyContents {
     /*this.selectedPlayerVehicle.loadModel().then((properties) => {
       this.updatePlayerVehicleModel(properties);
     });*/
-    
+
     const myCarModelGreen1 = new MyCarModelRed();
     myCarModelGreen1.loadModel().then((properties) => {
       this.updatePlayerVehicleModel(properties);
     });
-    
+
     /// UNCOMMENT HERE
     /*this.selectedOpponentVehicle.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
@@ -170,7 +177,7 @@ class MyContents {
     this.app.setActiveCamera('PlayerCarPerspective');
     this.app.updateCameraIfRequired();
     this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));    
+    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
 
     // countdown
     const countdownNumbers = ['3', '2', '1', 'GO!'];
@@ -247,8 +254,9 @@ class MyContents {
 
   /**
    * finishes the game
-   */ 
+   */
   finishGame() {
+    this.app.setActiveCamera('PodiumPerspective');
     this.finished = true;
     this.fireworks = [];
     // set podium
@@ -262,11 +270,11 @@ class MyContents {
 
     console.log("FINISHED GAME");
   }
-  
+
   /**
    * updates the player vehicle model
    * @param {array} properties - array containing the properties of the model
-   */ 
+   */
   updatePlayerVehicleModel(properties) {
     // read the properties
     this.reader.readPlayerVehicle(properties[3], properties[4], properties[5], properties[6])
@@ -414,24 +422,24 @@ class MyContents {
     const time = Date.now();
 
     // update the clouds lookAt
-    this.scenario.update(this.playerVehicle, delta);
+    this.scenario.update(this.playerVehicle, delta, time);
 
-    if(this.finished){
+    if (this.finished) {
       // add new fireworks every 5% of the calls
-      if(Math.random()  < 0.05 ) {
+      if (Math.random() < 0.05) {
         this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
       }
 
       // for each fireworks 
-      for( let i = 0; i < this.fireworks.length; i++ ) {
-          // is firework finished?
-          if (this.fireworks[i].done) {
-              // remove firework 
-              this.fireworks.splice(i,1) 
-              continue 
-          }
-          // otherwise update  firework
-          this.fireworks[i].update(delta)
+      for (let i = 0; i < this.fireworks.length; i++) {
+        // is firework finished?
+        //if (this.fireworks[i].done) {
+        // remove firework 
+        //  this.fireworks.splice(i,1) 
+        //continue 
+        //}
+        // otherwise update  firework
+        this.fireworks[i].update(delta)
       }
     }
 
@@ -510,8 +518,8 @@ class MyContents {
         }
 
       }
-      this.HUD.update(this.numLaps, this.playerLaps, this.timeLimit, time, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
-        
+      this.HUD.update(this.numLaps, this.playerLaps, this.timeLimit, time, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);
+
       if (this.followPlayerVehicle) {
         //console.log(this.playerVehicle.carOrientation)
         this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
@@ -521,7 +529,7 @@ class MyContents {
         //this.HUD.update(this.numLaps, this.playerLaps, this.timeLimit, this.playerTime, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
         const distanceFromCamera = 15; // Adjust the distance as needed
         const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
-            .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
+          .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
 
         hudPosition.y += 8.5;
         //console.log(hudPosition)

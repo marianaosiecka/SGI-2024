@@ -121,6 +121,16 @@ class MyApp  {
         const autonomousParkingLotPerspective4 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         autonomousParkingLotPerspective4.position.set(-268.5, 1, 2)
         this.cameras['OpponentParkingLot4'] = autonomousParkingLotPerspective4
+
+        // podium perspective
+        const podiumPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        podiumPerspective.position.set(120, 71, 30.5)
+        this.cameras['PodiumPerspective'] = podiumPerspective
+
+        // billboard perspective
+        const billboardPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        billboardPerspective.position.set(113.8, 35.2, -120)
+        this.cameras['BillboardPerspective'] = billboardPerspective
     }
 
     smoothCameraTransition(toCameraName, duration, stopThreshold = 0.15, targetProgressMultiplier = 80) {
@@ -276,6 +286,15 @@ class MyApp  {
             case 'PlayerParkingLot4':
                 cameraTarget = new THREE.Vector3(115, 17, -213);
                 break;
+
+            case 'PodiumPerspective':
+                cameraTarget = new THREE.Vector3(231, 35, 138);
+                break;
+
+            case 'BillboardPerspective':
+                cameraTarget = new THREE.Vector3(71, 32, -134);
+                break;
+                
             default:
                 cameraTarget = new THREE.Vector3(0, 0, 0);
                 break;
