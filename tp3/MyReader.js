@@ -308,7 +308,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType1.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "shield", powerUpTexture1);
+            const powerUp = new MyPowerUp(this.app, "shield", powerUpTexture1, 0);
             powerUp.position.set(...powerUpType1[i][0]);
             powerUp.rotation.set(...powerUpType1[i][1]);
 
@@ -319,13 +319,14 @@ class MyReader{
         }
 
         // TYPE: SHORTCUT
-        const powerUpTexture2 = new THREE.TextureLoader().load("textures/shortcut_powerup.png");
+        const powerUpTexture2 = new THREE.TextureLoader().load("textures/cloud.png");
         const powerUpType2 = [
             [new THREE.Vector3(82, 2, -20), new THREE.Vector3(0, -Math.PI / 2 - 0.2, 0)],
         ];
 
         for (let i = 0; i < powerUpType2.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "shortcut", powerUpTexture2);
+            const powerUp = new MyPowerUp(this.app, "shortcut", powerUpTexture2, 0);
+            powerUp.scale.set(1.1, 1.1, 1.1);
             powerUp.position.set(...powerUpType2[i][0]);
             powerUp.rotation.set(...powerUpType2[i][1]);
 
@@ -342,9 +343,26 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType3.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "speed", powerUpTexture3);
+            const powerUp = new MyPowerUp(this.app, "speed", powerUpTexture3, 0);
             powerUp.position.set(...powerUpType3[i][0]);
             powerUp.rotation.set(...powerUpType3[i][1]);
+
+            powerUp.setBoundingBox();
+
+            this.powerUps.push(powerUp);
+            this.app.scene.add(powerUp);
+        }
+
+        // TYPE: PICK POWER UP
+        const powerUpTexture4 = new THREE.TextureLoader().load("textures/pickObstacle_powerup.png");
+        const powerUpType4 = [
+            [new THREE.Vector3(-151, 2, -100), new THREE.Vector3(0, -Math.PI / 2, 0)],
+        ];
+
+        for (let i = 0; i < powerUpType4.length; i++) {
+            const powerUp = new MyPowerUp(this.app, "pick", powerUpTexture4, Math.PI/2);
+            powerUp.position.set(...powerUpType4[i][0]);
+            powerUp.rotation.set(...powerUpType4[i][1]);
 
             powerUp.setBoundingBox();
 
@@ -399,40 +417,50 @@ class MyReader{
         }
 
         // if the player has the shield modifier, he can't collide with anything
-        if(this.playerVehicle.shield)
-            return;
-
-        this.obstacles.forEach(obstacle => {
-            if(this.playerVehicle.detectCollisionsBox(obstacle.bb)){
-                console.log("colidiu obstaculo")
-                obstacle.applyModifier(this.playerVehicle);
-                if(!this.appliedModifiers.includes(obstacle)){
-                    this.appliedModifiers.push(obstacle);
-                    this.appliedModifiersStartTime.push(Date.now());
+        if(!this.playerVehicle.shield){
+            this.obstacles.forEach(obstacle => {
+                if(this.playerVehicle.detectCollisionsBox(obstacle.bb)){
+                    console.log("colidiu obstaculo")
+                    obstacle.applyModifier(this.playerVehicle);
+                    if(!this.appliedModifiers.includes(obstacle)){
+                        this.appliedModifiers.push(obstacle);
+                        this.appliedModifiersStartTime.push(Date.now());
+                    }
                 }
+            });
+
+            if(this.playerVehicle.detectCollisionsVehicles(this.autonomousVehicle)){
+                console.log("colidiu carro")   
+                this.playerVehicle.collidedCar = true;
+                if(!this.playerVehicle.collidedCarStarted){
+                    this.playerVehicle.velocity *= 0.3;
+                    this.playerVehicle.collidedCarStarted = true;
+                }
+                this.appliedModifiers.push(this.autonomousVehicle);
+                this.appliedModifiersStartTime.push(Date.now());
             }
-        });
-        if(this.playerVehicle.detectCollisionsVehicles(this.autonomousVehicle)){
-            console.log("colidiu carro")   
-            this.playerVehicle.collidedCar = true;
-            if(!this.playerVehicle.collidedCarStarted){
-                this.playerVehicle.velocity *= 0.3;
-                this.playerVehicle.collidedCarStarted = true;
+            else{
+                this.playerVehicle.collidedCar = false;
+                this.playerVehicle.collidedCarStarted = false;
             }
-            this.appliedModifiers.push(this.autonomousVehicle);
-            this.appliedModifiersStartTime.push(Date.now());
-        }
-        else{
-            this.playerVehicle.collidedCar = false;
-            this.playerVehicle.collidedCarStarted = false;
         }
 
         if(this.playerVehicle.detectCollisionsObject(this.track, true)){
             console.log("saiu track")
             this.playerVehicle.outOfTrack = true;
+            if(!this.playerVehicle.outOfTrackStarted){
+                this.playerVehicle.velocity = 0.07*this.playerVehicle.maxVelocity;
+                this.playerVehicle.maxVelocity *= 0.1;
+                this.playerVehicle.outOfTrackStarted = true;
+            }
         }
-        else
+        else{
             this.playerVehicle.outOfTrack = false;
+            if(this.playerVehicle.outOfTrackStarted){
+                this.playerVehicle.maxVelocity /= 0.1;
+                this.playerVehicle.outOfTrackStarted = false;
+            }
+        }
     }
 
     shortcutAnimation(){

@@ -127,8 +127,8 @@ class MyContents {
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
     /// UNCOMMENT HERE
-    this.menuManager.initMainMenu();
-    //this.countdown()
+    //this.menuManager.initMainMenu();
+    this.countdown()
     //this.finishGame();
     //    this.app.setActiveCamera('BillboardPerspective');
     // set timeout before getting the billboard image
@@ -189,7 +189,20 @@ class MyContents {
 
     const countdownLoop = () => {
       const countdownNumber = countdownNumbers[i];
-      const countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
+      let countdownMesh = null;
+      if(countdownNumber === 'GO!') {
+        const countdownMesh1 = this.spritesheetTitle2.getText('G'); // get the mesh for the current letter
+        const countdownMesh2 = this.spritesheetTitle2.getText('O!'); // get the mesh for the current letter
+        countdownMesh1.position.z += 0.15;
+        countdownMesh1.position.x -= 0.35;
+        countdownMesh2.position.x += 0.45;
+        countdownMesh = new THREE.Group();
+        countdownMesh.add(countdownMesh1);
+        countdownMesh.add(countdownMesh2);
+      }
+      else{
+        countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
+      }
       this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, countdownPosition, 15);
       countdownMesh.scale.set(5, 5, 1);
       this.app.scene.add(countdownMesh);
@@ -326,7 +339,7 @@ class MyContents {
 
     let isSwitch = this.reader.isAppliedModifier("switch");
 
-    if (this.keys['KeyW'] && !this.playerVehicle.outOfTrack)
+    if (this.keys['KeyW'])
       this.playerVehicle.accelerate(speed);
 
     if (this.keys['KeyX'])
