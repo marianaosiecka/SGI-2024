@@ -55,6 +55,7 @@ class MyMainMenu extends THREE.Object3D {
             side: THREE.DoubleSide,
             transparent: true,
         });
+        
         const clickMesh = new THREE.Mesh(clickGeometry, clickMaterial);
         clickMesh.position.y = -13;
         this.add(clickMesh);

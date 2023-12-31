@@ -5,6 +5,7 @@ import { MyClouds } from './MyClouds.js';
 import { MyBird } from './MyBird.js';
 import { MySkyscraper } from './MySkyscraper.js';
 import { MyCloud } from '../elements/MyCloud.js';
+import { MyBillboard } from './MyBillboard.js';
 
 class MyScenario {
     constructor(app, layer) {
@@ -27,6 +28,7 @@ class MyScenario {
 
         this.birds = [this.bird1, this.bird2, this.bird3];
 
+        // skyscrapers
         this.skyscraperObstacles = new MySkyscraper(this.app, true, 400, 20, 4, "#ffffff", 4, "#3A6392", 2, layer, -1);
         this.skyscraperObstacles.position.x = -20;
         this.skyscraperObstacles.position.z = 110;
@@ -96,6 +98,12 @@ class MyScenario {
         this.app.scene.add(pillarMesh3);
         pillarMesh4.layers.enable(this.layer);
         this.app.scene.add(pillarMesh4);
+
+        // billboard
+        this.billboard = new MyBillboard(this.app);
+        this.billboard.position.set(-10, -200, -170);
+        this.billboard.rotation.y = -Math.PI/8;
+        this.app.scene.add(this.billboard);
     }
 
     setCloudUnderCar(vehiclePosition) {
@@ -151,7 +159,7 @@ class MyScenario {
         this.app.scene.add(podiumMesh2);
     }
     
-    update(playerVehicle, elapsedTime) {
+    update(playerVehicle, elapsedTime, time) {
         this.clouds.update();
         this.birds.forEach(bird => bird.update(elapsedTime));
 
@@ -163,6 +171,13 @@ class MyScenario {
             else {
                 this.cloudUnderCar.cloud.visible = false;
             }
+        }
+
+
+        // call getImage() to update the texture of the billboard (every 10 seconds)
+        if(time - this.app.contents.billboardTime >= 10000){
+            this.billboard.getImage();
+            this.app.contents.billboardTime = time;
         }
     }
 }

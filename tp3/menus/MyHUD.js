@@ -131,8 +131,8 @@ class MyHUD extends THREE.Object3D {
         this.add(playerMesh)
 
         let maxVelocityString = Math.round(maxVelocity * 10)/10 + " m/s";
-        let speedMesh = this.spritesheet.getText("SPEED", 0.1);
-        let maxSpeedMesh = this.spritesheet.getText("MAX SPEED", 0.1);
+        let speedMesh = this.spritesheet.getText("SPEED");
+        let maxSpeedMesh = this.spritesheet.getText("MAX SPEED");
         speedMesh.scale.set(0.7, 0.7, 0.7);
         maxSpeedMesh.scale.set(0.7, 0.7, 0.7);
         speedMesh.position.x = aspect/ 2 - 2.1 - 12;

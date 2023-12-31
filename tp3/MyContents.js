@@ -26,17 +26,24 @@ class MyContents {
     this.app.setContents(this);
     this.axis = null;
 
+    // clock
     this.clock = new THREE.Clock()
+
+    // camera related attributes
     this.followPlayerVehicle = false;
     this.followAutonomousVehicle = false;
 
+    // starting point of the run
     this.startingPoint = new THREE.Vector3(32, 1.7, -117);
 
+    // track related attributes
     this.showTrackWireframe = false;
     this.showTrackLine = true;
     this.trackClosedCurve = false;
 
+    // game levels
     this.levels = [1, 2, 3];
+
     // menu related attributes
     this.username = null;
     this.selectedLevel = null;
@@ -45,17 +52,18 @@ class MyContents {
     this.availableOpponentVehicles = [];
     this.selectedOpponentVehicle = null;
 
+    // game state
     this.playing = false;
     this.finished = false;
 
-    // SPRITESHEETS
+    // load the spritesheets
     this.spritesheetTitle1 = new MySpritesheet('spritesheets/spritesheet_title_1.png', 10, 10);
     this.spritesheetTitle2 = new MySpritesheet('spritesheets/spritesheet_title_2.png', 10, 10);
     this.spritesheetTitle3 = new MySpritesheet('spritesheets/spritesheet_title_3.png', 10, 10);
     this.spritesheetRegularBlack = new MySpritesheet('spritesheets/spritesheet_regular_black.png', 10, 10);
     this.spritesheetRegularWhite = new MySpritesheet('spritesheets/spritesheet_regular_white.png', 10, 10);
 
-    //Curve related attributes
+    // curve segments
     this.segments = 200;
 
     // picking related attributes
@@ -83,7 +91,7 @@ class MyContents {
    * initializes the contents
    */
   init() {
-    // CREATE THE SCENE
+    // set up initial properties
     this.reader = new MyReader(this, this.app, this.startingPoint, this.segments)
     this.previousTime = 0;
     this.speedFactor = 0.5;
@@ -92,7 +100,7 @@ class MyContents {
     this.keyListeners();
     this.parkingLotCars = [];
 
-    // LIGHTS
+    // lights
     // add a point light on top of the model
     const pointLight = new THREE.PointLight(0xffffff, 3000);
     pointLight.position.set(0, 50, -10);
@@ -106,21 +114,28 @@ class MyContents {
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
     this.app.scene.add(hemiLight);
 
-    // SCENARIO
+    // scenario
     this.scenario = new MyScenario(this.app, this.availableLayers[4]);
 
-    // TRACK
+    // track
     this.reader.readTrack(this.availableLayers[3]);
 
+    // default route
     this.chosenRoute = 1;
 
-    // MENU
+    // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    //this.menuManager.initMainMenu();
-    this.countdown()
-
-
+    /// UNCOMMENT HERE
+    this.menuManager.initMainMenu();
+    //this.countdown()
+    //this.finishGame();
+    //    this.app.setActiveCamera('BillboardPerspective');
+    // set timeout before getting the billboard image
+    setTimeout(() => {
+      this.scenario.billboard.getImage();
+      this.billboardTime = Date.now();
+    }, 100);
   }
 
   countdown() {
@@ -131,16 +146,26 @@ class MyContents {
     this.playerVehicle = this.reader.playerVehicle;
 
     // load car models
-    /*this.selectedPlayerVehicle*/const myCarModelGreen1 = new MyCarModelRed();
+    /// UNCOMMENT HERE
+    /*this.selectedPlayerVehicle.loadModel().then((properties) => {
+      this.updatePlayerVehicleModel(properties);
+    });*/
+
+    const myCarModelGreen1 = new MyCarModelRed();
     myCarModelGreen1.loadModel().then((properties) => {
       this.updatePlayerVehicleModel(properties);
     });
 
-    /*this.selectedOpponentVehicle*/const myCarModelGreen2 = new MyCarModelGreen();
+    /// UNCOMMENT HERE
+    /*this.selectedOpponentVehicle.loadModel().then((properties) => {
+      this.updateAutonomousVehicleModel(properties);
+    });*/
+    const myCarModelGreen2 = new MyCarModelGreen();
     myCarModelGreen2.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
     });
 
+    // create finishing line
     this.reader.setFinishLine();
 
     // create obstacles
@@ -149,24 +174,27 @@ class MyContents {
     // create power ups
     this.reader.readPowerUps(this.availableLayers[2]);
 
+    // setup player follow camera
     this.app.setActiveCamera('PlayerCarPerspective');
     this.app.updateCameraIfRequired();
     this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));    
+    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
 
     // countdown
     const countdownNumbers = ['3', '2', '1', 'GO!'];
     let i = 0;
 
+    // countdown position relative to the player vehicle
     let countdownPosition = new THREE.Vector3(this.playerVehicle.position.x, this.playerVehicle.position.y + 8, this.playerVehicle.position.z + 0.5);
 
     const countdownLoop = () => {
       const countdownNumber = countdownNumbers[i];
-      const countdownMesh = this.spritesheetTitle2.getText(countdownNumber);
+      const countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
       this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, countdownPosition, 15);
       countdownMesh.scale.set(5, 5, 1);
       this.app.scene.add(countdownMesh);
 
+      // countdown animation
       setTimeout(() => {
         this.app.scene.remove(countdownMesh);
         i++;
@@ -174,6 +202,7 @@ class MyContents {
           countdownLoop();
         }
         else {
+          // start game, once the countdown is finished
           this.startGame();
         }
       }, 1000);
@@ -182,11 +211,15 @@ class MyContents {
     countdownLoop();
   }
 
-
+  /**
+   * starts the game
+   */
   startGame() {
-    this.reader.level = 1; // this.reader.level = this.selectedLevel; //
+    // UNCOMMENT HERE
+    // this.reader.level = this.selectedLevel;
+    this.reader.level = 1;
     this.numLaps = 3;
-    this.timeLimit = 150000; //milisegundos
+    this.timeLimit = 150000; // milliseconds
     this.timeStart = Date.now();
     this.playerLaps = 0;
     this.playerTime = 0;
@@ -204,39 +237,57 @@ class MyContents {
     this.paused = false;
     this.keyListeners();
 
+    // create and add the HUD
     this.HUD = new MyHUD(this.app, this.spritesheetTitle3);
     this.app.scene.add(this.HUD);
 
-    // route
-    // set timer for the autonomous car to start
+    // set up the route and timer for the autonomous car to start
     this.reader.readRoutes();
     this.mixer = this.reader.mixer;
 
+    // set cloud under car (for when it is out of track)
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
 
     // set obstacles parking lot
     this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI / 2), 0, 36.5);
     this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0), Math.PI / 2, 35.5);
 
+    // update game state
     this.playing = true;
-
   }
 
+  /**
+   * finishes the game
+   */
   finishGame() {
+    this.app.setActiveCamera('PodiumPerspective');
     this.finished = true;
     this.fireworks = [];
+    // set podium
     this.scenario.setPodium();
+
+    // reset lap and time counters
     this.playerLaps = 0;
     this.playerTime = 0;
     this.autoLaps = 0;
     this.autoTime = 0;
+
     console.log("FINISHED GAME");
   }
 
+  /**
+   * updates the player vehicle model
+   * @param {array} properties - array containing the properties of the model
+   */
   updatePlayerVehicleModel(properties) {
+    // read the properties
     this.reader.readPlayerVehicle(properties[3], properties[4], properties[5], properties[6])
+
+    // update the player vehicle
     this.playerVehicle = this.reader.playerVehicle;
     this.playerVehicle.setModel(properties[1]);
+
+    // add the player vehicle to the scene
     this.app.scene.add(this.playerVehicle);
   }
 
@@ -393,25 +444,24 @@ class MyContents {
     const time = Date.now();
 
     // update the clouds lookAt
-    this.scenario.update(this.playerVehicle, delta);
+    this.scenario.update(this.playerVehicle, delta, time);
 
-  
-    if(this.finished){
+    if (this.finished) {
       // add new fireworks every 5% of the calls
-      if(Math.random()  < 0.05 ) {
+      if (Math.random() < 0.05) {
         this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
       }
 
       // for each fireworks 
-      for( let i = 0; i < this.fireworks.length; i++ ) {
-          // is firework finished?
-          if (this.fireworks[i].done) {
-              // remove firework 
-              this.fireworks.splice(i,1) 
-              continue 
-          }
-          // otherwise update  firework
-          this.fireworks[i].update(delta)
+      for (let i = 0; i < this.fireworks.length; i++) {
+        // is firework finished?
+        //if (this.fireworks[i].done) {
+        // remove firework 
+        //  this.fireworks.splice(i,1) 
+        //continue 
+        //}
+        // otherwise update  firework
+        this.fireworks[i].update(delta)
       }
     }
 
@@ -518,7 +568,6 @@ class MyContents {
             }
           }
         }
-
       }
 
     }
