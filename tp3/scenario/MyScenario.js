@@ -117,8 +117,8 @@ class MyScenario {
     }
 
     setCloudUnderCar(vehiclePosition) {
-        this.cloudUnderCar = new MyCloud(this.app);
-        this.cloudUnderCar.createOneCloud(vehiclePosition);
+        this.cloudUnderCar = new MyCloud(this.app, vehiclePosition);
+        this.cloudUnderCar.createOneCloud();
         this.app.scene.add(this.cloudUnderCar);
     }
 

@@ -515,7 +515,7 @@ class MyContents {
     //console.log(this.playerVehicle.carOrientation)
     this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
     this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
-    //this.scenario.clouds.update()
+    this.scenario.clouds.updateAllClouds()
 
     const distanceFromCamera = 15;
     const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
