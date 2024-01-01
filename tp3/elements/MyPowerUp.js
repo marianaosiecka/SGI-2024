@@ -9,50 +9,35 @@ class MyPowerUp extends THREE.Object3D {
         this.texture = texture;
         this.mesh = null;
         
-        let geometry = new THREE.PlaneGeometry(6, 6);
-        
-        //vertex shader
-        const vertexShader = `
-            varying vec2 vUv;
-            uniform float time;
+        this.geometry = new THREE.PlaneGeometry(6, 6);
 
-            void main() {
-                vUv = uv;
+        this.shader = new MyShader(
+            this.app,
+            "power up",
+            "power up shader",
+            'shaders/modifier.vert',
+            'shaders/modifier.frag',
+            {
+                "time": { type: "f", value: 0 },
+                "text": { type: "sampler2D", value: this.texture },
+            }
+        )
 
-                float scaleFactor = 1.0 + 0.15 * sin(4.0*time);
-                vec3 newPosition = position * scaleFactor;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-            }`
+        this.createPowerUp();
+    }
 
-        // fragment shader 
-        const fragmentShader = `
-            varying vec2 vUv;        
-            uniform sampler2D text;
-            
-            void main() {
-                vec4 color = texture2D(text, vUv);
-                gl_FragColor = vec4(color.rgb, color.a);
-            }`
-        ;
+    createPowerUp() {
+        if(!this.shader.ready){
+            setTimeout(this.createPowerUp.bind(this), 100);
+            return;
+        }
 
-        const uniforms = {
-            time: { value: 1 },
-            text: { value: this.texture },
-        };
-
-        this.shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: uniforms,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            transparent: true,
-            side: THREE.DoubleSide
-        });
-
-        this.mesh = new THREE.Mesh(geometry, this.shaderMaterial);
+        this.shader.material.transparent = true;
+        this.shader.material.side = THREE.DoubleSide;
+        this.mesh = new THREE.Mesh(geometry, this.shader.material);
         this.mesh.position.set(0, 2.2, 0);
         this.mesh.rotation.y = Math.PI/2;
         this.add(this.mesh);
-        
     }
 
     setBoundingBox() {

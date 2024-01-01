@@ -133,7 +133,7 @@ class MyApp  {
         this.cameras['BillboardPerspective'] = billboardPerspective
     }
 
-    smoothCameraTransition(toCameraName, duration, stopThreshold = 0.15, targetProgressMultiplier = 80) {
+    smoothCameraTransition(toCameraName, duration, stopThreshold = 0.2, targetProgressMultiplier = 80) {
         if(this.activeCameraName == toCameraName) {
             return
         }

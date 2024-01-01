@@ -1,10 +1,9 @@
 
 import * as THREE from 'three';
 import { MySky } from './MySky.js';
-import { MyClouds } from './MyClouds.js';
 import { MyBird } from './MyBird.js';
 import { MySkyscraper } from './MySkyscraper.js';
-import { MyCloud } from '../elements/MyCloud.js';
+import { MyCloud } from './MyCloud.js';
 import { MyBillboard } from './MyBillboard.js';
 
 class MyScenario {
@@ -13,7 +12,8 @@ class MyScenario {
         this.layer = layer;
 
         this.sky = new MySky(this.app, this.layer);
-        this.clouds = new MyClouds(this.app, this.layer);
+        this.clouds = new MyCloud(this.app);
+        this.clouds.createAllClouds();
         this.app.scene.add(this.clouds)
 
         // birds
@@ -107,7 +107,9 @@ class MyScenario {
     }
 
     setCloudUnderCar(vehiclePosition) {
-        this.cloudUnderCar = new MyCloud(this.app, vehiclePosition);
+        this.cloudUnderCar = new MyCloud(this.app);
+        this.cloudUnderCar.createOneCloud(vehiclePosition);
+        this.app.scene.add(this.cloudUnderCar);
     }
 
     setObstaclesParkingLot (obstacle, rotation, y) {
@@ -160,13 +162,13 @@ class MyScenario {
     }
     
     update(playerVehicle, elapsedTime, time) {
-        this.clouds.update();
+        this.clouds.updateAllClouds();
         this.birds.forEach(bird => bird.update(elapsedTime));
 
         if (this.app.contents.playing) {
             if (playerVehicle.outOfTrack && playerVehicle.allCarOutOfTrack) {
                 this.cloudUnderCar.cloud.visible = true;
-                this.cloudUnderCar.update(playerVehicle.position, playerVehicle.orientation);
+                this.cloudUnderCar.updateOneCloud(playerVehicle.position);
             }
             else {
                 this.cloudUnderCar.cloud.visible = false;
@@ -174,8 +176,8 @@ class MyScenario {
         }
 
 
-        // call getImage() to update the texture of the billboard (every 10 seconds)
-        if(time - this.app.contents.billboardTime >= 10000){
+        // call getImage() to update the texture of the billboard (every 60 seconds)
+        if(time - this.app.contents.billboardTime >= 60000){
             this.billboard.getImage();
             this.app.contents.billboardTime = time;
         }

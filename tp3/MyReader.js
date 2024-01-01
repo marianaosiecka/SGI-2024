@@ -5,7 +5,7 @@ import { MyRoute } from "./elements/MyRoute.js";
 import { MyObstacle } from "./elements/MyObstacle.js";
 import { MyPowerUp } from "./elements/MyPowerUp.js";
 import { MyVehicle } from "./elements/MyVehicle.js";
-import { MyCloud } from './elements/MyCloud.js';
+import { MyCloud } from './scenario/MyCloud.js';
 
 class MyReader{
     constructor(scene, app, startingPoint, segments){

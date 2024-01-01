@@ -55,6 +55,8 @@ class MyContents {
     // game state
     this.playing = false;
     this.finished = false;
+    this.winner = null;
+    this.loser = null;
 
     // load the spritesheets
     this.spritesheetTitle1 = new MySpritesheet('spritesheets/spritesheet_title_1.png', 10, 10);
@@ -126,15 +128,13 @@ class MyContents {
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
     /// UNCOMMENT HERE
-    this.menuManager.initMainMenu();
-    //this.countdown()
-    //this.finishGame();
-    //    this.app.setActiveCamera('BillboardPerspective');
+    //this.menuManager.initMainMenu();
     // set timeout before getting the billboard image
     setTimeout(() => {
       this.scenario.billboard.getImage();
       this.billboardTime = Date.now();
     }, 100);
+    this.app.setActiveCamera('BillboardPerspective');
   }
 
   countdown() {
@@ -146,23 +146,24 @@ class MyContents {
 
     // load car models
     /// UNCOMMENT HERE
-    /*this.selectedPlayerVehicle.loadModel().then((properties) => {
+    this.selectedPlayerVehicle.loadModel().then((properties) => {
       this.updatePlayerVehicleModel(properties);
-    });*/
+    });
 
-    const myCarModelGreen1 = new MyCarModelRed();
+    /*const myCarModelGreen1 = new MyCarModelRed();
     myCarModelGreen1.loadModel().then((properties) => {
       this.updatePlayerVehicleModel(properties);
-    });
+    });*/
 
     /// UNCOMMENT HERE
-    /*this.selectedOpponentVehicle.loadModel().then((properties) => {
-      this.updateAutonomousVehicleModel(properties);
-    });*/
-    const myCarModelGreen2 = new MyCarModelGreen();
-    myCarModelGreen2.loadModel().then((properties) => {
+    this.selectedOpponentVehicle.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
     });
+
+    /*const myCarModelGreen2 = new MyCarModelGreen();
+    myCarModelGreen2.loadModel().then((properties) => {
+      this.updateAutonomousVehicleModel(properties);
+    });*/
 
     // create finishing line
     this.reader.setFinishLine();
@@ -256,6 +257,7 @@ class MyContents {
    * finishes the game
    */
   finishGame() {
+    //this.app.smoothCameraTransition('PodiumPerspective', 1000);
     this.app.setActiveCamera('PodiumPerspective');
     this.finished = true;
     this.fireworks = [];
@@ -448,18 +450,26 @@ class MyContents {
       if (timePassed >= this.timeLimit) {
         this.autoTime = this.timeLimit / 1000;
         this.playerTime = this.timeLimit / 1000;
-        //this.playing = false;
-        //this.finishGame();
+        this.playing = false;
+        this.finishGame();
       }
       else {
-        if (this.autoLaps === this.numLaps)
+        if (this.autoLaps === this.numLaps) {
           this.autoTime = timePassed / 1000;
+          this.winner = this.autonomousVehicle;
+          this.loser = this.playerVehicle;
+          // stop moving autonomous car
+        }
         //stop car
-        if (this.playerLaps === this.numLaps)
+        if (this.playerLaps === this.numLaps){
           this.playerTime = timePassed / 1000;
+          this.winner = this.playerVehicle;
+          this.loser = this.autonomousVehicle;
+          // stop moving player car
+        }
         if (this.autoLaps === this.numLaps && this.playerLaps === this.numLaps) {
-          //this.playing = false;
-          //this.finishGame();
+          this.playing = false;
+          this.finishGame();
         }
       }
 
