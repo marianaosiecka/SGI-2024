@@ -33,6 +33,7 @@ class MyVehicle extends THREE.Object3D {
     this.speeding = false;
     this.isReverse = false;
     this.outOfTrack = false;
+    this.outOfTrackStarted = false;
     this.collidedCar = false;
     this.collidedCarStarted = false;
     this.allCarOutOfTrack = false;
@@ -151,9 +152,6 @@ class MyVehicle extends THREE.Object3D {
         if(this.shouldStop)
             this.stop(velocity)
 
-        if(this.outOfTrack)
-            this.velocity = 0.07*this.maxVelocity;
-
         // calculate the distance that the car should move
         let timeVariation = time - this.scene.previousTime;
         let dist = this.velocity * timeVariation * 0.005 * this.directionForward;
@@ -222,8 +220,10 @@ class MyVehicle extends THREE.Object3D {
     }
 
     accelerate(velocity) {
-        if (this.velocity + velocity < this.maxVelocity && !this.outOfTrack && !this.collidedCar)  
+        if (this.velocity + velocity < this.maxVelocity && !this.collidedCar)  
             this.velocity += velocity/3;
+        if (this.velocity + velocity >= this.maxVelocity && !this.collidedCar) 
+            this.velocity = this.maxVelocity; 
     }
 
     decelerate(velocity) {
@@ -271,6 +271,7 @@ class MyVehicle extends THREE.Object3D {
         this.velocity = 0;
         this.directionForward = 1;
         this.outOfTrack = false;
+        this.outOfTrackStarted = false;
         this.allCarOutOfTrack = false;
         this.slipping = false;
         this.speeding = false;

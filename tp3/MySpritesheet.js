@@ -48,6 +48,7 @@ class MySpritesheet {
     }
 
     getText(text, distanceX = 0.4){
+        text = text.toString();
         const group = new THREE.Group();
         const characters = text.split("");
         const numCharacters = characters.length;
@@ -60,7 +61,7 @@ class MySpritesheet {
         characters.forEach(character => {
             const mesh = this.getCharacter(character);
             mesh.position.x = x;
-            mesh.position.z = z;
+            //mesh.position.z = z;
             group.add(mesh);
             x += distanceX + this.characterWidth / 2;
 

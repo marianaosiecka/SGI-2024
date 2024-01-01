@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 class MyPowerUp extends THREE.Object3D {
     
-    constructor(app, type, texture) {
+    constructor(app, type, texture, rotation) {
         super();
         this.app = app;
         this.type = type;
@@ -36,7 +36,7 @@ class MyPowerUp extends THREE.Object3D {
         this.shader.material.side = THREE.DoubleSide;
         this.mesh = new THREE.Mesh(geometry, this.shader.material);
         this.mesh.position.set(0, 2.2, 0);
-        this.mesh.rotation.y = Math.PI/2;
+        this.mesh.rotation.y = Math.PI/2 + rotation;
         this.add(this.mesh);
     }
 
@@ -53,23 +53,24 @@ class MyPowerUp extends THREE.Object3D {
             playerVehicle.shield = true;
         }
         else if(this.type == "speed"){
-            if (playerVehicle.velocity + 1.5*playerVehicle.velocity < playerVehicle.maxVelocity){
-                playerVehicle.velocity *= 1.5;
+            if(!playerVehicle.speeding){
+                playerVehicle.maxVelocity *= 2;
                 playerVehicle.speeding = true;  
-            }  
-        }
+            }
+        }  
     }
 
-    stopModifier(playerVehicle){
+    stopModifier(playerVehicle) {
         if(this.type == "shield"){
             playerVehicle.shield = false;
         }
         else if (this.type == "speed"){
             if(playerVehicle.speeding){
-                playerVehicle.velocity /= 1.5;
+                playerVehicle.maxVelocity /= 2;
                 playerVehicle.speeding = false;
             }
         }
+
     }
 
 }

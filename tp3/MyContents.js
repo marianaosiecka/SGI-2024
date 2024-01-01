@@ -61,6 +61,7 @@ class MyContents {
     // load the spritesheets
     this.spritesheetTitle1 = new MySpritesheet('spritesheets/spritesheet_title_1.png', 10, 10);
     this.spritesheetTitle2 = new MySpritesheet('spritesheets/spritesheet_title_2.png', 10, 10);
+    this.spritesheetTitle3 = new MySpritesheet('spritesheets/spritesheet_title_3.png', 10, 10);
     this.spritesheetRegularBlack = new MySpritesheet('spritesheets/spritesheet_regular_black.png', 10, 10);
     this.spritesheetRegularWhite = new MySpritesheet('spritesheets/spritesheet_regular_white.png', 10, 10);
 
@@ -189,7 +190,20 @@ class MyContents {
 
     const countdownLoop = () => {
       const countdownNumber = countdownNumbers[i];
-      const countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
+      let countdownMesh = null;
+      if(countdownNumber === 'GO!') {
+        const countdownMesh1 = this.spritesheetTitle2.getText('G'); // get the mesh for the current letter
+        const countdownMesh2 = this.spritesheetTitle2.getText('O!'); // get the mesh for the current letter
+        countdownMesh1.position.z += 0.15;
+        countdownMesh1.position.x -= 0.35;
+        countdownMesh2.position.x += 0.45;
+        countdownMesh = new THREE.Group();
+        countdownMesh.add(countdownMesh1);
+        countdownMesh.add(countdownMesh2);
+      }
+      else{
+        countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
+      }
       this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, countdownPosition, 15);
       countdownMesh.scale.set(5, 5, 1);
       this.app.scene.add(countdownMesh);
@@ -229,13 +243,16 @@ class MyContents {
     this.autoCheckPoints = [];
     this.reader.level = 1//this.selectedLevel; //this.reader.level = 1;
     this.previousTime = 0;
+    this.timeBeforePause = 0;
     this.speedFactor = 0.8;
     this.keys = {};
     this.rKeyPressed = false;
+    this.spaceKeyPressed = false;
+    this.paused = false;
     this.keyListeners();
 
     // create and add the HUD
-    this.HUD = new MyHUD(this.app);
+    this.HUD = new MyHUD(this.app, this.spritesheetTitle3);
     this.app.scene.add(this.HUD);
 
     // set up the route and timer for the autonomous car to start
@@ -311,6 +328,10 @@ class MyContents {
     if (event.code === 'KeyR') {
       this.rKeyPressed = false;
     }
+
+    if (event.code === 'Space') {
+      this.spaceKeyPressed = false;
+    }
   }
 
 
@@ -320,7 +341,7 @@ class MyContents {
 
     let isSwitch = this.reader.isAppliedModifier("switch");
 
-    if (this.keys['KeyW'] && !this.playerVehicle.outOfTrack)
+    if (this.keys['KeyW'])
       this.playerVehicle.accelerate(speed);
 
     if (this.keys['KeyX'])
@@ -346,6 +367,20 @@ class MyContents {
 
     if (this.keys['KeyP'])
       this.playerVehicle.reset();
+
+    if (this.keys['Space'] && !this.spaceKeyPressed) {
+      this.spaceKeyPressed = true;
+      this.paused = !this.paused;
+      if(this.paused) {
+        this.timeBeforePause = Date.now();
+        console.log("paused");
+      }
+      else {
+        console.log(this.timeStart)
+        this.timeStart += Math.floor((Date.now() - this.timeBeforePause));
+        console.log(this.timeStart);
+      }
+    }
 
     return speed;
   }
@@ -445,7 +480,12 @@ class MyContents {
       }
     }
 
-    if (this.playing) {
+    let speed = this.checkKeys();
+
+    if (this.paused)
+      this.HUD.setPause();
+
+    if (this.playing && !this.paused) {
       const timePassed = time - this.timeStart;
       if (timePassed >= this.timeLimit) {
         this.autoTime = this.timeLimit / 1000;
@@ -490,7 +530,6 @@ class MyContents {
       if (this.previousTime == 0)
         this.previousTime = time;
       else {
-        let speed = this.checkKeys();
         this.playerVehicle.update(time, speed);
         if ((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length / 2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))) {
           this.playerLaps++;
@@ -502,6 +541,30 @@ class MyContents {
         this.previousTime = time;
         this.reader.checkForCollisions();
 
+        if (this.followPlayerVehicle) {
+          //console.log(this.playerVehicle.carOrientation)
+          this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
+          this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
+          this.scenario.clouds.update()
+  
+          const distanceFromCamera = 15;
+          const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
+              .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
+  
+          hudPosition.y += 8.5;
+          this.HUD.position.copy(hudPosition);
+  
+          const cameraRotation = this.app.activeCamera.rotation.clone();
+          this.HUD.rotation.set(cameraRotation.x, cameraRotation.y, cameraRotation.z);
+        }
+  
+        if (this.followAutonomousVehicle) {
+          this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
+          this.app.controls.target = this.autonomousVehicle.position;
+        }
+
+        this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time-this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
+
         if (this.reader.shortcut) {
           this.reader.shortcutMixer.update(delta);
           this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
@@ -512,6 +575,7 @@ class MyContents {
 
           if (elapsedTime + tolerance >= duration) {
             this.reader.stopShortcutAnimation();
+            this.reader.removeShortcut();
           }
         }
 
@@ -521,38 +585,12 @@ class MyContents {
             if (time - this.reader.appliedModifiersStartTime[i] > 3000)
               this.reader.stopModifier(this.reader.appliedModifiers[i]);
           }
-          else
+          else if (this.reader.appliedModifiers[i].type !== "shortcut") {
             if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
               this.reader.stopModifier(this.reader.appliedModifiers[i]);
             }
+          }
         }
-
-      }
-      this.HUD.update(this.numLaps, this.playerLaps, this.timeLimit, time, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);
-
-      if (this.followPlayerVehicle) {
-        //console.log(this.playerVehicle.carOrientation)
-        this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-        this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
-        this.scenario.clouds.update()
-
-        //this.HUD.update(this.numLaps, this.playerLaps, this.timeLimit, this.playerTime, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
-        const distanceFromCamera = 15; // Adjust the distance as needed
-        const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
-          .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
-
-        hudPosition.y += 8.5;
-        //console.log(hudPosition)
-        this.HUD.position.copy(hudPosition);
-
-        // Make the HUD always face the camera
-        const cameraRotation = this.app.activeCamera.rotation.clone();
-        this.HUD.rotation.set(cameraRotation.x, cameraRotation.y, cameraRotation.z);
-      }
-
-      if (this.followAutonomousVehicle) {
-        this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
-        this.app.controls.target = this.autonomousVehicle.position;
       }
 
     }
