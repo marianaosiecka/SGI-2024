@@ -67,7 +67,7 @@ class MyPowerUp extends THREE.Object3D {
             }
         } 
         else if(this.type == "pick"){
-            this.app.contents.paused = true;
+            //this.app.contents.paused = true;
             //this.app.smoothCameraTransition("ObstaclePerspective", 100);
             //this.app.contents.selectedLayer = obstacles[0].layer;
         } 

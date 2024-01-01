@@ -125,13 +125,13 @@ class MyContents {
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.changeState(this.states.COUNTDOWN);
+    this.changeState(this.states.MENU);
     
     // set timeout before getting the billboard image
     setTimeout(() => {
       this.scenario.billboard.getImage();
       this.billboardTime = Date.now();
-    }, 100);
+    }, 200);
     //this.app.setActiveCamera('BillboardPerspective');
   }
 
@@ -282,8 +282,8 @@ class MyContents {
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
 
     // set obstacles parking lot
-    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI / 2, this.availableLayers[2]), 0, 36.5);
-    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0, this.availableLayers[2]), Math.PI / 2, 35.5);
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI / 2, this.availableLayers[2]), 0, 21.5);
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0, this.availableLayers[2]), Math.PI / 2, 20.5);
     this.scenario.addObstacleSkyscraperText();
   }
 
@@ -390,9 +390,11 @@ class MyContents {
       if(this.paused) {
         this.timeBeforePause = Date.now();
         console.log("paused");
+        this.HUD.visible = false;
       }
       else {
         this.timeStart += Math.floor((Date.now() - this.timeBeforePause));
+        this.HUD.visible = true;
       }
     }
 
@@ -464,6 +466,11 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
+    // update the scenario (in all states)
+    const delta = this.clock.getDelta()
+    const time = Date.now();
+    this.scenario.update(this.playerVehicle, delta, time);
+    
     switch (this.currentState) {
       case this.states.PLAYING:
         this.updatePlayingState();
@@ -474,10 +481,6 @@ class MyContents {
       default:
         break;
     }
-    // update the scenario (in all states)
-    const delta = this.clock.getDelta()
-    const time = Date.now();
-    this.scenario.update(this.playerVehicle, delta, time);
   }
 
   checkFinalConditions (timePassed) {
@@ -512,7 +515,7 @@ class MyContents {
     //console.log(this.playerVehicle.carOrientation)
     this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
     this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
-    this.scenario.clouds.update()
+    //this.scenario.clouds.update()
 
     const distanceFromCamera = 15;
     const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
@@ -534,7 +537,7 @@ class MyContents {
     const delta = this.clock.getDelta()
 
     this.reader.shortcutMixer.update(delta);
-    this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
+    this.reader.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
 
     const elapsedTime = this.reader.shortcutAction.time; // Get elapsed time of the animation
     const duration = this.reader.shortcutAction._clip.duration; // Get actual duration
@@ -642,9 +645,6 @@ class MyContents {
     }
     const delta = this.clock.getDelta()
     const time = Date.now();
-
-    // update the clouds lookAt
-    this.scenario.update(this.playerVehicle, delta, time);
 
     // add new fireworks every 5% of the calls
     if (Math.random() < 0.05) {

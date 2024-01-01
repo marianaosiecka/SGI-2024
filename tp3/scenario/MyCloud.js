@@ -65,7 +65,7 @@ class MyCloud extends THREE.Object3D{
         for ( var i = -500; i < 500; i += 1 ) {
             let cloud = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), this.shader.material );
             cloud.position.x =  Math.random() * 1000 - 500; // between -500 and 500
-            cloud.position.y = - Math.random() * Math.random() * 100 - 50; // between -50 and -100
+            cloud.position.y = - Math.random() * Math.random() * 110 - 50; // between -50 and -100
             cloud.position.z = i; // between -500 and 500
             cloud.rotation.z = Math.random() * Math.PI;
             cloud.scale.x = cloud.scale.y = Math.random() * Math.random() * 1.5 + 0.5;

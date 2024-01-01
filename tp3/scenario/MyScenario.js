@@ -33,12 +33,12 @@ class MyScenario {
         this.skyscraperObstacles = new MySkyscraper(this.app, true, 400, 20, 4, "#ffffff", 4, "#3A6392", 2, layer, -1);
         this.skyscraperObstacles.position.x = -20;
         this.skyscraperObstacles.position.z = 110;
-        this.skyscraperObstacles.position.y = 30;
+        this.skyscraperObstacles.position.y = 15;
         this.obsParkingLotOffset = 1.5;
        
         let spotlight1 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3 );
         spotlight1.target = this.skyscraperObstacles;
-        spotlight1.position.set(-20, 50, 110);
+        spotlight1.position.set(-20, 35, 110);
         this.app.scene.add(spotlight1);
 
         this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, true, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 11.9);
@@ -66,13 +66,13 @@ class MyScenario {
         this.skyscraperPodium = new MySkyscraper(this.app, false, 400, 45, 3, "#f7e240", 4, "#736958", 4, layer, -26);
         this.skyscraperPodium.rotation.y = Math.PI/2;
         this.skyscraperPodium.position.x = 200;
-        this.skyscraperPodium.position.y = 50;
+        this.skyscraperPodium.position.y = 30;
         this.skyscraperPodium.position.z = 90;
         this.playerParkingLotOffset = 0;
 
         let spotlight4 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
         spotlight4.target = this.skyscraperPodium;
-        spotlight4.position.set(260, 80, 90);
+        spotlight4.position.set(260, 50, 90);
         this.app.scene.add(spotlight4);
 
         this.autoParkingLotCars = [];
@@ -109,8 +109,10 @@ class MyScenario {
 
         // mountain
         let mountain = new MyMountain(this.app);
-        mountain.position.set(-400, -150, 300);
+        mountain.scale.set(1.8, 1.5, 1.5);
+        mountain.position.set(150, -265, 440);
         mountain.rotation.x = -Math.PI/2;
+        mountain.rotation.z = Math.PI/8;
         this.app.scene.add(mountain);
     }
 
@@ -137,7 +139,7 @@ class MyScenario {
         }));
         mainText.rotation.x = -Math.PI/2;
         mainText.rotation.z = Math.PI/4 + Math.PI/2;
-        mainText.position.y = 36;
+        mainText.position.y = 21;
         mainText.position.x = -27;
         mainText.position.z = 116.5;
         this.app.scene.add(mainText);
@@ -152,7 +154,7 @@ class MyScenario {
         obstacle1Text.scale.set(0.6, 0.6, 0.6)
         obstacle1Text.rotation.x = -Math.PI/2;
         obstacle1Text.rotation.z = Math.PI/4 + Math.PI/2;
-        obstacle1Text.position.y = 40;
+        obstacle1Text.position.y = 20.75;
         obstacle1Text.position.x = -10;
         obstacle1Text.position.z = 107;
         this.app.scene.add(obstacle1Text);
@@ -166,7 +168,7 @@ class MyScenario {
         }));
         obstacle2Text.rotation.x = -Math.PI/2;
         obstacle2Text.rotation.z = Math.PI/4 + Math.PI/2;
-        obstacle2Text.position.y = 40;
+        obstacle2Text.position.y = 20.75;
         obstacle2Text.position.x = -17.5;
         obstacle2Text.position.z = 99.2;
         this.app.scene.add(obstacle2Text);
@@ -207,7 +209,7 @@ class MyScenario {
         this.fireworksMesh.rotation.z = -Math.PI / 8;
         this.fireworksMesh.position.copy(this.skyscraperPodium.position);
         this.fireworksMesh.position.y += 6;
-        this.fireworksMesh.position.x -= 6;
+        this.fireworksMesh.position.x -= 10;
         this.fireworksMesh.position.z -= 14;
 
         this.app.scene.add(this.fireworksMesh);
@@ -219,15 +221,16 @@ class MyScenario {
         this.clouds.updateAllClouds();
         this.birds.forEach(bird => bird.update(elapsedTime));
 
-        if (this.app.contents.playing) {
+        /*
+        if (this.app.contents.currentState == this.app.contents.states.PLAYING) {
             if (playerVehicle.outOfTrack && playerVehicle.allCarOutOfTrack) {
-                this.cloudUnderCar.cloud.visible = true;
+                this.cloudUnderCar.visible = true;
                 this.cloudUnderCar.updateOneCloud(playerVehicle.position);
             }
             else {
-                this.cloudUnderCar.cloud.visible = false;
+                this.cloudUnderCar.visible = false;
             }
-        }
+        }*/
 
         // call getImage() to update the texture of the billboard (every 60 seconds)
         if(time - this.app.contents.billboardTime >= 60000){
