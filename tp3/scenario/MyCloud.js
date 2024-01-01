@@ -2,9 +2,10 @@ import * as THREE from 'three';
 import { MyShader } from '../MyShader.js';
 
 class MyCloud extends THREE.Object3D{
-    constructor(app) {
+    constructor(app, vehiclePosition = null) {
         super()
         this.app = app;
+        this.vehiclePosition = vehiclePosition;
         this.cameraPosition = this.app.activeCamera.position;
         
         let textureLoader = new THREE.TextureLoader();
@@ -28,9 +29,9 @@ class MyCloud extends THREE.Object3D{
         this.clouds_list = []
     }
 
-    createOneCloud(position) {
+    createOneCloud() {
         if(!this.shader.ready){
-            setTimeout(this.createOneCloud(position).bind(this), 500);
+            setTimeout(this.createOneCloud.bind(this), 100);
             return;
         }
 
@@ -39,7 +40,7 @@ class MyCloud extends THREE.Object3D{
         this.shader.material.side = THREE.DoubleSide;
 
         this.cloud = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.shader.material);
-        this.cloud.position.set(position.x, position.y - 100, position.z);
+        this.cloud.position.set(this.vehiclePosition.x, this.vehiclePosition.y - 100, this.vehiclePosition.z);
         this.cloud.scale.x = 0.15;
         this.cloud.scale.y = 0.15;
         this.cloud.lookAt(this.cameraPosition);
@@ -48,7 +49,8 @@ class MyCloud extends THREE.Object3D{
 
     updateOneCloud(position) {
         this.cloud.position.set(position.x, position.y - 2, position.z);
-        this.update(this.cloud);
+        //this.update(this.cloud);
+        this.cloud.lookAt(this.cameraPosition);
     }
 
     createAllClouds() {
