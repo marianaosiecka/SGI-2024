@@ -5,6 +5,7 @@ import { MyBird } from './MyBird.js';
 import { MySkyscraper } from './MySkyscraper.js';
 import { MyCloud } from './MyCloud.js';
 import { MyBillboard } from './MyBillboard.js';
+import { MyMountain } from './MyMountain.js';
 
 class MyScenario {
     constructor(app, layer) {
@@ -104,6 +105,12 @@ class MyScenario {
         this.billboard.position.set(-10, -200, -170);
         this.billboard.rotation.y = -Math.PI/8;
         this.app.scene.add(this.billboard);
+
+        // mountain
+        let mountain = new MyMountain(this.app);
+        mountain.position.set(-400, -150, 300);
+        mountain.rotation.x = -Math.PI/2;
+        this.app.scene.add(mountain);
     }
 
     setCloudUnderCar(vehiclePosition) {
