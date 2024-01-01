@@ -51,6 +51,8 @@ class MyContents {
     this.selectedPlayerVehicle = null;
     this.availableOpponentVehicles = [];
     this.selectedOpponentVehicle = null;
+    this.winner = null;
+    this.loser = null;
 
     // load the spritesheets
     this.spritesheetTitle1 = new MySpritesheet('spritesheets/spritesheet_title_1.png', 10, 10);
@@ -123,13 +125,14 @@ class MyContents {
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.changeState(this.states.MENU);
+    this.changeState(this.states.COUNTDOWN);
     
     // set timeout before getting the billboard image
     setTimeout(() => {
       this.scenario.billboard.getImage();
       this.billboardTime = Date.now();
     }, 100);
+    //this.app.setActiveCamera('BillboardPerspective');
   }
 
   changeState(newState) {
@@ -288,6 +291,7 @@ class MyContents {
    * finishes the game
    */
   finishGame() {
+    //this.app.smoothCameraTransition('PodiumPerspective', 1000);
     this.app.setActiveCamera('PodiumPerspective');
     this.fireworks = [];
     // set podium
@@ -486,9 +490,18 @@ class MyContents {
       if (this.autoLaps === this.numLaps){
         this.autoTime = timePassed / 1000;
         this.autonomousVehicle.shouldStop = true;
+        if(!this.playerLaps !== this.numLaps){
+          this.winner = this.autonomousVehicle;
+          this.loser = this.playerVehicle;
+        }
       }
-      if (this.playerLaps === this.numLaps)
+      if (this.playerLaps === this.numLaps) {
         this.playerTime = timePassed / 1000;
+        if(!this.autoLaps !== this.numLaps){
+          this.winner = this.playerVehicle;
+          this.loser = this.autonomousVehicle;
+        }
+      }
       if (this.autoLaps === this.numLaps && this.playerLaps === this.numLaps) {
         this.changeState(this.states.FINISHED);
       }

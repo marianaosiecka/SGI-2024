@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { MyShader } from '../MyShader.js';
 
 class MyObstacle extends THREE.Object3D {
     constructor(app, type, texture, rotate, layer) {
@@ -9,46 +10,33 @@ class MyObstacle extends THREE.Object3D {
         this.rotate = rotate;
         this.layer = layer;
 
-        let geometry = new THREE.PlaneGeometry(6, 6);
+        this.geometry = new THREE.PlaneGeometry(6, 6);
+
+        this.shader = new MyShader(
+            this.app,
+            "obstacle",
+            "obstacle shader",
+            'shaders/modifier.vert',
+            'shaders/modifier.frag',
+            {
+                "time": { type: "f", value: 0 },
+                "text": { type: "sampler2D", value: this.texture },
+            }
+        )
         
-        //vertex shader
-        const vertexShader = `
-            varying vec2 vUv;
-            uniform float time;
+        this.createObstacle();
+    }
 
-            void main() {
-                vUv = uv;
+    createObstacle() {
+        if(!this.shader.ready){
+            setTimeout(this.createObstacle.bind(this), 100);
+            return;
+        }
 
-                float scaleFactor = 1.0 + 0.15 * sin(4.0*time);
-                vec3 newPosition = position * scaleFactor;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-            }`
+        this.shader.material.transparent = true;
+        this.shader.material.side = THREE.DoubleSide;
 
-        // fragment shader 
-        const fragmentShader = `
-            varying vec2 vUv;        
-            uniform sampler2D text;
-            
-            void main() {
-                vec4 color = texture2D(text, vUv);
-                gl_FragColor = vec4(color.rgb, color.a);
-            }`
-        ;
-
-        const uniforms = {
-            time: { value: 1 },
-            text: { value: this.texture },
-        };
-
-        this.shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: uniforms,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            transparent: true,
-            side: THREE.DoubleSide
-        });
-
-        this.mesh = new THREE.Mesh(geometry, this.shaderMaterial);
+        this.mesh = new THREE.Mesh(this.geometry, this.shader.material);
         this.mesh.layers.enable(this.layer);
         this.mesh.rotation.x = this.rotate;
         
