@@ -97,7 +97,7 @@ class MyReader{
             new THREE.Vector3(16, 0, 0)
         ]);
 
-        this.track = new MyTrack(this.app, this.segments, this.trackWidth, path);
+        this.track = new MyTrack(this.app, this.segments, this.trackWidth, path, layer);
         this.track.position.set(-30, 0, 0);
         this.app.scene.add(this.track);
     }
@@ -356,7 +356,7 @@ class MyReader{
         // TYPE: PICK POWER UP
         const powerUpTexture4 = new THREE.TextureLoader().load("textures/pickObstacle_powerup.png");
         const powerUpType4 = [
-            [new THREE.Vector3(-151, 2, -100), new THREE.Vector3(0, -Math.PI / 2, 0)],
+            [new THREE.Vector3(-131, 2, -95), new THREE.Vector3(0, -Math.PI / 2, 0)],
         ];
 
         for (let i = 0; i < powerUpType4.length; i++) {
@@ -379,11 +379,11 @@ class MyReader{
         this.playerVehicle = new MyVehicle(this.scene, wheelsRatio, width, height, depth, 10, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z + 10])
     }
 
-    checkForCollisions() {
+    checkForCollisions(obstacles) {
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsBox(powerUp.bb)){
                 console.log("colidiu power up", powerUp.type);
-                powerUp.applyModifier(this.playerVehicle);
+                powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;
                     this.caughtShortcut = true;

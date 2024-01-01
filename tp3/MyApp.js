@@ -131,6 +131,16 @@ class MyApp  {
         const billboardPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         billboardPerspective.position.set(113.8, 35.2, -120)
         this.cameras['BillboardPerspective'] = billboardPerspective
+
+        // obstacles perspective
+        const obstaclesPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        obstaclesPerspective.position.set(-8.8, 76.4, 98.3)
+        this.cameras['ObstaclePerspective'] = obstaclesPerspective
+        
+        // track perspective
+        const trackPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        trackPerspective.position.set(39.6, 211.4, 78.5)
+        this.cameras['TrackPerspective'] = trackPerspective
     }
 
     smoothCameraTransition(toCameraName, duration, stopThreshold = 0.15, targetProgressMultiplier = 80) {
@@ -295,6 +305,10 @@ class MyApp  {
                 cameraTarget = new THREE.Vector3(71, 32, -134);
                 break;
                 
+            case 'ObstaclePerspective':
+                cameraTarget = new THREE.Vector3(-25, 0, 115);
+                break;
+
             default:
                 cameraTarget = new THREE.Vector3(0, 0, 0);
                 break;

@@ -14,6 +14,7 @@ class MyMainMenu extends THREE.Object3D {
 
     initMainMenu() {
         this.addGameLogo();
+        this.addNames();
         this.addFeupLogo();
         this.addClickToStartText();
         this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['MainMenuPerspective']);
@@ -30,6 +31,32 @@ class MyMainMenu extends THREE.Object3D {
         });
         const logoMesh = new THREE.Mesh(logoGeometry, logoMaterial);
         this.add(logoMesh);
+    }
+
+    addNames() {
+        const marianaGeometry = new THREE.PlaneGeometry(14, 10, 32);
+        marianaGeometry.scale(0.3, 0.3, 0.3);
+        const marianaMaterial = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('textures/Mariana Carvalho.png'),
+            side: THREE.DoubleSide,
+            transparent: true,
+        });
+        const marianaMesh = new THREE.Mesh(marianaGeometry, marianaMaterial);
+        marianaMesh.position.y = 3;
+        marianaMesh.position.x = 10;
+        this.add(marianaMesh);
+
+        const mafaladaGeometry = new THREE.PlaneGeometry(13, 10, 32);
+        mafaladaGeometry.scale(0.3, 0.3, 0.3);
+        const mafaldaMaterial = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('textures/Mafalda Costa.png'),
+            side: THREE.DoubleSide,
+            transparent: true,
+        });
+        const mafaldaMesh = new THREE.Mesh(mafaladaGeometry, mafaldaMaterial);
+        mafaldaMesh.position.y = 6;
+        mafaldaMesh.position.x = 9.85;
+        this.add(mafaldaMesh);
     }
 
     addFeupLogo() {

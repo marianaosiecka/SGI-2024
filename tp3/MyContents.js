@@ -52,10 +52,6 @@ class MyContents {
     this.availableOpponentVehicles = [];
     this.selectedOpponentVehicle = null;
 
-    // game state
-    this.playing = false;
-    this.finished = false;
-
     // load the spritesheets
     this.spritesheetTitle1 = new MySpritesheet('spritesheets/spritesheet_title_1.png', 10, 10);
     this.spritesheetTitle2 = new MySpritesheet('spritesheets/spritesheet_title_2.png', 10, 10);
@@ -100,11 +96,12 @@ class MyContents {
     this.keyListeners();
     this.parkingLotCars = [];
 
-    // lights
-    // add a point light on top of the model
-    const pointLight = new THREE.PointLight(0xffffff, 3000);
-    pointLight.position.set(0, 50, -10);
-    //this.app.scene.add(pointLight);
+    this.states = {
+      MENU: 'menu',
+      COUNTDOWN: 'countdown',
+      PLAYING: 'playing',
+      FINISHED: 'finished'
+    };
 
     // add an ambient light
     const ambientLight = new THREE.AmbientLight(0x555555, 3);
@@ -126,16 +123,34 @@ class MyContents {
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    /// UNCOMMENT HERE
-    //this.menuManager.initMainMenu();
-    this.countdown()
-    //this.finishGame();
-    //    this.app.setActiveCamera('BillboardPerspective');
+    this.changeState(this.states.MENU);
+    
     // set timeout before getting the billboard image
     setTimeout(() => {
       this.scenario.billboard.getImage();
       this.billboardTime = Date.now();
     }, 100);
+  }
+
+  changeState(newState) {
+    this.currentState = newState;
+
+    switch (newState) {
+      case this.states.MENU:
+        this.menuManager.initMainMenu();
+        break;
+      case this.states.COUNTDOWN:
+        this.countdown();
+        break;
+      case this.states.PLAYING:
+        this.startGame();
+        break;
+      case this.states.FINISHED:
+        this.finishGame();
+        break;
+      default:
+        break;
+    }
   }
 
   countdown() {
@@ -157,9 +172,11 @@ class MyContents {
     });
 
     /// UNCOMMENT HERE
-    /*this.selectedOpponentVehicle.loadModel().then((properties) => {
+    /*
+    this.selectedOpponentVehicle.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
     });*/
+    
     const myCarModelGreen2 = new MyCarModelGreen();
     myCarModelGreen2.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
@@ -216,7 +233,7 @@ class MyContents {
         }
         else {
           // start game, once the countdown is finished
-          this.startGame();
+          this.changeState(this.states.PLAYING);
         }
       }, 1000);
     }
@@ -262,11 +279,9 @@ class MyContents {
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
 
     // set obstacles parking lot
-    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI / 2), 0, 36.5);
-    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0), Math.PI / 2, 35.5);
-
-    // update game state
-    this.playing = true;
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI / 2, this.availableLayers[2]), 0, 36.5);
+    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0, this.availableLayers[2]), Math.PI / 2, 35.5);
+    this.scenario.addObstacleSkyscraperText();
   }
 
   /**
@@ -274,7 +289,6 @@ class MyContents {
    */
   finishGame() {
     this.app.setActiveCamera('PodiumPerspective');
-    this.finished = true;
     this.fireworks = [];
     // set podium
     this.scenario.setPodium();
@@ -374,9 +388,7 @@ class MyContents {
         console.log("paused");
       }
       else {
-        console.log(this.timeStart)
         this.timeStart += Math.floor((Date.now() - this.timeBeforePause));
-        console.log(this.timeStart);
       }
     }
 
@@ -448,6 +460,168 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
+    switch (this.currentState) {
+      case this.states.PLAYING:
+        this.updatePlayingState();
+        break;
+      case this.states.FINISHED:
+        this.updateFinishedState();
+        break;
+      default:
+        break;
+    }
+    // update the scenario (in all states)
+    const delta = this.clock.getDelta()
+    const time = Date.now();
+    this.scenario.update(this.playerVehicle, delta, time);
+  }
+
+  checkFinalConditions (timePassed) {
+    if (timePassed >= this.timeLimit) {
+      this.autoTime = this.timeLimit / 1000;
+      this.playerTime = this.timeLimit / 1000;
+      this.changeState(this.states.FINISHED);
+    }
+    else {
+      if (this.autoLaps === this.numLaps){
+        this.autoTime = timePassed / 1000;
+        this.autonomousVehicle.shouldStop = true;
+      }
+      if (this.playerLaps === this.numLaps)
+        this.playerTime = timePassed / 1000;
+      if (this.autoLaps === this.numLaps && this.playerLaps === this.numLaps) {
+        this.changeState(this.states.FINISHED);
+      }
+    }
+  }
+
+  updateCameraPlayer() {
+    //console.log(this.playerVehicle.carOrientation)
+    this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
+    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
+    this.scenario.clouds.update()
+
+    const distanceFromCamera = 15;
+    const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
+        .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
+
+    hudPosition.y += 8.5;
+    this.HUD.position.copy(hudPosition);
+
+    const cameraRotation = this.app.activeCamera.rotation.clone();
+    this.HUD.rotation.set(cameraRotation.x, cameraRotation.y, cameraRotation.z);
+  }
+
+  updateCameraAutonomous() {
+    this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
+    this.app.controls.target = this.autonomousVehicle.position;
+  }
+
+  updateShortcut() {
+    const delta = this.clock.getDelta()
+
+    this.reader.shortcutMixer.update(delta);
+    this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
+
+    const elapsedTime = this.reader.shortcutAction.time; // Get elapsed time of the animation
+    const duration = this.reader.shortcutAction._clip.duration; // Get actual duration
+    const tolerance = 0.08;
+
+    if (elapsedTime + tolerance >= duration) {
+      this.reader.stopShortcutAnimation();
+      this.reader.removeShortcut();
+    }
+  }
+
+  updateModifiers() {
+    const time = Date.now();
+
+    // check if any modifier is applied for more than 15 seconds
+    for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
+      if (this.reader.appliedModifiers[i] instanceof MyVehicle) {
+        if (time - this.reader.appliedModifiersStartTime[i] > 3000)
+          this.reader.stopModifier(this.reader.appliedModifiers[i]);
+      }
+      else if (this.reader.appliedModifiers[i].type !== "shortcut") {
+        if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
+          this.reader.stopModifier(this.reader.appliedModifiers[i]);
+        }
+      }
+    }
+  }
+
+  updatePlayingState() {
+    this.raycaster.layers.enableAll()
+    if (this.selectedLayer !== 'none') {
+      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
+      this.raycaster.layers.set(selectedIndex)
+    }
+    const delta = this.clock.getDelta()
+    const time = Date.now();
+
+    let speed = this.checkKeys();
+
+    if (this.paused)
+      this.HUD.setPause();
+
+    if (!this.paused) {
+      const timePassed = time - this.timeStart;
+      this.checkFinalConditions(timePassed);
+
+      // update the autonomous car position and rotation
+      if(!this.autonomousVehicle.shouldStop) {
+        this.mixer.update(delta);
+        // this updates the position of the actual object of MyVehicle class
+        if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
+
+        if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length 
+          && this.autonomousVehicle.detectCollisionsObject(this.reader.finishingLine, false)) {
+          this.autoLaps++;
+          this.reader.autonomousCheckLineIdx = 0;
+          console.log("auto laps", this.autoLaps)
+        }
+      }
+
+      this.reader.updateModifiers(this.clock.getElapsedTime());
+
+      if (this.previousTime == 0)
+        this.previousTime = time;
+      else {
+        //update player vehicle
+        this.playerVehicle.update(time, speed);
+
+        // check if player vehicle passed the finish line and update laps
+        if ((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length / 2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))) {
+          this.playerLaps++;
+          this.reader.caughtShortcut = false;
+          this.reader.playerCheckLineIdx = 0;
+          console.log("player laps", this.playerLaps)
+        }
+
+        this.previousTime = time;
+
+        this.reader.checkForCollisions(this.scenario.obstacles);
+
+        if (this.followPlayerVehicle) {
+          this.updateCameraPlayer();
+        }
+  
+        if (this.followAutonomousVehicle) {
+          this.updateCameraAutonomous();
+        }
+
+        this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time-this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
+
+        if (this.reader.shortcut) {
+          this.updateShortcut();
+        }
+
+        this.updateModifiers();
+      }
+    }
+  }
+
+  updateFinishedState() {
     this.raycaster.layers.enableAll()
     if (this.selectedLayer !== 'none') {
       const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
@@ -459,130 +633,21 @@ class MyContents {
     // update the clouds lookAt
     this.scenario.update(this.playerVehicle, delta, time);
 
-    if (this.finished) {
-      // add new fireworks every 5% of the calls
-      if (Math.random() < 0.05) {
-        this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
-      }
-
-      // for each fireworks 
-      for (let i = 0; i < this.fireworks.length; i++) {
-        // is firework finished?
-        //if (this.fireworks[i].done) {
-        // remove firework 
-        //  this.fireworks.splice(i,1) 
-        //continue 
-        //}
-        // otherwise update  firework
-        this.fireworks[i].update(delta)
-      }
+    // add new fireworks every 5% of the calls
+    if (Math.random() < 0.05) {
+      this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
     }
 
-    let speed = this.checkKeys();
-
-    if (this.paused)
-      this.HUD.setPause();
-
-    if (this.playing && !this.paused) {
-      const timePassed = time - this.timeStart;
-      if (timePassed >= this.timeLimit) {
-        this.autoTime = this.timeLimit / 1000;
-        this.playerTime = this.timeLimit / 1000;
-        //this.playing = false;
-        //this.finishGame();
-      }
-      else {
-        if (this.autoLaps === this.numLaps)
-          this.autoTime = timePassed / 1000;
-        //stop car
-        if (this.playerLaps === this.numLaps)
-          this.playerTime = timePassed / 1000;
-        if (this.autoLaps === this.numLaps && this.playerLaps === this.numLaps) {
-          //this.playing = false;
-          //this.finishGame();
-        }
-      }
-
-      // update the autonomous car position and rotation
-      this.mixer.update(delta)
-
-      this.reader.updateModifiers(this.clock.getElapsedTime());
-
-      // this updates the position of the actual object of MyVehicle class
-      if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
-
-      if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length && this.autonomousVehicle.detectCollisionsObject(this.reader.finishingLine, false)) {
-        this.autoLaps++;
-        this.reader.autonomousCheckLineIdx = 0;
-        console.log("auto laps", this.autoLaps)
-      }
-
-      if (this.previousTime == 0)
-        this.previousTime = time;
-      else {
-        this.playerVehicle.update(time, speed);
-        if ((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length / 2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))) {
-          this.playerLaps++;
-          this.reader.caughtShortcut = false;
-          this.reader.playerCheckLineIdx = 0;
-          console.log("player laps", this.playerLaps)
-        }
-
-        this.previousTime = time;
-        this.reader.checkForCollisions();
-
-        if (this.followPlayerVehicle) {
-          //console.log(this.playerVehicle.carOrientation)
-          this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-          this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
-          this.scenario.clouds.update()
-  
-          const distanceFromCamera = 15;
-          const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
-              .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
-  
-          hudPosition.y += 8.5;
-          this.HUD.position.copy(hudPosition);
-  
-          const cameraRotation = this.app.activeCamera.rotation.clone();
-          this.HUD.rotation.set(cameraRotation.x, cameraRotation.y, cameraRotation.z);
-        }
-  
-        if (this.followAutonomousVehicle) {
-          this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
-          this.app.controls.target = this.autonomousVehicle.position;
-        }
-
-        this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time-this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
-
-        if (this.reader.shortcut) {
-          this.reader.shortcutMixer.update(delta);
-          this.reader.cloud.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
-
-          const elapsedTime = this.reader.shortcutAction.time; // Get elapsed time of the animation
-          const duration = this.reader.shortcutAction._clip.duration; // Get actual duration
-          const tolerance = 0.08;
-
-          if (elapsedTime + tolerance >= duration) {
-            this.reader.stopShortcutAnimation();
-            this.reader.removeShortcut();
-          }
-        }
-
-        // check if any modifier is applied for more than 15 seconds
-        for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
-          if (this.reader.appliedModifiers[i] instanceof MyVehicle) {
-            if (time - this.reader.appliedModifiersStartTime[i] > 3000)
-              this.reader.stopModifier(this.reader.appliedModifiers[i]);
-          }
-          else if (this.reader.appliedModifiers[i].type !== "shortcut") {
-            if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
-              this.reader.stopModifier(this.reader.appliedModifiers[i]);
-            }
-          }
-        }
-      }
-
+    // for each fireworks 
+    for (let i = 0; i < this.fireworks.length; i++) {
+      // is firework finished?
+      //if (this.fireworks[i].done) {
+      // remove firework 
+      //  this.fireworks.splice(i,1) 
+      //continue 
+      //}
+      // otherwise update  firework
+      this.fireworks[i].update(delta)
     }
   }
 
@@ -610,6 +675,7 @@ class MyContents {
       }
     }
   }
+
 
   // clicking
   onPointerDown(event) {
@@ -659,7 +725,17 @@ class MyContents {
         console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
         this.menuManager.clearCurrentMenu();
         this.app.smoothCameraTransition('PlayerCarPerspective', 1000);
-        this.countdown();
+        this.changeState(this.states.COUNTDOWN);
+      }
+      else if (intersects[0].object.name == "obstacle") {
+        const newObstacle = new MyObstacle(this.app, intersects[0].type, intersects[0].texture, intersects.rotate, this.availableLayers[2]);
+        console.log(newObstacle)
+        newObstacle.setBoundingBox();
+        this.app.contents.selectedLayer = this.availableLayers[3];
+        this.app.smoothCameraTransition("TrackPerspective", 2000);
+      }
+      else if (intersects[0].object.name == "track") {
+        newObstacle.position.set(intersects[0].point.x, 2, intersects[0].point.z);
       }
     }
   }

@@ -106,7 +106,6 @@ class MyHUD extends THREE.Object3D {
             modifierTextMesh.position.y -= 11.98;
             modifierTextMesh.position.z += 0.1;
 
-            console.log(modifierTextMesh.position.x, modifierTextMesh.position.y, modifierTextMesh.position.z)
             // modifier time count down
             let modifierTimeMesh = this.spritesheet.getText(Math.floor(modifierTime));
             this.add(modifierTimeMesh)

@@ -77,6 +77,7 @@ class MyScenario {
         this.autoParkingLotCars = [];
         this.playerParkingLotCars = [];
         this.obstaclesParkingLot = [];
+        this.obstacles = [];
 
         // pillars supporting the track
         let pillar = new THREE.CylinderGeometry(5, 5, 400, 32);
@@ -114,6 +115,52 @@ class MyScenario {
         this.skyscraperObstacles.setObject(obstacle, rotation, y, this.obsParkingLotOffset);
         this.obsParkingLotOffset += this.skyscraperObstacles.lineWidth/3.3;
         this.obstaclesParkingLot.push(obstacle);
+        this.obstacles.push(obstacle);
+    }
+
+    addObstacleSkyscraperText () {
+        const mainTextGeometry = new THREE.PlaneGeometry(47, 8, 32);
+        mainTextGeometry.scale(0.3, 0.3, 0.3);
+        const mainText = new THREE.Mesh(mainTextGeometry, new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('textures/new_obstacle.png'),
+            side: THREE.DoubleSide,
+            transparent: true,
+        }));
+        mainText.rotation.x = -Math.PI/2;
+        mainText.rotation.z = Math.PI/4 + Math.PI/2;
+        mainText.position.y = 36;
+        mainText.position.x = -27;
+        mainText.position.z = 116.5;
+        this.app.scene.add(mainText);
+
+        const obstacle1TextGeometry = new THREE.PlaneGeometry(54, 8, 32);
+        obstacle1TextGeometry.scale(0.3, 0.3, 0.3);
+        const obstacle1Text = new THREE.Mesh(obstacle1TextGeometry, new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('textures/obstacle_1_text.png'),
+            side: THREE.DoubleSide,
+            transparent: true,
+        }));
+        obstacle1Text.scale.set(0.6, 0.6, 0.6)
+        obstacle1Text.rotation.x = -Math.PI/2;
+        obstacle1Text.rotation.z = Math.PI/4 + Math.PI/2;
+        obstacle1Text.position.y = 40;
+        obstacle1Text.position.x = -10;
+        obstacle1Text.position.z = 107;
+        this.app.scene.add(obstacle1Text);
+
+        const obstacle2TextGeometry = new THREE.PlaneGeometry(12, 8, 28);
+        obstacle2TextGeometry.scale(0.3, 0.2, 0.3);
+        const obstacle2Text = new THREE.Mesh(obstacle2TextGeometry, new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('textures/obstacle_2_text.png'),
+            side: THREE.DoubleSide,
+            transparent: true,
+        }));
+        obstacle2Text.rotation.x = -Math.PI/2;
+        obstacle2Text.rotation.z = Math.PI/4 + Math.PI/2;
+        obstacle2Text.position.y = 40;
+        obstacle2Text.position.x = -17.5;
+        obstacle2Text.position.z = 99.2;
+        this.app.scene.add(obstacle2Text);
     }
 
     setAutonomousVehicleParkingLot (vehicle, rotation, y) {
@@ -172,7 +219,6 @@ class MyScenario {
                 this.cloudUnderCar.cloud.visible = false;
             }
         }
-
 
         // call getImage() to update the texture of the billboard (every 10 seconds)
         if(time - this.app.contents.billboardTime >= 10000){

@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { MyObstacle } from './MyObstacle.js';
+import { MyScenario } from '../scenario/MyScenario.js';
 
 class MyPowerUp extends THREE.Object3D {
     
@@ -8,6 +10,10 @@ class MyPowerUp extends THREE.Object3D {
         this.type = type;
         this.texture = texture;
         this.mesh = null;
+        this.pointer = new THREE.Vector2();
+        this.raycaster = new THREE.Raycaster();
+        this.raycaster.near = 0.1;
+        this.raycaster.far = 100;
         
         let geometry = new THREE.PlaneGeometry(6, 6);
         
@@ -63,7 +69,7 @@ class MyPowerUp extends THREE.Object3D {
         this.animationDestPosition = destinationPoint;
     }
 
-    applyModifier(playerVehicle){
+    applyModifier(playerVehicle, obstacles, track){
         if(this.type == "shield"){
             playerVehicle.shield = true;
         }
@@ -72,7 +78,12 @@ class MyPowerUp extends THREE.Object3D {
                 playerVehicle.maxVelocity *= 2;
                 playerVehicle.speeding = true;  
             }
-        }  
+        } 
+        else if(this.type == "pick"){
+            this.app.contents.paused = true;
+            //this.app.smoothCameraTransition("ObstaclePerspective", 100);
+            //this.app.contents.selectedLayer = obstacles[0].layer;
+        } 
     }
 
     stopModifier(playerVehicle) {

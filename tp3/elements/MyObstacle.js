@@ -6,6 +6,8 @@ class MyObstacle extends THREE.Object3D {
         this.app = app;
         this.type = type;
         this.texture = texture;
+        this.rotate = rotate;
+        this.layer = layer;
 
         let geometry = new THREE.PlaneGeometry(6, 6);
         
@@ -47,9 +49,10 @@ class MyObstacle extends THREE.Object3D {
         });
 
         this.mesh = new THREE.Mesh(geometry, this.shaderMaterial);
-        this.mesh.rotation.x = rotate;
+        this.mesh.layers.enable(this.layer);
+        this.mesh.rotation.x = this.rotate;
         
-        if (rotate !== Math.PI/2){
+        if (this.rotate !== Math.PI/2){
             this.mesh.position.set(0, 2, 0);
             this.mesh.rotation.y = Math.PI/2;
         }
@@ -58,6 +61,7 @@ class MyObstacle extends THREE.Object3D {
             this.mesh.scale.set(1.8, 1.8, 1.8);
         }
 
+        this.name = "obstacle";
         this.add(this.mesh);
     }
 

@@ -9,7 +9,7 @@ class MyTrack extends THREE.Object3D {
     * @param {width} width The width of the track
     * @param {path} path The points that define the path of the track
     */
-  constructor(app, segments, width, path) {
+  constructor(app, segments, width, path, layer) {
     super();
     this.type = 'Group';
     this.app = app;
@@ -45,6 +45,7 @@ class MyTrack extends THREE.Object3D {
     let lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
 
     this.mesh = new THREE.Mesh(geometry, material);
+    this.mesh.layers.enable(layer);
     this.wireframe = new THREE.Mesh(geometry, wireframeMaterial);
     this.wireframe.visible = false;
 
@@ -53,6 +54,7 @@ class MyTrack extends THREE.Object3D {
     this.line = new THREE.Line(bufferGeometry, lineMaterial);
     this.line.visible = false;
 
+    this.name = "track";
     this.add(this.mesh);
     this.add(this.wireframe);
     this.add(this.line);
