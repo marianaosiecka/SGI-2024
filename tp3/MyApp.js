@@ -43,7 +43,6 @@ class MyApp  {
         document.body.appendChild(this.stats.dom)
 
         this.initCameras();
-        //this.setActiveCamera('Perspective')
         this.setActiveCamera('MainMenuPerspective')
 
         // Create a renderer with Antialiasing
@@ -124,7 +123,7 @@ class MyApp  {
 
         // podium perspective
         const podiumPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        podiumPerspective.position.set(120, 71, 30.5)
+        podiumPerspective.position.set(228.5, 44.5, 110)
         this.cameras['PodiumPerspective'] = podiumPerspective
 
         // billboard perspective
@@ -298,7 +297,7 @@ class MyApp  {
                 break;
 
             case 'PodiumPerspective':
-                cameraTarget = new THREE.Vector3(231, 35, 138);
+                cameraTarget = new THREE.Vector3(226.5, 44.5, 108.8);
                 break;
 
             case 'BillboardPerspective':

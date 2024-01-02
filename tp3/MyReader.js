@@ -482,13 +482,25 @@ class MyReader{
 
     shortcutAnimation(){
         const startPosition = this.playerVehicle.position.clone();
+
         // point from the last quarter of the route
         this.endPosition = this.pickPointFromRoute().clone();
+        
+        const midPoint = new THREE.Vector3(
+            (startPosition.x + this.endPosition.x) / 2,
+            (startPosition.y + this.endPosition.y) / 2 + 10,
+            (startPosition.z + this.endPosition.z) / 2
+        );
+        let points = [startPosition, midPoint, this.endPosition];
+        
         const mixer = new THREE.AnimationMixer(this.playerVehicle);
 
-        const positionTrack = new THREE.VectorKeyframeTrack('.position', [0, 3], [startPosition.x, startPosition.y, startPosition.z, this.endPosition.x, this.endPosition.y, this.endPosition.z]);
+        let positionTrack = new THREE.VectorKeyframeTrack('.position', [0, 1.5, 2.5],
+            points.map(p => [p.x, p.y, p.z, 0]).flat(),
+            THREE.InterpolateSmooth
+            );
 
-        const positionClip = new THREE.AnimationClip('ShortCutAnimation', 3, [positionTrack]);
+        const positionClip = new THREE.AnimationClip('ShortCutAnimation', 2.5, [positionTrack]);
 
         const positionAction = mixer.clipAction(positionClip);
         positionAction.play();

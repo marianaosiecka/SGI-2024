@@ -138,8 +138,6 @@ class MyVehicle extends THREE.Object3D {
         if(this.wheels !== undefined){
             this.updateWheelRotation(velocity, true)
             this.updateAutonomousRotation(orientation)
-            //this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + orientation._y
-            //this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + orientation._y
         }
 
         // update the bounding box positions
@@ -224,7 +222,7 @@ class MyVehicle extends THREE.Object3D {
         // if the car is slipping it will rotate randomly
         if(this.slipping){
             // controls the amplitude of the angle
-            const slippingEffect = 0.45; 
+            const slippingEffect = 0.3; 
             // controls the frequency of the rotation
             noise = Math.sin(Date.now() * 0.0025) * slippingEffect;
         }

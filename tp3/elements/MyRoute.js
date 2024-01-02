@@ -50,10 +50,10 @@ class MyRoute extends THREE.Object3D {
 
         this.mixer = new THREE.AnimationMixer(object)
 
-        const positionAction = this.mixer.clipAction(positionClip)
+        this.positionAction = this.mixer.clipAction(positionClip)
         const rotationAction = this.mixer.clipAction(rotationClip)
 
-        positionAction.play()
+        this.positionAction.play()
         rotationAction.play()
     }
 

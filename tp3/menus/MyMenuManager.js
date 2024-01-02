@@ -4,6 +4,7 @@ import { MyEnterUsernameMenu } from './MyEnterUsernameMenu.js';
 import { MyChooseLevelMenu } from './MyChooseLevelMenu.js';
 import { MyChoosePlayerVehicleMenu } from './MyChoosePlayerVehicleMenu.js';
 import { MyChooseOpponentVehicleMenu } from './MyChooseOpponentVehicleMenu.js';
+import { MyFinishMenu } from './MyFinishMenu.js';
 
 class MyMenuManager {
     constructor(app, layer, pickableObjects, clickableObjects) {

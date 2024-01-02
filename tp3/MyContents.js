@@ -126,7 +126,7 @@ class MyContents {
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.changeState(this.states.MENU);
+    this.changeState(this.states.COUNTDOWN);
     
     // set timeout before getting the billboard image
     setTimeout(() => {
@@ -216,6 +216,7 @@ class MyContents {
     this.app.setActiveCamera('PlayerCarPerspective');
     this.app.updateCameraIfRequired();
     this.updateCameraPlayer();
+    
     // countdown
     const countdownNumbers = ['3', '2', '1', 'GO!'];
     let i = 0;
@@ -228,7 +229,7 @@ class MyContents {
       let countdownMesh = null;
       if (countdownNumber === 'GO!') {
         const countdownMesh1 = this.spritesheetTitle2.getText('G'); // get the mesh for the current letter
-        const countdownMesh2 = this.spritesheetTitle2.getText('O!'); // get the mesh for the current letter
+        const countdownMesh2 = this.spritesheetTitle2.getText('O!', 0.51); // get the mesh for the current letter
         countdownMesh1.position.z += 0.15;
         countdownMesh2.position.z -= 0.4;
         countdownMesh1.position.x -= 0.35;
@@ -293,7 +294,7 @@ class MyContents {
 
     // set up the route and timer for the autonomous car to start
     this.reader.readRoutes();
-    this.mixer = this.reader.mixer;
+    this.autonomousMixer = this.reader.mixer;
 
     // set cloud under car (for when it is out of track)
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
@@ -308,8 +309,8 @@ class MyContents {
    * finishes the game
    */
   finishGame() {
-    //this.app.smoothCameraTransition('PodiumPerspective', 1000);
-    this.app.setActiveCamera('PodiumPerspective');
+    this.HUD.visible = false;
+    this.app.smoothCameraTransition('PodiumPerspective', 7000);
     this.fireworks = [];
     // set podium
     this.scenario.setPodium();
@@ -321,8 +322,6 @@ class MyContents {
     this.playerTime = 0;
     this.autoLaps = 0;
     this.autoTime = 0;
-
-
 
     console.log("FINISHED GAME");
   }
@@ -447,26 +446,34 @@ class MyContents {
     if (timePassed >= this.timeLimit) {
       this.autoTime = this.timeLimit / 1000;
       this.playerTime = this.timeLimit / 1000;
+      this.winner = this.playerVehicle;
+      this.loser = this.autonomousVehicle;
       this.changeState(this.states.FINISHED);
+      return;
     }
     else {
       if (this.autoLaps === this.numLaps) {
         this.autoTime = timePassed / 1000;
         this.autonomousVehicle.shouldStop = true;
-        if (!this.playerLaps !== this.numLaps) {
+        if (this.playerLaps !== this.numLaps) {
           this.winner = this.autonomousVehicle;
           this.loser = this.playerVehicle;
         }
       }
       if (this.playerLaps === this.numLaps) {
         this.playerTime = timePassed / 1000;
-        if (!this.autoLaps !== this.numLaps) {
+        if (this.autoLaps !== this.numLaps) {
           this.winner = this.playerVehicle;
           this.loser = this.autonomousVehicle;
+          this.autonomousVehicle.shouldStop = true;
+          this.autoTime = this.reader.chosenRoute.animationMaxDuration;
+          this.changeState(this.states.FINISHED);
+          return;
         }
       }
       if (this.autoLaps === this.numLaps && this.playerLaps === this.numLaps) {
         this.changeState(this.states.FINISHED);
+        return;
       }
     }
   }
@@ -549,7 +556,7 @@ class MyContents {
 
       // update the autonomous car position and rotation
       if (!this.autonomousVehicle.shouldStop) {
-        this.mixer.update(delta);
+        this.autonomousMixer.update(delta);
         // this updates the position of the actual object of MyVehicle class
         if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 
@@ -569,6 +576,7 @@ class MyContents {
         //update player vehicle
         this.playerVehicle.update(time, this.speedFactor);
 
+        console.log(this.reader.playerCheckLineIdx)
         // check if player vehicle passed the finish line and update laps
         if ((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length / 2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))) {
           this.playerLaps++;
@@ -606,8 +614,6 @@ class MyContents {
 
   updateFinishedState() {
     const delta = this.clock.getDelta()
-    const time = Date.now();
-
     // add new fireworks every 5% of the calls
     if (Math.random() < 0.05) {
       this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
@@ -615,12 +621,6 @@ class MyContents {
 
     // for each fireworks 
     for (let i = 0; i < this.fireworks.length; i++) {
-      // is firework finished?
-      //if (this.fireworks[i].done) {
-      // remove firework 
-      //  this.fireworks.splice(i,1) 
-      //continue 
-      //}
       // otherwise update  firework
       this.fireworks[i].update(delta)
     }

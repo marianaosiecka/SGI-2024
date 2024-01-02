@@ -13,24 +13,25 @@ class MyFinishMenu extends THREE.Object3D {
         this.autoTime = autoTime;
         this.level = level;
         this.username = username;
+        this.spritesheetRegularBlack = this.app.contents.spritesheetRegularBlack;
 
         this.initFinishMenu();
     }
 
     initFinishMenu() {
         // Add go back button
-        const levelText = this.spritesheetRegularBlack.getText("Level " + this.reader.level);
-        this.setPosAndRotRelativeToCamera(levelText, this.app.activeCamera, this.app.controls.target, 15);
+        const levelText = this.spritesheetRegularBlack.getText("Level " + this.app.contents.reader.level);
+        this.app.contents.setPosAndRotRelativeToCamera(levelText, this.app.activeCamera, this.app.controls.target, 15);
         levelText.position.y += 8.5;
         this.app.scene.add(levelText);
 
         const playerTimeText = this.spritesheetRegularBlack.getText("Player time: " + this.playerTime.toFixed(2) + "s");
-        this.setPosAndRotRelativeToCamera(playerTimeText, this.app.activeCamera, this.app.controls.target, 15);
+        this.app.contents.setPosAndRotRelativeToCamera(playerTimeText, this.app.activeCamera, this.app.controls.target, 15);
         playerTimeText.position.y += 7.5;
         this.app.scene.add(playerTimeText);
 
         const autoTimeText = this.spritesheetRegularBlack.getText("Autonomous time: " + this.autoTime.toFixed(2) + "s");
-        this.setPosAndRotRelativeToCamera(autoTimeText, this.app.activeCamera, this.app.controls.target, 15);
+        this.app.contents.setPosAndRotRelativeToCamera(autoTimeText, this.app.activeCamera, this.app.controls.target, 15);
         autoTimeText.position.y += 6.5;
         this.app.scene.add(autoTimeText);
 
