@@ -28,7 +28,7 @@ class MyCarModelOrange {
             //setting attributes
             let car = fbx;
             let wheelsRatio = 1;
-            let width = 4.5;
+            let width = 4;
             let height = 5;
             let depth = 14;
             let rotation = 0;

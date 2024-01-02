@@ -13,18 +13,25 @@ class MyVehicle extends THREE.Object3D {
     super();
     this.scene = scene;
     this.type = 'Group';
+
+    this.wheelsRatio = wheelsRatio;
+    this.width = width;
+
     this.maxVelocity = maxVelocity;
     this.carOrientation = 0;
     this.wheelOrientation = 0;
     this.directionForward = 1;
     this.velocity = 0;
     this.previousVelocity = 0;
+
     this.position.x = initialPosition[0];
     this.position.y = initialPosition[1];
     this.position.z = initialPosition[2] - depth/2; //so that the rotation pivot is in the rear axle
     this.initialPosition = initialPosition;
+    
     this.initialWheelTurnAngle = Math.PI/2;
     this.turnAngle = 0;
+    
     this.shouldStop = false;
     this.rotationAdjusted = false;
     this.previousTurnAngle = null;
@@ -41,65 +48,19 @@ class MyVehicle extends THREE.Object3D {
     // car geometry
     let geometry = new THREE.BoxGeometry(depth, height, width);
 
-    let textureLoader = new THREE.TextureLoader();
-    let texture = textureLoader.load('textures/rodas.png');
-
     // wheel geometry
-    let wheelHeight = height/8;
-    let wheelGeometry = new THREE.CylinderGeometry(wheelHeight, wheelHeight, wheelHeight, 32);
-    
-    // materials
-    let wheelMaterial = new THREE.MeshPhongMaterial({ map: texture });
+    this.wheelHeight = height/8;
 
     // meshes
     this.carMesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x0000ff }));
-    this.wheelMeshLeftBack = new THREE.Mesh(wheelGeometry, wheelMaterial);
-    this.wheelMeshLeftFront = new THREE.Mesh(wheelGeometry, wheelMaterial);
-    this.wheelMeshRightBack = new THREE.Mesh(wheelGeometry, wheelMaterial);
-    this.wheelMeshRightFront = new THREE.Mesh(wheelGeometry, wheelMaterial);
-
     this.carMesh.position.y = height/3;
-
-    this.wheels = [this.wheelMeshLeftBack, this.wheelMeshLeftFront, this.wheelMeshRightBack, this.wheelMeshRightFront];
 
     // bounding boxes
     this.carBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
     this.carBB.setFromObject(this.carMesh);
-    this.wheel1BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
-    this.wheel1BB.setFromObject(this.wheelMeshLeftBack);
-    this.wheel2BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
-    this.wheel2BB.setFromObject(this.wheelMeshLeftFront);
-    this.wheel3BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
-    this.wheel3BB.setFromObject(this.wheelMeshRightBack);
-    this.wheel4BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
-    this.wheel4BB.setFromObject(this.wheelMeshRightFront);
 
-    this.wheelsBB = [this.wheel1BB, this.wheel2BB, this.wheel3BB, this.wheel4BB];
-
-    let xWheels = depth/3;
-
-    // wheel positions
-    this.wheelMeshLeftFront.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshLeftFront.position.x = -xWheels + wheelHeight;
-    this.wheelMeshLeftFront.position.z = width / 2 * 1.1 - wheelHeight / 3;
-
-    this.wheelMeshRightFront.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshRightFront.position.x = -xWheels  + wheelHeight;
-    this.wheelMeshRightFront.position.z = -width / 1.9 + wheelHeight / 3;
-
-    this.wheelMeshLeftBack.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshLeftBack.position.x = xWheels / wheelsRatio - wheelHeight;
-    this.wheelMeshLeftBack.position.z = width / 2 * 1.1 - wheelHeight / 3;
-
-    this.wheelMeshRightBack.rotation.set(0, Math.PI / 2, Math.PI / 2);
-    this.wheelMeshRightBack.position.x = xWheels / wheelsRatio - wheelHeight;
-    this.wheelMeshRightBack.position.z = -width / 1.9 + wheelHeight / 3;
-
+    this.xWheels = depth/3;
     this.add(this.carMesh);
-    this.add(this.wheelMeshLeftBack);
-    this.add(this.wheelMeshLeftFront);
-    this.add(this.wheelMeshRightBack);
-    this.add(this.wheelMeshRightFront);
     }
 
     setModel(model) {
@@ -108,31 +69,79 @@ class MyVehicle extends THREE.Object3D {
         this.position.set(this.initialPosition[0], this.initialPosition[1], this.initialPosition[2]);
     }
 
+    setWheelModel(model) {
+        this.wheelLeftFrontGroup = model.clone();
+        this.wheelRightFrontGroup = model.clone();
+        this.wheelLeftBackGroup = model.clone();
+        this.wheelRightBackGroup = model.clone();
+
+        // wheel positions
+        this.wheelLeftFrontGroup.rotation.y = Math.PI/2;
+        this.wheelLeftFrontGroup.position.x = -this.xWheels + this.wheelHeight;
+        this.wheelLeftFrontGroup.position.z = this.width / 2 * 1.3 - this.wheelHeight / 3;
+
+        this.wheelRightFrontGroup.rotation.y = -Math.PI/2;
+        this.wheelRightFrontGroup.position.x = -this.xWheels  + this.wheelHeight;
+        this.wheelRightFrontGroup.position.z = -1/0.4 + this.wheelHeight / 3;
+
+        this.wheelLeftBackGroup.rotation.y = Math.PI/2;
+        this.wheelLeftBackGroup.position.x = this.xWheels / this.wheelsRatio - this.wheelHeight;
+        this.wheelLeftBackGroup.position.z = this.width / 2 * 1.3 - this.wheelHeight / 3;
+
+        this.wheelRightBackGroup.rotation.y = -Math.PI / 2;
+        this.wheelRightBackGroup.position.x = this.xWheels / this.wheelsRatio - this.wheelHeight;
+        this.wheelRightBackGroup.position.z = -1/0.4 + this.wheelHeight / 3;
+
+        this.add(this.wheelLeftBackGroup);
+        this.add(this.wheelLeftFrontGroup);
+        this.add(this.wheelRightBackGroup);
+        this.add(this.wheelRightFrontGroup);
+
+        this.wheels = [this.wheelLeftBackGroup, this.wheelLeftFrontGroup, this.wheelRightBackGroup, this.wheelRightFrontGroup];
+
+        this.wheel1BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+        this.wheel1BB.setFromObject(this.wheelLeftFrontGroup.children[0]);
+        this.wheel2BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+        this.wheel2BB.setFromObject(this.wheelRightFrontGroup.children[0]);
+        this.wheel3BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+        this.wheel3BB.setFromObject(this.wheelRightBackGroup.children[0]);
+        this.wheel4BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+        this.wheel4BB.setFromObject(this.wheelLeftBackGroup.children[0]);
+    
+        this.wheelsBB = [this.wheel1BB, this.wheel2BB, this.wheel3BB, this.wheel4BB];
+    }
+
     getVelocity() {
         return this.velocity*this.directionForward;
     }
 
-    // Inside the MyVehicle class
-
     updateBoundingBoxes() {
         this.carMesh.updateMatrixWorld();
-        this.wheels.forEach(wheel => {
-            wheel.updateMatrixWorld();
-        });
-
-        // Update the bounding box positions
+        
+        //update the bounding box positions
         this.carBB.copy(this.carMesh.geometry.boundingBox).applyMatrix4(this.carMesh.matrixWorld);
-        this.wheelsBB.forEach((wheelBB, index) => {
-            wheelBB.copy(this.wheels[index].geometry.boundingBox).applyMatrix4(this.wheels[index].matrixWorld);
-        });
+        
+        if(this.wheels !== undefined){
+            this.wheels.forEach(wheel => {
+                wheel.updateMatrixWorld();
+            });
+
+            this.wheelsBB.forEach((wheelBB, index) => {
+                wheelBB.copy(this.wheels[index].children[0].geometry.boundingBox).applyMatrix4(this.wheels[index].children[0].matrixWorld);
+            });
+        }
     }
 
     updateAutonomous(velocity, point, orientation) {
         this.position.set(...point);
-        this.setRotationFromQuaternion(orientation);
-        this.carOrientation = this.rotation.y;
-
-        this.updateWheelRotation(velocity, true)
+    
+        if(this.wheels !== undefined){
+            this.updateWheelRotation(velocity, true)
+            this.updateAutonomousRotation(orientation)
+            console.log(orientation)
+            //this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + orientation._y
+            //this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + orientation._y
+        }
 
         // update the bounding box positions
         this.updateBoundingBoxes();
@@ -143,9 +152,7 @@ class MyVehicle extends THREE.Object3D {
 
         // update the bounding box positions
         this.updateBoundingBoxes();
-
         this.velocity *= 0.2;
-
     }
 
     update(time, velocity) {
@@ -157,9 +164,10 @@ class MyVehicle extends THREE.Object3D {
         let dist = this.velocity * timeVariation * 0.005 * this.directionForward;
 
         this.updatePosition(dist)
-        this.updateRotation()
-        this.updateWheelRotation(dist, false)
-
+        if(this.wheels !== undefined){
+            this.updateRotation()
+            this.updateWheelRotation(dist, false)
+        }
         this.updateBoundingBoxes();
     }
 
@@ -168,25 +176,16 @@ class MyVehicle extends THREE.Object3D {
         this.position.z -= dist * Math.sin(-this.carOrientation);
     }
 
-    updateRotation(){
-        let noise = 0;
-
-        // if the car is slipping it will rotate randomly
-        if(this.slipping){
-            // controls the amplitude of the angle
-            const slippingEffect = 0.6; 
-            // controls the frequency of the rotation
-            noise = Math.sin(Date.now() * 0.0025) * slippingEffect;
-        }
-
+    updateAutonomousRotation(quaternation){
         // car rotation
-        this.rotation.y = this.carOrientation + noise;
+        this.setRotationFromQuaternion(quaternation);
+        this.carOrientation = this.rotation.y;
 
         // front wheels rotation
-        if(this.wheelOrientation !== 0 && this.needsRotationAdjusted) {
-            let rotationAngle = this.wheelOrientation;
+        if(quaternation._y !== 0) {
+            let rotationAngle = quaternation._y;
 
-            const normalizedAngle = this.wheelOrientation % (2 * Math.PI);
+            const normalizedAngle = quaternation._y % (2 * Math.PI);
             const maxRotationAngle = Math.PI / 6; //max wheel rotation angle
 
             if (normalizedAngle > maxRotationAngle) {
@@ -197,13 +196,52 @@ class MyVehicle extends THREE.Object3D {
             }
 
             // apply rotation
-            this.wheelMeshLeftFront.rotation.set(0, this.initialWheelTurnAngle + (rotationAngle*this.directionForward), this.initialWheelTurnAngle);
-            this.wheelMeshRightFront.rotation.set(0, this.initialWheelTurnAngle + (rotationAngle*this.directionForward), this.initialWheelTurnAngle);
+            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
+            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
+            //this.needsRotationAdjusted = false;
+        }
+        /*else if (!this.needsRotationAdjusted){
+            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle;
+            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle;
+        }*/
+
+    }
+
+    updateRotation(){
+        let noise = 0;
+        // if the car is slipping it will rotate randomly
+        if(this.slipping){
+            // controls the amplitude of the angle
+            const slippingEffect = 0.45; 
+            // controls the frequency of the rotation
+            noise = Math.sin(Date.now() * 0.0025) * slippingEffect;
+        }
+
+        // car rotation
+        this.rotation.y = this.carOrientation + noise;
+
+        // front wheels rotation
+        if(this.wheelOrientation !== 0 && this.needsRotationAdjusted) {
+            let rotationAngle = this.wheelOrientation + noise;
+
+            const normalizedAngle = this.wheelOrientation % (2 * Math.PI) + noise;
+            const maxRotationAngle = Math.PI / 6; //max wheel rotation angle
+
+            if (normalizedAngle > maxRotationAngle) {
+                rotationAngle = maxRotationAngle;
+            } 
+            else if (normalizedAngle < -maxRotationAngle) {
+                rotationAngle = -maxRotationAngle;
+            }
+
+            // apply rotation
+            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
+            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
             this.needsRotationAdjusted = false;
         }
         else if (!this.needsRotationAdjusted){
-            this.wheelMeshLeftFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
-            this.wheelMeshRightFront.rotation.set(0, this.initialWheelTurnAngle, this.initialWheelTurnAngle);
+            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + noise;
+            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + noise;
         }
 
     }
@@ -211,11 +249,12 @@ class MyVehicle extends THREE.Object3D {
     updateWheelRotation(dist, autonomous){
         // all wheels rotate on themselves
         let wheelTurnAngle = Math.sin(dist);
-        if(autonomous)
+        if(autonomous){
             wheelTurnAngle = Math.abs(wheelTurnAngle);
+        }
 
         this.wheels.forEach(wheel => {
-            wheel.rotateOnAxis(new THREE.Vector3(0, 1, 0), wheelTurnAngle);
+            wheel.children[0].rotateOnAxis(new THREE.Vector3(-1, 0, 0), wheelTurnAngle);
         });
     }
 
@@ -227,7 +266,7 @@ class MyVehicle extends THREE.Object3D {
     }
 
     decelerate(velocity) {
-        if (this.velocity + velocity > 0)  
+        if (this.velocity - velocity/3 >= 0)  
             this.velocity -= velocity/3;
     }
 
@@ -282,10 +321,6 @@ class MyVehicle extends THREE.Object3D {
         this.position.y = this.initialPosition[1];
         this.position.z = this.initialPosition[2];
 
-        //reset wheel rotations
-        this.wheels.forEach(wheel => {
-            wheel.rotation.set(0, Math.PI / 2, Math.PI / 2);
-        });
     }
 
     detectCollisionsBox (otherObject) {
@@ -301,10 +336,10 @@ class MyVehicle extends THREE.Object3D {
     }
 
     detectCollisionsObject (object, isTrack) {
-        let positionWheel1 = this.position.clone().add(this.wheelMeshLeftFront.position);
-        let positionWheel2 = this.position.clone().add(this.wheelMeshRightFront.position);
-        let positionWheel3 = this.position.clone().add(this.wheelMeshRightBack.position);
-        let positionWheel4 = this.position.clone().add(this.wheelMeshLeftBack.position);
+        let positionWheel1 = this.position.clone().add(this.wheelLeftFrontGroup.position);
+        let positionWheel2 = this.position.clone().add(this.wheelRightFrontGroup.position);
+        let positionWheel3 = this.position.clone().add(this.wheelRightBackGroup.position);
+        let positionWheel4 = this.position.clone().add(this.wheelLeftBackGroup.position);
 
         const verticalVector = new THREE.Vector3(0, -1, 0);
 

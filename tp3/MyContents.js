@@ -8,6 +8,7 @@ import { MyCarModelRed } from "./carModels/MyCarModelRed.js";
 import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
 import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
 import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
+import { MyWheelModel } from "./carModels/MyWheelModel.js";
 import { MyMenuManager } from "./menus/MyMenuManager.js";
 import { MySpritesheet } from "./MySpritesheet.js";
 import { MyHUD } from "./menus/MyHUD.js";
@@ -126,7 +127,7 @@ class MyContents {
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
     this.changeState(this.states.COUNTDOWN);
-
+    
     // set timeout before getting the billboard image
     setTimeout(() => {
       this.scenario.billboard.getImage();
@@ -195,6 +196,13 @@ class MyContents {
       this.updateAutonomousVehicleModel(properties);
     });
 
+    const wheel = new MyWheelModel();
+    wheel.loadModel().then((properties) => {
+      this.playerVehicle.setWheelModel(properties);
+      this.autonomousVehicle.setWheelModel(properties);
+    });
+
+
     // create finishing line
     this.reader.setFinishLine();
 
@@ -222,6 +230,7 @@ class MyContents {
         const countdownMesh1 = this.spritesheetTitle2.getText('G'); // get the mesh for the current letter
         const countdownMesh2 = this.spritesheetTitle2.getText('O!'); // get the mesh for the current letter
         countdownMesh1.position.z += 0.15;
+        countdownMesh2.position.z -= 0.4;
         countdownMesh1.position.x -= 0.35;
         countdownMesh2.position.x += 0.45;
         countdownMesh = new THREE.Group();
@@ -368,16 +377,17 @@ class MyContents {
     if (this.keys['KeyW'])
       this.playerVehicle.accelerate(speed);
 
-    if (this.keys['KeyX'])
+    if (this.keys['KeyS'])
       this.playerVehicle.decelerate(speed);
 
-    if (this.keys['KeyA'])
-      this.playerVehicle.shouldStop = true;
-
-    if (this.keys['KeyS']) {
+    if (this.keys['KeyA']){
       if (!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
       else this.playerVehicle.turn(-turnSpeed);
     }
+
+    if (this.keys['KeyX']) 
+      this.playerVehicle.shouldStop = true; 
+    
 
     if (this.keys['KeyD']) {
       if (!isSwitch) this.playerVehicle.turn(-turnSpeed);
@@ -410,66 +420,6 @@ class MyContents {
   }
 
   /**
-   * Creates the axis
-   */
-  createAxis() {
-    if (this.axis === null) {
-      // create and attach the axis to the scene
-      this.axis = new MyAxis(this)
-      this.app.scene.add(this.axis)
-    }
-  }
-
-  /**
-   * Called when user changes number of segments in UI. Recreates the track's objects accordingly.
-   */
-  updateTrack() {
-    if (this.track !== undefined && this.track !== null) {
-      this.app.scene.remove(this.track);
-    }
-    this.buildTrack();
-  }
-
-  /**
-   * Called when user track's closed parameter in the UI. Recreates the track's objects accordingly.
-   */
-  updateTrackClosing() {
-    if (this.track !== undefined && this.track !== null) {
-      this.app.scene.remove(this.track);
-    }
-    this.buildTrack();
-  }
-
-  /**
-   * Called when user changes number of texture repeats in UI. Updates the repeat vector for the curve's texture.
-   * @param {number} value - repeat value in S (or U) provided by user
-   */
-  updateTextureRepeat(value) {
-    this.material.map.repeat.set(value, 3);
-  }
-
-  /**
-   * Called when user changes track line visibility. Shows/hides line object.
-   */
-  updateTrackLineVisibility() {
-    this.track.line.visible = this.showTrackLine;
-  }
-
-  /**
-   * Called when user changes track wireframe visibility. Shows/hides wireframe object.
-   */
-  updateTrackWireframeVisibility() {
-    this.track.wireframe.visible = this.showTrackWireframe;
-  }
-
-  /**
-   * Called when user changes mesh visibility. Shows/hides mesh object.
-   */
-  updateMeshVisibility() {
-    this.mesh.visible = this.showMesh;
-  }
-
-  /**
    * updates the contents
    * this method is called from the render method of the app
    */
@@ -481,7 +431,7 @@ class MyContents {
 
     switch (this.currentState) {
       case this.states.PLAYING:
-        this.updatePlayingState();
+        this.updatePlayingState(delta);
         break;
       case this.states.FINISHED:
         this.updateFinishedState();
@@ -547,9 +497,7 @@ class MyContents {
     this.app.controls.target = this.autonomousVehicle.position;
   }
 
-  updateShortcut() {
-    const delta = this.clock.getDelta()
-
+  updateShortcut(delta) {
     this.reader.shortcutMixer.update(delta);
     this.reader.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
 
@@ -583,10 +531,9 @@ class MyContents {
     }
   }
 
-  updatePlayingState() {
+  updatePlayingState(delta) {
     this.raycaster.layers.enableAll()
 
-    const delta = this.clock.getDelta()
     const time = Date.now();
 
     let speed = this.checkKeys();
@@ -634,8 +581,11 @@ class MyContents {
 
         if (this.followPlayerVehicle) {
           this.updateCameraPlayer();
+          this.HUD.visible = true;
         }
 
+        else  this.HUD.visible = false;
+  
         if (this.followAutonomousVehicle) {
           this.updateCameraAutonomous();
         }
@@ -643,7 +593,7 @@ class MyContents {
         this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time - this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);
 
         if (this.reader.shortcut) {
-          this.updateShortcut();
+          this.updateShortcut(delta);
         }
 
         this.updateModifiers();
@@ -843,6 +793,66 @@ class MyContents {
     const lookAtMatrix = new THREE.Matrix4().lookAt(camera.position, target, camera.up);
     const rotation = new THREE.Euler().setFromRotationMatrix(lookAtMatrix);
     obj.rotation.set(rotation.x, rotation.y, rotation.z);
+  }
+
+  /**
+   * Creates the axis
+   */
+  createAxis() {
+    if (this.axis === null) {
+      // create and attach the axis to the scene
+      this.axis = new MyAxis(this)
+      this.app.scene.add(this.axis)
+    }
+  }
+
+  /**
+   * Called when user changes number of segments in UI. Recreates the track's objects accordingly.
+   */
+  updateTrack() {
+    if (this.track !== undefined && this.track !== null) {
+      this.app.scene.remove(this.track);
+    }
+    this.buildTrack();
+  }
+
+  /**
+   * Called when user track's closed parameter in the UI. Recreates the track's objects accordingly.
+   */
+  updateTrackClosing() {
+    if (this.track !== undefined && this.track !== null) {
+      this.app.scene.remove(this.track);
+    }
+    this.buildTrack();
+  }
+
+  /**
+   * Called when user changes number of texture repeats in UI. Updates the repeat vector for the curve's texture.
+   * @param {number} value - repeat value in S (or U) provided by user
+   */
+  updateTextureRepeat(value) {
+    this.material.map.repeat.set(value, 3);
+  }
+
+  /**
+   * Called when user changes track line visibility. Shows/hides line object.
+   */
+  updateTrackLineVisibility() {
+    this.track.line.visible = this.showTrackLine;
+  }
+
+  /**
+   * Called when user changes track wireframe visibility. Shows/hides wireframe object.
+   */
+  updateTrackWireframeVisibility() {
+    this.track.wireframe.visible = this.showTrackWireframe;
+  }
+
+  /**
+   * Called when user changes mesh visibility. Shows/hides mesh object.
+   */
+  updateMeshVisibility() {
+    this.mesh.visible = this.showMesh;
   }
 }
 

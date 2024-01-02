@@ -63,16 +63,14 @@ class MyCloud extends THREE.Object3D{
     createOneCloud() {
         this.cloud = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.shader);
         this.cloud.position.set(this.vehiclePosition.x, this.vehiclePosition.y - 100, this.vehiclePosition.z);
-        this.cloud.scale.x = 0.15;
-        this.cloud.scale.y = 0.15;
+        this.cloud.scale.x = 0.25;
+        this.cloud.scale.y = 0.25;
         this.cloud.lookAt(this.cameraPosition);
         this.add(this.cloud);
     }
 
     updateOneCloud(position) {
         this.cloud.position.set(position.x, position.y - 2, position.z);
-        //this.update(this.cloud);
-        this.cloud.lookAt(this.cameraPosition);
     }
 
     createAllClouds() {
