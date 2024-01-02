@@ -3,6 +3,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 class MyCarModelRed {
 
   constructor() {
+    this.properties = null;
     this.loadModel();
   }
 

@@ -26,7 +26,7 @@ class MyHUD extends THREE.Object3D {
         const velocityBox = new THREE.Mesh(planeGeometry, planeMaterial);
         velocityBox.name = "velocityBox";
         const aspect = window.innerWidth / window.innerHeight;
-        velocityBox.position.x += aspect/ 2 - 0.6 - 12;
+        velocityBox.position.x += aspect/ 2 - 12.5;
         velocityBox.position.y -= 13;
         this.add(velocityBox);
     }

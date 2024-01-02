@@ -47,6 +47,7 @@ class MyReader{
         this.pickAlreadyApplied = false;
     }
 
+    
     readTrack(layer){
         this.trackWidth = 8;
 
@@ -258,7 +259,7 @@ class MyReader{
         // TYPE: SLIP
         const obstacleTexture2 = new THREE.TextureLoader().load("textures/obstacle_slip.png");
         const obstaclesType2 = [
-            [new THREE.Vector3(0, 2, -42), new THREE.Vector3(0, -Math.PI, 0)],
+            [new THREE.Vector3(0, 2, -42), new THREE.Vector3(0, 0, 0)],
         ];
     
         for (let i = 0; i < obstaclesType2.length; i++) {

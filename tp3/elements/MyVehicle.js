@@ -199,7 +199,6 @@ class MyVehicle extends THREE.Object3D {
 
             const angleDifference = Math.abs(rotationAngle - this.lastRotationAngle);
             if (angleDifference >= 0.001) {
-                console.log("angle difference: " + angleDifference);
                 // apply rotation
                 this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + (rotationAngle * this.directionForward);
                 this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + (rotationAngle * this.directionForward);

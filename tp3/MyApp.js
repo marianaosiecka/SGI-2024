@@ -139,11 +139,20 @@ class MyApp  {
         
         // track perspective
         const trackPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        trackPerspective.position.set(8.5, 207.5, -20.2)
+        trackPerspective.position.set(8.5, 201, 31)
         this.cameras['TrackPerspective'] = trackPerspective
     }
 
+    /**
+     * smooth camera transition
+     * @param {String} toCameraName the camera name to transition to
+     * @param {Number} duration the transition duration in milliseconds
+     * @param {Number} stopThreshold the distance threshold to stop the transition
+     * @param {Number} targetProgressMultiplier the target progress multiplier
+     * @returns
+     */
     smoothCameraTransition(toCameraName, duration, stopThreshold = 0.2, targetProgressMultiplier = 80) {
+        // if the camera is already active, do nothing
         if(this.activeCameraName == toCameraName) {
             return
         }
@@ -193,6 +202,7 @@ class MyApp  {
         if(this.activeCameraName == 'PlayerCarPerspective') {
             this.contents.followPlayerVehicle = true
             this.contents.followAutonomousVehicle = false
+            this.activeCamera.position.copy(this.contents.getPlayerCameraPosition())
         }
         else if(this.activeCameraName == 'AutonomousCarPerspective') {
             this.contents.followPlayerVehicle = false
@@ -205,7 +215,7 @@ class MyApp  {
             }
         }
         if(this.controls){
-            this.controls.target = this.getCameraTarget(cameraName);
+            this.setControlsTarget();
         }
     }
 
@@ -263,11 +273,16 @@ class MyApp  {
         */
     }
 
+    /**
+     * gets the camera target
+     * @param {String} cameraName the camera name
+     * @returns {THREE.Vector3} the camera target
+     */
     getCameraTarget(cameraName) {
         let cameraTarget = null;
         switch (cameraName) {
             case 'PlayerCarPerspective':
-                cameraTarget = new THREE.Vector3(31, 1.7, -107.5);
+                cameraTarget = this.contents.getPlayerCameraTarget();
                 break;
 
             case 'OpponentParkingLot1':
@@ -310,7 +325,7 @@ class MyApp  {
                 break;
 
             case 'TrackPerspective':
-                cameraTarget = new THREE.Vector3(8.5, 0, -28);
+                cameraTarget = new THREE.Vector3(7, 0, -8);
                 break;
 
             default:
