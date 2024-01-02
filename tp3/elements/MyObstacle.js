@@ -60,7 +60,6 @@ class MyObstacle extends THREE.Object3D {
             this.mesh.position.set(0, -1, 0);
             this.mesh.scale.set(1.8, 1.8, 1.8);
         }
-        this.mesh.name = "obstacle";
 
         this.add(this.mesh);
     }

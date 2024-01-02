@@ -47,8 +47,6 @@ class MyTrack extends THREE.Object3D {
 
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.layers.enable(layer);
-    this.app.contents.pickableObjects.push(this.mesh);
-    this.app.contents.clickableObjects.push(this.mesh);
     this.wireframe = new THREE.Mesh(geometry, wireframeMaterial);
     this.wireframe.visible = false;
 

@@ -156,7 +156,17 @@ class MyContents {
     }
   }
 
+  updateSelectedLayer() {
+    this.raycaster.layers.enableAll()
+    if (this.selectedLayer !== 'none') {
+      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
+      this.raycaster.layers.set(selectedIndex)
+    }
+  }
+
   countdown() {
+    this.selectedLayer = this.availableLayers[0];
+    this.updateSelectedLayer();
     // autonomous vehicle
     this.autonomousVehicle = this.reader.autonomousVehicle;
 
@@ -563,7 +573,10 @@ class MyContents {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
       }
       else if (this.reader.appliedModifiers[i].type !== "shortcut") {
-        if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
+        if (this.reader.appliedModifiers[i].type === "pick") {
+          this.reader.stopModifier(this.reader.appliedModifiers[i]);
+        }
+        else if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
         }
       }
@@ -572,10 +585,6 @@ class MyContents {
 
   updatePlayingState() {
     this.raycaster.layers.enableAll()
-    if (this.selectedLayer !== 'none') {
-      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
-      this.raycaster.layers.set(selectedIndex)
-    }
 
     const delta = this.clock.getDelta()
     const time = Date.now();
@@ -591,7 +600,6 @@ class MyContents {
 
       // update the autonomous car position and rotation
       if (!this.autonomousVehicle.shouldStop) {
-        console.log(delta)
         this.mixer.update(delta);
         // this updates the position of the actual object of MyVehicle class
         if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
@@ -676,7 +684,6 @@ class MyContents {
     this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
     var intersects = this.raycaster.intersectObjects(this.pickableObjects);
-    if(this.selectedLayer == this.availableLayers[3]) console.log("a")
 
     if (intersects.length > 0) {
       document.body.style.cursor = "pointer";
@@ -750,16 +757,27 @@ class MyContents {
         this.app.smoothCameraTransition('PlayerCarPerspective', 100);
         this.changeState(this.states.COUNTDOWN);
       }
-      else if (intersects[0].object.name == "obstacle") {
-        const newObstacle = new MyObstacle(this.app, intersects[0].type, intersects[0].texture, intersects.rotate, this.availableLayers[2]);
-        console.log("new obstacle ", newObstacle)
-        newObstacle.setBoundingBox();
-        this.app.contents.selectedLayer = this.availableLayers[3];
+      else if (intersects[0].object.name == "newObstacle") {
+        this.newObstacle = new MyObstacle(this.app, intersects[0].type, intersects[0].texture, intersects.rotate, this.availableLayers[2]);
+        console.log("new obstacle ", this.newObstacle)
+        this.newObstacle.setBoundingBox();
+        this.pickableObjects.length = 0;
+        this.clickableObjects.length = 0;
         this.app.smoothCameraTransition("TrackPerspective", 2000);
+        this.selectedLayer = this.availableLayers[3];
+        this.updateSelectedLayer();
+        this.pickableObjects.push(this.reader.track);
+        this.clickableObjects.push(this.reader.track);
       }
       else if (intersects[0].object.name == "track") {
         console.log("track")
-        newObstacle.position.set(intersects[0].point.x, 2, intersects[0].point.z);
+        this.newObstacle.position.set(intersects[0].point.x, 2, intersects[0].point.z);
+        this.newObstacle.mesh.name = "obstacle";
+        this.pickableObjects.length = 0;
+        this.clickableObjects.length = 0;
+        this.app.contents.paused = false;
+        this.app.smoothCameraTransition("PlayerCarPerspective", 1000);
+        this.updateCameraPlayer();
       }
     }
   }

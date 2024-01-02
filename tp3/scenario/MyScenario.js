@@ -126,6 +126,7 @@ class MyScenario {
         this.skyscraperObstacles.setObject(obstacle, rotation, y, this.obsParkingLotOffset);
         this.obsParkingLotOffset += this.skyscraperObstacles.lineWidth/3.3;
         this.obstaclesParkingLot.push(obstacle);
+        obstacle.mesh.name = "newObstacle"
         this.obstacles.push(obstacle);
     }
 
@@ -172,6 +173,15 @@ class MyScenario {
         obstacle2Text.position.x = -17.5;
         obstacle2Text.position.z = 99.2;
         this.app.scene.add(obstacle2Text);
+    }
+
+    setPickableObstacles () {
+        this.obstacles.forEach(obstacle => {
+            if(obstacle.mesh.name == "newObstacle"){
+                this.app.contents.pickableObjects.push(obstacle.mesh);
+                this.app.contents.clickableObjects.push(obstacle.mesh);
+            }
+        });
     }
 
     setAutonomousVehicleParkingLot (vehicle, rotation, y) {
