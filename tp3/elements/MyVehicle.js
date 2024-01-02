@@ -138,9 +138,6 @@ class MyVehicle extends THREE.Object3D {
         if(this.wheels !== undefined){
             this.updateWheelRotation(velocity, true)
             this.updateAutonomousRotation(orientation)
-            console.log(orientation)
-            //this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + orientation._y
-            //this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + orientation._y
         }
 
         // update the bounding box positions
@@ -181,10 +178,13 @@ class MyVehicle extends THREE.Object3D {
         this.setRotationFromQuaternion(quaternation);
         this.carOrientation = this.rotation.y;
 
+        if(this.previousTurnAngle === null)
+            this.previousTurnAngle = quaternation._y;
+
+        let rotationAngle = quaternation._y;
+
         // front wheels rotation
         if(quaternation._y !== 0) {
-            let rotationAngle = quaternation._y;
-
             const normalizedAngle = quaternation._y % (2 * Math.PI);
             const maxRotationAngle = Math.PI / 6; //max wheel rotation angle
 
@@ -195,16 +195,26 @@ class MyVehicle extends THREE.Object3D {
                 rotationAngle = -maxRotationAngle;
             }
 
-            // apply rotation
-            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
-            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
-            //this.needsRotationAdjusted = false;
+            const angleDifference = Math.abs(rotationAngle - this.lastRotationAngle);
+            if (angleDifference >= 0.001) {
+                console.log("angle difference: " + angleDifference);
+                // apply rotation
+                this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + (rotationAngle * this.directionForward);
+                this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + (rotationAngle * this.directionForward);
+            }
+
+            else{
+                this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle;
+                this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle;
+            }
         }
-        /*else if (!this.needsRotationAdjusted){
+        else{
             this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle;
             this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle;
-        }*/
+        }
 
+        // Update the last rotation angle
+        this.lastRotationAngle = rotationAngle;
     }
 
     updateRotation(){

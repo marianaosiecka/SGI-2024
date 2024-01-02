@@ -405,8 +405,6 @@ class MyContents {
         this.HUD.visible = true;
       }
     }
-
-    return speed;
   }
 
   /**
@@ -527,12 +525,12 @@ class MyContents {
 
     const time = Date.now();
 
-    let speed = this.checkKeys();
+    this.checkKeys();
 
     if (this.paused)
       this.HUD.setPause();
 
-    if (!this.paused) {
+    else {
       const timePassed = time - this.timeStart;
       this.checkFinalConditions(timePassed);
 
@@ -556,7 +554,7 @@ class MyContents {
         this.previousTime = time;
       else {
         //update player vehicle
-        this.playerVehicle.update(time, speed);
+        this.playerVehicle.update(time, this.speedFactor);
 
         // check if player vehicle passed the finish line and update laps
         if ((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length / 2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))) {
@@ -566,20 +564,7 @@ class MyContents {
           console.log("player laps", this.playerLaps)
         }
 
-        this.previousTime = time;
-
         this.reader.checkForCollisions(this.scenario.obstacles);
-
-        if (this.followPlayerVehicle) {
-          this.updateCameraPlayer();
-          this.HUD.visible = true;
-        }
-
-        else  this.HUD.visible = false;
-  
-        if (this.followAutonomousVehicle) {
-          this.updateCameraAutonomous();
-        }
 
         this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time - this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);
 
@@ -590,6 +575,20 @@ class MyContents {
         this.updateModifiers();
       }
     }
+
+    this.previousTime = time;
+
+    if (this.followPlayerVehicle) {
+      this.updateCameraPlayer();
+      this.HUD.visible = true;
+    }
+
+    else  this.HUD.visible = false;
+
+    if (this.followAutonomousVehicle) {
+      this.updateCameraAutonomous();
+    }
+
   }
 
   updateFinishedState() {
