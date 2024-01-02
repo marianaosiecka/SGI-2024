@@ -402,6 +402,7 @@ class MyReader{
             }
         });
 
+        // check if the player has collided with the check lines
         if(this.playerCheckLineIdx < this.checkKeyLines.length){
             if(this.playerVehicle.detectCollisionsObject(this.checkKeyLines[this.playerCheckLineIdx], false)){
                 console.log("player colidiu check line", this.playerCheckLineIdx+1)
@@ -409,6 +410,7 @@ class MyReader{
             }
         }
 
+        // check if the autonomous has collided with the check lines
         if(this.autonomousCheckLineIdx < this.checkKeyLines.length){
             if(this.autonomousVehicle.detectCollisionsObject(this.checkKeyLines[this.autonomousCheckLineIdx], false)){
                 console.log("autonomo colidiu check line", this.autonomousCheckLineIdx+1)
@@ -445,11 +447,12 @@ class MyReader{
             }
         }
 
+        // check if the player has got out of the track
         if(this.playerVehicle.detectCollisionsObject(this.track, true)){
             console.log("saiu track")
             this.playerVehicle.outOfTrack = true;
             if(!this.playerVehicle.outOfTrackStarted){
-                this.playerVehicle.velocity = 0.07*this.playerVehicle.maxVelocity;
+                this.playerVehicle.velocity = 0.7*this.playerVehicle.maxVelocity;
                 this.playerVehicle.maxVelocity *= 0.1;
                 this.playerVehicle.outOfTrackStarted = true;
             }
@@ -510,11 +513,11 @@ class MyReader{
         
     updateModifiers(time){
         this.powerUps.forEach(powerUp => {
-            powerUp.shader.updateUniformsValue("time", time);
+            powerUp.shader.uniforms.time.value = time;
         });
 
         this.obstacles.forEach(obstacle => {
-            obstacle.shader.updateUniformsValue("time", time);
+            obstacle.shader.uniforms.time.value = time;
         });
     }
 

@@ -13,33 +13,55 @@ class MyCloud extends THREE.Object3D{
 
         let fog = new THREE.Fog( 0x4584b4, - 100, 3000 ); 
 
-        this.shader = new MyShader(
-            this.app,
-            "cloud",
-            "cloud shader",
-            'shaders/cloud.vert',
-            'shaders/cloud.frag',
-            {
+        // shader
+        const vertexShader = `
+            varying vec2 vUv;
+
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        `;
+
+        const fragmentShader = `
+            uniform sampler2D map;
+
+            uniform vec3 fogColor;
+            uniform float fogNear;
+            uniform float fogFar;
+
+            varying vec2 vUv;
+
+            void main() {
+
+                float depth = gl_FragCoord.z / gl_FragCoord.w;
+                float fogFactor = smoothstep( fogNear, fogFar, depth );
+
+                gl_FragColor = texture2D( map, vUv );
+                gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+                gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+            }
+        `;
+
+        this.shader = new THREE.ShaderMaterial({
+            uniforms: {
                 "map": { type: "sampler2D", value: texture },
                 "fogColor" : { type: "c", value: fog.color },
                 "fogNear" : { type: "f", value: fog.near },
                 "fogFar" : { type: "f", value: fog.far },
-            }
-        )
-        this.clouds_list = []
+            },
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            depthWrite: false,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+
+       
     }
 
     createOneCloud() {
-        if(!this.shader.ready){
-            setTimeout(this.createOneCloud.bind(this), 100);
-            return;
-        }
-
-        this.shader.material.depthWrite = false;
-        this.shader.material.transparent = true;
-        this.shader.material.side = THREE.DoubleSide;
-
-        this.cloud = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.shader.material);
+        this.cloud = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.shader);
         this.cloud.position.set(this.vehiclePosition.x, this.vehiclePosition.y - 100, this.vehiclePosition.z);
         this.cloud.scale.x = 0.15;
         this.cloud.scale.y = 0.15;
@@ -54,18 +76,9 @@ class MyCloud extends THREE.Object3D{
     }
 
     createAllClouds() {
-        if(!this.shader.ready){
-            setTimeout(this.createAllClouds.bind(this), 100);
-            return;
-        }
-
-        this.shader.material.depthWrite = false;
-        this.shader.material.transparent = true;
-        this.shader.material.side = THREE.DoubleSide;
-
-
+        this.clouds_list = [];
         for ( var i = -500; i < 500; i += 1 ) {
-            let cloud = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), this.shader.material );
+            let cloud = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), this.shader );
             cloud.position.x =  Math.random() * 1000 - 500; // between -500 and 500
             cloud.position.y = - Math.random() * Math.random() * 110 - 50; // between -50 and -100
             cloud.position.z = i; // between -500 and 500

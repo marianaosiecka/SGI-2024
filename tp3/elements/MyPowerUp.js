@@ -17,35 +17,59 @@ class MyPowerUp extends THREE.Object3D {
         this.raycaster.near = 0.1;
         this.raycaster.far = 100;
         
-        this.geometry = new THREE.PlaneGeometry(6, 6);
+        let geometry = new THREE.PlaneGeometry(6, 6);
+        
+        //vertex shader
+        const vertexShader = `
+            varying vec2 vUv;
+            uniform float time;
 
-        this.shader = new MyShader(
-            this.app,
-            "power up",
-            "power up shader",
-            'shaders/modifier.vert',
-            'shaders/modifier.frag',
-            {
-                "time": { type: "f", value: 0 },
-                "text": { type: "sampler2D", value: this.texture },
-            }
-        )
+            void main() {
+                vUv = uv;
 
-        this.createPowerUp();
-    }
+                float scaleFactor = 1.0 + 0.15 * sin(4.0*time);
+                vec3 newPosition = position * scaleFactor;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+            }`;
 
-    createPowerUp() {
-        if(!this.shader.ready){
-            setTimeout(this.createPowerUp.bind(this), 100);
-            return;
+        // fragment shader 
+        const fragmentShader = `
+            varying vec2 vUv;        
+            uniform sampler2D text;
+            
+            void main() {
+                vec4 color = texture2D(text, vUv);
+                gl_FragColor = vec4(color.rgb, color.a);
+            }`
+        ;
+
+        const uniforms = {
+            time: { value: 1 },
+            text: { value: this.texture },
+        };
+
+        this.shader = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+
+        this.mesh = new THREE.Mesh(geometry, this.shader);
+
+        this.mesh.rotation.x = rotate;
+        
+        if (rotate !== Math.PI/2){
+            this.mesh.position.set(0, 2, 0);
+            this.mesh.rotation.y = Math.PI/2;
+        }
+        else{
+            this.mesh.position.set(0, -1, 0);
+            this.mesh.scale.set(1.8, 1.8, 1.8);
         }
 
-        this.shader.material.transparent = true;
-        this.shader.material.side = THREE.DoubleSide;
-        this.mesh = new THREE.Mesh(this.geometry, this.shader.material);
-        this.mesh.position.set(0, 2.2, 0);
-        this.mesh.rotation.y = Math.PI/2 + this.rotate;
-        this.add(this.mesh);
+        this.add(this.mesh);    
     }
 
     setBoundingBox() {
@@ -67,9 +91,9 @@ class MyPowerUp extends THREE.Object3D {
             }
         } 
         else if(this.type == "pick"){
-            //this.app.contents.paused = true;
-            //this.app.smoothCameraTransition("ObstaclePerspective", 100);
-            //this.app.contents.selectedLayer = obstacles[0].layer;
+            this.app.contents.paused = true;
+            this.app.smoothCameraTransition("ObstaclePerspective", 7000);
+            this.app.contents.selectedLayer = this.app.contents.availableLayers[2];
         } 
     }
 
