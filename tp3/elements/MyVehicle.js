@@ -134,11 +134,14 @@ class MyVehicle extends THREE.Object3D {
 
     updateAutonomous(velocity, point, orientation) {
         this.position.set(...point);
-        this.setRotationFromQuaternion(orientation);
-        this.carOrientation = this.rotation.y;
-
-        if(this.wheels !== undefined)
+    
+        if(this.wheels !== undefined){
             this.updateWheelRotation(velocity, true)
+            this.updateAutonomousRotation(orientation)
+            console.log(orientation)
+            //this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + orientation._y
+            //this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + orientation._y
+        }
 
         // update the bounding box positions
         this.updateBoundingBoxes();
@@ -173,13 +176,43 @@ class MyVehicle extends THREE.Object3D {
         this.position.z -= dist * Math.sin(-this.carOrientation);
     }
 
+    updateAutonomousRotation(quaternation){
+        // car rotation
+        this.setRotationFromQuaternion(quaternation);
+        this.carOrientation = this.rotation.y;
+
+        // front wheels rotation
+        if(quaternation._y !== 0) {
+            let rotationAngle = quaternation._y;
+
+            const normalizedAngle = quaternation._y % (2 * Math.PI);
+            const maxRotationAngle = Math.PI / 6; //max wheel rotation angle
+
+            if (normalizedAngle > maxRotationAngle) {
+                rotationAngle = maxRotationAngle;
+            } 
+            else if (normalizedAngle < -maxRotationAngle) {
+                rotationAngle = -maxRotationAngle;
+            }
+
+            // apply rotation
+            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
+            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + (rotationAngle*this.directionForward)
+            //this.needsRotationAdjusted = false;
+        }
+        /*else if (!this.needsRotationAdjusted){
+            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle;
+            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle;
+        }*/
+
+    }
+
     updateRotation(){
         let noise = 0;
-
         // if the car is slipping it will rotate randomly
         if(this.slipping){
             // controls the amplitude of the angle
-            const slippingEffect = 0.6; 
+            const slippingEffect = 0.45; 
             // controls the frequency of the rotation
             noise = Math.sin(Date.now() * 0.0025) * slippingEffect;
         }
@@ -189,9 +222,9 @@ class MyVehicle extends THREE.Object3D {
 
         // front wheels rotation
         if(this.wheelOrientation !== 0 && this.needsRotationAdjusted) {
-            let rotationAngle = this.wheelOrientation;
+            let rotationAngle = this.wheelOrientation + noise;
 
-            const normalizedAngle = this.wheelOrientation % (2 * Math.PI);
+            const normalizedAngle = this.wheelOrientation % (2 * Math.PI) + noise;
             const maxRotationAngle = Math.PI / 6; //max wheel rotation angle
 
             if (normalizedAngle > maxRotationAngle) {
@@ -207,8 +240,8 @@ class MyVehicle extends THREE.Object3D {
             this.needsRotationAdjusted = false;
         }
         else if (!this.needsRotationAdjusted){
-            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle;
-            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle;
+            this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + noise;
+            this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + noise;
         }
 
     }
@@ -216,8 +249,9 @@ class MyVehicle extends THREE.Object3D {
     updateWheelRotation(dist, autonomous){
         // all wheels rotate on themselves
         let wheelTurnAngle = Math.sin(dist);
-        if(autonomous)
+        if(autonomous){
             wheelTurnAngle = Math.abs(wheelTurnAngle);
+        }
 
         this.wheels.forEach(wheel => {
             wheel.children[0].rotateOnAxis(new THREE.Vector3(-1, 0, 0), wheelTurnAngle);
@@ -232,7 +266,7 @@ class MyVehicle extends THREE.Object3D {
     }
 
     decelerate(velocity) {
-        if (this.velocity + velocity > 0)  
+        if (this.velocity - velocity/3 >= 0)  
             this.velocity -= velocity/3;
     }
 

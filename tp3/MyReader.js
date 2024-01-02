@@ -308,7 +308,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType1.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "shield", powerUpTexture1, 0);
+            const powerUp = new MyPowerUp(this.app, "shield", powerUpTexture1, Math.PI/2);
             powerUp.position.set(...powerUpType1[i][0]);
             powerUp.rotation.set(...powerUpType1[i][1]);
 
@@ -325,7 +325,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType2.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "shortcut", powerUpTexture2, 0);
+            const powerUp = new MyPowerUp(this.app, "shortcut", powerUpTexture2, Math.PI/2);
             powerUp.scale.set(1.1, 1.1, 1.1);
             powerUp.position.set(...powerUpType2[i][0]);
             powerUp.rotation.set(...powerUpType2[i][1]);
@@ -343,7 +343,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType3.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "speed", powerUpTexture3, 0);
+            const powerUp = new MyPowerUp(this.app, "speed", powerUpTexture3, Math.PI/2);
             powerUp.position.set(...powerUpType3[i][0]);
             powerUp.rotation.set(...powerUpType3[i][1]);
 
@@ -360,7 +360,7 @@ class MyReader{
         ];
 
         for (let i = 0; i < powerUpType4.length; i++) {
-            const powerUp = new MyPowerUp(this.app, "pick", powerUpTexture4, Math.PI/2);
+            const powerUp = new MyPowerUp(this.app, "pick", powerUpTexture4, 0);
             powerUp.position.set(...powerUpType4[i][0]);
             powerUp.rotation.set(...powerUpType4[i][1]);
 
@@ -452,15 +452,15 @@ class MyReader{
             console.log("saiu track")
             this.playerVehicle.outOfTrack = true;
             if(!this.playerVehicle.outOfTrackStarted){
-                this.playerVehicle.velocity = 0.7*this.playerVehicle.maxVelocity;
-                this.playerVehicle.maxVelocity *= 0.1;
+                this.playerVehicle.velocity *= 0.6;
+                this.playerVehicle.maxVelocity *= 0.6;
                 this.playerVehicle.outOfTrackStarted = true;
             }
         }
         else{
             this.playerVehicle.outOfTrack = false;
             if(this.playerVehicle.outOfTrackStarted){
-                this.playerVehicle.maxVelocity /= 0.1;
+                this.playerVehicle.maxVelocity /= 0.6;
                 this.playerVehicle.outOfTrackStarted = false;
             }
         }

@@ -56,19 +56,9 @@ class MyPowerUp extends THREE.Object3D {
             side: THREE.DoubleSide
         });
 
-        this.mesh = new THREE.Mesh(geometry, this.shader);
-
-        this.mesh.rotation.x = rotate;
-        
-        if (rotate !== Math.PI/2){
-            this.mesh.position.set(0, 2, 0);
-            this.mesh.rotation.y = Math.PI/2;
-        }
-        else{
-            this.mesh.position.set(0, -1, 0);
-            this.mesh.scale.set(1.8, 1.8, 1.8);
-        }
-
+        this.mesh = new THREE.Mesh(geometry, this.shader);        
+        this.mesh.position.set(0, 2.5, 0);
+        this.mesh.rotation.y = this.rotate;
         this.add(this.mesh);    
     }
 
@@ -104,6 +94,9 @@ class MyPowerUp extends THREE.Object3D {
         else if (this.type == "speed"){
             if(playerVehicle.speeding){
                 playerVehicle.maxVelocity /= 2;
+                if(playerVehicle.velocity > playerVehicle.maxVelocity){
+                    playerVehicle.velocity = playerVehicle.maxVelocity;
+                }
                 playerVehicle.speeding = false;
             }
         }
