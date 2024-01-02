@@ -392,12 +392,16 @@ class MyReader{
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsBox(powerUp.bb)){
                 console.log("colidiu power up", powerUp.type);
-                if (powerUp.type === "pick" && !this.pickAlreadyApplied) {
+                if(powerUp.type !== "pick"){
+                    powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
+                    if(this.pickAlreadyApplied){
+                        this.pickAlreadyApplied = false;
+                    }
+                }
+                else if (!this.pickAlreadyApplied) {
                     powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
                     this.pickAlreadyApplied = true;
-                } else if (powerUp.type !== "pick" && this.pickAlreadyApplied) {
-                    this.pickAlreadyApplied = false;
-                }
+                } 
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;
                     this.caughtShortcut = true;
