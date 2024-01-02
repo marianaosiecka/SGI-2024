@@ -139,7 +139,7 @@ class MyApp  {
         
         // track perspective
         const trackPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        trackPerspective.position.set(39.6, 211.4, 78.5)
+        trackPerspective.position.set(8.5, 207.5, -20.2)
         this.cameras['TrackPerspective'] = trackPerspective
     }
 
@@ -307,6 +307,10 @@ class MyApp  {
                 
             case 'ObstaclePerspective':
                 cameraTarget = new THREE.Vector3(-25, 0, 115);
+                break;
+
+            case 'TrackPerspective':
+                cameraTarget = new THREE.Vector3(8.5, 0, -28);
                 break;
 
             default:

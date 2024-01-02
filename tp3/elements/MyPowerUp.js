@@ -84,6 +84,8 @@ class MyPowerUp extends THREE.Object3D {
             this.app.contents.paused = true;
             this.app.smoothCameraTransition("ObstaclePerspective", 7000);
             this.app.contents.selectedLayer = this.app.contents.availableLayers[2];
+            this.app.contents.updateSelectedLayer();
+            this.app.contents.scenario.setPickableObstacles();
         } 
     }
 

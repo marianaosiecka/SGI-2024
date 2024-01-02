@@ -44,6 +44,7 @@ class MyReader{
         this.shortcutMixer = null;
         this.shortcutAction = null;
         this.endPosition = null;
+        this.pickAlreadyApplied = false;
     }
 
     readTrack(layer){
@@ -210,7 +211,7 @@ class MyReader{
             startingPointRoute
         ];        
       
-        const timeInterval1 = 1;
+        const timeInterval1 = 1.5;
         const offsetPos = new THREE.Vector3(0, 0, 0);
         const offsetRot = 0;
 
@@ -219,7 +220,14 @@ class MyReader{
 
 
         // LEVEL 2
-        //...
+        const timeInterval2 = 1;
+        const route2 = new MyRoute(this.app, this.keyPoints1, timeInterval2, this.autonomousVehicle, offsetPos, offsetRot, visualRepresentation);
+        this.routes.push(route2);
+
+        // LEVEL 3
+        const timeInterval3 = 0.5;
+        const route3 = new MyRoute(this.app, this.keyPoints1, timeInterval3, this.autonomousVehicle, offsetPos, offsetRot, visualRepresentation);
+        this.routes.push(route3);
 
         this.chosenRoute = this.routes[this.level-1];
         this.mixer = this.chosenRoute.mixer;
@@ -383,7 +391,12 @@ class MyReader{
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsBox(powerUp.bb)){
                 console.log("colidiu power up", powerUp.type);
-                powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
+                if (powerUp.type === "pick" && !this.pickAlreadyApplied) {
+                    powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
+                    this.pickAlreadyApplied = true;
+                } else if (powerUp.type !== "pick" && this.pickAlreadyApplied) {
+                    this.pickAlreadyApplied = false;
+                }
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;
                     this.caughtShortcut = true;
@@ -401,6 +414,7 @@ class MyReader{
                 }
             }
         });
+
 
         // check if the player has collided with the check lines
         if(this.playerCheckLineIdx < this.checkKeyLines.length){

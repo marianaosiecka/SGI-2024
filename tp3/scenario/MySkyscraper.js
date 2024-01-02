@@ -106,9 +106,6 @@ class MySkyscraper extends THREE.Object3D {
     }
 
     setObject(object, rotation, y, offset) {
-        object.mesh.layers.enable(this.app.contents.availableLayers[2]);
-        this.app.contents.pickableObjects.push(object.mesh);
-        this.app.contents.clickableObjects.push(object.mesh);
         object.rotation.y = Math.PI + Math.PI/2 - rotation - this.turnParkingLot;
         object.position.y = y;
         if(this.numParkingLotSpaces !== 2){

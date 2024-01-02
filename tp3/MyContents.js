@@ -68,7 +68,7 @@ class MyContents {
     // picking related attributes
     this.raycaster = new THREE.Raycaster();
     this.raycaster.near = 0.1;
-    this.raycaster.far = 100;
+    this.raycaster.far = 220;
 
     this.pointer = new THREE.Vector2();
     this.lastIntersectedObj = null;
@@ -126,7 +126,7 @@ class MyContents {
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.changeState(this.states.COUNTDOWN);
+    this.changeState(this.states.MENU);
     
     // set timeout before getting the billboard image
     setTimeout(() => {
@@ -157,7 +157,17 @@ class MyContents {
     }
   }
 
+  updateSelectedLayer() {
+    this.raycaster.layers.enableAll()
+    if (this.selectedLayer !== 'none') {
+      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
+      this.raycaster.layers.set(selectedIndex)
+    }
+  }
+
   countdown() {
+    this.selectedLayer = this.availableLayers[0];
+    this.updateSelectedLayer();
     // autonomous vehicle
     this.autonomousVehicle = this.reader.autonomousVehicle;
 
@@ -258,7 +268,7 @@ class MyContents {
     // UNCOMMENT HERE
     // this.reader.level = this.selectedLevel;
     this.reader.level = 1;
-    this.numLaps = 3;
+    this.numLaps = 1;
     this.timeLimit = 150000; // milliseconds
     this.timeStart = Date.now();
     this.playerLaps = 0;
@@ -304,11 +314,15 @@ class MyContents {
     // set podium
     this.scenario.setPodium();
 
+    this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
+
     // reset lap and time counters
     this.playerLaps = 0;
     this.playerTime = 0;
     this.autoLaps = 0;
     this.autoTime = 0;
+
+
 
     console.log("FINISHED GAME");
   }
@@ -509,7 +523,10 @@ class MyContents {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
       }
       else if (this.reader.appliedModifiers[i].type !== "shortcut") {
-        if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
+        if (this.reader.appliedModifiers[i].type === "pick") {
+          this.reader.stopModifier(this.reader.appliedModifiers[i]);
+        }
+        else if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
         }
       }
@@ -518,10 +535,6 @@ class MyContents {
 
   updatePlayingState(delta) {
     this.raycaster.layers.enableAll()
-    if (this.selectedLayer !== 'none') {
-      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
-      this.raycaster.layers.set(selectedIndex)
-    }
 
     const time = Date.now();
 
@@ -592,11 +605,6 @@ class MyContents {
   }
 
   updateFinishedState() {
-    this.raycaster.layers.enableAll()
-    if (this.selectedLayer !== 'none') {
-      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
-      this.raycaster.layers.set(selectedIndex)
-    }
     const delta = this.clock.getDelta()
     const time = Date.now();
 
@@ -624,8 +632,6 @@ class MyContents {
     this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
     var intersects = this.raycaster.intersectObjects(this.pickableObjects);
-    if(this.selectedLayer == this.availableLayers[3]) console.log("a")
-
     if (intersects.length > 0) {
       document.body.style.cursor = "pointer";
       if (intersects[0].object != this.lastIntersectedObj) {
@@ -698,16 +704,27 @@ class MyContents {
         this.app.smoothCameraTransition('PlayerCarPerspective', 100);
         this.changeState(this.states.COUNTDOWN);
       }
-      else if (intersects[0].object.name == "obstacle") {
-        const newObstacle = new MyObstacle(this.app, intersects[0].type, intersects[0].texture, intersects.rotate, this.availableLayers[2]);
-        console.log("new obstacle ", newObstacle)
-        newObstacle.setBoundingBox();
-        this.app.contents.selectedLayer = this.availableLayers[3];
+      else if (intersects[0].object.name == "newObstacle") {
+        this.newObstacle = new MyObstacle(this.app, intersects[0].type, intersects[0].texture, intersects.rotate, this.availableLayers[2]);
+        console.log("new obstacle ", this.newObstacle)
+        this.newObstacle.setBoundingBox();
+        this.pickableObjects.length = 0;
+        this.clickableObjects.length = 0;
         this.app.smoothCameraTransition("TrackPerspective", 2000);
+        this.selectedLayer = this.availableLayers[3];
+        this.updateSelectedLayer();
+        this.pickableObjects.push(this.reader.track);
+        this.clickableObjects.push(this.reader.track);
       }
       else if (intersects[0].object.name == "track") {
-        //console.log("track")
-        //newObstacle.position.set(intersects[0].point.x, 2, intersects[0].point.z);
+        console.log("track")
+        this.newObstacle.position.set(intersects[0].point.x, 2, intersects[0].point.z);
+        this.newObstacle.mesh.name = "obstacle";
+        this.pickableObjects.length = 0;
+        this.clickableObjects.length = 0;
+        this.app.setActiveCamera("PlayerCarPerspective");
+        this.updateCameraPlayer();
+        this.app.contents.paused = false;
       }
     }
   }

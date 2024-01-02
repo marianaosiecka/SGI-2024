@@ -17,6 +17,8 @@ class MyMenuManager {
 
     // main menu
     initMainMenu() {
+        this.app.contents.selectedLayer = this.layer;
+        this.app.contents.updateSelectedLayer();
         this.clearCurrentMenu();
         this.app.smoothCameraTransition('MainMenuPerspective', 30000);
         this.currentMenu = new MyMainMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects);
@@ -78,6 +80,13 @@ class MyMenuManager {
         this.app.scene.add(this.currentMenu);
         */
     }
+
+    initFinishMenu(playerTime, autoTime, level, username) {
+        this.clearCurrentMenu();
+        this.currentMenu = new MyFinishMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects, playerTime, autoTime, level, username);
+        this.app.scene.add(this.currentMenu);
+    }
+
 
     initMenu(menuName) {
         switch (menuName) {

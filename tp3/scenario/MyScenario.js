@@ -126,6 +126,7 @@ class MyScenario {
         this.skyscraperObstacles.setObject(obstacle, rotation, y, this.obsParkingLotOffset);
         this.obsParkingLotOffset += this.skyscraperObstacles.lineWidth/3.3;
         this.obstaclesParkingLot.push(obstacle);
+        obstacle.mesh.name = "newObstacle"
         this.obstacles.push(obstacle);
     }
 
@@ -174,6 +175,15 @@ class MyScenario {
         this.app.scene.add(obstacle2Text);
     }
 
+    setPickableObstacles () {
+        this.obstacles.forEach(obstacle => {
+            if(obstacle.mesh.name == "newObstacle"){
+                this.app.contents.pickableObjects.push(obstacle.mesh);
+                this.app.contents.clickableObjects.push(obstacle.mesh);
+            }
+        });
+    }
+
     setAutonomousVehicleParkingLot (vehicle, rotation, y) {
         this.skyscraperAutonomousVehicle.setObject(vehicle, rotation + Math.PI, y, this.autoParkingLotOffset);
         this.autoParkingLotOffset += this.skyscraperAutonomousVehicle.lineWidth/4;
@@ -194,13 +204,17 @@ class MyScenario {
         podiumMesh1.position.x += 6;
         podiumMesh1.position.y += 8;
         podiumMesh1.position.z -= 6;
-
+        /*this.app.contents.winner.position.copy(podiumMesh1.position);
+        this.app.contents.winner.position.y += 2;*/
+        
         let podiumMesh2 = new THREE.Mesh(podium1, podiumMaterial);
         podiumMesh2.scale.set(1, 0.6, 1);
         podiumMesh2.position.copy(this.skyscraperPodium.position);
         podiumMesh2.position.y += 6;
         podiumMesh2.position.x -= 6;
         podiumMesh2.position.z += 10;
+        /*this.app.contents.second.position.copy(podiumMesh2.position);
+        this.app.contents.second.position.y += 2;*/
 
         // fireworks
         let fireworksPlane = new THREE.PlaneGeometry( 8, 8 );
