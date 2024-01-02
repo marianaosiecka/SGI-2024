@@ -180,7 +180,7 @@ class MyContents {
     this.selectedOpponentVehicle.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
     });*/
-    
+
     const myCarModelGreen2 = new MyCarModelGreen();
     myCarModelGreen2.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
@@ -205,9 +205,7 @@ class MyContents {
     // setup player follow camera
     this.app.setActiveCamera('PlayerCarPerspective');
     this.app.updateCameraIfRequired();
-    this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
-
+    this.updateCameraPlayer();
     // countdown
     const countdownNumbers = ['3', '2', '1', 'GO!'];
     let i = 0;
@@ -218,7 +216,7 @@ class MyContents {
     const countdownLoop = () => {
       const countdownNumber = countdownNumbers[i];
       let countdownMesh = null;
-      if(countdownNumber === 'GO!') {
+      if (countdownNumber === 'GO!') {
         const countdownMesh1 = this.spritesheetTitle2.getText('G'); // get the mesh for the current letter
         const countdownMesh2 = this.spritesheetTitle2.getText('O!'); // get the mesh for the current letter
         countdownMesh1.position.z += 0.15;
@@ -228,7 +226,7 @@ class MyContents {
         countdownMesh.add(countdownMesh1);
         countdownMesh.add(countdownMesh2);
       }
-      else{
+      else {
         countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
       }
       this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, countdownPosition, 15);
@@ -396,7 +394,7 @@ class MyContents {
     if (this.keys['Space'] && !this.spaceKeyPressed) {
       this.spaceKeyPressed = true;
       this.paused = !this.paused;
-      if(this.paused) {
+      if (this.paused) {
         this.timeBeforePause = Date.now();
         console.log("paused");
         this.HUD.visible = false;
@@ -479,7 +477,7 @@ class MyContents {
     const delta = this.clock.getDelta()
     const time = Date.now();
     this.scenario.update(this.playerVehicle, delta, time);
-    
+
     switch (this.currentState) {
       case this.states.PLAYING:
         this.updatePlayingState();
@@ -492,24 +490,24 @@ class MyContents {
     }
   }
 
-  checkFinalConditions (timePassed) {
+  checkFinalConditions(timePassed) {
     if (timePassed >= this.timeLimit) {
       this.autoTime = this.timeLimit / 1000;
       this.playerTime = this.timeLimit / 1000;
       this.changeState(this.states.FINISHED);
     }
     else {
-      if (this.autoLaps === this.numLaps){
+      if (this.autoLaps === this.numLaps) {
         this.autoTime = timePassed / 1000;
         this.autonomousVehicle.shouldStop = true;
-        if(!this.playerLaps !== this.numLaps){
+        if (!this.playerLaps !== this.numLaps) {
           this.winner = this.autonomousVehicle;
           this.loser = this.playerVehicle;
         }
       }
       if (this.playerLaps === this.numLaps) {
         this.playerTime = timePassed / 1000;
-        if(!this.autoLaps !== this.numLaps){
+        if (!this.autoLaps !== this.numLaps) {
           this.winner = this.playerVehicle;
           this.loser = this.autonomousVehicle;
         }
@@ -521,20 +519,26 @@ class MyContents {
   }
 
   updateCameraPlayer() {
-    //console.log(this.playerVehicle.carOrientation)
-    this.app.activeCamera.position.set(this.playerVehicle.position.x + 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y + 10, this.playerVehicle.position.z + 10 * Math.sin(-this.playerVehicle.carOrientation));
-    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x - 15 * Math.cos(-this.playerVehicle.carOrientation), this.playerVehicle.position.y, this.playerVehicle.position.z - 10 * Math.sin(-this.playerVehicle.carOrientation));
+    // update position
+    let cameraOffset = new THREE.Vector3(16, 10, 0);
+    let carPosition = new THREE.Vector3();
+    this.playerVehicle.getWorldPosition(carPosition);
+    const carQuartenion = new THREE.Quaternion();
+    this.playerVehicle.getWorldQuaternion(carQuartenion);
+    cameraOffset = cameraOffset.applyQuaternion(carQuartenion);
+    carPosition = carPosition.add(cameraOffset);
+    this.app.activeCamera.position.copy(carPosition);
+
+    // update target
+    this.app.controls.target = new THREE.Vector3(this.playerVehicle.position.x, this.playerVehicle.position.y + 5, this.playerVehicle.position.z);
+
     this.scenario.clouds.updateAllClouds()
 
-    const distanceFromCamera = 15;
-    const hudPosition = new THREE.Vector3().copy(this.app.activeCamera.position)
-        .add(this.app.activeCamera.getWorldDirection(new THREE.Vector3()).multiplyScalar(distanceFromCamera));
-
-    hudPosition.y += 8.5;
-    this.HUD.position.copy(hudPosition);
-
-    const cameraRotation = this.app.activeCamera.rotation.clone();
-    this.HUD.rotation.set(cameraRotation.x, cameraRotation.y, cameraRotation.z);
+    // pode ser chamado no countdown
+    if (this.HUD) {
+      this.setPosAndRotRelativeToCamera(this.HUD, this.app.activeCamera, this.app.controls.target, 15);
+      this.HUD.position.y += 8.5;
+    }
   }
 
   updateCameraAutonomous() {
@@ -581,6 +585,7 @@ class MyContents {
       const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
       this.raycaster.layers.set(selectedIndex)
     }
+
     const delta = this.clock.getDelta()
     const time = Date.now();
 
@@ -594,12 +599,13 @@ class MyContents {
       this.checkFinalConditions(timePassed);
 
       // update the autonomous car position and rotation
-      if(!this.autonomousVehicle.shouldStop) {
+      if (!this.autonomousVehicle.shouldStop) {
+        console.log(delta)
         this.mixer.update(delta);
         // this updates the position of the actual object of MyVehicle class
         if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
 
-        if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length 
+        if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length
           && this.autonomousVehicle.detectCollisionsObject(this.reader.finishingLine, false)) {
           this.autoLaps++;
           this.reader.autonomousCheckLineIdx = 0;
@@ -638,7 +644,7 @@ class MyContents {
           this.updateCameraAutonomous();
         }
 
-        this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time-this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);  
+        this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time - this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);
 
         if (this.reader.shortcut) {
           this.updateShortcut();
@@ -682,12 +688,15 @@ class MyContents {
     this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
     var intersects = this.raycaster.intersectObjects(this.pickableObjects);
+    if(this.selectedLayer == this.availableLayers[3]) console.log("a")
 
     if (intersects.length > 0) {
       document.body.style.cursor = "pointer";
       if (intersects[0].object != this.lastIntersectedObj) {
         this.lastIntersectedObj = intersects[0].object;
-        this.menuManager.handleButtonHover(this.lastIntersectedObj)
+        if (this.selectedLayer == this.availableLayers[1]) this.menuManager.handleButtonHover(this.lastIntersectedObj)
+        else if (this.selectedLayer == this.availableLayers[2]) this.scenario.handleObstacleHover(this.lastIntersectedObj);
+        else if (this.selectedLayer == this.availableLayers[3]) console.log("track")
       }
     }
 
@@ -695,7 +704,8 @@ class MyContents {
       document.body.style.cursor = "default";
 
       if (this.lastIntersectedObj != null) {
-        this.menuManager.resetButtonState(this.lastIntersectedObj);
+        if (this.selectedLayer == this.availableLayers[1]) this.menuManager.resetButtonState(this.lastIntersectedObj);
+        else if (this.selectedLayer == this.availableLayers[2]) this.scenario.resetObstacleState(this.lastIntersectedObj);
         this.lastIntersectedObj = null;
       }
     }
@@ -749,17 +759,18 @@ class MyContents {
         this.selectedOpponentVehicle = this.availableOpponentVehicles[this.app.activeCameraName];
         console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
         this.menuManager.clearCurrentMenu();
-        this.app.smoothCameraTransition('PlayerCarPerspective', 1000);
+        this.app.smoothCameraTransition('PlayerCarPerspective', 100);
         this.changeState(this.states.COUNTDOWN);
       }
       else if (intersects[0].object.name == "obstacle") {
         const newObstacle = new MyObstacle(this.app, intersects[0].type, intersects[0].texture, intersects.rotate, this.availableLayers[2]);
-        console.log(newObstacle)
+        console.log("new obstacle ", newObstacle)
         newObstacle.setBoundingBox();
         this.app.contents.selectedLayer = this.availableLayers[3];
         this.app.smoothCameraTransition("TrackPerspective", 2000);
       }
       else if (intersects[0].object.name == "track") {
+        console.log("track")
         newObstacle.position.set(intersects[0].point.x, 2, intersects[0].point.z);
       }
     }

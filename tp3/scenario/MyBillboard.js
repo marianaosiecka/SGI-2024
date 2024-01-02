@@ -177,26 +177,43 @@ class MyBillboard extends THREE.Object3D {
         this.lgrayTexture.needsUpdate = true;
 
         // CREATE AND APPLY SHADER
-        this.billboardShader = new MyShader(
-            this.app, 
-            "billboard", 
-            "billboard shader", 
-            "shaders/billboard.vert", 
-            "shaders/billboard.frag",
-            { rgbTexture: { type: "sampler2D", value: this.rgbTexture }, lgrayTexture: { type: "sampler2D", value: this.lgrayTexture } }
-        );
+        const vertexShader = `
+            varying vec2 vUv;
 
-        this.applyShader();
+            uniform sampler2D lgrayTexture;
+            
+            void main() {
+                vUv = uv;
+            
+                float z_offset = texture2D(lgrayTexture, vUv).r;
+                vec3 offset = normal * z_offset * 3.0;
+                vec3 displacedPosition = position + offset;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            varying vec2 vUv;
+
+            uniform sampler2D rgbTexture;
+            
+            void main() {
+                vec3 rgbColor = texture2D(rgbTexture, vUv).rgb;
+                gl_FragColor = vec4(rgbColor, 1.0);
+            }
+        `;
+
+        this.billboardShader = new THREE.ShaderMaterial({
+            uniforms: {
+                rgbTexture: { type: "t", value: this.rgbTexture },
+                lgrayTexture: { type: "t", value: this.lgrayTexture },
+            },
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader
+        });
+        
+        this.plane.material = this.billboardShader;
     }
-
-    applyShader(){
-        if(!this.billboardShader.ready) {
-            setTimeout(this.applyShader.bind(this), 100);
-            return;
-        }
-        this.plane.material = this.billboardShader.material;
-    }
-
 
 }
 

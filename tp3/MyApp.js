@@ -134,7 +134,7 @@ class MyApp  {
 
         // obstacles perspective
         const obstaclesPerspective = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        obstaclesPerspective.position.set(-8.8, 76.4, 98.3)
+        obstaclesPerspective.position.set(-8.8, 65, 98.3)
         this.cameras['ObstaclePerspective'] = obstaclesPerspective
         
         // track perspective

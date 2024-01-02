@@ -202,7 +202,8 @@ class MyScenario {
         podiumMesh2.position.x -= 6;
         podiumMesh2.position.z += 10;
 
-        let fireworksPlane = new THREE.PlaneGeometry( 10, 10 );
+        // fireworks
+        let fireworksPlane = new THREE.PlaneGeometry( 8, 8 );
         this.fireworksMesh = new THREE.Mesh( fireworksPlane, 
             new THREE.MeshPhongMaterial({ color: "#736958",  specular:  "#777777", emissive: "#000000", shininess: 30 }) );
         this.fireworksMesh.rotation.x = -Math.PI / 2;
@@ -218,7 +219,10 @@ class MyScenario {
     }
     
     update(playerVehicle, elapsedTime, time) {
+        // update the clouds
         this.clouds.updateAllClouds();
+
+        // update the birds position
         this.birds.forEach(bird => bird.update(elapsedTime));
 
         if (this.app.contents.currentState == this.app.contents.states.PLAYING) {
@@ -237,6 +241,16 @@ class MyScenario {
             this.app.contents.billboardTime = time;
         }
     }
+
+    handleObstacleHover(obstacle) {
+        obstacle.scale.set(obstacle.scale.x + 0.2, obstacle.scale.y + 0.2, obstacle.scale.z + 0.2);
+    }
+
+    resetObstacleState(obstacle) {
+        obstacle.scale.set(obstacle.scale.x - 0.2, obstacle.scale.y - 0.2, obstacle.scale.z - 0.2);
+    }
+
+    
 }
 
 export { MyScenario }

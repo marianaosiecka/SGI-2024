@@ -13,6 +13,7 @@ class MyTrack extends THREE.Object3D {
     super();
     this.type = 'Group';
     this.app = app;
+    this.name == "track";
 
     // track geometry
     let geometry = new THREE.TubeGeometry(
@@ -46,6 +47,8 @@ class MyTrack extends THREE.Object3D {
 
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.layers.enable(layer);
+    this.app.contents.pickableObjects.push(this.mesh);
+    this.app.contents.clickableObjects.push(this.mesh);
     this.wireframe = new THREE.Mesh(geometry, wireframeMaterial);
     this.wireframe.visible = false;
 
@@ -54,7 +57,7 @@ class MyTrack extends THREE.Object3D {
     this.line = new THREE.Line(bufferGeometry, lineMaterial);
     this.line.visible = false;
 
-    this.name = "track";
+    this.mesh.name = "track";
     this.add(this.mesh);
     this.add(this.wireframe);
     this.add(this.line);

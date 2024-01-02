@@ -10,37 +10,49 @@ class MyObstacle extends THREE.Object3D {
         this.rotate = rotate;
         this.layer = layer;
 
-        this.geometry = new THREE.PlaneGeometry(6, 6);
-
-        this.shader = new MyShader(
-            this.app,
-            "obstacle",
-            "obstacle shader",
-            'shaders/modifier.vert',
-            'shaders/modifier.frag',
-            {
-                "time": { type: "f", value: 0 },
-                "text": { type: "sampler2D", value: this.texture },
-            }
-        )
+        let geometry = new THREE.PlaneGeometry(6, 6);
         
-        this.createObstacle();
-    }
+        //vertex shader
+        const vertexShader = `
+            varying vec2 vUv;
+            uniform float time;
 
-    createObstacle() {
-        if(!this.shader.ready){
-            setTimeout(this.createObstacle.bind(this), 100);
-            return;
-        }
+            void main() {
+                vUv = uv;
 
-        this.shader.material.transparent = true;
-        this.shader.material.side = THREE.DoubleSide;
+                float scaleFactor = 1.0 + 0.15 * sin(4.0*time);
+                vec3 newPosition = position * scaleFactor;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+            }`;
 
-        this.mesh = new THREE.Mesh(this.geometry, this.shader.material);
-        this.mesh.layers.enable(this.layer);
-        this.mesh.rotation.x = this.rotate;
+        // fragment shader 
+        const fragmentShader = `
+            varying vec2 vUv;        
+            uniform sampler2D text;
+            
+            void main() {
+                vec4 color = texture2D(text, vUv);
+                gl_FragColor = vec4(color.rgb, color.a);
+            }`
+        ;
+
+        const uniforms = {
+            time: { value: 1 },
+            text: { value: this.texture },
+        };
+
+        this.shader = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+
+        this.mesh = new THREE.Mesh(geometry, this.shader);
+        this.mesh.rotation.x = rotate;
         
-        if (this.rotate !== Math.PI/2){
+        if (rotate !== Math.PI/2){
             this.mesh.position.set(0, 2, 0);
             this.mesh.rotation.y = Math.PI/2;
         }
@@ -48,10 +60,11 @@ class MyObstacle extends THREE.Object3D {
             this.mesh.position.set(0, -1, 0);
             this.mesh.scale.set(1.8, 1.8, 1.8);
         }
+        this.mesh.name = "obstacle";
 
-        this.name = "obstacle";
         this.add(this.mesh);
     }
+
 
     setBoundingBox() {
         this.bb = new THREE.Box3().setFromObject(this);

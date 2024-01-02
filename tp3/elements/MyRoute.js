@@ -7,6 +7,7 @@ class MyRoute extends THREE.Object3D {
         this.app = app;
         this.keyPoints = keyPoints;
 
+        // if 
         if(visualRepresentation) this.debugKeyFrames();
 
         const times = keyPoints.map((_, i) => i * timeInterval);
