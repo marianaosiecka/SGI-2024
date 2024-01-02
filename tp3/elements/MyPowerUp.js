@@ -71,6 +71,7 @@ class MyPowerUp extends THREE.Object3D {
     }
 
     applyModifier(playerVehicle, obstacles, track){
+        console.log("applyModifier")
         if(this.type == "shield"){
             playerVehicle.shield = true;
         }
@@ -82,7 +83,7 @@ class MyPowerUp extends THREE.Object3D {
         } 
         else if(this.type == "pick"){
             this.app.contents.paused = true;
-            this.app.smoothCameraTransition("ObstaclePerspective", 7000);
+            this.app.smoothCameraTransition("ObstaclePerspective", 6000);
             this.app.contents.selectedLayer = this.app.contents.availableLayers[2];
             this.app.contents.updateSelectedLayer();
             this.app.contents.scenario.setPickableObstacles();

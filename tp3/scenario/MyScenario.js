@@ -126,7 +126,7 @@ class MyScenario {
         this.skyscraperObstacles.setObject(obstacle, rotation, y, this.obsParkingLotOffset);
         this.obsParkingLotOffset += this.skyscraperObstacles.lineWidth/3.3;
         this.obstaclesParkingLot.push(obstacle);
-        obstacle.mesh.name = "newObstacle"
+        obstacle.mesh.name = "newObstacle" + obstacle.type
         this.obstacles.push(obstacle);
     }
 
@@ -177,7 +177,7 @@ class MyScenario {
 
     setPickableObstacles () {
         this.obstacles.forEach(obstacle => {
-            if(obstacle.mesh.name == "newObstacle"){
+            if(obstacle.mesh.name.startsWith("newObstacle")){
                 this.app.contents.pickableObjects.push(obstacle.mesh);
                 this.app.contents.clickableObjects.push(obstacle.mesh);
             }
