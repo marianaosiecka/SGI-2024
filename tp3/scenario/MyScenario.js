@@ -204,13 +204,17 @@ class MyScenario {
         podiumMesh1.position.x += 6;
         podiumMesh1.position.y += 8;
         podiumMesh1.position.z -= 6;
-
+        /*this.app.contents.winner.position.copy(podiumMesh1.position);
+        this.app.contents.winner.position.y += 2;*/
+        
         let podiumMesh2 = new THREE.Mesh(podium1, podiumMaterial);
         podiumMesh2.scale.set(1, 0.6, 1);
         podiumMesh2.position.copy(this.skyscraperPodium.position);
         podiumMesh2.position.y += 6;
         podiumMesh2.position.x -= 6;
         podiumMesh2.position.z += 10;
+        /*this.app.contents.second.position.copy(podiumMesh2.position);
+        this.app.contents.second.position.y += 2;*/
 
         // fireworks
         let fireworksPlane = new THREE.PlaneGeometry( 8, 8 );

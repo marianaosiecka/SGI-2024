@@ -81,6 +81,13 @@ class MyMenuManager {
         */
     }
 
+    initFinishMenu(playerTime, autoTime, level, username) {
+        this.clearCurrentMenu();
+        this.currentMenu = new MyFinishMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects, playerTime, autoTime, level, username);
+        this.app.scene.add(this.currentMenu);
+    }
+
+
     initMenu(menuName) {
         switch (menuName) {
             case 'MainMenu':

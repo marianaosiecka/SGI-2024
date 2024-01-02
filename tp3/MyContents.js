@@ -126,7 +126,7 @@ class MyContents {
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.changeState(this.states.COUNTDOWN);
+    this.changeState(this.states.MENU);
     
     // set timeout before getting the billboard image
     setTimeout(() => {
@@ -268,7 +268,7 @@ class MyContents {
     // UNCOMMENT HERE
     // this.reader.level = this.selectedLevel;
     this.reader.level = 1;
-    this.numLaps = 3;
+    this.numLaps = 1;
     this.timeLimit = 150000; // milliseconds
     this.timeStart = Date.now();
     this.playerLaps = 0;
@@ -314,11 +314,15 @@ class MyContents {
     // set podium
     this.scenario.setPodium();
 
+    this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
+
     // reset lap and time counters
     this.playerLaps = 0;
     this.playerTime = 0;
     this.autoLaps = 0;
     this.autoTime = 0;
+
+
 
     console.log("FINISHED GAME");
   }
@@ -602,11 +606,6 @@ class MyContents {
   }
 
   updateFinishedState() {
-    this.raycaster.layers.enableAll()
-    if (this.selectedLayer !== 'none') {
-      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
-      this.raycaster.layers.set(selectedIndex)
-    }
     const delta = this.clock.getDelta()
     const time = Date.now();
 
