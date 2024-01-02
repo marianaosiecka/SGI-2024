@@ -138,7 +138,6 @@ class MyVehicle extends THREE.Object3D {
         if(this.wheels !== undefined){
             this.updateWheelRotation(velocity, true)
             this.updateAutonomousRotation(orientation)
-            console.log(orientation)
             //this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + orientation._y
             //this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + orientation._y
         }

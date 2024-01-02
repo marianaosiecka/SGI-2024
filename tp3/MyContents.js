@@ -68,7 +68,7 @@ class MyContents {
     // picking related attributes
     this.raycaster = new THREE.Raycaster();
     this.raycaster.near = 0.1;
-    this.raycaster.far = 100;
+    this.raycaster.far = 220;
 
     this.pointer = new THREE.Vector2();
     this.lastIntersectedObj = null;
@@ -634,7 +634,6 @@ class MyContents {
     this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
     var intersects = this.raycaster.intersectObjects(this.pickableObjects);
-
     if (intersects.length > 0) {
       document.body.style.cursor = "pointer";
       if (intersects[0].object != this.lastIntersectedObj) {
@@ -725,9 +724,9 @@ class MyContents {
         this.newObstacle.mesh.name = "obstacle";
         this.pickableObjects.length = 0;
         this.clickableObjects.length = 0;
-        this.app.contents.paused = false;
-        this.app.smoothCameraTransition("PlayerCarPerspective", 1000);
+        this.app.setActiveCamera("PlayerCarPerspective");
         this.updateCameraPlayer();
+        this.app.contents.paused = false;
       }
     }
   }
