@@ -8,6 +8,7 @@ import { MyCarModelRed } from "./carModels/MyCarModelRed.js";
 import { MyCarModelOrange } from "./carModels/MyCarModelOrange.js";
 import { MyCarModelPurple } from "./carModels/MyCarModelPurple.js";
 import { MyCarModelGreen } from "./carModels/MyCarModelGreen.js";
+import { MyWheelModel } from "./carModels/MyWheelModel.js";
 import { MyMenuManager } from "./menus/MyMenuManager.js";
 import { MySpritesheet } from "./MySpritesheet.js";
 import { MyHUD } from "./menus/MyHUD.js";
@@ -125,7 +126,7 @@ class MyContents {
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.changeState(this.states.MENU);
+    this.changeState(this.states.COUNTDOWN);
     
     // set timeout before getting the billboard image
     setTimeout(() => {
@@ -184,6 +185,13 @@ class MyContents {
     myCarModelGreen2.loadModel().then((properties) => {
       this.updateAutonomousVehicleModel(properties);
     });
+
+    const wheel = new MyWheelModel();
+    wheel.loadModel().then((properties) => {
+      this.playerVehicle.setWheelModel(properties);
+      this.autonomousVehicle.setWheelModel(properties);
+    });
+
 
     // create finishing line
     this.reader.setFinishLine();
@@ -363,13 +371,14 @@ class MyContents {
     if (this.keys['KeyX'])
       this.playerVehicle.decelerate(speed);
 
-    if (this.keys['KeyA'])
-      this.playerVehicle.shouldStop = true;
-
-    if (this.keys['KeyS']) {
+    if (this.keys['KeyA']){
       if (!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
       else this.playerVehicle.turn(-turnSpeed);
     }
+
+    if (this.keys['KeyS']) 
+      this.playerVehicle.shouldStop = true; 
+    
 
     if (this.keys['KeyD']) {
       if (!isSwitch) this.playerVehicle.turn(-turnSpeed);
@@ -620,7 +629,10 @@ class MyContents {
 
         if (this.followPlayerVehicle) {
           this.updateCameraPlayer();
+          this.HUD.visible = true;
         }
+
+        else  this.HUD.visible = false;
   
         if (this.followAutonomousVehicle) {
           this.updateCameraAutonomous();

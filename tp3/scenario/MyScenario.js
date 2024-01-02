@@ -106,14 +106,14 @@ class MyScenario {
         this.billboard.position.set(-10, -200, -170);
         this.billboard.rotation.y = -Math.PI/8;
         this.app.scene.add(this.billboard);
-
+        
         // mountain
-        let mountain = new MyMountain(this.app);
+        /*let mountain = new MyMountain(this.app);
         mountain.scale.set(1.8, 1.5, 1.5);
         mountain.position.set(150, -265, 440);
         mountain.rotation.x = -Math.PI/2;
         mountain.rotation.z = Math.PI/8;
-        this.app.scene.add(mountain);
+        this.app.scene.add(mountain);*/
     }
 
     setCloudUnderCar(vehiclePosition) {
@@ -221,7 +221,6 @@ class MyScenario {
         this.clouds.updateAllClouds();
         this.birds.forEach(bird => bird.update(elapsedTime));
 
-        /*
         if (this.app.contents.currentState == this.app.contents.states.PLAYING) {
             if (playerVehicle.outOfTrack && playerVehicle.allCarOutOfTrack) {
                 this.cloudUnderCar.visible = true;
@@ -230,7 +229,7 @@ class MyScenario {
             else {
                 this.cloudUnderCar.visible = false;
             }
-        }*/
+        }
 
         // call getImage() to update the texture of the billboard (every 60 seconds)
         if(time - this.app.contents.billboardTime >= 60000){
