@@ -231,17 +231,30 @@ class MyContents {
     this.fireworks.forEach(firework => {
       firework.reset()
     });
-    this.app.scene.remove(this.scenario.finishLineGroup);
+    //this.app.scene.remove(this.scenario.finishLineGroup);
     this.reader.routes.length = 0;
     this.app.scene.remove(this.scenario.chosenRoute);
     // remove obstacles and powerups from this.scenario.obstacles
     for (let i = 0; i < this.reader.obstacles.length; i++) {
       this.app.scene.remove(this.reader.obstacles[i]);
+      this.reader.obstacles[i].mesh.geometry.dispose();
+      this.reader.obstacles[i].mesh.material.dispose();
     }
     this.reader.obstacles.length = 0;
     for (let i = 0; i < this.reader.powerUps.length; i++) {
       this.app.scene.remove(this.reader.powerUps[i]);
+      this.reader.powerUps[i].mesh.geometry.dispose();
+      this.reader.powerUps[i].mesh.material.dispose();
     }
+
+    this.app.scene.remove(this.newObstacle1)
+    this.newObstacle1.mesh.geometry.dispose();
+    this.newObstacle1.mesh.material.dispose();
+    this.app.scene.remove(this.newObstacle2)
+    this.newObstacle2.mesh.geometry.dispose();
+    this.newObstacle2.mesh.material.dispose();
+    this.scenario.obsParkingLotOffset = 1.5;
+    
     this.reader.powerUps.length = 0;
     this.app.scene.remove(this.scenario.cloudUnderCar)
 
@@ -368,8 +381,10 @@ class MyContents {
     this.scenario.setCloudUnderCar(this.playerVehicle.position);
 
     // set obstacles parking lot
-    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI / 2, this.availableLayers[2]), 0, 21.5);
-    this.scenario.setObstaclesParkingLot(new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0, this.availableLayers[2]), Math.PI / 2, 20.5);
+    this.newObstacle1 = new MyObstacle(this.app, "slip", new THREE.TextureLoader().load("textures/obstacle_slip.png"), Math.PI / 2, this.availableLayers[2]);
+    this.scenario.setObstaclesParkingLot(this.newObstacle1, 0, 21.5);
+    this.newObstacle2 = new MyObstacle(this.app, "switch", new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"), 0, this.availableLayers[2]);
+    this.scenario.setObstaclesParkingLot(this.newObstacle2, Math.PI / 2, 20.5);
     this.scenario.addObstacleSkyscraperText();
   }
 
