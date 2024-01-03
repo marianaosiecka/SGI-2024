@@ -164,7 +164,7 @@ class MyContents {
    * starts the countdown
    */
   countdown() {
-    // update selected layer to none
+    // update selected layer to 1 (menu layer)
     this.selectedLayer = this.availableLayers[0];
     this.updateSelectedLayer();
 
@@ -221,6 +221,10 @@ class MyContents {
           this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, this.app.controls.target, 15);
           countdownMesh.scale.set(5.5, 5.5, 5.5);
           this.app.scene.add(countdownMesh);
+          // remove the "GO!" mesh after 1 second
+          setTimeout(() => {
+            this.app.scene.remove(countdownMesh);
+          }, 1000);
 
           // start game
           this.changeState(this.states.PLAYING);
@@ -276,6 +280,9 @@ class MyContents {
    * finishes the game
    */
   finishGame() {
+    this.selectedLayer = this.availableLayers[1];
+    this.updateSelectedLayer();
+
     // UNCOMMENT HERE
     /*
     this.playerTime = 0
@@ -284,7 +291,7 @@ class MyContents {
     this.username = "player"*/
 
     this.app.scene.remove(this.HUD)
-    this.app.smoothCameraTransition('PodiumPerspective', 8000);
+    this.app.smoothCameraTransition('PodiumPerspective', 16000);
     // UNCOMMENT HERE
     /*this.app.setActiveCamera('PodiumPerspective');
     this.app.updateCameraIfRequired();
@@ -300,12 +307,11 @@ class MyContents {
       this.updateAutonomousVehicleModel(properties);
       this.loser = this.autonomousVehicle;
     });*/
+
     this.fireworks = [];
-
-
     //setTimeout(() => {
     // set podium
-    this.scenario.setPodium();
+    this.scenario.setPodium(this.winner, this.loser);
 
     this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
     //}, 300);
@@ -621,7 +627,9 @@ class MyContents {
     const delta = this.clock.getDelta()
     // add new fireworks every 5% of the calls
     if (Math.random() < 0.05) {
-      this.fireworks.push(new MyFirework(this.app, this.scenario.fireworksMesh.position))
+      const newFirework = new MyFirework(this.app, this.scenario.fireworksMesh.position)
+      this.fireworks.push(newFirework)
+      this.scenario.podium.add(newFirework.points)
     }
 
     // for each fireworks 
@@ -686,7 +694,7 @@ class MyContents {
       // MENU EVENTS
       // "click here to start" button - go to the enter username menu
       if (intersects[0].object.name == "clickHereToStart") {
-        this.menuManager.initEnterUsernameMenu();
+        if(this.app.activeCameraName == "MainMenuPerspective") this.menuManager.initEnterUsernameMenu();
       }
 
       else if (intersects[0].object.name.startsWith("backButton")) {
@@ -700,12 +708,10 @@ class MyContents {
 
       // "submit username" button - go to the choose level menu
       else if (intersects[0].object.name == "submitUsernameButton") {
-        if(document.getElementById("username") && this.username != ""){
-          this.username = document.getElementById("username").value;
-          document.body.removeChild(document.getElementById("username")); // remove the input field
-        }
-        else this.username = "player" // default username
+        this.username = document.getElementById("username").value;
+        if(this.username == "") this.username = "player" // default username
         console.log("username: ", this.username);
+        document.body.removeChild(document.getElementById("username")); // remove the input field
         this.menuManager.initChooseLevelMenu();
       }
 
@@ -731,16 +737,20 @@ class MyContents {
       else if (intersects[0].object.name == "selectPlayerVehicleButton") {
         this.selectedPlayerVehicle = this.availablePlayerVehicles[this.app.activeCameraName];
         console.log("selected player vehicle: ", this.selectedPlayerVehicle);
-        this.loadAutonomousParkingLot();
-        this.menuManager.initChooseOpponentVehicleMenu();
+        if(this.selectedPlayerVehicle){
+          this.loadAutonomousParkingLot();
+          this.menuManager.initChooseOpponentVehicleMenu();
+        }
       }
 
       // "select car autonomous" button - go to the countdown
       else if (intersects[0].object.name == "selectOpponentVehicleButton") {
         this.selectedOpponentVehicle = this.availableOpponentVehicles[this.app.activeCameraName];
         console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
-        this.menuManager.clearCurrentMenu();
-        this.changeState(this.states.COUNTDOWN);
+        if(this.selectedOpponentVehicle){
+          this.menuManager.clearCurrentMenu();
+          this.changeState(this.states.COUNTDOWN);
+        }
       }
 
       // "redo run" button - go to the countdown

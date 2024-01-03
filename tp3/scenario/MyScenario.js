@@ -196,7 +196,7 @@ class MyScenario {
         this.playerParkingLotCars.push(vehicle);
     }
 
-    setPodium () {
+    setPodium (winner, loser) {
         this.podium = new THREE.Group();
         let podium1 = new THREE.BoxGeometry( 22,5, 15 );
         let podiumMaterial = new THREE.MeshPhongMaterial({ color: "#000000", specular:  "#777777", emissive: "#000000", shininess: 30 });
@@ -206,21 +206,14 @@ class MyScenario {
         podiumMesh1.position.y += 8;
         podiumMesh1.position.z -= 6;
         podiumMesh1.rotation.y = Math.PI/6;
-        this.app.contents.winner.position.copy(podiumMesh1.position);
-        this.app.contents.winner.position.y += 4;
-        this.app.contents.winner.rotation.y.set(0, 2 * Math.PI/3 - 0.3, 0)
-        this.app.contents.winner.scale.set(1.5, 1.5, 1.5)
+      
 
         let podium2 = new THREE.BoxGeometry( 22 , 2, 15 );
         let podiumMesh2 = new THREE.Mesh(podium2, podiumMaterial);
         podiumMesh2.position.copy(podiumMesh1.position);
         podiumMesh2.position.x -= 17;
         podiumMesh2.position.z += 22;
-        this.app.contents.loser.position.copy(podiumMesh2.position);
-        this.app.contents.loser.position.y += 2;
-        this.app.contents.loser.scale.set(1.5, 1.5, 1.5)
-        this.app.contents.loser.rotation.set(0, Math.PI + 0.1, 0)
-
+      
         // fireworks
         let fireworksPlane = new THREE.PlaneGeometry( 8, 8 );
         this.fireworksMesh = new THREE.Mesh( fireworksPlane, 
@@ -231,6 +224,22 @@ class MyScenario {
         this.fireworksMesh.position.y += 6;
         this.fireworksMesh.position.x -= 10;
         this.fireworksMesh.position.z -= 14;
+
+        setTimeout(() => {
+            winner.position.copy(podiumMesh1.position);
+            winner.position.y += 4;
+            const winnerRotation = new THREE.Vector3(0, Math.PI/4, 0);
+            winner.rotation.copy(winnerRotation);
+            winner.scale.set(1.5, 1.5, 1.5)
+
+            loser.position.copy(podiumMesh2.position);
+            loser.position.y += 2;
+            const loserRotation = new THREE.Vector3(0, - Math.PI/4, 0);
+            loser.rotation.copy(loserRotation);
+            loser.scale.set(1.5, 1.5, 1.5)
+        }, 1000);    
+
+
 
         this.podium.add(podiumMesh1);
         this.podium.add(podiumMesh2);

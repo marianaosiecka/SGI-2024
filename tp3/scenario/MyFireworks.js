@@ -61,7 +61,7 @@ class MyFirework {
         this.points.castShadow = true;
         this.points.receiveShadow = true;
         this.app.scene.add(this.points);
-        console.log("firework launched");
+        //console.log("firework launched");
     }
 
     /**
@@ -107,7 +107,7 @@ class MyFirework {
      * cleanup
      */
     reset() {
-        console.log("firework reseted");
+        //console.log("firework reseted");
         this.app.scene.remove(this.points);
         this.dest = [];
         this.vertices = null;
@@ -192,7 +192,7 @@ class MyFirework {
                     return;
                 }
                 if (this.done || this.material.opacity <= 0) {
-                    console.log("firework done");
+                    //console.log("firework done");
                 }
             }
         }

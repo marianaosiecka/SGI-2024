@@ -70,7 +70,7 @@ class MyFinishMenu extends THREE.Object3D {
         this.add(mainMenuButtonMesh);
         this.add(mainMenuButtonText);
 
-        this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['FinishMenuPerspective'], this.app.getCameraTarget('FinishMenuPerspective'), 15);
+        this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['PodiumPerspective'], this.app.getCameraTarget('PodiumPerspective'), 15);
     }
 
     handleButtonHover(button) {

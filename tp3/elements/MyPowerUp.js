@@ -71,7 +71,6 @@ class MyPowerUp extends THREE.Object3D {
     }
 
     applyModifier(playerVehicle){
-        console.log("applyModifier")
         if(this.type == "shield"){
             playerVehicle.shield = true;
         }
