@@ -378,6 +378,8 @@ class MyReader{
                 else if (!this.pickAlreadyApplied) {
                     powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
                     this.pickAlreadyApplied = true;
+                    this.app.contents.selectedLayer = this.app.contents.availableLayers[2];
+                    this.app.contents.updateSelectedLayer();
                 } 
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;

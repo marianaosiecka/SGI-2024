@@ -748,6 +748,7 @@ class MyContents {
    * @param {number} delta - the time passed since the last update
    */
   updatePlayingState(delta) {
+    this.raycaster.layers.enableAll()
     const time = Date.now();
 
     this.checkKeys(); // check the keys pressed
@@ -866,6 +867,7 @@ class MyContents {
 
         // if the selected layer is the obstacles layer, change the obstacle state in the scenario
         else if (this.selectedLayer == this.availableLayers[2]) this.scenario.handleObstacleHover(this.lastIntersectedObj);
+        }
       }
     }
 
@@ -974,6 +976,7 @@ class MyContents {
       // ADD NEW OBSTACLE POWERUP EVENTS
       // new obstacle selected - create obstacle object and go to the track perspective
       else if (intersects[0].object.name.startsWith("newObstacle")) {
+        console.log("new obstacle selected")
         const type = intersects[0].object.name.substring(11); // get the type of the obstacle
         const rotate = type == "slip" ? Math.PI / 2 : 0; // get the rotation of the obstacle
         const texture = type == "slip" ? new THREE.TextureLoader().load("textures/obstacle_slip.png") : new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"); // get the texture of the obstacle
