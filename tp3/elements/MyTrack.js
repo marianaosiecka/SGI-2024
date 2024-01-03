@@ -67,12 +67,6 @@ class MyTrack extends THREE.Object3D {
 
   }
 
-  getTangentAt(position) {
-    const tangent = new THREE.Vector3();
-    this.mesh.geometry.parameters.path.getTangentAt(position, tangent);
-    return tangent.normalize();
-  }
-
 }
 
 

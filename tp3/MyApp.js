@@ -239,9 +239,11 @@ class MyApp  {
             if (this.controls === null) {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls( this.activeCamera, this.renderer.domElement );
-                this.controls.enableZoom = false;
-                this.controls.enableRotate = false;
-                this.controls.enablePan = false;
+                if(this.activeCamera !== 'Perspective') {
+                    this.controls.enableZoom = false;
+                    this.controls.enableRotate = false;
+                    this.controls.enablePan = false;
+                }
                 this.controls.update();
                 this.setControlsTarget();
             }

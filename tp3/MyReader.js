@@ -8,12 +8,11 @@ import { MyVehicle } from "./elements/MyVehicle.js";
 import { MyCloud } from './scenario/MyCloud.js';
 
 class MyReader{
-    constructor(scene, app, startingPoint, segments){
+    constructor(scene, app, startingPoint){
         this.scene = scene;
         this.app = app;
         this.level = null;
         this.startingPoint = startingPoint;
-        this.segments = segments;
 
         this.track = null;
         this.checkKeyLines = [];
@@ -48,7 +47,7 @@ class MyReader{
     }
 
     
-    readTrack(layer){
+    readTrack(layer, segments){
         this.trackWidth = 8;
 
         const path = new THREE.CatmullRomCurve3([
@@ -99,7 +98,7 @@ class MyReader{
             new THREE.Vector3(16, 0, 0)
         ]);
 
-        this.track = new MyTrack(this.app, this.segments, this.trackWidth, path, layer);
+        this.track = new MyTrack(this.app, segments, this.trackWidth, path, layer);
         this.track.position.set(-30, 0, 0);
         this.app.scene.add(this.track);
     }
@@ -144,71 +143,47 @@ class MyReader{
         // LEVEL 1
         this.keyPoints1 = [
             startingPointRoute,
-            new THREE.Vector3(15, 1.7, -117),
             new THREE.Vector3(-51, 1.7, -115),
             new THREE.Vector3(-105, 1.7, -112),
             new THREE.Vector3(-128, 1.7, -108),
-            new THREE.Vector3(-140, 1.7, -105),
             new THREE.Vector3(-151, 1.7, -98),
             new THREE.Vector3(-160, 1.7, -85),
             new THREE.Vector3(-160, 1.7, -60),
             new THREE.Vector3(-157, 1.7, -35),
             new THREE.Vector3(-153, 1.7, 5),
-            new THREE.Vector3(-153, 1.7, 35),
+            new THREE.Vector3(-156, 1.7, 35),
             new THREE.Vector3(-165, 1.7, 50),
             new THREE.Vector3(-177, 1.7, 60),
-            new THREE.Vector3(-191, 1.7, 70),
-            new THREE.Vector3(-194, 1.7, 78),
-            new THREE.Vector3(-194, 1.7, 85),
-            new THREE.Vector3(-189, 1.7, 89),
-            new THREE.Vector3(-180, 1.7, 95),
-            new THREE.Vector3(-168, 1.7, 100),
-            new THREE.Vector3(-157.5, 1.7, 102),
+            new THREE.Vector3(-190, 1.7, 75),
+            new THREE.Vector3(-180, 1.7, 98),
             new THREE.Vector3(-147, 1.7, 102),
-            new THREE.Vector3(-135, 1.7, 100),
-            new THREE.Vector3(-120, 1.7, 90),
+            new THREE.Vector3(-125, 1.7, 90),
             new THREE.Vector3(-112, 1.7, 80),
-            new THREE.Vector3(-105, 1.7, 70),
             new THREE.Vector3(-98, 1.7, 60),
-            new THREE.Vector3(-90, 1.7, 50),
             new THREE.Vector3(-80, 1.7, 30),
-            new THREE.Vector3(-70, 1.7, 10),
             new THREE.Vector3(-65, 1.7, -5),
             new THREE.Vector3(-50, 1.7, -30),
             new THREE.Vector3(-32, 1.7, -40),
             new THREE.Vector3(-10, 1.7, -40),
-            new THREE.Vector3(0, 1.7, -37),
             new THREE.Vector3(8, 1.7, -28),
-            new THREE.Vector3(15, 1.7, -20),
             new THREE.Vector3(18, 1.7, -12),
-            new THREE.Vector3(25, 1.7, 0),
-            new THREE.Vector3(35, 1.7, 8),
-            new THREE.Vector3(45, 1.7, 12),
+            new THREE.Vector3(25, 1.7, 10),
             new THREE.Vector3(55, 1.7, 10),
             new THREE.Vector3(65, 1.7, 0),
             new THREE.Vector3(72, 1.7, -15),
-            new THREE.Vector3(78, 1.7, -25),
             new THREE.Vector3(85, 1.7, -30),
             new THREE.Vector3(95, 1.7, -35),
-            new THREE.Vector3(105, 1.7, -38),
-            new THREE.Vector3(115, 1.7, -38),
             new THREE.Vector3(125, 1.7, -37),
             new THREE.Vector3(140, 1.7, -25),
             new THREE.Vector3(150, 1.7, -10),
             new THREE.Vector3(165, 1.7, 2),
-            new THREE.Vector3(175, 1.7, 5),
             new THREE.Vector3(185, 1.7, 6),
             new THREE.Vector3(200, 1.7, 0),
-            new THREE.Vector3(210, 1.7, -10),
-            new THREE.Vector3(215, 1.7, -18),
             new THREE.Vector3(220, 1.7, -28),
-            new THREE.Vector3(226, 1.7, -55),
             new THREE.Vector3(225, 1.7, -70),
             new THREE.Vector3(215, 1.7, -90),
             new THREE.Vector3(198, 1.7, -102),
             new THREE.Vector3(160, 1.7, -112),
-            new THREE.Vector3(115, 1.7, -114),
-            new THREE.Vector3(80, 1.7, -114),
             startingPointRoute
         ];        
     
