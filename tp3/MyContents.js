@@ -363,7 +363,7 @@ class MyContents {
    */
   startGame() {
     this.reader.level = this.selectedLevel;
-    this.numLaps = 2;
+    this.numLaps = 1;
     this.timeLimit = 150000; // milliseconds
     this.timeStart = Date.now();
     this.playerLaps = 0;
