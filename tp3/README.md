@@ -49,6 +49,7 @@
     - Upon finishing the run, users see the time taken, opponent's time, and the winner. The final menu provides options to return to the main menu or redo the run.
     <img src="screenshots/10_final_menu.png" alt="Final Menu" width="500"/>
 
+- **Link to the scene**: http://127.0.0.1:5593/tp3/
 ----
 ## Issues/Problems
 We had difficulties on:
