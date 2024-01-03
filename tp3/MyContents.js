@@ -52,8 +52,18 @@ class MyContents {
     this.selectedPlayerVehicle = null;
     this.availableOpponentVehicles = [];
     this.selectedOpponentVehicle = null;
+
+    // game related attributes
+    this.keys = {};
+    this.rKeyPressed = false;
+    this.keyListeners();
     this.winner = null;
     this.loser = null;
+    this.reader = new MyReader(this, this.app, this.startingPoint, this.segments)
+    this.previousTime = 0;
+    this.speedFactor = 0.5;
+
+    this.parkingLotCars = [];
 
     // load the spritesheets
     this.spritesheetTitle1 = new MySpritesheet('spritesheets/spritesheet_title_1.png', 10, 10);
@@ -82,30 +92,23 @@ class MyContents {
     this.pickableObjects = []
     this.clickableObjects = []
 
+    // event listeners
     document.addEventListener("pointermove", this.onPointerMove.bind(this));
     document.addEventListener("pointerdown", this.onPointerDown.bind(this));
-  }
 
-  /**
-   * initializes the contents
-   */
-  init() {
-    // set up initial properties
-    this.reader = new MyReader(this, this.app, this.startingPoint, this.segments)
-    this.previousTime = 0;
-    this.speedFactor = 0.5;
-    this.keys = {};
-    this.rKeyPressed = false;
-    this.keyListeners();
-    this.parkingLotCars = [];
-
+    // states
     this.states = {
       MENU: 'menu',
       COUNTDOWN: 'countdown',
       PLAYING: 'playing',
       FINISHED: 'finished'
     };
+  }
 
+  /**
+   * initializes the contents
+   */
+  init() {
     // add an ambient light
     const ambientLight = new THREE.AmbientLight(0x555555, 3);
     this.app.scene.add(ambientLight);
@@ -120,20 +123,16 @@ class MyContents {
     // track
     this.reader.readTrack(this.availableLayers[3]);
 
-    // default route
-    this.chosenRoute = 1;
-
     // start menu
     this.selectedLayer = this.availableLayers[1];
     this.menuManager = new MyMenuManager(this.app, this.availableLayers[1], this.pickableObjects, this.clickableObjects);
-    this.changeState(this.states.COUNTDOWN);
-    
-    // set timeout before getting the billboard image
+    this.changeState(this.states.MENU);
+
+    // set timeout before getting the first billboard image (for the shaders to be loaded)
     setTimeout(() => {
       this.scenario.billboard.getImage();
       this.billboardTime = Date.now();
     }, 200);
-    //this.app.setActiveCamera('BillboardPerspective');
   }
 
   /**
@@ -162,95 +161,50 @@ class MyContents {
   }
 
   /**
-   * updates the selected layer
-   */ 
-  updateSelectedLayer() {
-    this.raycaster.layers.enableAll()
-    if (this.selectedLayer !== 'none') {
-      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
-      this.raycaster.layers.set(selectedIndex)
-    }
-  }
-
-  /**
    * starts the countdown
-   */ 
+   */
   countdown() {
+    // update selected layer to none
     this.selectedLayer = this.availableLayers[0];
     this.updateSelectedLayer();
+
+    // SET REST OF THE SCENE
     // autonomous vehicle
     this.autonomousVehicle = this.reader.autonomousVehicle;
-
     // player vehicle
     this.playerVehicle = this.reader.playerVehicle;
-
-    // load car models
-    /// UNCOMMENT HERE
-/*    this.updatePlayerVehicleModel(this.selectedPlayerVehicle.properties);
-    this.app.scene.remove(this.selectedPlayerVehicle.properties[0])*/
-
-    const myCarModelGreen1 = new MyCarModelRed();
-    myCarModelGreen1.loadModel().then((properties) => {
-      this.updatePlayerVehicleModel(properties);
-    });
-
-    /// UNCOMMENT HERE
-    
-  /*  this.updateAutonomousVehicleModel(this.selectedOpponentVehicle.properties);
-    this.app.scene.remove(this.selectedOpponentVehicle.properties[0])*/
-
-    const myCarModelGreen2 = new MyCarModelGreen();
-    myCarModelGreen2.loadModel().then((properties) => {
-      this.updateAutonomousVehicleModel(properties);
-    });
-
+    // set car models
+    this.updatePlayerVehicleModel(this.selectedPlayerVehicle.properties);
+    this.app.scene.remove(this.selectedPlayerVehicle.properties[0]) // remove the car from the parking lot
+    this.updateAutonomousVehicleModel(this.selectedOpponentVehicle.properties);
+    this.app.scene.remove(this.selectedOpponentVehicle.properties[0]) // remove the car from the parking lot
+    // load and set wheel model
     const wheel = new MyWheelModel();
     wheel.loadModel().then((properties) => {
       this.playerVehicle.setWheelModel(properties);
       this.autonomousVehicle.setWheelModel(properties);
     });
 
-
-    // create finishing line
+    // finishing line
     this.reader.setFinishLine();
-
-    // create obstacles
+    // obstacles
     this.reader.readObstacles(this.availableLayers[2]);
-
-    // create power ups
+    // power ups
     this.reader.readPowerUps(this.availableLayers[2]);
 
-    // setup player follow camera
+    // CAMERA
+    // set active camera as the player car perspective
     this.app.setActiveCamera('PlayerCarPerspective');
-    this.app.updateCameraIfRequired();
-    this.updateCameraPlayer();
-    
-    // countdown
-    const countdownNumbers = ['3', '2', '1', 'GO!'];
-    let i = 0;
 
-    // countdown position relative to the player vehicle
-    let countdownPosition = new THREE.Vector3(this.playerVehicle.position.x, this.playerVehicle.position.y + 8, this.playerVehicle.position.z + 0.5);
+    // START COUNTDOWN
+    const countdownNumbers = ['3', '2', '1'];
+    let i = 0;
 
     const countdownLoop = () => {
       const countdownNumber = countdownNumbers[i];
-      let countdownMesh = null;
-      if (countdownNumber === 'GO!') {
-        const countdownMesh1 = this.spritesheetTitle2.getText('G'); // get the mesh for the current letter
-        const countdownMesh2 = this.spritesheetTitle2.getText('O!', 0.51); // get the mesh for the current letter
-        countdownMesh1.position.z += 0.15;
-        countdownMesh2.position.z -= 0.4;
-        countdownMesh1.position.x -= 0.35;
-        countdownMesh2.position.x += 0.45;
-        countdownMesh = new THREE.Group();
-        countdownMesh.add(countdownMesh1);
-        countdownMesh.add(countdownMesh2);
-      }
-      else {
-        countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
-      }
-      this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, countdownPosition, 15);
-      countdownMesh.scale.set(5, 5, 1);
+      let countdownMesh = this.spritesheetTitle2.getText(countdownNumber); // get the mesh for the current number
+      this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, this.app.controls.target, 15); // set the position and rotation of the mesh relative to the camera
+      countdownMesh.scale.set(5.5, 5.5, 5.5);
       this.app.scene.add(countdownMesh);
 
       // countdown animation
@@ -260,11 +214,18 @@ class MyContents {
         if (i < countdownNumbers.length) {
           countdownLoop();
         }
+        // once the countdown is finished
         else {
-          // start game, once the countdown is finished
+          // add the "GO!" mesh
+          let countdownMesh = this.spritesheetTitle2.getText("GO!");
+          this.setPosAndRotRelativeToCamera(countdownMesh, this.app.activeCamera, this.app.controls.target, 15);
+          countdownMesh.scale.set(5.5, 5.5, 5.5);
+          this.app.scene.add(countdownMesh);
+
+          // start game
           this.changeState(this.states.PLAYING);
         }
-      }, 1000);
+      }, 1000); // 1 second between each number
     }
 
     countdownLoop();
@@ -276,7 +237,6 @@ class MyContents {
   startGame() {
     // UNCOMMENT HERE
     this.reader.level = this.selectedLevel;
-    this.reader.level = 1;
     this.numLaps = 1;
     this.timeLimit = 150000; // milliseconds
     this.timeStart = Date.now();
@@ -286,7 +246,6 @@ class MyContents {
     this.autoLaps = 0;
     this.autoTime = 0;
     this.autoCheckPoints = [];
-    this.reader.level = 1//this.selectedLevel; //this.reader.level = 1;
     this.previousTime = 0;
     this.timeBeforePause = 0;
     this.speedFactor = 0.8;
@@ -317,19 +276,47 @@ class MyContents {
    * finishes the game
    */
   finishGame() {
-    this.HUD.visible = false;
-    this.app.smoothCameraTransition('PodiumPerspective', 7000);
+    // UNCOMMENT HERE
+    /*
+    this.playerTime = 0
+    this.autoTime = 0
+    this.reader.level = 0
+    this.username = "player"*/
+
+    this.app.scene.remove(this.HUD)
+    this.app.smoothCameraTransition('PodiumPerspective', 8000);
+    // UNCOMMENT HERE
+    /*this.app.setActiveCamera('PodiumPerspective');
+    this.app.updateCameraIfRequired();
+ 
+    const myCarModelGreen1 = new MyCarModelRed();
+    myCarModelGreen1.loadModel().then((properties) => {
+      this.updatePlayerVehicleModel(properties);
+      this.winner = this.playerVehicle;
+    });
+
+    const myCarModelGreen2 = new MyCarModelGreen();
+    myCarModelGreen2.loadModel().then((properties) => {
+      this.updateAutonomousVehicleModel(properties);
+      this.loser = this.autonomousVehicle;
+    });*/
     this.fireworks = [];
+
+
+    //setTimeout(() => {
     // set podium
     this.scenario.setPodium();
 
     this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
+    //}, 300);
 
     // reset lap and time counters
     this.playerLaps = 0;
     this.playerTime = 0;
     this.autoLaps = 0;
     this.autoTime = 0;
+    this.winner = null;
+    this.loser = null;
 
     console.log("FINISHED GAME");
   }
@@ -397,7 +384,7 @@ class MyContents {
       }
     }
 
-    if(this.paused) return; 
+    if (this.paused) return;
 
     let isSwitch = this.reader.isAppliedModifier("switch");
 
@@ -407,7 +394,7 @@ class MyContents {
     if (this.keys['KeyS'])
       this.playerVehicle.decelerate(speed);
 
-    if (this.keys['KeyA']){
+    if (this.keys['KeyA']) {
       if (!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
       else this.playerVehicle.turn(-turnSpeed);
     }
@@ -489,7 +476,7 @@ class MyContents {
   }
 
   updateCameraPlayer() {
-    if(this.paused) return;
+    if (this.paused) return;
     // update position
     this.app.activeCamera.position.copy(this.getPlayerCameraPosition());
 
@@ -595,7 +582,6 @@ class MyContents {
         //update player vehicle
         this.playerVehicle.update(time, this.speedFactor);
 
-        console.log(this.reader.playerCheckLineIdx)
         // check if player vehicle passed the finish line and update laps
         if ((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length / 2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))) {
           this.playerLaps++;
@@ -623,7 +609,7 @@ class MyContents {
       this.HUD.visible = true;
     }
 
-    else  this.HUD.visible = false;
+    else this.HUD.visible = false;
 
     if (this.followAutonomousVehicle) {
       this.updateCameraAutonomous();
@@ -705,7 +691,7 @@ class MyContents {
 
       else if (intersects[0].object.name.startsWith("backButton")) {
         // if the document contains the username input field, remove it
-        if (document.getElementById("username")) { 
+        if (document.getElementById("username")) {
           document.body.removeChild(document.getElementById("username"));
         }
         const menuName = intersects[0].object.name.substring(12);
@@ -714,10 +700,12 @@ class MyContents {
 
       // "submit username" button - go to the choose level menu
       else if (intersects[0].object.name == "submitUsernameButton") {
-        this.username = document.getElementById("username").value;
-        if (this.username == "") this.username = "player" // default username
+        if(document.getElementById("username") && this.username != ""){
+          this.username = document.getElementById("username").value;
+          document.body.removeChild(document.getElementById("username")); // remove the input field
+        }
+        else this.username = "player" // default username
         console.log("username: ", this.username);
-        document.body.removeChild(document.getElementById("username")); // remove the input field
         this.menuManager.initChooseLevelMenu();
       }
 
@@ -753,6 +741,20 @@ class MyContents {
         console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
         this.menuManager.clearCurrentMenu();
         this.changeState(this.states.COUNTDOWN);
+      }
+
+      // "redo run" button - go to the countdown
+      else if (intersects[0].object.name == "redoRunButton") {
+        this.menuManager.clearCurrentMenu();
+        this.app.scene.remove(this.scenario.podium)
+        this.changeState(this.states.COUNTDOWN);
+      }
+
+      // "main menu" button - go to the main menu
+      else if (intersects[0].object.name == "mainMenuButton") {
+        this.menuManager.clearCurrentMenu();
+        this.app.scene.remove(this.scenario.podium)
+        this.changeState(this.states.MENU);
       }
 
       // ADD NEW OBSTACLE POWERUP EVENTS
@@ -808,8 +810,20 @@ class MyContents {
   }
 
   /**
+   * updates the selected layer
+   */
+  updateSelectedLayer() {
+    this.raycaster.layers.enableAll()
+    if (this.selectedLayer !== 'none') {
+      const selectedIndex = this.availableLayers[parseInt(this.selectedLayer)]
+      this.raycaster.layers.set(selectedIndex)
+    }
+  }
+
+
+  /**
    * loads the player parking lot
-   */ 
+   */
   loadPlayerParkingLot() {
     const myCarModelGreen = new MyCarModelGreen();
     myCarModelGreen.loadModel().then((properties) => {

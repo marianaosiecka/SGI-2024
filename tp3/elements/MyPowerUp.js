@@ -70,7 +70,7 @@ class MyPowerUp extends THREE.Object3D {
         this.animationDestPosition = destinationPoint;
     }
 
-    applyModifier(playerVehicle, obstacles, track){
+    applyModifier(playerVehicle){
         console.log("applyModifier")
         if(this.type == "shield"){
             playerVehicle.shield = true;

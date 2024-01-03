@@ -21,43 +21,54 @@ class MyFinishMenu extends THREE.Object3D {
     initFinishMenu() {
         // Add go back button
         const levelText = this.spritesheetRegularBlack.getText("Level " + this.app.contents.reader.level);
-        this.app.contents.setPosAndRotRelativeToCamera(levelText, this.app.activeCamera, this.app.controls.target, 15);
         levelText.position.y += 8.5;
-        this.app.scene.add(levelText);
+        this.add(levelText);
 
-        const playerTimeText = this.spritesheetRegularBlack.getText("Player time: " + this.playerTime.toFixed(2) + "s");
-        this.app.contents.setPosAndRotRelativeToCamera(playerTimeText, this.app.activeCamera, this.app.controls.target, 15);
+        const playerTimeText = this.spritesheetRegularBlack.getText(this.username +" time: " + this.playerTime.toFixed(2) + "s");
         playerTimeText.position.y += 7.5;
-        this.app.scene.add(playerTimeText);
+        this.add(playerTimeText);
 
-        const autoTimeText = this.spritesheetRegularBlack.getText("Autonomous time: " + this.autoTime.toFixed(2) + "s");
-        this.app.contents.setPosAndRotRelativeToCamera(autoTimeText, this.app.activeCamera, this.app.controls.target, 15);
+        const autoTimeText = this.spritesheetRegularBlack.getText("Opponent time: " + this.autoTime.toFixed(2) + "s");
         autoTimeText.position.y += 6.5;
-        this.app.scene.add(autoTimeText);
+        this.add(autoTimeText);
 
-        const restartButtonText = this.spritesheetRegularBlack.getText("Redo Run");
-        const restartButtonPlane = new THREE.PlaneGeometry(2, 1);
+        if(this.playerTime <= this.autoTime) {
+            const winnerText = this.app.contents.spritesheetTitle1.getText("WINNER :)");
+            winnerText.position.y += 4;
+            winnerText.scale.set(3,3,3)
+            this.add(winnerText);
+        } else {
+            const loserText = this.app.contents.spritesheetTitle2.getText("LOSER :(");
+            loserText.position.y += 4;
+            loserText.scale.set(2,2,2)
+            this.add(loserText);
+        }
+
+        const restartButtonText = this.app.contents.spritesheetRegularWhite.getText("Redo Run", 0.3);
+        const restartButtonPlane = new THREE.PlaneGeometry(5, 1);
         const restartButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xB7661A });
         const restartButtonMesh = new THREE.Mesh(restartButtonPlane, restartButtonMaterial);
-        restartButtonMesh.name = "restartButton";
+        restartButtonMesh.name = "redoRunButton";
         restartButtonMesh.layers.enable(this.layer);
         this.pickableObjects.push(restartButtonMesh);
         this.clickableObjects.push(restartButtonMesh);
-        restartButtonMesh.add(restartButtonText);
-        restartButtonMesh.position.y -= 5;
+        restartButtonMesh.position.y -= 5.5;
+        restartButtonText.position.y -= 5.5;
+        this.add(restartButtonText);
         this.add(restartButtonMesh);
 
-        const mainMenuButtonText = this.spritesheetRegularBlack.getText("Main Menu");
-        const mainMenuButtonPlane = new THREE.PlaneGeometry(2, 1);
+        const mainMenuButtonText = this.app.contents.spritesheetRegularWhite.getText("Main Menu", 0.3);
+        const mainMenuButtonPlane = new THREE.PlaneGeometry(5, 1);
         const mainMenuButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xB7661A });
         const mainMenuButtonMesh = new THREE.Mesh(mainMenuButtonPlane, mainMenuButtonMaterial);
         mainMenuButtonMesh.name = "mainMenuButton";
         mainMenuButtonMesh.layers.enable(this.layer);
         this.pickableObjects.push(mainMenuButtonMesh);
         this.clickableObjects.push(mainMenuButtonMesh);
-        mainMenuButtonMesh.add(mainMenuButtonText);
-        mainMenuButtonMesh.position.y -= 6;
+        mainMenuButtonMesh.position.y -= 7;
+        mainMenuButtonText.position.y -= 7;
         this.add(mainMenuButtonMesh);
+        this.add(mainMenuButtonText);
 
         this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['FinishMenuPerspective'], this.app.getCameraTarget('FinishMenuPerspective'), 15);
     }
@@ -68,7 +79,9 @@ class MyFinishMenu extends THREE.Object3D {
     }
 
     resetButtonState(button) {
-        button.material.color.setHex(this.buttonOriginalColor);
+        if(button.material.color != this.buttonOriginalColor){
+            button.material.color.setHex(this.buttonOriginalColor);
+        }
     }
 }
 
