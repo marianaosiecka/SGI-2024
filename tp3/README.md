@@ -56,4 +56,5 @@ We had difficulties on:
 - Pick obstacle power up;
 - Rotate the wheels of both the autonomous and player car
 - Fireworks.
+
 We have limited shadows due to a velocity optimization trade-off.
