@@ -19,7 +19,7 @@
 
 - Scene description
     - Upon opening the game, the main menu reveals the game logo, author's name, and the FEUP logo. A button invites users to start the game interaction.
-    ![Main Menu](screenshots/1_main_menu.png)
+    <img src="screenshots/1_main_menu.png" alt="Main Menu" width="200"/>
     - Clicking the start button redirects users to the enter username menu.
     ![Enter Username Menu](screenshots/2_username_menu.png)
     - Users proceed to choose the desired level.
