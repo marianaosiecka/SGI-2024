@@ -108,12 +108,12 @@ class MyScenario {
         this.app.scene.add(this.billboard);
         
         // mountain
-        /*let mountain = new MyMountain(this.app);
+        let mountain = new MyMountain(this.app);
         mountain.scale.set(1.8, 1.5, 1.5);
         mountain.position.set(150, -265, 440);
         mountain.rotation.x = -Math.PI/2;
         mountain.rotation.z = Math.PI/8;
-        this.app.scene.add(mountain);*/
+        this.app.scene.add(mountain);
     }
 
     setCloudUnderCar(vehiclePosition) {

@@ -75,7 +75,7 @@ class MyHUD extends THREE.Object3D {
         const appliedModifiersDict = {};
 
         for (let i = 0; i < appliedModifiersCopy.length; i++){
-            if (!(appliedModifiersCopy[i] in appliedModifiersDict)) {
+            if (!(this.checkModifierInDict(appliedModifiersCopy[i], appliedModifiersDict))) {
                 appliedModifiersDict[appliedModifiersCopy[i]] = appliedModifiersStartTime[i];
             }
         }
@@ -95,7 +95,9 @@ class MyHUD extends THREE.Object3D {
             else
                 modifierTime = (7000 - (time-Math.floor(appliedModifiersDict[modifier])))/1000;
 
-            this.modifiers.push(modifier)
+            //console.log(modifierTime);
+
+            this.modifiers.push(time, appliedModifiersDict[modifier])
 
             // modifier texture
             let modifierGeo = new THREE.PlaneGeometry(1.2, 1.2);
@@ -150,6 +152,14 @@ class MyHUD extends THREE.Object3D {
         this.add(velocityMesh)
     }
 
+    checkModifierInDict(modifier, dict){
+        for(let i = 0; i < dict.length; i++){
+            if(modifier.type === dict[i].type){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 export { MyHUD };

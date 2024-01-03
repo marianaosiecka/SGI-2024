@@ -78,7 +78,7 @@ class MyRoute extends THREE.Object3D {
         this.app.scene.add(tubeMesh)
     }
 
-    updateBoundingBox(autonomousVehicle) {
+    updateBoundingBox(autonomousVehicle, track) {
         const carPosition = new THREE.Vector3();
         const carQuaternion = new THREE.Quaternion();
         const vehicle = this.mixer.getRoot();
@@ -86,23 +86,34 @@ class MyRoute extends THREE.Object3D {
         vehicle.getWorldPosition(carPosition);
         vehicle.getWorldQuaternion(carQuaternion);
 
-        const currentTime = this.mixer.time;
+        const currentTime = this.mixer.time % this.animationMaxDuration;
         const currentIndex = Math.floor(currentTime / this.animationMaxDuration * (this.keyPoints.length - 1));
 
         let velocity = new THREE.Vector3();
+        let combinedVelocity = 0;
+        let wheelRotationAngle = 0;
 
         if (currentIndex < this.keyPoints.length - 1) {
             const currentKeyPoint = this.keyPoints[currentIndex];
             const nextKeyPoint = this.keyPoints[currentIndex + 1];
-
-            const displacement = nextKeyPoint.clone().add(carPosition).sub(currentKeyPoint);
+            const displacement = nextKeyPoint.clone().sub(currentKeyPoint);
             velocity = displacement.divideScalar(currentTime);
+            combinedVelocity = Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.z, 2));
+
+            // y axis front wheels rotation
+            const tangentAtCurrentPoint = new THREE.Vector3().subVectors(nextKeyPoint, currentKeyPoint).normalize();
+            if(currentIndex + 2 <= this.keyPoints.length - 1){
+                const twoNextKeyPoint = this.keyPoints[currentIndex + 2];
+                const tangentAtTwoNext = new THREE.Vector3().subVectors(twoNextKeyPoint, nextKeyPoint).normalize();
+                const tangentDifference = tangentAtTwoNext.clone().sub(tangentAtCurrentPoint);
+                wheelRotationAngle = tangentDifference.x;
+            }
         }
 
         // begging of the program
         if(velocity.z === Infinity) velocity.z = 0;
         
-        autonomousVehicle.updateAutonomous(velocity.z, carPosition, carQuaternion);
+        autonomousVehicle.updateAutonomous(combinedVelocity, carPosition, carQuaternion, wheelRotationAngle);
     }
 
 }

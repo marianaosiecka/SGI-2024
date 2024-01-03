@@ -1,7 +1,4 @@
 import * as THREE from 'three';
-import { MyObstacle } from './MyObstacle.js';
-import { MyScenario } from '../scenario/MyScenario.js';
-import { MyShader } from '../MyShader.js';
 
 class MyPowerUp extends THREE.Object3D {
     
@@ -70,8 +67,7 @@ class MyPowerUp extends THREE.Object3D {
         this.animationDestPosition = destinationPoint;
     }
 
-    applyModifier(playerVehicle, obstacles, track){
-        console.log("applyModifier")
+    applyModifier(playerVehicle){
         if(this.type == "shield"){
             playerVehicle.shield = true;
         }

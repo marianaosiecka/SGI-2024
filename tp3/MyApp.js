@@ -201,7 +201,7 @@ class MyApp  {
         if(this.activeCameraName == 'PlayerCarPerspective') {
             this.contents.followPlayerVehicle = true
             this.contents.followAutonomousVehicle = false
-            this.activeCamera.position.copy(this.contents.getPlayerCameraPosition())
+            this.activeCamera.position.copy(this.contents.getCarCameraPosition(this.contents.playerVehicle))
         }
         else if(this.activeCameraName == 'AutonomousCarPerspective') {
             this.contents.followPlayerVehicle = false
@@ -257,19 +257,6 @@ class MyApp  {
      */
     setControlsTarget() {
         this.controls.target = this.getCameraTarget(this.activeCameraName);
-        /*
-        switch (this.activeCameraName) {
-            case 'PlayerParkingLot':
-                this.controls.target = new THREE.Vector3(120, 10, -200);
-                break;
-            case 'AutonomousParkingLot':
-                this.controls.target = new THREE.Vector3(-250, 10, 0);
-                break;
-            case 'Perspective':
-                this.controls.target = new THREE.Vector3(0, 0, 0);
-                break;
-        }
-        */
     }
 
     /**
@@ -281,7 +268,7 @@ class MyApp  {
         let cameraTarget = null;
         switch (cameraName) {
             case 'PlayerCarPerspective':
-                cameraTarget = this.contents.getPlayerCameraTarget();
+                cameraTarget = this.contents.getCarCameraTarget(this.contents.playerVehicle);
                 break;
 
             case 'OpponentParkingLot1':

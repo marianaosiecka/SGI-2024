@@ -275,9 +275,9 @@ class MyContents {
    */
   startGame() {
     // UNCOMMENT HERE
-    this.reader.level = this.selectedLevel;
+    //this.reader.level = this.selectedLevel;
     this.reader.level = 1;
-    this.numLaps = 1;
+    this.numLaps = 3;
     this.timeLimit = 150000; // milliseconds
     this.timeStart = Date.now();
     this.playerLaps = 0;
@@ -301,7 +301,7 @@ class MyContents {
     this.app.scene.add(this.HUD);
 
     // set up the route and timer for the autonomous car to start
-    this.reader.readRoutes();
+    this.reader.readRoutes(this.autonomousVehicle.depth);
     this.autonomousMixer = this.reader.mixer;
 
     // set cloud under car (for when it is out of track)
@@ -487,14 +487,29 @@ class MyContents {
       }
     }
   }
+  
+  getCarCameraPosition(car) {
+    let cameraOffset = new THREE.Vector3(16, 10, 0);
+    let carPosition = new THREE.Vector3();
+    car.getWorldPosition(carPosition);
+    const carQuartenion = new THREE.Quaternion();
+    car.getWorldQuaternion(carQuartenion);
+    cameraOffset = cameraOffset.applyQuaternion(carQuartenion);
+    carPosition = carPosition.add(cameraOffset);
+    return carPosition;
+  }
+
+  getCarCameraTarget(car) {
+    return new THREE.Vector3(car.position.x, car.position.y + 5, car.position.z);
+  }
 
   updateCameraPlayer() {
     if(this.paused) return;
     // update position
-    this.app.activeCamera.position.copy(this.getPlayerCameraPosition());
+    this.app.activeCamera.position.copy(this.getCarCameraPosition(this.playerVehicle));
 
     // update target
-    this.app.controls.target = this.getPlayerCameraTarget();
+    this.app.controls.target = this.getCarCameraTarget(this.playerVehicle);
 
     this.scenario.clouds.updateAllClouds()
 
@@ -505,24 +520,16 @@ class MyContents {
     }
   }
 
-  getPlayerCameraPosition() {
-    let cameraOffset = new THREE.Vector3(16, 10, 0);
-    let carPosition = new THREE.Vector3();
-    this.playerVehicle.getWorldPosition(carPosition);
-    const carQuartenion = new THREE.Quaternion();
-    this.playerVehicle.getWorldQuaternion(carQuartenion);
-    cameraOffset = cameraOffset.applyQuaternion(carQuartenion);
-    carPosition = carPosition.add(cameraOffset);
-    return carPosition;
-  }
-
-  getPlayerCameraTarget() {
-    return new THREE.Vector3(this.playerVehicle.position.x, this.playerVehicle.position.y + 5, this.playerVehicle.position.z);
-  }
-
   updateCameraAutonomous() {
-    this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
-    this.app.controls.target = this.autonomousVehicle.position;
+    if(this.paused) return;
+
+    // update position
+    this.app.activeCamera.position.copy(this.getCarCameraPosition(this.autonomousVehicle));
+
+    // update target
+    this.app.controls.target = this.getCarCameraTarget(this.autonomousVehicle);
+
+    this.scenario.clouds.updateAllClouds()
   }
 
   updateShortcut(delta) {
@@ -577,7 +584,7 @@ class MyContents {
       if (!this.autonomousVehicle.shouldStop) {
         this.autonomousMixer.update(delta);
         // this updates the position of the actual object of MyVehicle class
-        if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
+        if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle, this.reader.track);
 
         if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length
           && this.autonomousVehicle.detectCollisionsObject(this.reader.finishingLine, false)) {
@@ -595,7 +602,6 @@ class MyContents {
         //update player vehicle
         this.playerVehicle.update(time, this.speedFactor);
 
-        console.log(this.reader.playerCheckLineIdx)
         // check if player vehicle passed the finish line and update laps
         if ((this.reader.caughtShortcut && (this.reader.playerCheckLineIdx >= this.reader.checkKeyLines.length / 2) && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false)) || (this.reader.playerCheckLineIdx === this.reader.checkKeyLines.length && this.playerVehicle.detectCollisionsObject(this.reader.finishingLine, false))) {
           this.playerLaps++;
