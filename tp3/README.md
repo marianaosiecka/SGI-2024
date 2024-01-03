@@ -33,14 +33,14 @@
     - Similarly, users pick the opponent's car.
     <img src="screenshots/5_opponent_car_menu.png" alt="Choose Opponent Car" width="500"/>
 
-    - Upon completion, users are redirected to the track, and a countdown initiates the run. The moment "GO!" appears on the screen, the run starts, as demonstrated below:
+    - After that, users are redirected to the track, and a countdown initiates the run. The moment "GO!" appears on the screen, the run starts, as demonstrated below:
     <img src="screenshots/6_start_run.png" alt="Start Run" width="500"/>
 
     - Obstacles and power-ups are placed along the track. Collision with these elements modifies the run flow. For instance, colliding with the the "pick obstacle" power-up redirects users to choose an obstacle and select a location to place it on the track.
-    - Pick Obstacle:
+      - Pick Obstacle:
     <img src="screenshots/7_pick_obstacle.png" alt="Pick Obstacle" width="500"/>
 
-    - Place Obstacle:
+      - Place Obstacle:
     <img src="screenshots/8_place_obstacle.png" alt="Place Obstacle" width="500"/>
 
     - During gameplay, real-time information such as elapsed time, laps completed, velocity, and applied modifiers with their remaining duration is displayed.
@@ -51,5 +51,9 @@
 
 ----
 ## Issues/Problems
-
-- (items describing unimplemented features, bugs, problems, etc.)
+We had difficulties on:
+- Redo run and go to main menu buttons;
+- Pick obstacle power up;
+- Rotate the wheels of both the autonomous and player car
+- Fireworks.
+We have limited shadows due to a velocity optimization trade-off.
