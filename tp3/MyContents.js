@@ -598,32 +598,26 @@ class MyContents {
       this.changeState(this.states.FINISHED);
       return;
     }
-
-    // if the autonomous car has finished the run, the run is finished
-    if (this.autoLaps === this.numLaps) {
-      this.autoTime = timePassed / 1000;
-      this.autonomousVehicle.shouldStop = true;
-      if (this.playerLaps !== this.numLaps) {
-        // set winner to autonomous and loser to player
-        this.winner = this.autonomousVehicle;
-        this.loser = this.playerVehicle;
-      }
-    }
-
-    // if the player car has finished the run, the run is finished
-    if (this.playerLaps === this.numLaps) {
-      this.playerTime = timePassed / 1000;
-      if (this.autoLaps !== this.numLaps) {
-        // set winner to player and loser to autonomous
-        this.winner = this.playerVehicle;
-        this.loser = this.autonomousVehicle;
+    else {
+      if (this.autoLaps === this.numLaps) {
+        this.autoTime = timePassed / 1000;
         this.autonomousVehicle.shouldStop = true;
-        this.autoTime = this.reader.chosenRoute.animationMaxDuration;
-        this.changeState(this.states.FINISHED);
-        return;
+        if (this.playerLaps !== this.numLaps) {
+          this.winner = this.autonomousVehicle;
+          this.loser = this.playerVehicle;
+        }
       }
-
-      // if both cars have finished the run
+      if (this.playerLaps === this.numLaps) {
+        this.playerTime = timePassed / 1000;
+        if (this.autoLaps !== this.numLaps) {
+          this.winner = this.playerVehicle;
+          this.loser = this.autonomousVehicle;
+          this.autonomousVehicle.shouldStop = true;
+          this.autoTime = this.reader.chosenRoute.animationMaxDuration*this.numLaps;
+          this.changeState(this.states.FINISHED);
+          return;
+        }
+      }
       if (this.autoLaps === this.numLaps && this.playerLaps === this.numLaps) {
         this.changeState(this.states.FINISHED);
         return;
@@ -1025,6 +1019,7 @@ class MyContents {
 
         // put paused to false
         this.app.contents.paused = false;
+        this.playerVehicle.velocity *= 0.2; // slow down the player vehicle
       }
     }
   }

@@ -274,7 +274,7 @@ class MyReader{
         }
 
         checkKeyPoints.forEach((point, index) => {
-        let checkLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth * 4.5);
+        let checkLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth * 5.5);
         let checkLine = new THREE.Mesh(checkLineGeo, new THREE.MeshBasicMaterial());
 
         checkLine.quaternion.copy(checkKeyRotations[index]);
