@@ -1,7 +1,4 @@
 import * as THREE from 'three';
-import { MyObstacle } from './MyObstacle.js';
-import { MyScenario } from '../scenario/MyScenario.js';
-import { MyShader } from '../MyShader.js';
 
 class MyPowerUp extends THREE.Object3D {
     

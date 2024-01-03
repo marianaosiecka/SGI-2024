@@ -8,6 +8,7 @@ class MyTrack extends THREE.Object3D {
     * @param {segments} segments The number of segments in the tube geometry
     * @param {width} width The width of the track
     * @param {path} path The points that define the path of the track
+    * @param {layer} layer The layer to which the track belongs
     */
   constructor(app, segments, width, path, layer) {
     super();

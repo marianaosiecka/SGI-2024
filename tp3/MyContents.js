@@ -37,9 +37,8 @@ class MyContents {
     // starting point of the run
     this.startingPoint = new THREE.Vector3(32, 1.7, -117);
 
-    // track related attributes
+    // GUI controls - track related attributes
     this.showTrackWireframe = false;
-    this.showTrackLine = true;
     this.trackClosedCurve = false;
 
     // game levels
@@ -59,7 +58,7 @@ class MyContents {
     this.keyListeners();
     this.winner = null;
     this.loser = null;
-    this.reader = new MyReader(this, this.app, this.startingPoint, this.segments)
+    this.reader = new MyReader(this, this.app, this.startingPoint)
     this.previousTime = 0;
     this.speedFactor = 0.5;
 
@@ -73,7 +72,7 @@ class MyContents {
     this.spritesheetRegularWhite = new MySpritesheet('spritesheets/spritesheet_regular_white.png', 10, 10);
 
     // curve segments
-    this.segments = 200;
+    this.trackSegments = 200;
 
     // picking related attributes
     this.raycaster = new THREE.Raycaster();
@@ -121,7 +120,7 @@ class MyContents {
     this.scenario = new MyScenario(this.app, this.availableLayers[4]);
 
     // track
-    this.reader.readTrack(this.availableLayers[3]);
+    this.reader.readTrack(this.availableLayers[3], this.trackSegments);
 
     // start menu
     this.selectedLayer = this.availableLayers[1];
@@ -269,11 +268,13 @@ class MyContents {
     this.autonomousVehicle = this.reader.autonomousVehicle;
     // player vehicle
     this.playerVehicle = this.reader.playerVehicle;
+    
     // set car models
     this.updatePlayerVehicleModel(this.selectedPlayerVehicle.properties);
     this.app.scene.remove(this.selectedPlayerVehicle.properties[0]) // remove the car from the parking lot
     this.updateAutonomousVehicleModel(this.selectedOpponentVehicle.properties);
     this.app.scene.remove(this.selectedOpponentVehicle.properties[0]) // remove the car from the parking lot
+    
     // load and set wheel model
     const wheel = new MyWheelModel();
     wheel.loadModel().then((properties) => {
@@ -360,7 +361,7 @@ class MyContents {
     this.app.scene.add(this.HUD);
 
     // set up the route and timer for the autonomous car to start
-    this.reader.readRoutes();
+    this.reader.readRoutes(this.autonomousVehicle.depth);
     this.autonomousMixer = this.reader.mixer;
 
     // set cloud under car (for when it is out of track)
@@ -576,14 +577,29 @@ class MyContents {
       }
     }
   }
+  
+  getCarCameraPosition(car) {
+    let cameraOffset = new THREE.Vector3(16, 10, 0);
+    let carPosition = new THREE.Vector3();
+    car.getWorldPosition(carPosition);
+    const carQuartenion = new THREE.Quaternion();
+    car.getWorldQuaternion(carQuartenion);
+    cameraOffset = cameraOffset.applyQuaternion(carQuartenion);
+    carPosition = carPosition.add(cameraOffset);
+    return carPosition;
+  }
+
+  getCarCameraTarget(car) {
+    return new THREE.Vector3(car.position.x, car.position.y + 5, car.position.z);
+  }
 
   updateCameraPlayer() {
     if (this.paused) return;
     // update position
-    this.app.activeCamera.position.copy(this.getPlayerCameraPosition());
+    this.app.activeCamera.position.copy(this.getCarCameraPosition(this.playerVehicle));
 
     // update target
-    this.app.controls.target = this.getPlayerCameraTarget();
+    this.app.controls.target = this.getCarCameraTarget(this.playerVehicle);
 
     this.scenario.clouds.updateAllClouds()
 
@@ -594,24 +610,16 @@ class MyContents {
     }
   }
 
-  getPlayerCameraPosition() {
-    let cameraOffset = new THREE.Vector3(16, 10, 0);
-    let carPosition = new THREE.Vector3();
-    this.playerVehicle.getWorldPosition(carPosition);
-    const carQuartenion = new THREE.Quaternion();
-    this.playerVehicle.getWorldQuaternion(carQuartenion);
-    cameraOffset = cameraOffset.applyQuaternion(carQuartenion);
-    carPosition = carPosition.add(cameraOffset);
-    return carPosition;
-  }
-
-  getPlayerCameraTarget() {
-    return new THREE.Vector3(this.playerVehicle.position.x, this.playerVehicle.position.y + 5, this.playerVehicle.position.z);
-  }
-
   updateCameraAutonomous() {
-    this.app.activeCamera.position.set(this.autonomousVehicle.position.x + 10 * Math.cos(-this.autonomousVehicle.carOrientation), this.autonomousVehicle.position.y + 8, this.autonomousVehicle.position.z + 10 * Math.sin(-this.autonomousVehicle.carOrientation));
-    this.app.controls.target = this.autonomousVehicle.position;
+    if(this.paused) return;
+
+    // update position
+    this.app.activeCamera.position.copy(this.getCarCameraPosition(this.autonomousVehicle));
+
+    // update target
+    this.app.controls.target = this.getCarCameraTarget(this.autonomousVehicle);
+
+    this.scenario.clouds.updateAllClouds()
   }
 
   updateShortcut(delta) {
@@ -666,7 +674,7 @@ class MyContents {
       if (!this.autonomousVehicle.shouldStop) {
         this.autonomousMixer.update(delta);
         // this updates the position of the actual object of MyVehicle class
-        if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle);
+        if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle, this.reader.track);
 
         if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length
           && this.autonomousVehicle.detectCollisionsObject(this.reader.finishingLine, false)) {
@@ -1025,42 +1033,27 @@ class MyContents {
    * Called when user changes number of segments in UI. Recreates the track's objects accordingly.
    */
   updateTrack() {
-    if (this.track !== undefined && this.track !== null) {
-      this.app.scene.remove(this.track);
+    if (this.reader.track !== undefined && this.reader.track !== null) {
+      this.app.scene.remove(this.reader.track);
     }
-    this.buildTrack();
+    this.reader.readTrack(this.availableLayers[3], this.trackSegments);
   }
 
   /**
    * Called when user track's closed parameter in the UI. Recreates the track's objects accordingly.
    */
   updateTrackClosing() {
-    if (this.track !== undefined && this.track !== null) {
-      this.app.scene.remove(this.track);
+    if (this.reader.track !== undefined && this.reader.track !== null) {
+      this.app.scene.remove(this.reader.track);
     }
-    this.buildTrack();
-  }
-
-  /**
-   * Called when user changes number of texture repeats in UI. Updates the repeat vector for the curve's texture.
-   * @param {number} value - repeat value in S (or U) provided by user
-   */
-  updateTextureRepeat(value) {
-    this.material.map.repeat.set(value, 3);
-  }
-
-  /**
-   * Called when user changes track line visibility. Shows/hides line object.
-   */
-  updateTrackLineVisibility() {
-    this.track.line.visible = this.showTrackLine;
+    this.reader.readTrack(this.availableLayers[3], this.trackSegments);
   }
 
   /**
    * Called when user changes track wireframe visibility. Shows/hides wireframe object.
    */
   updateTrackWireframeVisibility() {
-    this.track.wireframe.visible = this.showTrackWireframe;
+    this.reader.track.wireframe.visible = this.showTrackWireframe;
   }
 
   /**

@@ -108,12 +108,12 @@ class MyScenario {
         this.app.scene.add(this.billboard);
         
         // mountain
-        /*let mountain = new MyMountain(this.app);
+        let mountain = new MyMountain(this.app);
         mountain.scale.set(1.8, 1.5, 1.5);
         mountain.position.set(150, -265, 440);
         mountain.rotation.x = -Math.PI/2;
         mountain.rotation.z = Math.PI/8;
-        this.app.scene.add(mountain);*/
+        this.app.scene.add(mountain);
     }
 
     setCloudUnderCar(vehiclePosition) {
@@ -229,18 +229,16 @@ class MyScenario {
         setTimeout(() => {
             winner.position.copy(podiumMesh1.position);
             winner.position.y += 4;
-            const winnerRotation = new THREE.Vector3(0, Math.PI/4, 0);
-            winner.rotation.copy(winnerRotation);
+            const winnerRotation = new THREE.Vector3(0, Math.PI - Math.PI/3.5, 0);
+            winner.rotation.set(winnerRotation.x, winnerRotation.y, winnerRotation.z);
             winner.scale.set(1.5, 1.5, 1.5)
 
             loser.position.copy(podiumMesh2.position);
             loser.position.y += 2;
-            const loserRotation = new THREE.Vector3(0, - Math.PI/4, 0);
-            loser.rotation.copy(loserRotation);
+            const loserRotation = new THREE.Vector3(0, - Math.PI, 0);
+            loser.rotation.set(loserRotation.x, loserRotation.y, loserRotation.z);
             loser.scale.set(1.5, 1.5, 1.5)
         }, 1000);    
-
-
 
         this.podium.add(podiumMesh1);
         this.podium.add(podiumMesh2);

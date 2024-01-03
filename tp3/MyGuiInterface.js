@@ -38,13 +38,9 @@ class MyGuiInterface  {
         
         const folderGeometry = this.datgui.addFolder("Curve");
         folderGeometry
-            .add(this.contents, "segments", 10, 200)
+            .add(this.contents, "trackSegments", 10, 200)
             .step(50)
             .onChange((value)=>this.contents.updateTrack(value));
-        folderGeometry
-            .add(this.contents, "showTrackLine")
-            .name("Show track line")
-            .onChange(()=>this.contents.updateTrackLineVisibility());
         folderGeometry
             .add(this.contents, "showTrackWireframe")
             .name("Show track wireframe")

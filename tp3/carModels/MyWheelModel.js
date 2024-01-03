@@ -6,6 +6,10 @@ class MyWheelModel {
     this.loadModel();
   }
 
+    /**
+     * loads the wheel model and returns it
+     * @returns {Promise} Promise object that loads the model
+     */
     loadModel() {
         return new Promise((resolve) => {
         const loader = new GLTFLoader();

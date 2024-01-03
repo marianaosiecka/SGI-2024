@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { MyShader } from '../MyShader.js';
 
 class MyMountain extends THREE.Object3D{
     constructor(app) {

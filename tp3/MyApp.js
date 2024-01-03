@@ -201,7 +201,7 @@ class MyApp  {
         if(this.activeCameraName == 'PlayerCarPerspective') {
             this.contents.followPlayerVehicle = true
             this.contents.followAutonomousVehicle = false
-            this.activeCamera.position.copy(this.contents.getPlayerCameraPosition())
+            this.activeCamera.position.copy(this.contents.getCarCameraPosition(this.contents.playerVehicle))
         }
         else if(this.activeCameraName == 'AutonomousCarPerspective') {
             this.contents.followPlayerVehicle = false
@@ -239,9 +239,11 @@ class MyApp  {
             if (this.controls === null) {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls( this.activeCamera, this.renderer.domElement );
-                this.controls.enableZoom = false;
-                this.controls.enableRotate = false;
-                this.controls.enablePan = false;
+                if(this.activeCamera !== 'Perspective') {
+                    this.controls.enableZoom = false;
+                    this.controls.enableRotate = false;
+                    this.controls.enablePan = false;
+                }
                 this.controls.update();
                 this.setControlsTarget();
             }
@@ -268,7 +270,7 @@ class MyApp  {
         let cameraTarget = null;
         switch (cameraName) {
             case 'PlayerCarPerspective':
-                cameraTarget = this.contents.getPlayerCameraTarget();
+                cameraTarget = this.contents.getCarCameraTarget(this.contents.playerVehicle);
                 break;
 
             case 'OpponentParkingLot1':

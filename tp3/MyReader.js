@@ -8,12 +8,11 @@ import { MyVehicle } from "./elements/MyVehicle.js";
 import { MyCloud } from './scenario/MyCloud.js';
 
 class MyReader{
-    constructor(scene, app, startingPoint, segments){
+    constructor(scene, app, startingPoint){
         this.scene = scene;
         this.app = app;
         this.level = null;
         this.startingPoint = startingPoint;
-        this.segments = segments;
 
         this.track = null;
         this.checkKeyLines = [];
@@ -48,7 +47,7 @@ class MyReader{
     }
 
     
-    readTrack(layer){
+    readTrack(layer, segments){
         this.trackWidth = 8;
 
         const path = new THREE.CatmullRomCurve3([
@@ -99,7 +98,7 @@ class MyReader{
             new THREE.Vector3(16, 0, 0)
         ]);
 
-        this.track = new MyTrack(this.app, this.segments, this.trackWidth, path, layer);
+        this.track = new MyTrack(this.app, segments, this.trackWidth, path, layer);
         this.track.position.set(-30, 0, 0);
         this.app.scene.add(this.track);
     }
@@ -141,81 +140,58 @@ class MyReader{
         this.app.scene.add(this.finishLineGroup);
     }
 
-    readRoutes(layer, visualRepresentation = false){
-        let startingPointRoute = new THREE.Vector3(this.startingPoint.x, this.startingPoint.y, this.startingPoint.z);
+    readRoutes(vehicleDepth, visualRepresentation = false){
+        let startingPointRoute = new THREE.Vector3(this.startingPoint.x - vehicleDepth/2, this.startingPoint.y, this.startingPoint.z);
         // LEVEL 1
         this.keyPoints1 = [
             startingPointRoute,
-            new THREE.Vector3(15, 2, -117),
-            new THREE.Vector3(-51, 2, -115),
-            new THREE.Vector3(-105, 2, -112),
-            new THREE.Vector3(-128, 2, -108),
-            new THREE.Vector3(-140, 2, -105),
-            new THREE.Vector3(-151, 2, -98),
-            new THREE.Vector3(-160, 2, -85),
-            new THREE.Vector3(-160, 2, -60),
-            new THREE.Vector3(-157, 2, -35),
-            new THREE.Vector3(-153, 2, 5),
-            new THREE.Vector3(-153, 2, 35),
-            new THREE.Vector3(-165, 2, 50),
-            new THREE.Vector3(-177, 2, 60),
-            new THREE.Vector3(-191, 2, 70),
-            new THREE.Vector3(-194, 2, 78),
-            new THREE.Vector3(-194, 2, 85),
-            new THREE.Vector3(-189, 2, 89),
-            new THREE.Vector3(-180, 2, 95),
-            new THREE.Vector3(-168, 2, 100),
-            new THREE.Vector3(-157.5, 2, 102),
-            new THREE.Vector3(-147, 2, 102),
-            new THREE.Vector3(-135, 2, 100),
-            new THREE.Vector3(-120, 2, 90),
-            new THREE.Vector3(-112, 2, 80),
-            new THREE.Vector3(-105, 2, 70),
-            new THREE.Vector3(-98, 2, 60),
-            new THREE.Vector3(-90, 2, 50),
-            new THREE.Vector3(-80, 2, 30),
-            new THREE.Vector3(-70, 2, 10),
-            new THREE.Vector3(-65, 2, -5),
-            new THREE.Vector3(-50, 2, -30),
-            new THREE.Vector3(-32, 2, -40),
-            new THREE.Vector3(-10, 2, -40),
-            new THREE.Vector3(0, 2, -37),
-            new THREE.Vector3(8, 2, -28),
-            new THREE.Vector3(15, 2, -20),
-            new THREE.Vector3(18, 2, -12),
-            new THREE.Vector3(25, 2, 0),
-            new THREE.Vector3(35, 2, 8),
-            new THREE.Vector3(45, 2, 12),
-            new THREE.Vector3(55, 2, 10),
-            new THREE.Vector3(65, 2, 0),
-            new THREE.Vector3(72, 2, -15),
-            new THREE.Vector3(78, 2, -25),
-            new THREE.Vector3(85, 2, -30),
-            new THREE.Vector3(95, 2, -35),
-            new THREE.Vector3(105, 2, -38),
-            new THREE.Vector3(115, 2, -38),
-            new THREE.Vector3(125, 2, -37),
-            new THREE.Vector3(140, 2, -25),
-            new THREE.Vector3(150, 2, -10),
-            new THREE.Vector3(165, 2, 2),
-            new THREE.Vector3(175, 2, 5),
-            new THREE.Vector3(185, 2, 6),
-            new THREE.Vector3(200, 2, 0),
-            new THREE.Vector3(210, 2, -10),
-            new THREE.Vector3(215, 2, -18),
-            new THREE.Vector3(220, 2, -28),
-            new THREE.Vector3(226, 2, -55),
-            new THREE.Vector3(225, 2, -70),
-            new THREE.Vector3(215, 2, -90),
-            new THREE.Vector3(198, 2, -102),
-            new THREE.Vector3(160, 2, -112),
-            new THREE.Vector3(115, 2, -114),
-            new THREE.Vector3(80, 2, -114),
+            new THREE.Vector3(-51, 1.7, -115),
+            new THREE.Vector3(-105, 1.7, -112),
+            new THREE.Vector3(-128, 1.7, -108),
+            new THREE.Vector3(-151, 1.7, -98),
+            new THREE.Vector3(-160, 1.7, -85),
+            new THREE.Vector3(-160, 1.7, -60),
+            new THREE.Vector3(-157, 1.7, -35),
+            new THREE.Vector3(-153, 1.7, 5),
+            new THREE.Vector3(-156, 1.7, 35),
+            new THREE.Vector3(-165, 1.7, 50),
+            new THREE.Vector3(-177, 1.7, 60),
+            new THREE.Vector3(-190, 1.7, 75),
+            new THREE.Vector3(-180, 1.7, 98),
+            new THREE.Vector3(-147, 1.7, 102),
+            new THREE.Vector3(-125, 1.7, 90),
+            new THREE.Vector3(-112, 1.7, 80),
+            new THREE.Vector3(-98, 1.7, 60),
+            new THREE.Vector3(-80, 1.7, 30),
+            new THREE.Vector3(-65, 1.7, -5),
+            new THREE.Vector3(-50, 1.7, -30),
+            new THREE.Vector3(-32, 1.7, -40),
+            new THREE.Vector3(-10, 1.7, -40),
+            new THREE.Vector3(8, 1.7, -28),
+            new THREE.Vector3(18, 1.7, -12),
+            new THREE.Vector3(25, 1.7, 10),
+            new THREE.Vector3(55, 1.7, 10),
+            new THREE.Vector3(65, 1.7, 0),
+            new THREE.Vector3(72, 1.7, -15),
+            new THREE.Vector3(85, 1.7, -30),
+            new THREE.Vector3(95, 1.7, -35),
+            new THREE.Vector3(125, 1.7, -37),
+            new THREE.Vector3(140, 1.7, -25),
+            new THREE.Vector3(150, 1.7, -10),
+            new THREE.Vector3(165, 1.7, 2),
+            new THREE.Vector3(185, 1.7, 6),
+            new THREE.Vector3(200, 1.7, 0),
+            new THREE.Vector3(220, 1.7, -28),
+            new THREE.Vector3(225, 1.7, -70),
+            new THREE.Vector3(215, 1.7, -90),
+            new THREE.Vector3(198, 1.7, -102),
+            new THREE.Vector3(160, 1.7, -112),
             startingPointRoute
         ];        
-      
+    
+        // LEVEL 1
         const timeInterval1 = 1.5;
-        const offsetPos = new THREE.Vector3(0, 0, 0);
+        const offsetPos = new THREE.Vector3(vehicleDepth/2, 0, 0);
         const offsetRot = 0;
 
         const route1 = new MyRoute(this.app, this.keyPoints1, timeInterval1, this.autonomousVehicle, offsetPos, offsetRot, visualRepresentation);
@@ -291,7 +267,6 @@ class MyReader{
 
         for (let i = 0; i < numKeyPoints; i++) {
             const index = (i * offset) % numPoints;
-            const t = index/numPoints;
             if(i===0)
                 continue;
             checkKeyPoints.push(this.keyPoints1[index]);
@@ -469,20 +444,22 @@ class MyReader{
         }
 
         // check if the player has got out of the track
-        if(this.playerVehicle.detectCollisionsObject(this.track, true)){
-            console.log("saiu track")
-            this.playerVehicle.outOfTrack = true;
-            if(!this.playerVehicle.outOfTrackStarted){
-                this.playerVehicle.velocity *= 0.6;
-                this.playerVehicle.maxVelocity *= 0.6;
-                this.playerVehicle.outOfTrackStarted = true;
+        if(!this.shortcut){
+            if(this.playerVehicle.detectCollisionsObject(this.track, true)){
+                console.log("saiu track")
+                this.playerVehicle.outOfTrack = true;
+                if(!this.playerVehicle.outOfTrackStarted){
+                    this.playerVehicle.velocity *= 0.4;
+                    this.playerVehicle.maxVelocity *= 0.4;
+                    this.playerVehicle.outOfTrackStarted = true;
+                }
             }
-        }
-        else{
-            this.playerVehicle.outOfTrack = false;
-            if(this.playerVehicle.outOfTrackStarted){
-                this.playerVehicle.maxVelocity /= 0.6;
-                this.playerVehicle.outOfTrackStarted = false;
+            else{
+                this.playerVehicle.outOfTrack = false;
+                if(this.playerVehicle.outOfTrackStarted){
+                    this.playerVehicle.maxVelocity /= 0.4;
+                    this.playerVehicle.outOfTrackStarted = false;
+                }
             }
         }
     }

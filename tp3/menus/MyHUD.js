@@ -95,7 +95,9 @@ class MyHUD extends THREE.Object3D {
             else
                 modifierTime = (7000 - (time-Math.floor(appliedModifiersDict[modifier])))/1000;
 
-            this.modifiers.push(modifier)
+            //console.log(modifierTime);
+
+            this.modifiers.push(time, appliedModifiersDict[modifier])
 
             // modifier texture
             let modifierGeo = new THREE.PlaneGeometry(1.2, 1.2);
@@ -158,7 +160,6 @@ class MyHUD extends THREE.Object3D {
         }
         return false;
     }
-
 }
 
 export { MyHUD };
