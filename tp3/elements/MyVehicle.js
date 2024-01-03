@@ -21,33 +21,8 @@ class MyVehicle extends THREE.Object3D {
     this.width = width;
     this.depth = depth;
     this.maxVelocity = maxVelocity;
-    this.position.x = initialPosition[0];
-    this.position.y = initialPosition[1];
-    this.position.z = initialPosition[2] - depth/2; //so that the rotation pivot is in the rear axle
     this.initialPosition = initialPosition;
-
-    // car properties
-    this.carOrientation = 0;
-    this.wheelOrientation = 0;
-    this.directionForward = 1;
-    this.velocity = 0;
-    this.previousVelocity = 0;
-    this.initialWheelTurnAngle = Math.PI/2;
-    this.turnAngle = 0;
-    this.isReverse = false;
-    
-    // modifier flags
-    this.shouldStop = false;
-    this.rotationAdjusted = false;
-    this.previousTurnAngle = null;
-    this.shield = false;
-    this.slipping = false;
-    this.speeding = false;
-    this.outOfTrack = false;
-    this.outOfTrackStarted = false;
-    this.collidedCar = false;
-    this.collidedCarStarted = false;
-    this.allCarOutOfTrack = false;
+    this.setInitialProperties();
 
     // car geometry
     let geometry = new THREE.BoxGeometry(depth, height, width);
@@ -65,6 +40,36 @@ class MyVehicle extends THREE.Object3D {
     // wheel properties
     this.wheelHeight = height/8;
     this.xWheels = depth/3;
+    }
+
+    setInitialProperties() {
+        this.position.x = this.initialPosition[0];
+        this.position.y = this.initialPosition[1];
+        this.position.z = this.initialPosition[2] - this.depth/2; //so that the rotation pivot is in the rear axle
+    
+        // car properties
+        this.castShadow = false;
+        this.carOrientation = 0;
+        this.wheelOrientation = 0;
+        this.directionForward = 1;
+        this.velocity = 0;
+        this.previousVelocity = 0;
+        this.initialWheelTurnAngle = Math.PI/2;
+        this.turnAngle = 0;
+        this.isReverse = false;
+        
+        // modifier flags
+        this.shouldStop = false;
+        this.rotationAdjusted = false;
+        this.previousTurnAngle = null;
+        this.shield = false;
+        this.slipping = false;
+        this.speeding = false;
+        this.outOfTrack = false;
+        this.outOfTrackStarted = false;
+        this.collidedCar = false;
+        this.collidedCarStarted = false;
+        this.allCarOutOfTrack = false;
     }
 
     /**
@@ -369,22 +374,11 @@ class MyVehicle extends THREE.Object3D {
         this.needsRotationAdjusted = true;
     }
 
+    /**
+     * resets the car properties
+     */
     reset() {
-        this.carOrientation = 0;
-        this.velocity = 0;
-        this.directionForward = 1;
-        this.outOfTrack = false;
-        this.outOfTrackStarted = false;
-        this.allCarOutOfTrack = false;
-        this.slipping = false;
-        this.speeding = false;
-        this.shield = false;
-        this.collidedCar = false;
-        this.collidedCarStarted = false;
-        this.position.x = this.initialPosition[0];
-        this.position.y = this.initialPosition[1];
-        this.position.z = this.initialPosition[2];
-
+        this.setInitialProperties();
     }
 
     /**

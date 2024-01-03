@@ -53,9 +53,9 @@ class MySkyscraper extends THREE.Object3D {
 
         const parkingLotGeometry = new THREE.CylinderGeometry( width, width, 0.01, numSides );
         const parkingLotMaterial = new THREE.MeshPhongMaterial({ map:parkingLotTexture, bumpMap:parkingLotBumpTexture, bumpScale:2, side: THREE.DoubleSide });
-        const parkingLot = new THREE.Mesh(parkingLotGeometry, parkingLotMaterial);
-        parkingLot.position.y = 5.2;
-        this.add(parkingLot);
+        this.parkingLot = new THREE.Mesh(parkingLotGeometry, parkingLotMaterial);
+        this.parkingLot.position.y = 5.2;
+        this.add(this.parkingLot);
 
         if(parkingLotLines){
             this.lineWidth = width*1.2;

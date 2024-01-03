@@ -70,10 +70,10 @@ class MyScenario {
         this.skyscraperPodium.position.z = 90;
         this.playerParkingLotOffset = 0;
 
-        let spotlight4 = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
-        spotlight4.target = this.skyscraperPodium;
-        spotlight4.position.set(260, 50, 90);
-        this.app.scene.add(spotlight4);
+        this.podiumSpotlight = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
+        this.podiumSpotlight.target = this.skyscraperPodium;
+        this.podiumSpotlight.position.set(260, 40, 90);
+        this.app.scene.add(this.podiumSpotlight);
 
         this.autoParkingLotCars = [];
         this.playerParkingLotCars = [];
@@ -106,14 +106,6 @@ class MyScenario {
         this.billboard.position.set(-10, -200, -170);
         this.billboard.rotation.y = -Math.PI/8;
         this.app.scene.add(this.billboard);
-        
-        // mountain
-        let mountain = new MyMountain(this.app);
-        mountain.scale.set(1.8, 1.5, 1.5);
-        mountain.position.set(150, -265, 440);
-        mountain.rotation.x = -Math.PI/2;
-        mountain.rotation.z = Math.PI/8;
-        this.app.scene.add(mountain);
     }
 
     setCloudUnderCar(vehiclePosition) {
@@ -198,10 +190,18 @@ class MyScenario {
     }
 
     setPodium (winner, loser) {
+        this.podiumSpotlight.castShadow = true;
+        this.podiumSpotlight.shadow.mapSize.width = 1024;
+        this.podiumSpotlight.shadow.mapSize.height = 1024;
+        this.podiumSpotlight.shadow.camera.near = 0.5;
+        this.podiumSpotlight.shadow.camera.far = 27;
+
         this.podium = new THREE.Group();
         let podium1 = new THREE.BoxGeometry( 22,5, 15 );
-        let podiumMaterial = new THREE.MeshPhongMaterial({ color: "#000000", specular:  "#777777", emissive: "#000000", shininess: 30 });
+        let podiumMaterial = new THREE.MeshPhongMaterial({ color: "#B7661A", specular:  "#777777", emissive: "#000000", shininess: 30 });
         let podiumMesh1 = new THREE.Mesh(podium1, podiumMaterial);
+        podiumMesh1.receiveShadow = true;
+        podiumMesh1.castShadow = true;
         podiumMesh1.position.copy(this.skyscraperPodium.position);
         podiumMesh1.position.x += 8;
         podiumMesh1.position.y += 8;
@@ -211,6 +211,8 @@ class MyScenario {
 
         let podium2 = new THREE.BoxGeometry( 22 , 2, 15 );
         let podiumMesh2 = new THREE.Mesh(podium2, podiumMaterial);
+        podiumMesh2.receiveShadow = true;
+        podiumMesh2.castShadow = true;
         podiumMesh2.position.copy(podiumMesh1.position);
         podiumMesh2.position.x -= 17;
         podiumMesh2.position.z += 22;
@@ -227,12 +229,14 @@ class MyScenario {
         this.fireworksMesh.position.z -= 14;
 
         setTimeout(() => {
+            winner.castShadow = true;
             winner.position.copy(podiumMesh1.position);
             winner.position.y += 4;
             const winnerRotation = new THREE.Vector3(0, Math.PI - Math.PI/3.5, 0);
             winner.rotation.set(winnerRotation.x, winnerRotation.y, winnerRotation.z);
             winner.scale.set(1.5, 1.5, 1.5)
 
+            loser.castShadow = true;
             loser.position.copy(podiumMesh2.position);
             loser.position.y += 2;
             const loserRotation = new THREE.Vector3(0, - Math.PI, 0);
@@ -240,6 +244,7 @@ class MyScenario {
             loser.scale.set(1.5, 1.5, 1.5)
         }, 1000);    
 
+        this.skyscraperPodium.parkingLot.receiveShadow = true;
         this.podium.add(podiumMesh1);
         this.podium.add(podiumMesh2);
         this.podium.add(this.fireworksMesh);

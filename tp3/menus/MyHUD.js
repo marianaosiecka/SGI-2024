@@ -85,7 +85,7 @@ class MyHUD extends THREE.Object3D {
         let offset = 0;
         for(let i = 0; i < appliedModifiersCopy.length; i++){
             let modifier = appliedModifiers[i];
-            if(modifier instanceof MyVehicle || this.modifiers.includes(modifier))
+            if(modifier instanceof MyVehicle || this.modifiers.includes(modifier) || modifier.type === 'pick')
                 continue;
 
             let modifierTime = 0;
@@ -94,8 +94,6 @@ class MyHUD extends THREE.Object3D {
             }
             else
                 modifierTime = (7000 - (time-Math.floor(appliedModifiersDict[modifier])))/1000;
-
-            //console.log(modifierTime);
 
             this.modifiers.push(time, appliedModifiersDict[modifier])
 

@@ -566,7 +566,7 @@ class MyContents {
           this.winner = this.playerVehicle;
           this.loser = this.autonomousVehicle;
           this.autonomousVehicle.shouldStop = true;
-          this.autoTime = this.reader.chosenRoute.animationMaxDuration;
+          this.autoTime = this.reader.chosenRoute.animationMaxDuration*this.numLaps;
           this.changeState(this.states.FINISHED);
           return;
         }
@@ -918,6 +918,7 @@ class MyContents {
 
         // put paused to false
         this.app.contents.paused = false;
+        this.playerVehicle.velocity *= 0.2; // slow down the player vehicle
       }
     }
   }
