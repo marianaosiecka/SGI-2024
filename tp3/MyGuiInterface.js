@@ -58,6 +58,8 @@ class MyGuiInterface  {
                     this.contents.axis = null;
                 }
             });
+
+        this.datgui.close();
     }
 }
 

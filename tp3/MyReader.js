@@ -283,7 +283,7 @@ class MyReader{
             checkLine.quaternion.copy(checkKeyRotations[index]);
             checkLine.position.set(point.x, point.y-0.75, point.z);
             
-            //checkLine.visible = false;
+            checkLine.visible = false;
             this.checkKeyLines.push(checkLine);
             this.app.scene.add(checkLine)
         });
@@ -404,6 +404,8 @@ class MyReader{
                 else if (!this.pickAlreadyApplied) {
                     powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
                     this.pickAlreadyApplied = true;
+                    this.app.contents.selectedLayer = this.app.contents.availableLayers[2];
+                    this.app.contents.updateSelectedLayer();
                 } 
                 // if it's a shortcut power up, start the animation
                 if(powerUp.type == "shortcut"){
@@ -459,7 +461,6 @@ class MyReader{
                 this.playerVehicle.collidedCar = true;
                 if(!this.playerVehicle.collidedCarStarted){
                     this.playerVehicle.velocity *= 0.3;
-                    this.playerVehicle.maxVelocity *= 0.7;
                     this.playerVehicle.collidedCarStarted = true;
                 }
                 this.appliedModifiers.push(this.autonomousVehicle);
@@ -478,6 +479,7 @@ class MyReader{
                 this.playerVehicle.outOfTrack = true;
                 if(!this.playerVehicle.outOfTrackStarted){
                     this.playerVehicle.velocity *= 0.4;
+                    this.playerVehicle.maxVelocity *= 0.4;
                     this.playerVehicle.outOfTrackStarted = true;
                 }
             }

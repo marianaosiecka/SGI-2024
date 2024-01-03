@@ -284,7 +284,7 @@ class MyScenario {
             const loserRotation = new THREE.Vector3(0, - Math.PI, 0);
             loser.rotation.set(loserRotation.x, loserRotation.y, loserRotation.z);
             loser.scale.set(1.5, 1.5, 1.5)
-        }, 2200);    
+        }, 1000);    
 
         this.skyscraperPodium.parkingLot.receiveShadow = true;
         this.podium.add(podiumMesh1);

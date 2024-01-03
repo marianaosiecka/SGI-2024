@@ -1,5 +1,14 @@
 import * as THREE from 'three';
 
+/**
+ * MyEnterUsernameMenu
+ * @constructor
+ * @param app
+ * @param layer - Layer to place the menu
+ * @param pickableObjects - Array of objects that can be picked
+ * @param clickableObjects - Array of objects that can be clicked
+ * @extends THREE.Object3D
+ */
 class MyEnterUsernameMenu extends THREE.Object3D {
     constructor(app, layer, pickableObjects, clickableObjects) {
         super();
@@ -12,8 +21,11 @@ class MyEnterUsernameMenu extends THREE.Object3D {
         this.initEnterUsernameMenu();
     }
 
+    /**
+     * initializes the menu
+     */
     initEnterUsernameMenu() {
-        // Add go back button
+        // add go back button
         const backgroudButtonGeometry = new THREE.CircleGeometry(2, 32);
         const backgroudButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xB7661A, side: THREE.DoubleSide });
         let backgroundButtonMesh = new THREE.Mesh(backgroudButtonGeometry, backgroudButtonMaterial);
@@ -41,7 +53,7 @@ class MyEnterUsernameMenu extends THREE.Object3D {
         this.add(button);
 
 
-        // Add text saying "Enter your username"
+        // add text saying "Enter your username"
         const textGeometry = new THREE.PlaneGeometry(8, 1.2, 32);
         const textTexture = new THREE.TextureLoader().load('textures/enter_username.png');
         const textMaterial = new THREE.MeshBasicMaterial({ map: textTexture, transparent: true, side: THREE.DoubleSide });
@@ -49,7 +61,7 @@ class MyEnterUsernameMenu extends THREE.Object3D {
         textMesh.position.set(0, 3, 0);
         this.add(textMesh);
 
-        // Add a text input for the username
+        // add a text input for the username
         const inputGeometry = new THREE.PlaneGeometry(10, 2, 32);
         const inputMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
         const inputMesh = new THREE.Mesh(inputGeometry, inputMaterial);
@@ -74,7 +86,7 @@ class MyEnterUsernameMenu extends THREE.Object3D {
         }, 2400);
 
 
-        // Add a submit button
+        // add a submit button
         const submitGeometry = new THREE.PlaneGeometry(4, 2, 32);
         const submitMaterial = new THREE.MeshBasicMaterial({ color: 0xB7661A, side: THREE.DoubleSide });
         const submitMesh = new THREE.Mesh(submitGeometry, submitMaterial);
@@ -96,11 +108,19 @@ class MyEnterUsernameMenu extends THREE.Object3D {
         this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['StartMenuPerspective']);
     }
 
+    /**
+     * handle the hover of a button
+     * @param button - button to handle
+     */
     handleButtonHover(button) {
         this.buttonOriginalColor = button.material.color.getHex();
         button.material.color.setHex(0xf58e2c);
     }
 
+    /**
+     * resets the button state after hover
+     * @param button - button to reset
+     */
     resetButtonState(button) {
         if(button.material.color != this.buttonOriginalColor){
             button.material.color.setHex(this.buttonOriginalColor);

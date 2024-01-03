@@ -1,6 +1,11 @@
 import * as THREE from 'three';
-import { MyShader } from '../MyShader.js';
 
+/**
+ * MyCloud
+ * @constructor
+ * @param app
+ * @param vehiclePosition - Vehicle position
+ */
 class MyCloud extends THREE.Object3D{
     constructor(app, vehiclePosition = null) {
         super()
@@ -52,7 +57,7 @@ class MyCloud extends THREE.Object3D{
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader,
-            depthWrite: false,
+            depthWrite: false, // do not write to depth buffer
             transparent: true,
             side: THREE.DoubleSide
         });
@@ -60,6 +65,9 @@ class MyCloud extends THREE.Object3D{
        
     }
 
+    /**
+     * initializes one cloud
+     */
     createOneCloud() {
         this.cloud = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.shader);
         this.cloud.position.set(this.vehiclePosition.x, this.vehiclePosition.y - 100, this.vehiclePosition.z);
@@ -69,22 +77,36 @@ class MyCloud extends THREE.Object3D{
         this.add(this.cloud);
     }
 
+    /**
+     * updates the one cloud position
+     * @param position - new position
+     */
     updateOneCloud(position) {
         this.cloud.position.set(position.x, position.y - 2, position.z);
     }
 
+    /**
+     * initializes all clouds
+     */
     createAllClouds() {
         this.clouds_list = [];
+
         for ( var i = -500; i < 500; i += 1 ) {
             let cloud = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), this.shader );
-            cloud.position.x =  Math.random() * 1000 - 500; // between -500 and 500
-            cloud.position.y = - Math.random() * Math.random() * 110 - 50; // between -50 and -100
-            cloud.position.z = i; // between -500 and 500
+            // x between -500 and 500
+            cloud.position.x =  Math.random() * 1000 - 500;
+            // y between -50 and 50
+            cloud.position.y = - Math.random() * Math.random() * 110 - 50;
+            // z between -500 and 500 (equal to i)
+            cloud.position.z = i;
+
             cloud.rotation.z = Math.random() * Math.PI;
+
             cloud.scale.x = cloud.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
 
             cloud.lookAt(this.cameraPosition);
 
+            // create a second instance of the cloud and add it to the scene
             let cloud_clone = cloud.clone();
             cloud_clone.position.y -= 100;
             cloud_clone.lookAt(this.cameraPosition);
@@ -97,15 +119,22 @@ class MyCloud extends THREE.Object3D{
         }
     }
 
+    /**
+     * updates all clouds
+     */
     updateAllClouds() {
         this.clouds_list.forEach(cloud => {
             this.update(cloud);
         });
     }
 
+    /**
+     * updates cloud rotation to look at the camera
+     * @param cloud - cloud to update
+     */
     update(cloud){
         const lookAtDirection = new THREE.Vector3();
-        lookAtDirection.subVectors(this.app.controls.target, this.app.activeCamera.position).normalize();
+        lookAtDirection.subVectors(this.app.controls.target, this.app.activeCamera.position).normalize(); // lookAtDirection = target - cameraPosition
     
         const upVector = this.app.activeCamera.up.clone();
         const rotationMatrix = new THREE.Matrix4();

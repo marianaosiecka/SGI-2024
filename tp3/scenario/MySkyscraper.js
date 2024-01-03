@@ -1,5 +1,20 @@
 import * as THREE from 'three';
 
+/**
+ * MySkyscraper
+ * @constructor
+ * @param app
+ * @param parkingLotLines - If the skyscraper has parking lot lines
+ * @param height - Height of the skyscraper
+ * @param width - Width of the skyscraper
+ * @param numSides - Number of sides of the skyscraper
+ * @param colorBulding - Color of the skyscraper
+ * @param windowHeight - Height of the windows
+ * @param colorWindows - Color of the windows
+ * @param numParkingLotSpaces - Number of parking lot spaces
+ * @param offset - Offset of the parking lot lines
+ * @extends THREE.Object3D
+ */
 class MySkyscraper extends THREE.Object3D {
     constructor(app, parkingLotLines, height, width, numSides, colorBulding, windowHeight, colorWindows, numParkingLotSpaces, offset = 0) {
         super();
@@ -11,16 +26,17 @@ class MySkyscraper extends THREE.Object3D {
         let geometry = new THREE.CylinderGeometry( width, width, height, numSides );
         let material = new THREE.MeshPhongMaterial( {color: colorBulding} );
         this.building = new THREE.Mesh( geometry, material );
-        this.building.position.y = -(height - 5) + height / 2;
+        this.building.position.y = -(height - 5) + height / 2; 
         this.add(this.building);
 
         let sideWidth = width * Math.sin(Math.PI / numSides) * 2;
 
-        let windowWidth = sideWidth / 2;
+        let windowWidth = sideWidth / 2; // put 2 windows per side
         const windowSideBorder = windowWidth / 10
         windowWidth -= 3 * windowSideBorder;
         const windowTopBorder = windowHeight / 4;
 
+        // create windows
         let windows = new THREE.Object3D();
         let windowMaterial = new THREE.MeshPhongMaterial( {color: colorWindows} );
         let windowGeometry1 = new THREE.BoxGeometry( windowWidth, windowHeight, 0.1 );
@@ -44,7 +60,8 @@ class MySkyscraper extends THREE.Object3D {
                 this.add(window);
             }
         }
-    
+
+        // add parking lot
         const parkingLotTexture = new THREE.TextureLoader().load('textures/parking_lot_texture.png');
         const parkingLotBumpTexture = new THREE.TextureLoader().load('textures/parking_lot_bump_texture.jpg');
         parkingLotTexture.wrapS = THREE.RepeatWrapping;
@@ -105,6 +122,13 @@ class MySkyscraper extends THREE.Object3D {
         this.app.scene.add(this)
     }
 
+    /**
+     * adds an object to the skyscraper top
+     * @param object - Object to add
+     * @param rotation - Rotation of the object
+     * @param y - Y position of the object
+     * @param offset - Offset of the object
+     */
     setObject(object, rotation, y, offset) {
         object.rotation.y = Math.PI + Math.PI/2 - rotation - this.turnParkingLot;
         object.position.y = y;

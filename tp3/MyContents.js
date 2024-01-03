@@ -134,7 +134,11 @@ class MyContents {
     }, 200);
   }
 
+  /**
+   * resets the game to the main menu
+   */
   resetToMainMenu() {
+    // delete all the objects from the scene and dispose of their materials and geometries
     this.app.scene.clear();
     this.app.scene.traverse(object => {
       if (object.isMesh) {
@@ -195,11 +199,9 @@ class MyContents {
 
     this.parkingLotCars = [];
 
+    // initialize the contents
     this.init();
   }
-
-
-
 
   /**
    * changes the state of the game
@@ -226,15 +228,21 @@ class MyContents {
     }
   }
 
+  /**
+   * resets the game to the countdown
+   */
   resetToCountdown() {
+    // remove the podium and fireworks from the scene
     this.app.scene.remove(this.scenario.podium)
     this.fireworks.forEach(firework => {
       firework.reset()
     });
-    //this.app.scene.remove(this.scenario.finishLineGroup);
+
+    // remove routes
     this.reader.routes.length = 0;
     this.app.scene.remove(this.scenario.chosenRoute);
-    // remove obstacles and powerups from this.scenario.obstacles
+
+    // remove obstacles and powerups
     for (let i = 0; i < this.reader.obstacles.length; i++) {
       this.app.scene.remove(this.reader.obstacles[i]);
       this.reader.obstacles[i].mesh.geometry.dispose();
@@ -246,7 +254,9 @@ class MyContents {
       this.reader.powerUps[i].mesh.geometry.dispose();
       this.reader.powerUps[i].mesh.material.dispose();
     }
+    this.reader.powerUps.length = 0;
 
+    // remove ceiling obstacles
     this.app.scene.remove(this.newObstacle1)
     this.newObstacle1.mesh.geometry.dispose();
     this.newObstacle1.mesh.material.dispose();
@@ -254,10 +264,11 @@ class MyContents {
     this.newObstacle2.mesh.geometry.dispose();
     this.newObstacle2.mesh.material.dispose();
     this.scenario.obsParkingLotOffset = 1.5;
-    
-    this.reader.powerUps.length = 0;
+
+    // remove clound under car
     this.app.scene.remove(this.scenario.cloudUnderCar)
 
+    // reset reader attributes
     this.reader.appliedModifiers.length = 0;
     this.reader.appliedModifiersStartTime.length = 0;
     this.reader.shortcut = false;
@@ -265,6 +276,8 @@ class MyContents {
     this.reader.shortcutMixer = null;
     this.reader.shortcutAction = null;
     this.reader.pickAlreadyApplied = false;
+
+    // change state to countdown
     this.changeState(this.states.COUNTDOWN);
   }
 
@@ -281,13 +294,13 @@ class MyContents {
     this.autonomousVehicle = this.reader.autonomousVehicle;
     // player vehicle
     this.playerVehicle = this.reader.playerVehicle;
-    
+
     // set car models
     this.updatePlayerVehicleModel(this.selectedPlayerVehicle.properties);
     this.app.scene.remove(this.selectedPlayerVehicle.properties[0]) // remove the car from the parking lot
     this.updateAutonomousVehicleModel(this.selectedOpponentVehicle.properties);
     this.app.scene.remove(this.selectedOpponentVehicle.properties[0]) // remove the car from the parking lot
-    
+
     // load and set wheel model
     const wheel = new MyWheelModel();
     wheel.loadModel().then((properties) => {
@@ -349,7 +362,6 @@ class MyContents {
    * starts the game
    */
   startGame() {
-    // UNCOMMENT HERE
     this.reader.level = this.selectedLevel;
     this.numLaps = 2;
     this.timeLimit = 150000; // milliseconds
@@ -392,56 +404,37 @@ class MyContents {
    * finishes the game
    */
   finishGame() {
+    // update selected layer to 1 (menu layer)
     this.selectedLayer = this.availableLayers[1];
     this.updateSelectedLayer();
 
-    // UNCOMMENT HERE
-    /*
-    this.playerTime = 0
-    this.autoTime = 0
-    this.reader.level = 0
-    this.username = "player"*/
+    // remove the HUD
+    this.app.scene.remove(this.HUD);
 
-    this.app.scene.remove(this.HUD)
-    
     // set a timeout before setting the podium
-    setTimeout(() => {
-      this.app.smoothCameraTransition('PodiumPerspective', 16000);
+    this.app.smoothCameraTransition('PodiumPerspective', 16000);
 
-      this.fireworks = [];
-      //setTimeout(() => {
-      // set podium
-      this.scenario.setPodium(this.winner, this.loser);
-  
-      this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
-      //}, 300);
-  
-      // reset lap and time counters
-      this.playerLaps = 0;
-      this.playerTime = 0;
-      this.autoLaps = 0;
-      this.autoTime = 0;
-      this.winner = null;
-      this.loser = null;
-  
-      console.log("FINISHED GAME");
-    }, 2000);  
-
-    // UNCOMMENT HERE
-    /*this.app.setActiveCamera('PodiumPerspective');
-    this.app.updateCameraIfRequired();
+    // set active camera as the podium perspective
+    this.app.smoothCameraTransition('PodiumPerspective', 16000);
  
-    const myCarModelGreen1 = new MyCarModelRed();
-    myCarModelGreen1.loadModel().then((properties) => {
-      this.updatePlayerVehicleModel(properties);
-      this.winner = this.playerVehicle;
-    });
+    this.fireworks = [];
+    
+    // set podium
+    this.scenario.setPodium(this.winner, this.loser);
 
-    const myCarModelGreen2 = new MyCarModelGreen();
-    myCarModelGreen2.loadModel().then((properties) => {
-      this.updateAutonomousVehicleModel(properties);
-      this.loser = this.autonomousVehicle;
-    });*/
+    // init finish menu
+    this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
+
+    // reset lap and time counters
+    this.playerLaps = 0;
+    this.playerTime = 0;
+    this.autoLaps = 0;
+    this.autoTime = 0;
+    this.winner = null;
+    this.loser = null;
+
+    console.log("FINISHED GAME");
+
   }
 
   /**
@@ -452,30 +445,46 @@ class MyContents {
     // read the properties
     this.reader.readPlayerVehicle(properties[3], properties[4], properties[5], properties[6])
 
-    // update the player vehicle
+    // update the player vehicle and add it to the scene
     this.playerVehicle = this.reader.playerVehicle;
     this.playerVehicle.setModel(properties[1]);
-
-    // add the player vehicle to the scene
     this.app.scene.add(this.playerVehicle);
   }
 
+  /**
+   * updates the autonomous vehicle model
+   * @param {array} properties - array containing the properties of the model
+   */
   updateAutonomousVehicleModel(properties) {
+    // read the properties
     this.reader.readAutonomousVehicle(properties[3], properties[4], properties[5], properties[6])
+
+    // update the autonomous vehicle and add it to the scene
     this.autonomousVehicle = this.reader.autonomousVehicle;
     this.autonomousVehicle.setModel(properties[1]);
     this.app.scene.add(this.autonomousVehicle);
   }
 
+  /**
+   * adds key event listeners
+   */
   keyListeners() {
     document.addEventListener('keydown', this.keyDown.bind(this), false);
     document.addEventListener('keyup', this.keyUp.bind(this), false);
   }
 
+  /**
+   * key down event
+   * @param {event} event - the event
+   */
   keyDown(event) {
     this.keys[event.code] = true;
   }
 
+  /**
+   * key up event
+   * @param {event} event - the event
+   */
   keyUp(event) {
     this.keys[event.code] = false;
 
@@ -489,53 +498,71 @@ class MyContents {
   }
 
 
+  /**
+   * checks the keys pressed
+   */
   checkKeys() {
     let speed = this.speedFactor;
     let turnSpeed = speed / 30;
 
+    // check if the space key was pressed
     if (this.keys['Space'] && !this.spaceKeyPressed) {
       this.spaceKeyPressed = true;
-      this.paused = !this.paused;
+      this.paused = !this.paused; // change the paused state
+
+      // if the game is paused, save the time before the pause and hide the HUD
       if (this.paused) {
         this.timeBeforePause = Date.now();
         console.log("paused");
         this.HUD.visible = false;
+        return;
       }
+      // if the game is unpaused, add the time passed during the pause to the time start and show the HUD
       else {
         this.timeStart += Math.floor((Date.now() - this.timeBeforePause));
         this.HUD.visible = true;
       }
     }
 
+    // if the game is paused, don't check the other keys
     if (this.paused) return;
 
+    // check if the switch modifier is applied
     let isSwitch = this.reader.isAppliedModifier("switch");
 
+    // w key pressed - accelerate the car
     if (this.keys['KeyW'])
       this.playerVehicle.accelerate(speed);
 
+    // s key pressed - decelerate the car
     if (this.keys['KeyS'])
       this.playerVehicle.decelerate(speed);
 
+    // a key pressed - turn the car left
     if (this.keys['KeyA']) {
+      // if the switch modifier is applied, turn the car right
       if (!isSwitch) this.playerVehicle.turn(turnSpeed); //the higher the number that divides speed factor -> the smaller is the turning angle
       else this.playerVehicle.turn(-turnSpeed);
     }
 
+    // x key pressed - stop the car
     if (this.keys['KeyX'])
       this.playerVehicle.shouldStop = true;
 
-
+    // d key pressed - turn the car right
     if (this.keys['KeyD']) {
+      // if the switch modifier is applied, turn the car left
       if (!isSwitch) this.playerVehicle.turn(-turnSpeed);
       else this.playerVehicle.turn(turnSpeed);
     }
 
+    // r key pressed - reverse the car
     if (this.keys['KeyR'] && !this.rKeyPressed) {
       this.rKeyPressed = true;
       this.playerVehicle.reverse();
     }
 
+    // p key pressed - reset the car
     if (this.keys['KeyP'])
       this.playerVehicle.reset();
   }
@@ -562,7 +589,12 @@ class MyContents {
     }
   }
 
+  /**
+   * check if the run is finished
+   * @param {number} timePassed - the time passed since the start of the run
+   */
   checkFinalConditions(timePassed) {
+    // if the time passed is greater than the time limit, the run is finished
     if (timePassed >= this.timeLimit) {
       this.autoTime = this.timeLimit / 1000;
       this.playerTime = this.timeLimit / 1000;
@@ -597,41 +629,61 @@ class MyContents {
       }
     }
   }
-  
+
+  /**
+   * get the camera position relative to the car
+   * @param {MyVehicle} car - the car
+   * @returns {THREE.Vector3} the camera position
+   */
   getCarCameraPosition(car) {
-    let cameraOffset = new THREE.Vector3(16, 10, 0);
+    let cameraOffset = new THREE.Vector3(16, 10, 0); // camera offset relative to the car
+
     let carPosition = new THREE.Vector3();
     car.getWorldPosition(carPosition);
     const carQuartenion = new THREE.Quaternion();
     car.getWorldQuaternion(carQuartenion);
-    cameraOffset = cameraOffset.applyQuaternion(carQuartenion);
-    carPosition = carPosition.add(cameraOffset);
-    return carPosition;
+
+    cameraOffset = cameraOffset.applyQuaternion(carQuartenion); // apply the car quaternion to the camera offset
+    const cameraPosition = carPosition.add(cameraOffset);  // add the car position to the camera offset
+    return cameraPosition;
   }
 
+  /**
+   * get the camera target relative to the car
+   * @param {MyVehicle} car - the car
+   * @returns {THREE.Vector3} the camera target
+   */
   getCarCameraTarget(car) {
     return new THREE.Vector3(car.position.x, car.position.y + 5, car.position.z);
   }
 
+  /**
+   * updates the camera position and target relative to the player car
+   */
   updateCameraPlayer() {
-    if (this.paused) return;
+    if (this.paused) return; // if the game is paused, don't update the camera
+
     // update position
     this.app.activeCamera.position.copy(this.getCarCameraPosition(this.playerVehicle));
 
     // update target
     this.app.controls.target = this.getCarCameraTarget(this.playerVehicle);
 
+    // update the clouds
     this.scenario.clouds.updateAllClouds()
 
-    // pode ser chamado no countdown
+    // update the HUD position
     if (this.HUD) {
       this.setPosAndRotRelativeToCamera(this.HUD, this.app.activeCamera, this.app.controls.target, 15);
       this.HUD.position.y += 8.5;
     }
   }
 
+  /**
+   * updates the camera position and target relative to the autonomous car
+   */
   updateCameraAutonomous() {
-    if(this.paused) return;
+    if (this.paused) return; // if the game is paused, don't update the camera
 
     // update position
     this.app.activeCamera.position.copy(this.getCarCameraPosition(this.autonomousVehicle));
@@ -639,36 +691,56 @@ class MyContents {
     // update target
     this.app.controls.target = this.getCarCameraTarget(this.autonomousVehicle);
 
+    // update the clouds position
     this.scenario.clouds.updateAllClouds()
   }
 
+  /**
+   * update the shortcut power up
+   * @param {number} delta - the time passed since the last update
+   */
   updateShortcut(delta) {
-    this.reader.shortcutMixer.update(delta);
+    this.reader.shortcutMixer.update(delta); // update the shortcut mixer
+
+    // set the cloud under the car position in relation to the player car
     this.reader.cloud.position.copy(this.playerVehicle.position.clone().add(new THREE.Vector3(0, -2, 0)));
 
-    const elapsedTime = this.reader.shortcutAction.time; // Get elapsed time of the animation
-    const duration = this.reader.shortcutAction._clip.duration; // Get actual duration
+    const elapsedTime = this.reader.shortcutAction.time; // get elapsed time of the animation
+    const duration = this.reader.shortcutAction._clip.duration; // get actual duration
     const tolerance = 0.08;
 
+    // if the animation is finished, remove the shortcut
     if (elapsedTime + tolerance >= duration) {
       this.reader.stopShortcutAnimation();
       this.reader.removeShortcut();
     }
   }
 
+
+
+  /**
+   * update the applied modifiers (power ups and obstacles and car collisions)
+   */
   updateModifiers() {
     const time = Date.now();
 
-    // check if any modifier is applied for more than 15 seconds
     for (let i = 0; i < this.reader.appliedModifiers.length; i++) {
+
+      // car collision
       if (this.reader.appliedModifiers[i] instanceof MyVehicle) {
+        // if its applied for moe than 3 seconds, remove it
         if (time - this.reader.appliedModifiersStartTime[i] > 3000)
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
       }
+
+      // not the shortcut power up
       else if (this.reader.appliedModifiers[i].type !== "shortcut") {
+        // pick power up - remove it
         if (this.reader.appliedModifiers[i].type === "pick") {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
         }
+
+        // any other modifier - remove it after 6 seconds
         else if (time - this.reader.appliedModifiersStartTime[i] > 6000) {
           this.reader.stopModifier(this.reader.appliedModifiers[i]);
         }
@@ -676,26 +748,31 @@ class MyContents {
     }
   }
 
+  /**
+   * update while in the playing state
+   * @param {number} delta - the time passed since the last update
+   */
   updatePlayingState(delta) {
     this.raycaster.layers.enableAll()
-
     const time = Date.now();
 
-    this.checkKeys();
+    this.checkKeys(); // check the keys pressed
 
+    // if the game is paused, set the HUD to the pause state
     if (this.paused)
-      this.HUD.setPause();
+      this.HUD.setPause(); 
 
     else {
-      const timePassed = time - this.timeStart;
-      this.checkFinalConditions(timePassed);
+      const timePassed = time - this.timeStart; // time passed since the start of the run
+      this.checkFinalConditions(timePassed); // check if the run is finished
 
       // update the autonomous car position and rotation
       if (!this.autonomousVehicle.shouldStop) {
         this.autonomousMixer.update(delta);
-        // this updates the position of the actual object of MyVehicle class
+        // update the position of the actual object of MyVehicle class
         if (this.reader.chosenRoute) this.reader.chosenRoute.updateBoundingBox(this.reader.autonomousVehicle, this.reader.track);
 
+        // check if autonomous car passed the finish line and update laps
         if (this.reader.autonomousCheckLineIdx === this.reader.checkKeyLines.length
           && this.autonomousVehicle.detectCollisionsObject(this.reader.finishingLine, false)) {
           this.autoLaps++;
@@ -704,7 +781,8 @@ class MyContents {
         }
       }
 
-      this.reader.updateModifiers(this.clock.getElapsedTime());
+      // update the modifiers
+      this.reader.updateModifiers(this.clock.getElapsedTime()); 
 
       if (this.previousTime == 0)
         this.previousTime = time;
@@ -720,20 +798,25 @@ class MyContents {
           console.log("player laps", this.playerLaps)
         }
 
+        // check for collisions with obstacles
         this.reader.checkForCollisions(this.scenario.obstacles);
 
+        // update the HUD
         this.HUD.update(!this.paused, this.numLaps, this.playerLaps, this.timeLimit, time - this.timeStart, this.playerVehicle.maxVelocity, this.playerVehicle.velocity, this.reader.appliedModifiers, this.reader.appliedModifiersStartTime);
 
+        // update the shortcut power up
         if (this.reader.shortcut) {
           this.updateShortcut(delta);
         }
 
+        // update the applied modifiers
         this.updateModifiers();
       }
     }
 
     this.previousTime = time;
 
+    // update the camera
     if (this.followPlayerVehicle) {
       this.updateCameraPlayer();
       this.HUD.visible = true;
@@ -747,8 +830,12 @@ class MyContents {
 
   }
 
+  /**
+   * update when in the finished state
+   */
   updateFinishedState() {
     const delta = this.clock.getDelta()
+
     // add new fireworks every 5% of the calls
     if (Math.random() < 0.05) {
       const newFirework = new MyFirework(this.app, this.scenario.fireworksMesh.position)
@@ -832,7 +919,7 @@ class MyContents {
 
       // "submit username" button - go to the choose level menu
       else if (intersects[0].object.name == "submitUsernameButton") {
-        if(!document.getElementById("username")) return;
+        if (!document.getElementById("username")) return;
         this.username = document.getElementById("username").value;
         if (this.username == "") this.username = "player" // default username
         console.log("username: ", this.username);
@@ -881,18 +968,19 @@ class MyContents {
       // "redo run" button - go to the countdown
       else if (intersects[0].object.name == "redoRunButton") {
         this.menuManager.clearCurrentMenu();
-        this.resetToCountdown();
+        this.resetToCountdown(); // reset the game to the countdown
       }
 
       // "main menu" button - go to the main menu
       else if (intersects[0].object.name == "mainMenuButton") {
         this.menuManager.clearCurrentMenu();
-        this.resetToMainMenu();
+        this.resetToMainMenu(); // reset the game to the main menu
       }
 
       // ADD NEW OBSTACLE POWERUP EVENTS
       // new obstacle selected - create obstacle object and go to the track perspective
       else if (intersects[0].object.name.startsWith("newObstacle")) {
+        console.log("new obstacle selected")
         const type = intersects[0].object.name.substring(11); // get the type of the obstacle
         const rotate = type == "slip" ? Math.PI / 2 : 0; // get the rotation of the obstacle
         const texture = type == "slip" ? new THREE.TextureLoader().load("textures/obstacle_slip.png") : new THREE.TextureLoader().load("textures/obstacle_switchdirections.png"); // get the texture of the obstacle
@@ -1029,14 +1117,14 @@ class MyContents {
    * @param {number} distance - the distance from the object to the camera
    */
   setPosAndRotRelativeToCamera(obj, camera = this.app.activeCamera, target = new THREE.Vector3(0, 0, 0), distance = 30) {
-    const direction = new THREE.Vector3().subVectors(target, camera.position).normalize();
-    const position = new THREE.Vector3().copy(camera.position).addScaledVector(direction, distance);
+    const direction = new THREE.Vector3().subVectors(target, camera.position).normalize(); // get the direction from the camera to the target
+    const position = new THREE.Vector3().copy(camera.position).addScaledVector(direction, distance); // get the position of the object relative to the camera
 
-    obj.position.copy(position);
+    obj.position.copy(position); // set the position of the object
 
-    const lookAtMatrix = new THREE.Matrix4().lookAt(camera.position, target, camera.up);
-    const rotation = new THREE.Euler().setFromRotationMatrix(lookAtMatrix);
-    obj.rotation.set(rotation.x, rotation.y, rotation.z);
+    const lookAtMatrix = new THREE.Matrix4().lookAt(camera.position, target, camera.up); // get the look at matrix
+    const rotation = new THREE.Euler().setFromRotationMatrix(lookAtMatrix); // get the rotation from the look at matrix
+    obj.rotation.set(rotation.x, rotation.y, rotation.z); // set the rotation of the object
   }
 
   /**

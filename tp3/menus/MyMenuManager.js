@@ -1,13 +1,22 @@
 import * as THREE from 'three';
 
 import { MyMainMenu } from './MyMainMenu.js';
-import { MyInstructionsMenu } from './MyInstructionsMenu.js';
 import { MyEnterUsernameMenu } from './MyEnterUsernameMenu.js';
 import { MyChooseLevelMenu } from './MyChooseLevelMenu.js';
 import { MyChoosePlayerVehicleMenu } from './MyChoosePlayerVehicleMenu.js';
 import { MyChooseOpponentVehicleMenu } from './MyChooseOpponentVehicleMenu.js';
 import { MyFinishMenu } from './MyFinishMenu.js';
 
+
+/**
+ * MyMenuManager
+ * @constructor
+ * @param app
+ * @param layer - Layer to place the menu
+ * @param pickableObjects - Array of objects that can be picked
+ * @param clickableObjects - Array of objects that can be clicked
+ * @extends THREE.Object3D
+ */
 class MyMenuManager {
     constructor(app, layer, pickableObjects, clickableObjects) {
         this.app = app;
@@ -15,10 +24,13 @@ class MyMenuManager {
         this.pickableObjects = pickableObjects;
         this.clickableObjects = clickableObjects;
 
+        // current menu object
         this.currentMenu = null;
     }
 
-    // main menu
+    /**
+     * initializes the main menu
+     */
     initMainMenu() {
         this.app.contents.selectedLayer = this.layer;
         this.app.contents.updateSelectedLayer();
@@ -28,7 +40,9 @@ class MyMenuManager {
         this.app.scene.add(this.currentMenu);
     }
 
-     // start menu
+     /**
+      * initializes the enter username menu
+      */
      initEnterUsernameMenu() {
         this.clearCurrentMenu();
         this.app.smoothCameraTransition('StartMenuPerspective', 30000);
@@ -36,7 +50,9 @@ class MyMenuManager {
         this.app.scene.add(this.currentMenu);
     }
 
-    // choose level menu
+    /**
+     * initializes the choose level menu
+     */
     initChooseLevelMenu() {
         this.app.setActiveCamera('StartMenuPerspective');
         this.clearCurrentMenu();
@@ -44,7 +60,9 @@ class MyMenuManager {
         this.app.scene.add(this.currentMenu);
     }
 
-    // choose player vehicle menu
+    /**
+     * initializes the choose vehicle menu
+     */
     initChoosePlayerVehicleMenu() {
         this.clearCurrentMenu();
         this.app.smoothCameraTransition('PlayerParkingLot1', 90000)
@@ -52,6 +70,9 @@ class MyMenuManager {
         this.app.scene.add(this.currentMenu);
     }
 
+    /**
+     * initializes the choose opponent vehicle menu
+     */
     initChooseOpponentVehicleMenu() {
         this.clearCurrentMenu();
         this.app.smoothCameraTransition('OpponentParkingLot1', 90000)
@@ -59,7 +80,10 @@ class MyMenuManager {
         this.app.scene.add(this.currentMenu);
     }
 
-    // update choose vehicle menu
+    /**
+     * update choose vehicle menu (when clicking the arrows)
+     * @param num - 1 if right arrow, -1 if left arrow
+     */
     updateChooseVehicleMenu(num) {
         if(this.currentMenu instanceof MyChoosePlayerVehicleMenu){
             this.currentMenu.updateChoosePlayerVehicleMenu(num);
@@ -69,28 +93,19 @@ class MyMenuManager {
         }
     }
 
-    // instructions menu
-    initInstructionsMenu(fromMenuName) {
-        this.clearCurrentMenu();
-        this.currentMenu = new MyInstructionsMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects, fromMenuName);
-        this.app.scene.add(this.currentMenu);
-    }
-
-    // leaderboard menu
-    initLeaderboardMenu(fromMenuName) {
-        /*this.clearCurrentMenu();
-        this.currentMenu = new MyLeaderboardMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects, fromMenuName);
-        this.app.scene.add(this.currentMenu);
-        */
-    }
-
+    /**
+     * initializes the finish menu
+     */
     initFinishMenu(playerTime, autoTime, level, username) {
         this.clearCurrentMenu();
         this.currentMenu = new MyFinishMenu(this.app, this.layer, this.pickableObjects, this.clickableObjects, playerTime, autoTime, level, username);
         this.app.scene.add(this.currentMenu);
     }
 
-
+    /**
+     * initializes the menu
+     * @param menuName - name of the menu to initialize
+     */
     initMenu(menuName) {
         switch (menuName) {
             case 'MainMenu':
@@ -113,11 +128,14 @@ class MyMenuManager {
         }
     }
 
+    /**
+     * clears the current menu
+     */
     clearCurrentMenu() {
         if (this.currentMenu) {
-            this.pickableObjects.length = 0;
-            this.clickableObjects.length = 0;
-            this.app.scene.remove(this.currentMenu);
+            this.pickableObjects.length = 0; // clear the pickable objects array
+            this.clickableObjects.length = 0; // clear the clickable objects array
+            this.app.scene.remove(this.currentMenu); // remove the current menu from the scene
             this.currentMenu.traverse((child) => {
                 if (child instanceof THREE.Mesh) {
                     child.geometry.dispose();
@@ -129,14 +147,26 @@ class MyMenuManager {
         }
     }
 
+    /**
+     * handle button hover
+     * @param button - button to handle
+     */
     handleButtonHover(button) {
         if (this.currentMenu) this.currentMenu.handleButtonHover(button);
     }
 
+    /**
+     * reset button state after hover
+     * @param button - button to reset
+     */
     resetButtonState(button) {
         if (this.currentMenu) this.currentMenu.resetButtonState(button);
     }
 
+    /**
+     * handle button click
+     * @param button - button to handle
+     */
     handleClickButton(button){
         if (this.currentMenu) this.currentMenu.handleClickButton(button);
     }
