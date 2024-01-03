@@ -105,6 +105,7 @@ class MyReader{
     }
 
     setFinishLine() {
+        this.finishLineGroup = new THREE.Group();
         let pillarGeo = new THREE.CylinderGeometry( 0.3, 0.3, 16.2, 32 );
         let pillarMat = new THREE.MeshPhongMaterial( {color: "#000000", shininess: 5} );
         
@@ -132,11 +133,12 @@ class MyReader{
         let finishingLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth*3.25)
         this.finishingLine = new THREE.Mesh( finishingLineGeo, lineMat );
         this.finishingLine.position.set(this.startingPoint.x - 10, this.startingPoint.y-0.75, this.startingPoint.z + this.trackWidth/2.5);
-        
-        this.app.scene.add(this.finishingLine)
-        this.app.scene.add(pillarRight);
-        this.app.scene.add(pillarLeft);
-        this.app.scene.add(panel);
+
+        this.finishLineGroup.add(pillarRight);
+        this.finishLineGroup.add(pillarLeft);
+        this.finishLineGroup.add(panel);
+        this.finishLineGroup.add(this.finishingLine);
+        this.app.scene.add(this.finishLineGroup);
     }
 
     readRoutes(layer, visualRepresentation = false){

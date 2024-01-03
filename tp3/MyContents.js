@@ -135,6 +135,73 @@ class MyContents {
     }, 200);
   }
 
+  resetToMainMenu() {
+    this.app.scene.clear();
+    this.app.scene.traverse(object => {
+      if (object.isMesh) {
+        object.geometry.dispose();
+        object.material.dispose();
+        if (object.material.map) {
+          object.material.map.dispose();
+        }
+      }
+      if (object.isGroup) {
+        object.children.forEach(child => {
+          if (child.isMesh) {
+            child.geometry.dispose();
+            child.material.dispose();
+            if (child.material.map) {
+              child.material.map.dispose();
+            }
+          }
+        });
+      }
+    });
+
+    // RESET CONSTRUCTOR VARIABLES
+    this.clock = new THREE.Clock()
+
+    // camera related attributes
+    this.followPlayerVehicle = false;
+    this.followAutonomousVehicle = false;
+
+    // starting point of the run
+    this.startingPoint = new THREE.Vector3(32, 1.7, -117);
+
+    // track related attributes
+    this.showTrackWireframe = false;
+    this.showTrackLine = true;
+    this.trackClosedCurve = false;
+
+    // game levels
+    this.levels = [1, 2, 3];
+
+    // menu related attributes
+    this.username = null;
+    this.selectedLevel = null;
+    this.availablePlayerVehicles = [];
+    this.selectedPlayerVehicle = null;
+    this.availableOpponentVehicles = [];
+    this.selectedOpponentVehicle = null;
+
+    // game related attributes
+    this.keys = {};
+    this.rKeyPressed = false;
+    this.keyListeners();
+    this.winner = null;
+    this.loser = null;
+    this.reader = new MyReader(this, this.app, this.startingPoint, this.segments)
+    this.previousTime = 0;
+    this.speedFactor = 0.5;
+
+    this.parkingLotCars = [];
+
+    this.init();
+  }
+
+
+
+
   /**
    * changes the state of the game
    * @param {string} newState - the new state of the game
@@ -158,6 +225,35 @@ class MyContents {
       default:
         break;
     }
+  }
+
+  resetToCountdown() {
+    this.app.scene.remove(this.scenario.podium)
+    this.fireworks.forEach(firework => {
+      firework.reset()
+    });
+    this.app.scene.remove(this.scenario.finishLineGroup);
+    this.reader.routes.length = 0;
+    this.app.scene.remove(this.scenario.chosenRoute);
+    // remove obstacles and powerups from this.scenario.obstacles
+    for (let i = 0; i < this.reader.obstacles.length; i++) {
+      this.app.scene.remove(this.reader.obstacles[i]);
+    }
+    this.reader.obstacles.length = 0;
+    for (let i = 0; i < this.reader.powerUps.length; i++) {
+      this.app.scene.remove(this.reader.powerUps[i]);
+    }
+    this.reader.powerUps.length = 0;
+    this.app.scene.remove(this.scenario.cloudUnderCar)
+
+    this.reader.appliedModifiers.length = 0;
+    this.reader.appliedModifiersStartTime.length = 0;
+    this.reader.shortcut = false;
+    this.reader.startShortcut = false;
+    this.reader.shortcutMixer = null;
+    this.reader.shortcutAction = null;
+    this.reader.pickAlreadyApplied = false;
+    this.changeState(this.states.COUNTDOWN);
   }
 
   /**
@@ -405,9 +501,9 @@ class MyContents {
       else this.playerVehicle.turn(-turnSpeed);
     }
 
-    if (this.keys['KeyX']) 
-      this.playerVehicle.shouldStop = true; 
-    
+    if (this.keys['KeyX'])
+      this.playerVehicle.shouldStop = true;
+
 
     if (this.keys['KeyD']) {
       if (!isSwitch) this.playerVehicle.turn(-turnSpeed);
@@ -694,7 +790,7 @@ class MyContents {
       // MENU EVENTS
       // "click here to start" button - go to the enter username menu
       if (intersects[0].object.name == "clickHereToStart") {
-        if(this.app.activeCameraName == "MainMenuPerspective") this.menuManager.initEnterUsernameMenu();
+        if (this.app.activeCameraName == "MainMenuPerspective") this.menuManager.initEnterUsernameMenu();
       }
 
       else if (intersects[0].object.name.startsWith("backButton")) {
@@ -708,8 +804,9 @@ class MyContents {
 
       // "submit username" button - go to the choose level menu
       else if (intersects[0].object.name == "submitUsernameButton") {
+        if(!document.getElementById("username")) return;
         this.username = document.getElementById("username").value;
-        if(this.username == "") this.username = "player" // default username
+        if (this.username == "") this.username = "player" // default username
         console.log("username: ", this.username);
         document.body.removeChild(document.getElementById("username")); // remove the input field
         this.menuManager.initChooseLevelMenu();
@@ -736,8 +833,8 @@ class MyContents {
       // "select car player" button - go to the choose autonomous vehicle menu
       else if (intersects[0].object.name == "selectPlayerVehicleButton") {
         this.selectedPlayerVehicle = this.availablePlayerVehicles[this.app.activeCameraName];
-        console.log("selected player vehicle: ", this.selectedPlayerVehicle);
-        if(this.selectedPlayerVehicle){
+        if (this.selectedPlayerVehicle) {
+          console.log("selected player vehicle: ", this.selectedPlayerVehicle);
           this.loadAutonomousParkingLot();
           this.menuManager.initChooseOpponentVehicleMenu();
         }
@@ -746,8 +843,8 @@ class MyContents {
       // "select car autonomous" button - go to the countdown
       else if (intersects[0].object.name == "selectOpponentVehicleButton") {
         this.selectedOpponentVehicle = this.availableOpponentVehicles[this.app.activeCameraName];
-        console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
-        if(this.selectedOpponentVehicle){
+        if (this.selectedOpponentVehicle) {
+          console.log("selected opponent vehicle: ", this.selectedOpponentVehicle);
           this.menuManager.clearCurrentMenu();
           this.changeState(this.states.COUNTDOWN);
         }
@@ -756,15 +853,13 @@ class MyContents {
       // "redo run" button - go to the countdown
       else if (intersects[0].object.name == "redoRunButton") {
         this.menuManager.clearCurrentMenu();
-        this.app.scene.remove(this.scenario.podium)
-        this.changeState(this.states.COUNTDOWN);
+        this.resetToCountdown();
       }
 
       // "main menu" button - go to the main menu
       else if (intersects[0].object.name == "mainMenuButton") {
         this.menuManager.clearCurrentMenu();
-        this.app.scene.remove(this.scenario.podium)
-        this.changeState(this.states.MENU);
+        this.resetToMainMenu();
       }
 
       // ADD NEW OBSTACLE POWERUP EVENTS

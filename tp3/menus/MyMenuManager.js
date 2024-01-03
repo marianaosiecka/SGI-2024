@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import { MyMainMenu } from './MyMainMenu.js';
 import { MyInstructionsMenu } from './MyInstructionsMenu.js';
 import { MyEnterUsernameMenu } from './MyEnterUsernameMenu.js';
@@ -116,6 +118,13 @@ class MyMenuManager {
             this.pickableObjects.length = 0;
             this.clickableObjects.length = 0;
             this.app.scene.remove(this.currentMenu);
+            this.currentMenu.traverse((child) => {
+                if (child instanceof THREE.Mesh) {
+                    child.geometry.dispose();
+                    child.material.dispose();
+                    if(child.material.map) child.material.map.dispose();
+                }
+            });
             this.currentMenu = null;
         }
     }

@@ -75,7 +75,7 @@ class MyHUD extends THREE.Object3D {
         const appliedModifiersDict = {};
 
         for (let i = 0; i < appliedModifiersCopy.length; i++){
-            if (!(appliedModifiersCopy[i] in appliedModifiersDict)) {
+            if (!(this.checkModifierInDict(appliedModifiersCopy[i], appliedModifiersDict))) {
                 appliedModifiersDict[appliedModifiersCopy[i]] = appliedModifiersStartTime[i];
             }
         }
@@ -148,6 +148,15 @@ class MyHUD extends THREE.Object3D {
         velocityMesh.position.y -= 12.85;
         velocityMesh.position.z += 0.3;
         this.add(velocityMesh)
+    }
+
+    checkModifierInDict(modifier, dict){
+        for(let i = 0; i < dict.length; i++){
+            if(modifier.type === dict[i].type){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -109,6 +109,8 @@ class MyFirework {
     reset() {
         //console.log("firework reseted");
         this.app.scene.remove(this.points);
+        this.geometry.dispose();
+        this.material.dispose();
         this.dest = [];
         this.vertices = null;
         this.colors = null;
