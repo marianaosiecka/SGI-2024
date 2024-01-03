@@ -867,7 +867,6 @@ class MyContents {
 
         // if the selected layer is the obstacles layer, change the obstacle state in the scenario
         else if (this.selectedLayer == this.availableLayers[2]) this.scenario.handleObstacleHover(this.lastIntersectedObj);
-        }
       }
     }
 
