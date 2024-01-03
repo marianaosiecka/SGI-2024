@@ -36,17 +36,18 @@
     - After that, users are redirected to the track, and a countdown initiates the run. The moment "GO!" appears on the screen, the run starts, as demonstrated below:
     <img src="screenshots/6_start_run.png" alt="Start Run" width="500"/>
 
-    - Obstacles and power-ups are placed along the track. Collision with these elements modifies the run flow. For instance, colliding with the the "pick obstacle" power-up redirects users to choose an obstacle and select a location to place it on the track.
-      - Pick Obstacle:
-    <img src="screenshots/7_pick_obstacle.png" alt="Pick Obstacle" width="500"/>
+  - Obstacles and power-ups are strategically placed along the track. Colliding with these elements modifies the run flow. For instance, interacting with the "Pick Obstacle" power-up redirects users to choose an obstacle and select a location to place it on the track.
+    - Pick Obstacle:
+      <img src="screenshots/7_pick_obstacle.png" alt="Pick Obstacle" width="500"/>
 
-      - Place Obstacle:
-    <img src="screenshots/8_place_obstacle.png" alt="Place Obstacle" width="500"/>
+    - Place Obstacle:
+      <img src="screenshots/8_place_obstacle.png" alt="Place Obstacle" width="500"/>
 
-    - During gameplay, real-time information such as elapsed time, laps completed, velocity, and applied modifiers with their remaining duration is displayed.
+
+  - During gameplay, real-time information such as elapsed time, laps completed, velocity, and applied modifiers with their remaining duration is displayed.
     <img src="screenshots/9_run.png" alt="Run Information" width="500"/>
 
-    - Upon finishing the run, users see the time taken, opponent's time, and the winner. The final menu provides options to return to the main menu or redo the run.
+  - Upon finishing the run, users see the time taken, opponent's time, and the winner. The final menu provides options to return to the main menu or redo the run.
     <img src="screenshots/10_final_menu.png" alt="Final Menu" width="500"/>
 
 - **Link to the scene**: http://127.0.0.1:5593/tp3/
