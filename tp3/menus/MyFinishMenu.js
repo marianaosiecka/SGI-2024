@@ -1,5 +1,18 @@
 import * as THREE from 'three';
 
+/**
+ * MyFinishMenu
+ * @constructor
+ * @param app
+ * @param layer - Layer to place the menu
+ * @param pickableObjects - Array of objects that can be picked
+ * @param clickableObjects - Array of objects that can be clicked
+ * @param playerTime - Time of the player car
+ * @param autoTime - Time of the automous car
+ * @param level - Level of the game
+ * @param username - Username of the player
+ * @extends THREE.Object3D
+ */
 class MyFinishMenu extends THREE.Object3D {
     constructor(app, layer, pickableObjects, clickableObjects, playerTime, autoTime, level, username) {
         super();
@@ -18,20 +31,26 @@ class MyFinishMenu extends THREE.Object3D {
         this.initFinishMenu();
     }
 
+    /**
+     * initializes the menu
+     */
     initFinishMenu() {
-        // Add go back button
+        // level text
         const levelText = this.spritesheetRegularBlack.getText("Level " + this.app.contents.reader.level);
         levelText.position.y += 8.5;
         this.add(levelText);
 
+        // player time text
         const playerTimeText = this.spritesheetRegularBlack.getText(this.username +" time: " + this.playerTime.toFixed(2) + "s");
         playerTimeText.position.y += 7.5;
         this.add(playerTimeText);
 
+        // autonomous time text
         const autoTimeText = this.spritesheetRegularBlack.getText("Opponent time: " + this.autoTime.toFixed(2) + "s");
         autoTimeText.position.y += 6.5;
         this.add(autoTimeText);
 
+        // winner or loser text
         if(this.playerTime <= this.autoTime) {
             const winnerText = this.app.contents.spritesheetTitle1.getText("WINNER :)");
             winnerText.position.y += 4;
@@ -44,6 +63,7 @@ class MyFinishMenu extends THREE.Object3D {
             this.add(loserText);
         }
 
+        // add redo run button
         const restartButtonText = this.app.contents.spritesheetRegularWhite.getText("Redo Run", 0.3);
         const restartButtonPlane = new THREE.PlaneGeometry(5, 1);
         const restartButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xB7661A });
@@ -57,6 +77,7 @@ class MyFinishMenu extends THREE.Object3D {
         this.add(restartButtonText);
         this.add(restartButtonMesh);
 
+        // add main menu button
         const mainMenuButtonText = this.app.contents.spritesheetRegularWhite.getText("Main Menu", 0.3);
         const mainMenuButtonPlane = new THREE.PlaneGeometry(5, 1);
         const mainMenuButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xB7661A });
@@ -73,11 +94,19 @@ class MyFinishMenu extends THREE.Object3D {
         this.app.contents.setPosAndRotRelativeToCamera(this, this.app.cameras['PodiumPerspective'], this.app.getCameraTarget('PodiumPerspective'), 15);
     }
 
+    /**
+     * handles the button hover
+     * @param button - button to handle
+     */
     handleButtonHover(button) {
         this.buttonOriginalColor = button.material.color.getHex();
         button.material.color.setHex(0xf58e2c);
     }
 
+    /**
+     * resets the button state after hover
+     * @param button - button to reset
+     */
     resetButtonState(button) {
         if(button.material.color != this.buttonOriginalColor){
             button.material.color.setHex(this.buttonOriginalColor);

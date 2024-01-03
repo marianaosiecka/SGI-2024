@@ -1,5 +1,11 @@
 import * as THREE from 'three';
 
+/**
+ * MyBillboard
+ * @constructor
+ * @param app
+ * @extends THREE.Object3D
+ */
 class MyBillboard extends THREE.Object3D {
     constructor(app) {
         super()
@@ -101,6 +107,10 @@ class MyBillboard extends THREE.Object3D {
         this.add(light3);
     }
 
+    /**
+     * creates a light
+     * @returns {THREE.Group} light
+     */
     createLight() {
         const light = new THREE.Group();
 
@@ -138,6 +148,9 @@ class MyBillboard extends THREE.Object3D {
         return light
     }
 
+    /**
+     * updates the billboard image
+     */
     getImage() {
         console.log("updating billboard image");
 
@@ -210,7 +223,8 @@ class MyBillboard extends THREE.Object3D {
             vertexShader: vertexShader,
             fragmentShader: fragmentShader
         });
-        
+
+        // apply the shader to the billboard
         this.plane.material = this.billboardShader;
     }
 

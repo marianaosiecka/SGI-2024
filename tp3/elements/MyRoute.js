@@ -1,5 +1,17 @@
 import * as THREE from 'three';
 
+/**
+ * MyRoute
+ * @constructor
+ * @param app
+ * @param keyPoints - Array of key points
+ * @param timeInterval - Time interval between key points
+ * @param object - Object to animate
+ * @param offsetPos - Offset position
+ * @param offsetRot - Offset rotation
+ * @param visualRepresentation - If the route should be represented visually
+ * @extends THREE.Object3D
+ */
 class MyRoute extends THREE.Object3D {
     constructor(app, keyPoints, timeInterval, object, offsetPos, offsetRot, visualRepresentation = false) {
         super();
@@ -7,21 +19,24 @@ class MyRoute extends THREE.Object3D {
         this.app = app;
         this.keyPoints = keyPoints;
 
-        // if 
+        // visual representation of the route
         if(visualRepresentation) this.debugKeyFrames();
 
-        const times = keyPoints.map((_, i) => i * timeInterval);
-
+        // array of times for the key points
+        const times = keyPoints.map((_, i) => i * timeInterval); 
+        // position key frame
         const positionKF = new THREE.VectorKeyframeTrack(
             '.position', 
             times,
-            keyPoints.map(kp => [kp.x + offsetPos.x, kp.y + offsetPos.y, kp.z + offsetPos.z, 0]).flat(),
+            keyPoints.map(kp => [kp.x + offsetPos.x, kp.y + offsetPos.y, kp.z + offsetPos.z, 0]).flat(), 
+            // map each key point to an array representing the modified position with offsetPos,
+            // and add an additional value (0) to comply with the expected format for VectorKeyframeTrack;
+            // finally, flatten the array to create a linear list of values.
             THREE.InterpolateSmooth
         );
 
-
+        // rotation key frame 
         const yAxis = new THREE.Vector3(0, 1, 0)
-
         const q0 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(0))
         this.q_list = []
         for (let i = 0; i < keyPoints.length - 1; i++) {
@@ -43,13 +58,15 @@ class MyRoute extends THREE.Object3D {
             this.q_list.map(q => [...q]).flat()
         );
 
+        // animation clips
         this.animationMaxDuration = times[times.length - 1];
-
         const positionClip = new THREE.AnimationClip('positionAnimation', this.animationMaxDuration, [positionKF])
         const rotationClip = new THREE.AnimationClip('rotationAnimation', this.animationMaxDuration, [quaternionKF])
 
+        // animation mixer
         this.mixer = new THREE.AnimationMixer(object)
 
+        // actions
         this.positionAction = this.mixer.clipAction(positionClip)
         const rotationAction = this.mixer.clipAction(rotationClip)
 
@@ -57,6 +74,9 @@ class MyRoute extends THREE.Object3D {
         rotationAction.play()
     }
 
+    /**
+     * display debug keyframes and route representation in the scene
+     */
     debugKeyFrames() {
         let spline = new THREE.CatmullRomCurve3([...this.keyPoints])
 
@@ -78,7 +98,11 @@ class MyRoute extends THREE.Object3D {
         this.app.scene.add(tubeMesh)
     }
 
-    updateBoundingBox(autonomousVehicle, track) {
+    /**
+     * updates the bounding box of the autonomous vehicle
+     * @param autonomousVehicle - autonomous vehicle to update
+     */
+    updateBoundingBox(autonomousVehicle) {
         const carPosition = new THREE.Vector3();
         const carQuaternion = new THREE.Quaternion();
         const vehicle = this.mixer.getRoot();

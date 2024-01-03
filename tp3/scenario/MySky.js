@@ -1,6 +1,10 @@
-
 import * as THREE from 'three';
 
+/**
+ * MySky
+ * @constructor
+ * @param app
+ */
 class MySky {
     constructor(app) {
         this.app = app;
