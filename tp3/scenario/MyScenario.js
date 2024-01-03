@@ -63,7 +63,7 @@ class MyScenario {
         spotlight3.position.set(120, 30, -200);
         this.app.scene.add(spotlight3);
 
-        this.skyscraperPodium = new MySkyscraper(this.app, false, 400, 45, 3, "#f7e240", 4, "#736958", 4, layer, -26);
+        this.skyscraperPodium = new MySkyscraper(this.app, false, 400, 55, 3, "#f7e240", 4, "#736958", 4, layer, -30);
         this.skyscraperPodium.rotation.y = Math.PI/2;
         this.skyscraperPodium.position.x = 200;
         this.skyscraperPodium.position.y = 30;
@@ -196,26 +196,24 @@ class MyScenario {
         this.playerParkingLotCars.push(vehicle);
     }
 
-    setPodium () {
-        let podium1 = new THREE.CylinderGeometry(10, 10, 5, 32);
-        let podiumMaterial = new THREE.MeshPhongMaterial({ color: "#f1e9d0", shininess: 1, specular: "#f1e9d0" });
+    setPodium (winner, loser) {
+        this.podium = new THREE.Group();
+        let podium1 = new THREE.BoxGeometry( 22,5, 15 );
+        let podiumMaterial = new THREE.MeshPhongMaterial({ color: "#000000", specular:  "#777777", emissive: "#000000", shininess: 30 });
         let podiumMesh1 = new THREE.Mesh(podium1, podiumMaterial);
         podiumMesh1.position.copy(this.skyscraperPodium.position);
-        podiumMesh1.position.x += 6;
+        podiumMesh1.position.x += 8;
         podiumMesh1.position.y += 8;
         podiumMesh1.position.z -= 6;
-        this.app.contents.winner.position.copy(podiumMesh1.position);
-        this.app.contents.winner.position.y += 2;
-        
-        let podiumMesh2 = new THREE.Mesh(podium1, podiumMaterial);
-        podiumMesh2.scale.set(1, 0.6, 1);
-        podiumMesh2.position.copy(this.skyscraperPodium.position);
-        podiumMesh2.position.y += 6;
-        podiumMesh2.position.x -= 6;
-        podiumMesh2.position.z += 10;
-        this.app.contents.loser.position.copy(podiumMesh2.position);
-        this.app.contents.loser.position.y += 2;
+        podiumMesh1.rotation.y = Math.PI/6;
+      
 
+        let podium2 = new THREE.BoxGeometry( 22 , 2, 15 );
+        let podiumMesh2 = new THREE.Mesh(podium2, podiumMaterial);
+        podiumMesh2.position.copy(podiumMesh1.position);
+        podiumMesh2.position.x -= 17;
+        podiumMesh2.position.z += 22;
+      
         // fireworks
         let fireworksPlane = new THREE.PlaneGeometry( 8, 8 );
         this.fireworksMesh = new THREE.Mesh( fireworksPlane, 
@@ -227,9 +225,28 @@ class MyScenario {
         this.fireworksMesh.position.x -= 10;
         this.fireworksMesh.position.z -= 14;
 
-        this.app.scene.add(this.fireworksMesh);
-        this.app.scene.add(podiumMesh1);
-        this.app.scene.add(podiumMesh2);
+        setTimeout(() => {
+            winner.position.copy(podiumMesh1.position);
+            winner.position.y += 4;
+            const winnerRotation = new THREE.Vector3(0, Math.PI/4, 0);
+            winner.rotation.copy(winnerRotation);
+            winner.scale.set(1.5, 1.5, 1.5)
+
+            loser.position.copy(podiumMesh2.position);
+            loser.position.y += 2;
+            const loserRotation = new THREE.Vector3(0, - Math.PI/4, 0);
+            loser.rotation.copy(loserRotation);
+            loser.scale.set(1.5, 1.5, 1.5)
+        }, 1000);    
+
+
+
+        this.podium.add(podiumMesh1);
+        this.podium.add(podiumMesh2);
+        this.podium.add(this.fireworksMesh);
+        this.podium.add(this.app.contents.winner);
+        this.podium.add(this.app.contents.loser);
+        this.app.scene.add(this.podium);
     }
     
     update(playerVehicle, elapsedTime, time) {

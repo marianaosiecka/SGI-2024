@@ -172,7 +172,7 @@ class MyApp  {
             const distance = fromCamera.position.distanceTo(toCamera.position);
 
             const targetProgress = Math.min(progress * targetProgressMultiplier, 1);
-            const newTarget = fromTarget.clone().lerp(toTarget, targetProgress);
+            const newTarget = this.controls.target.clone().lerp(toTarget, targetProgress);
             this.controls.target.copy(newTarget);
         
             if (distance > stopThreshold) {
@@ -239,9 +239,9 @@ class MyApp  {
             if (this.controls === null) {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls( this.activeCamera, this.renderer.domElement );
-                this.controls.enableZoom = true;
-                //this.controls.enableRotate = false;
-                //this.controls.enablePan = false;
+                this.controls.enableZoom = false;
+                this.controls.enableRotate = false;
+                this.controls.enablePan = false;
                 this.controls.update();
                 this.setControlsTarget();
             }
