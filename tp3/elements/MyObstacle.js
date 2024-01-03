@@ -1,6 +1,14 @@
 import * as THREE from 'three';
 
 class MyObstacle extends THREE.Object3D {
+    /**
+     * constructor for MyObstacle class
+     * @param app application
+     * @param type obstacle type: slip or switch
+     * @param texture texture of the obstacle
+     * @param rotate angle of rotation
+     * @param layer layer that the obstacle belongs to
+     */
     constructor(app, type, texture, rotate, layer) {
         super();
         this.app = app;
@@ -66,16 +74,27 @@ class MyObstacle extends THREE.Object3D {
     }
 
 
+    /**
+     * sets the bounding box of the obstacle
+     */
     setBoundingBox() {
         this.bb = new THREE.Box3().setFromObject(this);
     }
 
+    /**
+     * applies the modifier to the player vehicle
+     * @param playerVehicle 
+     */
     applyModifier(playerVehicle) {
         if(this.type == "slip"){
             playerVehicle.slipping = true;
         }
     }
 
+    /**
+     * stops the effect of the modifeir
+     * @param playerVehicle 
+     */
     stopModifier(playerVehicle) {
         if(this.type == "slip"){
             playerVehicle.slipping = false;

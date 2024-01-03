@@ -1,7 +1,13 @@
 import * as THREE from 'three';
 
 class MyPowerUp extends THREE.Object3D {
-    
+    /**
+     * constructor for MyPoweup class
+     * @param app application
+     * @param type powerup type: speed, shortcut, shield, pick
+     * @param texture texture of the powerup
+     * @param rotate angle of rotation
+     */
     constructor(app, type, texture, rotate) {
         super();
         this.app = app;
@@ -10,9 +16,6 @@ class MyPowerUp extends THREE.Object3D {
         this.rotate = rotate;
         this.mesh = null;
         this.pointer = new THREE.Vector2();
-        this.raycaster = new THREE.Raycaster();
-        this.raycaster.near = 0.1;
-        this.raycaster.far = 100;
         
         let geometry = new THREE.PlaneGeometry(6, 6);
         
@@ -59,14 +62,17 @@ class MyPowerUp extends THREE.Object3D {
         this.add(this.mesh);    
     }
 
+    /**
+     * sets the bounding box of the powerup
+     */
     setBoundingBox() {
         this.bb = new THREE.Box3().setFromObject(this);
     }
 
-    setDestinationPoint(destinationPoint) {
-        this.animationDestPosition = destinationPoint;
-    }
-
+    /**
+     * applies the modifier of the powerup to the player vehicle
+     * @param playerVehicle 
+     */
     applyModifier(playerVehicle){
         if(this.type == "shield"){
             playerVehicle.shield = true;
@@ -77,6 +83,7 @@ class MyPowerUp extends THREE.Object3D {
                 playerVehicle.speeding = true;  
             }
         } 
+        // picking a new obstacle using picking
         else if(this.type == "pick"){
             this.app.contents.paused = true;
             this.app.smoothCameraTransition("ObstaclePerspective", 6000);
@@ -86,6 +93,10 @@ class MyPowerUp extends THREE.Object3D {
         } 
     }
 
+    /**
+     * stops the effect of the modifier
+     * @param playerVehicle 
+     */
     stopModifier(playerVehicle) {
         if(this.type == "shield"){
             playerVehicle.shield = false;

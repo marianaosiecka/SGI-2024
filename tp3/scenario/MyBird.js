@@ -2,7 +2,14 @@ import * as THREE from 'three';
 import { MyRoute } from '../elements/MyRoute.js';
 
 class MyBird {
-    constructor(app, height, width, routeOffset, layer) {
+    /**
+     * constructor for MyBird class
+     * @param app application
+     * @param height height of the bird
+     * @param width width of the bird
+     * @param routeOffset offset from the other birds
+     */
+    constructor(app, height, width, routeOffset) {
         this.app = app;
         let geometry = new THREE.BufferGeometry();
 
@@ -38,13 +45,16 @@ class MyBird {
         );
 
         this.bird.rotateY(Math.PI / 2);
-        this.bird.layers.enable(layer);
         this.app.scene.add(this.bird)
 
         let birdFlight = new MyRoute(this.app, this.generateCircularKeyPoints(100, 300, 10), 2, this.bird, routeOffset, Math.PI/2, false);
         this.mixer = birdFlight.mixer;
     }
 
+    /**
+     * updates the bird movement
+     * @param elapsedTime 
+     */
     update(elapsedTime){
         const angle = this.app.contents.clock.elapsedTime * this.halfHeight * 10;
         const centerVel = this.halfHeight * 20;
@@ -62,6 +72,13 @@ class MyBird {
         this.mixer.update(elapsedTime);
     }
 
+    /**
+     * generates the circular key points for the bird route
+     * @param numPoints number of points in the route
+     * @param radius radius of the circular movement
+     * @param maxHeight max height of the bird movement
+     * @returns the key points
+     */
     generateCircularKeyPoints(numPoints, radius, maxHeight = 0) {
         const keyPoints = [];
 

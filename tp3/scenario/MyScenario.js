@@ -5,32 +5,37 @@ import { MyBird } from './MyBird.js';
 import { MySkyscraper } from './MySkyscraper.js';
 import { MyCloud } from './MyCloud.js';
 import { MyBillboard } from './MyBillboard.js';
-import { MyMountain } from './MyMountain.js';
 
+/**
+ * MyScenario class, representing the scenario of the game
+ */
 class MyScenario {
-    constructor(app, layer) {
+    /**
+     * constructor for MyScenario class
+     * @param app application
+     */
+    constructor(app) {
         this.app = app;
-        this.layer = layer;
 
-        this.sky = new MySky(this.app, this.layer);
+        this.sky = new MySky(this.app);
         this.clouds = new MyCloud(this.app);
         this.clouds.createAllClouds();
         this.app.scene.add(this.clouds)
 
         // birds
-        this.bird1 = new MyBird(this.app, 1, 2.4, new THREE.Vector3(20, 0, 0), this.layer);
+        this.bird1 = new MyBird(this.app, 1, 2.4, new THREE.Vector3(20, 0, 0));
         this.bird1.bird.scale.set(5, 5, 5);
 
-        this.bird2 = new MyBird(this.app, 1, 2.4, new THREE.Vector3(0, -3, 0), this.layer);
+        this.bird2 = new MyBird(this.app, 1, 2.4, new THREE.Vector3(0, -3, 0));
         this.bird2.bird.scale.set(5, 5, 5);
 
-        this.bird3 = new MyBird(this.app, 1, 2.4, new THREE.Vector3(-25, 5, 0), this.layer);
+        this.bird3 = new MyBird(this.app, 1, 2.4, new THREE.Vector3(-25, 5, 0));
         this.bird3.bird.scale.set(5, 5, 5);
 
         this.birds = [this.bird1, this.bird2, this.bird3];
 
-        // skyscrapers
-        this.skyscraperObstacles = new MySkyscraper(this.app, true, 400, 20, 4, "#ffffff", 4, "#3A6392", 2, layer, -1);
+        // skyscrapers and their spotlights
+        this.skyscraperObstacles = new MySkyscraper(this.app, true, 400, 20, 4, "#ffffff", 4, "#3A6392", 2, -1);
         this.skyscraperObstacles.position.x = -20;
         this.skyscraperObstacles.position.z = 110;
         this.skyscraperObstacles.position.y = 15;
@@ -41,7 +46,7 @@ class MyScenario {
         spotlight1.position.set(-20, 35, 110);
         this.app.scene.add(spotlight1);
 
-        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, true, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, layer, 11.9);
+        this.skyscraperAutonomousVehicle = new MySkyscraper(this.app, true, 400, 30, 6, "#AAAE7F", 4, "#454544", 4, 11.9);
         this.skyscraperAutonomousVehicle.position.x = -250;
         this.skyscraperAutonomousVehicle.position.y = -10;
         this.skyscraperAutonomousVehicle.horizontalLine.position.x = 10;
@@ -52,7 +57,7 @@ class MyScenario {
         spotlight2.position.set(-250, 10, 0);
         this.app.scene.add(spotlight2);
 
-        this.skyscraperPlayerVehicle = new MySkyscraper(this.app, true, 400, 30, 30, "#C5351B", 4, "#f1e9d0", 4, layer, 28);
+        this.skyscraperPlayerVehicle = new MySkyscraper(this.app, true, 400, 30, 30, "#C5351B", 4, "#f1e9d0", 4, 28);
         this.skyscraperPlayerVehicle.position.x = 120;
         this.skyscraperPlayerVehicle.position.y = 10;
         this.skyscraperPlayerVehicle.position.z = -200;
@@ -63,7 +68,7 @@ class MyScenario {
         spotlight3.position.set(120, 30, -200);
         this.app.scene.add(spotlight3);
 
-        this.skyscraperPodium = new MySkyscraper(this.app, false, 400, 55, 3, "#f7e240", 4, "#736958", 4, layer, -30);
+        this.skyscraperPodium = new MySkyscraper(this.app, false, 400, 55, 3, "#f7e240", 4, "#736958", 4, -30);
         this.skyscraperPodium.rotation.y = Math.PI/2;
         this.skyscraperPodium.position.x = 200;
         this.skyscraperPodium.position.y = 30;
@@ -72,7 +77,7 @@ class MyScenario {
 
         this.podiumSpotlight = new THREE.SpotLight(0xffffff, 80, 0, Math.PI/3);
         this.podiumSpotlight.target = this.skyscraperPodium;
-        this.podiumSpotlight.position.set(260, 40, 90);
+        this.podiumSpotlight.position.set(200, 70, 90);
         this.app.scene.add(this.podiumSpotlight);
 
         this.autoParkingLotCars = [];
@@ -108,6 +113,10 @@ class MyScenario {
         this.app.scene.add(this.billboard);
     }
 
+    /**
+     * creates a cloud under the car for when the car leaves the track
+     * @param vehiclePosition 
+     */
     setCloudUnderCar(vehiclePosition) {
         this.cloudUnderCar = new MyCloud(this.app, vehiclePosition);
         this.cloudUnderCar.createOneCloud();
@@ -115,6 +124,12 @@ class MyScenario {
         this.app.scene.add(this.cloudUnderCar);
     }
 
+    /**
+     * sets the obstacle in the obstacles parking lot
+     * @param obstacle obstacle to set
+     * @param rotation rotation needed for the obstacle to lay flat on the groud
+     * @param y y offset
+     */
     setObstaclesParkingLot (obstacle, rotation, y) {
         this.skyscraperObstacles.setObject(obstacle, rotation, y, this.obsParkingLotOffset);
         this.obsParkingLotOffset += this.skyscraperObstacles.lineWidth/3.3;
@@ -123,7 +138,11 @@ class MyScenario {
         this.obstacles.push(obstacle);
     }
 
+    /**
+     * adds the text to the obstacle skyscraper
+     */
     addObstacleSkyscraperText () {
+        // choose a new obstacle text
         const mainTextGeometry = new THREE.PlaneGeometry(47, 8, 32);
         mainTextGeometry.scale(0.3, 0.3, 0.3);
         const mainText = new THREE.Mesh(mainTextGeometry, new THREE.MeshBasicMaterial({
@@ -138,6 +157,7 @@ class MyScenario {
         mainText.position.z = 116.5;
         this.app.scene.add(mainText);
 
+        //switch directions obstacle text
         const obstacle1TextGeometry = new THREE.PlaneGeometry(54, 8, 32);
         obstacle1TextGeometry.scale(0.3, 0.3, 0.3);
         const obstacle1Text = new THREE.Mesh(obstacle1TextGeometry, new THREE.MeshBasicMaterial({
@@ -153,6 +173,7 @@ class MyScenario {
         obstacle1Text.position.z = 107;
         this.app.scene.add(obstacle1Text);
 
+        //oil slip obstacle text
         const obstacle2TextGeometry = new THREE.PlaneGeometry(12, 8, 28);
         obstacle2TextGeometry.scale(0.3, 0.2, 0.3);
         const obstacle2Text = new THREE.Mesh(obstacle2TextGeometry, new THREE.MeshBasicMaterial({
@@ -168,6 +189,9 @@ class MyScenario {
         this.app.scene.add(obstacle2Text);
     }
 
+    /**
+     * sets the picked obstacle in the track
+     */
     setPickableObstacles () {
         this.obstacles.forEach(obstacle => {
             if(obstacle.mesh.name.startsWith("newObstacle")){
@@ -177,19 +201,37 @@ class MyScenario {
         });
     }
 
+    /**
+     * sets the vehicle in the autonomous parking lot
+     * @param vehicle vehicle to set
+     * @param rotation rotation needed for the vehicle to be parallel to the parking lot lines
+     * @param y y offset
+     */
     setAutonomousVehicleParkingLot (vehicle, rotation, y) {
         this.skyscraperAutonomousVehicle.setObject(vehicle, rotation + Math.PI, y, this.autoParkingLotOffset);
         this.autoParkingLotOffset += this.skyscraperAutonomousVehicle.lineWidth/4;
         this.autoParkingLotCars.push(vehicle);
     }
 
+    /**
+     * sets the obstacle in the player parking lot
+     * @param vehicle vehicle to set
+     * @param rotation rotation needed for the vehicle to be parallel to the parking lot lines
+     * @param y y offset
+     */
     setPlayerVehicleParkingLot (vehicle, rotation, y) {
         this.skyscraperPlayerVehicle.setObject(vehicle, rotation, y, this.playerParkingLotOffset);
         this.playerParkingLotOffset += this.skyscraperPlayerVehicle.lineWidth/4;
         this.playerParkingLotCars.push(vehicle);
     }
 
+    /**
+     * sets the podium objects
+     * @param winner vehicle that won the game
+     * @param loser vehicle that lost the game
+     */
     setPodium (winner, loser) {
+        // setting the shadows for the podium spotlight
         this.podiumSpotlight.castShadow = true;
         this.podiumSpotlight.shadow.mapSize.width = 1024;
         this.podiumSpotlight.shadow.mapSize.height = 1024;
@@ -207,7 +249,6 @@ class MyScenario {
         podiumMesh1.position.y += 8;
         podiumMesh1.position.z -= 6;
         podiumMesh1.rotation.y = Math.PI/6;
-      
 
         let podium2 = new THREE.BoxGeometry( 22 , 2, 15 );
         let podiumMesh2 = new THREE.Mesh(podium2, podiumMaterial);
@@ -228,6 +269,7 @@ class MyScenario {
         this.fireworksMesh.position.x -= 10;
         this.fireworksMesh.position.z -= 14;
 
+        // set the winner and loser vehicles after the camera transition starts
         setTimeout(() => {
             winner.castShadow = true;
             winner.position.copy(podiumMesh1.position);
@@ -242,7 +284,7 @@ class MyScenario {
             const loserRotation = new THREE.Vector3(0, - Math.PI, 0);
             loser.rotation.set(loserRotation.x, loserRotation.y, loserRotation.z);
             loser.scale.set(1.5, 1.5, 1.5)
-        }, 1000);    
+        }, 2200);    
 
         this.skyscraperPodium.parkingLot.receiveShadow = true;
         this.podium.add(podiumMesh1);
@@ -253,6 +295,12 @@ class MyScenario {
         this.app.scene.add(this.podium);
     }
     
+    /**
+     * updates the scenario
+     * @param playerVehicle the position of the player vehicle is needed for the clound under it to be updated
+     * @param elapsedTime 
+     * @param time 
+     */
     update(playerVehicle, elapsedTime, time) {
         // update the clouds
         this.clouds.updateAllClouds();
@@ -277,10 +325,18 @@ class MyScenario {
         }
     }
 
+    /**
+     * scale effect on hover during picking
+     * @param obstacle obstacle to scale
+     */
     handleObstacleHover(obstacle) {
         obstacle.scale.set(obstacle.scale.x + 0.2, obstacle.scale.y + 0.2, obstacle.scale.z + 0.2);
     }
 
+    /**
+     * resets the scale to the normal one after the hover effect
+     * @param obstacle obstacke to scale
+     */
     resetObstacleState(obstacle) {
         obstacle.scale.set(obstacle.scale.x - 0.2, obstacle.scale.y - 0.2, obstacle.scale.z - 0.2);
     }

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class MySkyscraper extends THREE.Object3D {
-    constructor(app, parkingLotLines, height, width, numSides, colorBulding, windowHeight, colorWindows, numParkingLotSpaces, layer, offset = 0) {
+    constructor(app, parkingLotLines, height, width, numSides, colorBulding, windowHeight, colorWindows, numParkingLotSpaces, offset = 0) {
         super();
         this.app = app;
         this.height = height;

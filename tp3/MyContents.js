@@ -298,9 +298,9 @@ class MyContents {
     // finishing line
     this.reader.setFinishLine();
     // obstacles
-    this.reader.readObstacles(this.availableLayers[2]);
+    this.reader.readObstacles();
     // power ups
-    this.reader.readPowerUps(this.availableLayers[2]);
+    this.reader.readPowerUps();
 
     // CAMERA
     // set active camera as the player car perspective
@@ -351,7 +351,7 @@ class MyContents {
   startGame() {
     // UNCOMMENT HERE
     this.reader.level = this.selectedLevel;
-    this.numLaps = 1;
+    this.numLaps = 2;
     this.timeLimit = 150000; // milliseconds
     this.timeStart = Date.now();
     this.playerLaps = 0;
@@ -403,7 +403,30 @@ class MyContents {
     this.username = "player"*/
 
     this.app.scene.remove(this.HUD)
-    this.app.smoothCameraTransition('PodiumPerspective', 16000);
+    
+    // set a timeout before setting the podium
+    setTimeout(() => {
+      this.app.smoothCameraTransition('PodiumPerspective', 16000);
+
+      this.fireworks = [];
+      //setTimeout(() => {
+      // set podium
+      this.scenario.setPodium(this.winner, this.loser);
+  
+      this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
+      //}, 300);
+  
+      // reset lap and time counters
+      this.playerLaps = 0;
+      this.playerTime = 0;
+      this.autoLaps = 0;
+      this.autoTime = 0;
+      this.winner = null;
+      this.loser = null;
+  
+      console.log("FINISHED GAME");
+    }, 2000);  
+
     // UNCOMMENT HERE
     /*this.app.setActiveCamera('PodiumPerspective');
     this.app.updateCameraIfRequired();
@@ -419,24 +442,6 @@ class MyContents {
       this.updateAutonomousVehicleModel(properties);
       this.loser = this.autonomousVehicle;
     });*/
-
-    this.fireworks = [];
-    //setTimeout(() => {
-    // set podium
-    this.scenario.setPodium(this.winner, this.loser);
-
-    this.menuManager.initFinishMenu(this.playerTime, this.autoTime, this.reader.level, this.username);
-    //}, 300);
-
-    // reset lap and time counters
-    this.playerLaps = 0;
-    this.playerTime = 0;
-    this.autoLaps = 0;
-    this.autoTime = 0;
-    this.winner = null;
-    this.loser = null;
-
-    console.log("FINISHED GAME");
   }
 
   /**

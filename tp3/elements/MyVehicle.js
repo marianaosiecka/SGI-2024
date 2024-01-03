@@ -17,7 +17,6 @@ class MyVehicle extends THREE.Object3D {
     this.scene = scene;
     this.type = 'Group';
 
-    this.wheelsRatio = wheelsRatio;
     this.width = width;
     this.depth = depth;
     this.maxVelocity = maxVelocity;
@@ -40,8 +39,13 @@ class MyVehicle extends THREE.Object3D {
     // wheel properties
     this.wheelHeight = height/8;
     this.xWheels = depth/3;
+    this.wheelsRatio = wheelsRatio; // the distance between the front and back wheels
+
     }
 
+    /**
+     * Sets the initial properties of the car
+     */
     setInitialProperties() {
         this.position.x = this.initialPosition[0];
         this.position.y = this.initialPosition[1];
@@ -59,22 +63,22 @@ class MyVehicle extends THREE.Object3D {
         this.isReverse = false;
         
         // modifier flags
-        this.shouldStop = false;
-        this.rotationAdjusted = false;
-        this.previousTurnAngle = null;
-        this.shield = false;
-        this.slipping = false;
-        this.speeding = false;
-        this.outOfTrack = false;
-        this.outOfTrackStarted = false;
-        this.collidedCar = false;
-        this.collidedCarStarted = false;
-        this.allCarOutOfTrack = false;
+        this.shouldStop = false; // used to stop the car -> allows for a slowing down transition
+        this.rotationAdjusted = false; // used for the rotation of the front wheels when the user clicks the rotate buttons the car needs the rotation adjusted
+        this.previousTurnAngle = null;  // used to differentiate when the car turns left or right so that the front wheels turn accordingly
+        this.shield = false;  // used to check if the car has the shield modifier
+        this.slipping = false;  // used to check if the car has the slip modifier
+        this.speeding = false;  // used to check if the car has the speed modifier
+        this.outOfTrack = false;  // used to check if the car is out of the track
+        this.outOfTrackStarted = false; // used to check if the car is out of the track and the animation has started
+        this.collidedCar = false;  // used to check if the car has collided with the other vehicle
+        this.collidedCarStarted = false; // used to check if the car has collided with the other vehicle and the animation has started
+        this.allCarOutOfTrack = false; // used to check if all the wheels are out of the track
     }
 
     /**
      * Sets the car model
-     * @param {*} model 
+     * @param model 
      */
     setModel(model) {
         this.carMesh.visible = false;
@@ -84,7 +88,7 @@ class MyVehicle extends THREE.Object3D {
 
     /**
      * Sets the wheel model
-     * @param {*} model
+     * @param model
      */
     setWheelModel(model) {
         this.wheelLeftFrontGroup = model.clone();
@@ -129,6 +133,18 @@ class MyVehicle extends THREE.Object3D {
     }
 
     /**
+     * sets the car position when finishing the shortcut animation
+     * @param {array} position
+     */
+    setPos(position) {
+        this.position.set(...position);
+
+        // update the bounding box positions
+        this.updateBoundingBoxes();
+        this.velocity *= 0.2;
+    }
+
+    /**
      * returns the car velocity
      * @returns {number} velocity
      */
@@ -170,21 +186,8 @@ class MyVehicle extends THREE.Object3D {
             this.updateAutonomousRotation(orientation, wheelOrientation)
         }
 
-        //console.log(Math.sin(velocity))
         // update the bounding box positions
         this.updateBoundingBoxes();
-    }
-
-    /**
-     * sets the car position when finishing the shortcut animation
-     * @param {array} position
-     */
-    setPos(position) {
-        this.position.set(...position);
-
-        // update the bounding box positions
-        this.updateBoundingBoxes();
-        this.velocity *= 0.2;
     }
 
     /**
@@ -284,6 +287,7 @@ class MyVehicle extends THREE.Object3D {
             this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + rotationAngle;
             this.needsRotationAdjusted = false;
         }
+        // if the user did not click on a rotate button, the wheels don't need adjustment
         else if (!this.needsRotationAdjusted){
             this.wheelLeftFrontGroup.rotation.y = this.initialWheelTurnAngle + noise;
             this.wheelRightFrontGroup.rotation.y = -this.initialWheelTurnAngle + noise;
@@ -336,6 +340,7 @@ class MyVehicle extends THREE.Object3D {
         if(this.velocity > 0){
             this.accelerate(-velocity/3)
         }
+        // allows for a slowing down transition
         if(this.velocity <= 0){
             this.velocity = 0;
             this.shouldStop = false;
@@ -354,7 +359,7 @@ class MyVehicle extends THREE.Object3D {
 
     /**
      * updates the car orientation
-     * @param {*} turningRate 
+     * @param turningRate 
      */
     turn(turningRate) {
         this.carOrientation += turningRate;
@@ -383,7 +388,8 @@ class MyVehicle extends THREE.Object3D {
 
     /**
      * detects collisions with other objects used for modifiers
-     * @param {*} otherObject
+     * @param otherObject
+     * @returns true if the car collides with the object, otherwise returns false
      */
     detectCollisionsBox (otherObject) {
         return this.carBB.intersectsBox(otherObject) || this.wheel1BB.intersectsBox(otherObject) || this.wheel2BB.intersectsBox(otherObject) || this.wheel3BB.intersectsBox(otherObject) || this.wheel4BB.intersectsBox(otherObject)
@@ -391,8 +397,8 @@ class MyVehicle extends THREE.Object3D {
 
     /**
      * detects collisions with the other vehicle
-     * @param {*} otherVehicle 
-     * @returns 
+     * @param otherVehicle 
+     * @returns true if the car collides with the other vehicle, otherwise returns false
      */
     detectCollisionsVehicles (otherVehicle) {
         return this.carBB.intersectsBox(otherVehicle.carBB) || this.wheel1BB.intersectsBox(otherVehicle.carBB) || this.wheel2BB.intersectsBox(otherVehicle.carBB) || this.wheel3BB.intersectsBox(otherVehicle.carBB) || this.wheel4BB.intersectsBox(otherVehicle.carBB)
@@ -404,8 +410,8 @@ class MyVehicle extends THREE.Object3D {
 
     /**
      * detects collisions with the track and check point lines
-     * @param {*} object 
-     * @param {*} isTrack if the object is the track or the check point lines
+     * @param object 
+     * @param isTrack if the object is the track or the check point lines
      * @returns if the object is track then returns true if the car is out of the track, otherwise returns true if the car is in the track
      *          if the object is the check point lines then returns true if the car is in the check point lines, otherwise returns false
      */
@@ -448,7 +454,7 @@ class MyVehicle extends THREE.Object3D {
 
     /**
      * stops the collision of the other vehicle
-     * @param {*} vehicle 
+     * @param vehicle 
      */
     stopModifier(vehicle) {
         vehicle.collidedCar = false;

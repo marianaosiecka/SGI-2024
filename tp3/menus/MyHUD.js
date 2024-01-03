@@ -7,10 +7,12 @@ class MyHUD extends THREE.Object3D {
 
         this.app = app;
         this.spritesheet = spritesheet;
+        // running symbol
         this.runningTexture = new THREE.TextureLoader().load('textures/HUD_running.png');
         this.runningTexture.wrapS = THREE.RepeatWrapping;
         this.runningTexture.wrapT = THREE.RepeatWrapping;
         this.runningTexture.repeat.set(1, 1);
+        // paused symbol
         this.pausedTexture = new THREE.TextureLoader().load('textures/HUD_paused.png');
         this.pausedTexture.wrapS = THREE.RepeatWrapping;
         this.pausedTexture.wrapT = THREE.RepeatWrapping;
@@ -20,6 +22,9 @@ class MyHUD extends THREE.Object3D {
         this.initHUD();
     }
 
+    /**
+     * Initializes the HUD - the velocity and max velocity box
+     */
     initHUD() {
         const planeGeometry = new THREE.PlaneGeometry(6, 1);
         const planeMaterial = new THREE.MeshBasicMaterial({ map:new THREE.TextureLoader().load("textures/HUD_text.png"), transparent: true, side: THREE.DoubleSide});
@@ -31,6 +36,9 @@ class MyHUD extends THREE.Object3D {
         this.add(velocityBox);
     }
 
+    /**
+     * Sets the running symbol to the pause symbol
+     */
     setPause() {
         this.children.forEach(child => {
             if(child.name === "running"){
@@ -47,6 +55,18 @@ class MyHUD extends THREE.Object3D {
         this.add(pausedMesh);
     }
 
+    /**
+     * Updates the HUD
+     * @param running if the game is running or not
+     * @param totalLaps the total number of laps
+     * @param playerLaps the number of laps the player has completed
+     * @param timeLimit the time limit of the game
+     * @param playerTime the time the player has taken
+     * @param maxVelocity the max velocity of the player
+     * @param velocity the velocity of the player
+     * @param appliedModifiers the modifiers applied to the player
+     * @param appliedModifiersStartTime the modifiers start time
+     */
     update(running, totalLaps, playerLaps, timeLimit, playerTime, maxVelocity, velocity, appliedModifiers, appliedModifiersStartTime){
         this.children.forEach(child => {
             if(child.name === undefined || child.name !== "velocityBox"){
@@ -57,6 +77,7 @@ class MyHUD extends THREE.Object3D {
 
         const time = Date.now();
 
+        // only update if the game is running
         if(running){
             const planeGeometry = new THREE.PlaneGeometry(0.8, 0.8);
             const planeMaterial = new THREE.MeshBasicMaterial({ map:this.runningTexture, transparent: true, side: THREE.DoubleSide});
@@ -85,9 +106,11 @@ class MyHUD extends THREE.Object3D {
         let offset = 0;
         for(let i = 0; i < appliedModifiersCopy.length; i++){
             let modifier = appliedModifiers[i];
+            // the vehicle modifier and the pick modifier are not shown in the HUD
             if(modifier instanceof MyVehicle || this.modifiers.includes(modifier) || modifier.type === 'pick')
                 continue;
 
+            // calculate the time left for the modifier
             let modifierTime = 0;
             if(modifier.type === 'shortcut'){
                 modifierTime = (4000 - (time-Math.floor(appliedModifiersDict[modifier])))/1000;
@@ -117,6 +140,7 @@ class MyHUD extends THREE.Object3D {
             offset += 1.5;
         }
 
+        // player time and laps
         let playerTimeString = (Math.floor(Math.floor(playerTime)/1000)).toString() + "/" + (timeLimit/1000).toString() + "s";
         let playerLapsString = "LAP " + playerLaps + "/" + totalLaps;
         let playerString = playerTimeString + " | " + playerLapsString;
@@ -129,6 +153,7 @@ class MyHUD extends THREE.Object3D {
         playerMesh.position.y -= 0.5;
         this.add(playerMesh)
 
+        // velocity and max velocity
         let maxVelocityString = Math.round(maxVelocity * 10)/10 + " m/s";
         let speedMesh = this.spritesheet.getText("SPEED");
         let maxSpeedMesh = this.spritesheet.getText("MAX SPEED");
@@ -150,6 +175,12 @@ class MyHUD extends THREE.Object3D {
         this.add(velocityMesh)
     }
 
+    /**
+     * checks if the modifier is already in the dictionart
+     * @param modifier 
+     * @param dict 
+     * @returns 
+     */
     checkModifierInDict(modifier, dict){
         for(let i = 0; i < dict.length; i++){
             if(modifier.type === dict[i].type){

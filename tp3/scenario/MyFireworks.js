@@ -2,6 +2,11 @@ import * as THREE from 'three'
 
 class MyFirework {
 
+    /**
+     * constructor for MyFirework class
+     * @param app application
+     * @param launchPosition position where the firework will be launched
+     */
     constructor(app, launchPosition) {
         this.app = app;
         this.launchPosition = launchPosition;
@@ -61,14 +66,14 @@ class MyFirework {
         this.points.castShadow = true;
         this.points.receiveShadow = true;
         this.app.scene.add(this.points);
-        //console.log("firework launched");
     }
 
     /**
-     * compute explosion
-     * @param {*} vector 
+     * creates the new particles from the explosion movement
+     * @param {*} origin explosion origin
+     * @param {*} n number of particles
      */
-    explode(origin, n, rangeBegin, rangeEnd) {
+    explode(origin, n) {
         this.app.scene.remove(this.points);
         const colors = [];
         const vertices = [];
@@ -94,7 +99,6 @@ class MyFirework {
         this.geometry = new THREE.BufferGeometry();
         this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
         this.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-        //this.geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
 
         this.points = new THREE.Points(this.geometry, this.material);
         this.points.castShadow = true;
@@ -107,7 +111,6 @@ class MyFirework {
      * cleanup
      */
     reset() {
-        //console.log("firework reseted");
         this.app.scene.remove(this.points);
         this.dest = [];
         this.vertices = null;
@@ -117,6 +120,10 @@ class MyFirework {
         this.exploded = false;
     }
 
+    /**
+     * updates the particles position
+     * @param delta time
+     */
     updateParticlesPosition(delta) {
         if (this.points.material.opacity > 0) {
             let vertices = this.points.geometry.getAttribute('position');

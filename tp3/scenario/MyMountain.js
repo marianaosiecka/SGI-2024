@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 
 class MyMountain extends THREE.Object3D{
+    /**
+     * constructor for MyMountain class
+     * @param app application
+     */
     constructor(app) {
         super()
         this.app = app;

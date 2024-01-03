@@ -6,8 +6,18 @@ import { MyObstacle } from "./elements/MyObstacle.js";
 import { MyPowerUp } from "./elements/MyPowerUp.js";
 import { MyVehicle } from "./elements/MyVehicle.js";
 import { MyCloud } from './scenario/MyCloud.js';
+import { MyFinishingLine } from './elements/MyFinishingLine.js';
 
+/**
+ * MyReader
+ */
 class MyReader{
+    /**
+     * constructor for MyReader class
+     * @param scene scene contents
+     * @param app application
+     * @param startingPoint of the race
+     */
     constructor(scene, app, startingPoint){
         this.scene = scene;
         this.app = app;
@@ -31,13 +41,14 @@ class MyReader{
         this.autonomousVehicle = null;
         this.autonomousCheckLineIdx = 0;
 
-        //default values
+        // default values
         this.readAutonomousVehicle(1, 1, 1, 1);
         this.readPlayerVehicle(1, 1, 1, 1);
 
         this.appliedModifiers = [];
         this.appliedModifiersStartTime = [];
 
+        // modifiers control variables
         this.shortcut = false;
         this.startShortcut = false;
         this.shortcutMixer = null;
@@ -46,7 +57,11 @@ class MyReader{
         this.pickAlreadyApplied = false;
     }
 
-    
+    /**
+     * creates the track
+     * @param {*} layer raycaster layer
+     * @param {*} segments segments to build the track geometry
+     */
     readTrack(layer, segments){
         this.trackWidth = 8;
 
@@ -103,43 +118,20 @@ class MyReader{
         this.app.scene.add(this.track);
     }
 
+    /**
+     * creates the finish line
+     */
     setFinishLine() {
-        this.finishLineGroup = new THREE.Group();
-        let pillarGeo = new THREE.CylinderGeometry( 0.3, 0.3, 16.2, 32 );
-        let pillarMat = new THREE.MeshPhongMaterial( {color: "#000000", shininess: 5} );
-        
-        let pillarRight = new THREE.Mesh( pillarGeo, pillarMat );
-        pillarRight.position.set(this.startingPoint.x - 10, this.startingPoint.y + 7.15, this.startingPoint.z - this.trackWidth*1.25);
-        
-        let pillarLeft = new THREE.Mesh( pillarGeo, pillarMat );
-        pillarLeft.position.set(this.startingPoint.x - 10, this.startingPoint.y + 7.15, this.startingPoint.z + this.trackWidth*2.05);
-        
-        let panelGeo = new THREE.BoxGeometry(0.4, 3.5 ,this.trackWidth*3.25);
-        let texture1 = new THREE.TextureLoader().load("textures/checkers.jpg")
-        texture1.repeat.set(2, 0.5)
-        texture1.wrapS = THREE.RepeatWrapping;
-        texture1.wrapT = THREE.RepeatWrapping;
-        let panelMat = new THREE.MeshPhongMaterial( {map:texture1} );
-        let panel = new THREE.Mesh( panelGeo, panelMat );
-        panel.position.set(this.startingPoint.x - 10, this.startingPoint.y + 13.5, this.startingPoint.z + this.trackWidth/2.5);
-        
-        let texture2 = new THREE.TextureLoader().load("textures/checkers.jpg")
-        texture2.repeat.set(0.17, 2)
-        texture2.wrapS = THREE.RepeatWrapping;
-        texture2.wrapT = THREE.RepeatWrapping;
-        let lineMat = new THREE.MeshPhongMaterial( {map:texture2} );
-
-        let finishingLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth*3.25)
-        this.finishingLine = new THREE.Mesh( finishingLineGeo, lineMat );
-        this.finishingLine.position.set(this.startingPoint.x - 10, this.startingPoint.y-0.75, this.startingPoint.z + this.trackWidth/2.5);
-
-        this.finishLineGroup.add(pillarRight);
-        this.finishLineGroup.add(pillarLeft);
-        this.finishLineGroup.add(panel);
-        this.finishLineGroup.add(this.finishingLine);
-        this.app.scene.add(this.finishLineGroup);
+        const finishingLineGroup = new MyFinishingLine(this.startingPoint, this.trackWidth);
+        this.finishingLine = finishingLineGroup.finishingLine;
+        this.app.scene.add(finishingLineGroup);
     }
 
+    /**
+     * create the route for the autonomous vehicle
+     * @param vehicleDepth for the offset to align the vehicle with the back wheels axis
+     * @param visualRepresentation sets the visual representation of the route
+     */
     readRoutes(vehicleDepth, visualRepresentation = false){
         let startingPointRoute = new THREE.Vector3(this.startingPoint.x - vehicleDepth/2, this.startingPoint.y, this.startingPoint.z);
         // LEVEL 1
@@ -197,7 +189,6 @@ class MyReader{
         const route1 = new MyRoute(this.app, this.keyPoints1, timeInterval1, this.autonomousVehicle, offsetPos, offsetRot, visualRepresentation);
         this.routes.push(route1);
 
-
         // LEVEL 2
         const timeInterval2 = 1;
         const route2 = new MyRoute(this.app, this.keyPoints1, timeInterval2, this.autonomousVehicle, offsetPos, offsetRot, visualRepresentation);
@@ -215,7 +206,10 @@ class MyReader{
         this.setCheckKeyPoints(12);
     }
 
-    readObstacles(layer){
+    /**
+     * creates the obstacles
+     */
+    readObstacles(){
         // TYPE: SWITCH
         const obstacleTexture1 = new THREE.TextureLoader().load("textures/obstacle_switchdirections.png");
         const obstaclesType1 = [ 
@@ -252,6 +246,9 @@ class MyReader{
         }
     }
 
+    /**
+     * @returns a random point from the last quarter of the route
+     */
     pickPointFromRoute() {
         const lastIndex = this.keyPoints1.length - 1;
         const lastQuarterStartIndex = Math.floor(3 * lastIndex / 4);
@@ -259,12 +256,17 @@ class MyReader{
         return this.keyPoints1[randomIndex]
     }
 
+    /**
+     * creates the key point to check and adds them to the track but makes them invisible
+     * @param numKeyPoints number of key points to check
+     */
     setCheckKeyPoints(numKeyPoints) {
         let checkKeyPoints = [];
         let checkKeyRotations = [];	
         const numPoints = this.keyPoints1.length;
         const offset = Math.floor(numPoints / numKeyPoints);
 
+        // pick the key points from the route
         for (let i = 0; i < numKeyPoints; i++) {
             const index = (i * offset) % numPoints;
             if(i===0)
@@ -273,20 +275,24 @@ class MyReader{
             checkKeyRotations.push(this.chosenRoute.q_list[index]);
         }
 
+        // create the check lines
         checkKeyPoints.forEach((point, index) => {
-        let checkLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth * 5.5);
-        let checkLine = new THREE.Mesh(checkLineGeo, new THREE.MeshBasicMaterial());
+            let checkLineGeo = new THREE.BoxGeometry(1.2, 0.05, this.trackWidth * 5.5);
+            let checkLine = new THREE.Mesh(checkLineGeo, new THREE.MeshBasicMaterial());
 
-        checkLine.quaternion.copy(checkKeyRotations[index]);
-        checkLine.position.set(point.x, point.y-0.75, point.z);
-        
-        checkLine.visible = false;
-        this.checkKeyLines.push(checkLine);
-        this.app.scene.add(checkLine)
+            checkLine.quaternion.copy(checkKeyRotations[index]);
+            checkLine.position.set(point.x, point.y-0.75, point.z);
+            
+            //checkLine.visible = false;
+            this.checkKeyLines.push(checkLine);
+            this.app.scene.add(checkLine)
         });
     }
 
-    readPowerUps(layer){
+    /**
+     * creates the power ups
+     */
+    readPowerUps(){
         // TYPE: SHIELD
         const powerUpTexture1 = new THREE.TextureLoader().load("textures/shield_powerup.png");
         const powerUpType1 = [ 
@@ -357,18 +363,38 @@ class MyReader{
         }
     }
 
+    /**
+     * creates the autonomous vehicle
+     * @param wheelsRatio distance between the front and back wheels
+     * @param width width of the car
+     * @param height height of the car
+     * @param depth depth of the car
+     */
     readAutonomousVehicle(wheelsRatio, width, height, depth){
         this.autonomousVehicle = new MyVehicle(this.scene, wheelsRatio, width, height, depth, 10, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z]);
     }
 
+    /**
+     * creates the player vehicle
+     * @param wheelsRatio distance between the front and back wheels
+     * @param width width of the car
+     * @param height height of the car
+     * @param depth depth of the car
+     */
     readPlayerVehicle(wheelsRatio, width, height, depth){
         this.playerVehicle = new MyVehicle(this.scene, wheelsRatio, width, height, depth, 10, [this.startingPoint.x, this.startingPoint.y, this.startingPoint.z + 10])
     }
 
+    /**
+     * checks collisions between the player and the objects and the scene
+     * @param obstacles 
+     */
     checkForCollisions(obstacles) {
+        // detect collisions with the power ups
         this.powerUps.forEach(powerUp => {
             if(this.playerVehicle.detectCollisionsBox(powerUp.bb)){
                 console.log("colidiu power up", powerUp.type);
+                // only adds the modifier if it's not a pick power up
                 if(powerUp.type !== "pick"){
                     powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
                     if(this.pickAlreadyApplied){
@@ -379,6 +405,7 @@ class MyReader{
                     powerUp.applyModifier(this.playerVehicle, obstacles, this.track);
                     this.pickAlreadyApplied = true;
                 } 
+                // if it's a shortcut power up, start the animation
                 if(powerUp.type == "shortcut"){
                     this.shortcut = true;
                     this.caughtShortcut = true;
@@ -432,6 +459,7 @@ class MyReader{
                 this.playerVehicle.collidedCar = true;
                 if(!this.playerVehicle.collidedCarStarted){
                     this.playerVehicle.velocity *= 0.3;
+                    this.playerVehicle.maxVelocity *= 0.7;
                     this.playerVehicle.collidedCarStarted = true;
                 }
                 this.appliedModifiers.push(this.autonomousVehicle);
@@ -450,7 +478,6 @@ class MyReader{
                 this.playerVehicle.outOfTrack = true;
                 if(!this.playerVehicle.outOfTrackStarted){
                     this.playerVehicle.velocity *= 0.4;
-                    this.playerVehicle.maxVelocity *= 0.4;
                     this.playerVehicle.outOfTrackStarted = true;
                 }
             }
@@ -464,17 +491,23 @@ class MyReader{
         }
     }
 
+    /**
+     * creates an animation that makes the player vehicle take a shortcut that follows a parabolic trajectory
+     * @returns the animation mixer of the shortcut
+     */
     shortcutAnimation(){
         const startPosition = this.playerVehicle.position.clone();
 
         // point from the last quarter of the route
         this.endPosition = this.pickPointFromRoute().clone();
         
+        // mid point of the parabolic trajectory
         const midPoint = new THREE.Vector3(
             (startPosition.x + this.endPosition.x) / 2,
             (startPosition.y + this.endPosition.y) / 2 + 10,
             (startPosition.z + this.endPosition.z) / 2
         );
+
         let points = [startPosition, midPoint, this.endPosition];
         
         const mixer = new THREE.AnimationMixer(this.playerVehicle);
@@ -497,6 +530,9 @@ class MyReader{
         return mixer;
     }
 
+    /**
+     * stops the shortcut animation
+     */
     stopShortcutAnimation() {
         let position = this.endPosition.clone();
         position.y = this.endPosition.y + 0.95;
@@ -506,6 +542,10 @@ class MyReader{
         this.app.scene.remove(this.cloud);
     }
 
+    /**
+     * stops the modifier and removes it from the applied modifiers list
+     * @param modifier 
+     */
     stopModifier(modifier){
         modifier.stopModifier(this.playerVehicle);
         const index = this.appliedModifiers.indexOf(modifier);
@@ -513,6 +553,11 @@ class MyReader{
         this.appliedModifiersStartTime.splice(index, 1);
     }
 
+    /**
+     * checks if the modifier is being applied
+     * @param modifierType type of the modifier
+     * @returns true if the modifier is being applied, false otherwise
+     */
     isAppliedModifier(modifierType){
         for (let i = 0; i < this.appliedModifiers.length; i++) {
             if(this.appliedModifiers[i].type == modifierType)
@@ -521,6 +566,10 @@ class MyReader{
         return false;
     }
         
+    /**
+     * updates the shaders of the modifiers in the track
+     * @param time 
+     */
     updateModifiers(time){
         this.powerUps.forEach(powerUp => {
             powerUp.shader.uniforms.time.value = time;
@@ -531,6 +580,9 @@ class MyReader{
         });
     }
 
+    /**
+     * removes the shortcut from the applied modifiers list
+     */
     removeShortcut(){
         this.appliedModifiers.forEach(modifier => {
             if(modifier.type == "shortcut"){
