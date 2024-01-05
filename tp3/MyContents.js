@@ -605,7 +605,9 @@ class MyContents {
     }
     else {
       if (this.autoLaps === this.numLaps) {
-        this.autoTime = timePassed / 1000;
+        if(this.autoTime === 0){
+          this.autoTime = timePassed / 1000;
+        }
         this.autonomousVehicle.shouldStop = true;
         if (this.playerLaps !== this.numLaps) {
           this.winner = this.autonomousVehicle;

@@ -51,16 +51,21 @@ class MyFinishMenu extends THREE.Object3D {
         this.add(autoTimeText);
 
         // winner or loser text
-        if(this.playerTime <= this.autoTime) {
+        if(this.playerTime < this.autoTime) {
             const winnerText = this.app.contents.spritesheetTitle1.getText("WINNER :)");
             winnerText.position.y += 4;
             winnerText.scale.set(3,3,3)
             this.add(winnerText);
-        } else {
+        } else if(this.playerTime > this.autoTime){
             const loserText = this.app.contents.spritesheetTitle2.getText("LOSER :(");
             loserText.position.y += 4;
             loserText.scale.set(2,2,2)
             this.add(loserText);
+        } else {
+            const tieText = this.app.contents.spritesheetTitle2.getText("TIE");
+            tieText.position.y += 4;
+            tieText.scale.set(2,2,2)
+            this.add(tieText);
         }
 
         // add redo run button
