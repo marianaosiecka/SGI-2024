@@ -36,6 +36,88 @@ class MyContents {
     */
     constructor(app) {
         this.app = app
+        this.axis = null
+
+        // box related attributes
+        this.boxMesh = null
+        this.boxMeshSize = 1.0
+        this.boxEnabled = true
+        this.lastBoxEnabled = null
+        this.boxDisplacement = new THREE.Vector3(0, 2, 0)
+
+        // plane related attributes
+        this.wraps = ['Repeat', 'Clamp', 'Mirror Repeat']
+        this.wraps['Repeat'] = THREE.RepeatWrapping;
+        this.wraps['Clamp'] = THREE.ClampToEdgeWrapping;
+        this.wraps['Mirror Repeat'] = THREE.MirroredRepeatWrapping;
+        this.planeTextureWrap = this.wraps['Repeat'];
+        this.textureWrapUName = 'Repeat';
+        this.textureWrapVName = 'Repeat';
+
+        //texture
+        this.planeTexture = new THREE.TextureLoader().load('textures/feup_b.jpg');
+        this.updatePlaneTextureUWrap('Repeat')
+        this.updatePlaneTextureVWrap('Repeat')
+        this.planeTexture.wrapS =  this.planeTextureWrap
+        this.planeTexture.wrapT =  this.planeTextureWrap
+
+        // material
+        this.diffusePlaneColor = "rgb(128,128,128)"
+        this.specularPlaneColor = "rgb(0,0,0)"
+        this.planeShininess = 0
+
+        // relating texture and material:
+        // two alternatives with different results
+        // alternative 1
+        this.planeMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffusePlaneColor,
+            specular: this.specularPlaneColor,
+            emissive: "#000000", 
+            shininess: this.planeShininess,
+            map: this.planeTexture
+        })
+        
+        // end of alternative 1
+
+        // alternative 2
+        /*
+        this.planeMaterial = new THREE.MeshLambertMaterial({
+                map : this.planeTexture });
+        // end of alternative 2
+        let plane = new THREE.PlaneGeometry(10, 10);
+        */
+    }
+
+    /**
+     * builds the box mesh with material assigned
+     */
+    buildBox() {
+        //box texture
+        let boxTexture = new THREE.TextureLoader().load('textures/feup_entry.jpg');
+        boxTexture.wrapS = THREE.MirroredRepeatWrapping;
+        boxTexture.wrapT = THREE.MirroredRepeatWrapping;
+
+        let boxUVRate = 1; // this.boxMeshSize/this.boxMeshSize -> 1
+
+        let boxTextureUVRate = 2272 / 1704; // image dimensions
+        let boxTextureRepeatU = 1.5;
+        let boxTextureRepeatV = boxTextureRepeatU * boxUVRate * boxTextureUVRate;
+
+        boxTexture.repeat.set(boxTextureRepeatU, boxTextureRepeatV );
+        //boxTexture.rotation = 45 * Math.PI/180;
+        boxTexture.offset = new THREE.Vector2(0,0);
+
+        let boxMaterial = new THREE.MeshPhongMaterial({
+            specular: "#000000", emissive: "#000000", shininess: 90,
+            map: boxTexture
+        })
+
+        // Create a Cube Mesh with basic material
+        let box = new THREE.BoxGeometry(this.boxMeshSize, this.boxMeshSize, this.boxMeshSize);
+        this.boxMesh = new THREE.Mesh(box, boxMaterial);
+        this.boxMesh.rotation.x = -Math.PI / 2;
+        this.boxMesh.position.y = this.boxDisplacement.y;
+
         this.showAxis = false;
         this.axis = new MyAxis(this.app)
 
@@ -797,26 +879,34 @@ class MyContents {
     }
 
     /**
-     * updates the x position of the target of the spotlight
-     * @param {THREE.Color} value 
+     * updates the plane texture wrap
+     * @param value 
      */
-    updateSpotLightTargetX(light, value) {
-        const targetObject = new THREE.Object3D();
-        targetObject.position.x = value;
-        targetObject.position.y = light.target.position.y;
-        this.app.scene.add(targetObject);
-        light.target = targetObject;
+    updatePlaneTextureUWrap(value) {
+        this.textureWrapUName = value;
+        this.planeTextureWrap = this.wraps[value]
+        if (this.planeMesh !== undefined && this.planeMesh !== null) {
+            this.planeMaterial.map.wrapS = this.planeTextureWrap
+            this.app.scene.remove(this.planeMesh)
+            this.planeMesh = new THREE.Mesh( this.plane, this.planeMaterial );
+            this.planeMesh.rotation.x = -Math.PI / 2;
+            this.app.scene.add(this.planeMesh)
+        }
     }
     /**
-     * updates the y position of the target of the spotlight
-     * @param {THREE.Color} value 
+     * updates the plane texture wrap
+     * @param value 
      */
-    updateSpotLightTargetY(light, value) {
-        const targetObject = new THREE.Object3D();
-        targetObject.position.y = value;
-        targetObject.position.x = light.target.position.x;
-        this.app.scene.add(targetObject);
-        light.target = targetObject;
+    updatePlaneTextureVWrap(value) {
+        this.textureWrapVName = value;
+        this.planeTextureWrap = this.wraps[value]
+        if (this.planeMesh !== undefined && this.planeMesh !== null) {
+            this.planeMaterial.map.wrapT = this.planeTextureWrap
+            this.app.scene.remove(this.planeMesh)
+            this.planeMesh = new THREE.Mesh( this.plane, this.planeMaterial );
+            this.planeMesh.rotation.x = -Math.PI / 2;
+            this.app.scene.add(this.planeMesh)
+        }
     }
     /**
      * updates the diffuse plane color and the material
@@ -841,6 +931,52 @@ class MyContents {
     updatePlaneShininess(value) {
         this.planeShininess = value
         this.planeMaterial.shininess = this.planeShininess
+    }
+
+    /**
+     * rebuilds the box mesh if required
+     * this method is called from the gui interface
+     */
+    rebuildBox() {
+        // remove boxMesh if exists
+        if (this.boxMesh !== undefined && this.boxMesh !== null) {
+            this.app.scene.remove(this.boxMesh)
+        }
+        this.buildBox();
+        this.lastBoxEnabled = null
+    }
+
+    /**
+     * updates the box mesh if required
+     * this method is called from the render method of the app
+     * updates are trigered by boxEnabled property changes
+     */
+    updateBoxIfRequired() {
+        if (this.boxEnabled !== this.lastBoxEnabled) {
+            this.lastBoxEnabled = this.boxEnabled
+            if (this.boxEnabled) {
+                this.app.scene.add(this.boxMesh)
+            }
+            else {
+                this.app.scene.remove(this.boxMesh)
+            }
+        }
+    }
+
+    /**
+     * updates the contents
+     * this method is called from the render method of the app
+     * 
+     */
+    update() {
+        // check if box mesh needs to be updated
+        this.updateBoxIfRequired()
+
+        // sets the box mesh position based on the displacement vector
+        this.boxMesh.position.x = this.boxDisplacement.x
+        this.boxMesh.position.y = this.boxDisplacement.y
+        this.boxMesh.position.z = this.boxDisplacement.z
+
     }
 
 }
