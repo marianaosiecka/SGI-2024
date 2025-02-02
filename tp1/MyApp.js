@@ -29,6 +29,16 @@ class MyApp  {
         this.gui = null
         this.axis = null
         this.contents == null
+
+        this.coffeeTablePosition = new THREE.Vector3(0, 0.9, -4.9);
+        this.cakePosition = new THREE.Vector3(0, 1.9, 4.5);
+        this.vinylPosition = new THREE.Vector3(-7, 2, -5.5);
+        this.flowersPosition = new THREE.Vector3(-6, 2, 7);
+        this.photosPosition = new THREE.Vector3(0, 2, -8);
+        this.paintingsPosition = new THREE.Vector3(0, 2, 8);
+        this.windowPosition = new THREE.Vector3(-7.4, 3.5, 0);
+        this.doorPosition = new THREE.Vector3(7, 3, 0)
+
     }
     /**
      * initializes the application
@@ -100,6 +110,85 @@ class MyApp  {
         orthoFront.position.set(0,0, this.frustumSize /4) 
         orthoFront.lookAt( new THREE.Vector3(0,0,0) );
         this.cameras['Front'] = orthoFront
+
+        // create a back view orthographic camera
+        const orthoBack = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
+        orthoBack.up = new THREE.Vector3(0, 1, 0);
+        orthoBack.position.set(0, 0, -this.frustumSize / 4)
+        orthoBack.lookAt(new THREE.Vector3(0, 0, 0));
+        this.cameras['Back'] = orthoBack
+
+        // coffeeTable camera
+        let coffeeTableCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        coffeeTableCamera.position.set(-0.77, 1.94, -2.17)
+        this.cameras['CoffeeTable'] = coffeeTableCamera;
+
+        // cake/table camera
+        let cakeCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        cakeCamera.position.set(4.29, 4.25, 2.46);
+        this.cameras['Cake'] = cakeCamera;
+
+        // vinyl camera
+        let vinylCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        vinylCamera.position.set(-2, 4.5, -2);
+        this.cameras['Vinyl'] = vinylCamera;
+
+        // flowers camera
+        let flowersCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000 );
+        flowersCamera.position.set(-5, 1.7, 3);   
+        this.cameras['Flowers'] = flowersCamera;
+
+        // photos camera
+        let photosCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        photosCamera.position.set(0, 3.5, 2);
+        this.cameras['Photos'] = photosCamera;
+
+        // paintings camera
+        let paintingsCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        paintingsCamera.position.set(0, 2.5, -1);
+        this.cameras['Paintings'] = paintingsCamera;
+
+        // window camera
+        let windowCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        windowCamera.position.set(-4.5, 3.5, 0);
+        this.cameras['Window'] = windowCamera;
+
+        // door camera
+        let doorCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        doorCamera.position.set(0, 3, 0);
+        this.cameras['Door'] = doorCamera;
+    }
+
+    /**
+     * sets the controls' target
+     */
+    setControlsTarget() {
+        switch (this.activeCameraName) {
+            case 'CoffeeTable':
+                this.controls.target = this.coffeeTablePosition;
+                break;
+            case 'Cake':
+                this.controls.target = this.cakePosition;
+                break;
+            case 'Vinyl':
+                this.controls.target = this.vinylPosition;
+                break;
+            case 'Flowers':
+                this.controls.target = this.flowersPosition;
+                break;
+            case 'Photos':
+                this.controls.target = this.photosPosition;
+                break;
+            case 'Paintings':
+                this.controls.target = this.paintingsPosition;
+                break;
+            case 'Window':
+                this.controls.target = this.windowPosition;
+                break;
+            case 'Door':
+                this.controls.target = this.doorPosition;
+                break;
+        }
     }
 
     /**
